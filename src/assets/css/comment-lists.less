@@ -1,0 +1,643 @@
+@import "variables.less";
+
+.comments-list {
+    width: 100%;
+    height: auto;
+  /*  font-size: 0.8rem;
+    line-height: 1.2rem;*/
+  
+}
+
+.comments-list__ancestry-container {
+    width: 100%;
+    /* border-radius: 8px;
+    padding: 0.25rem;*/
+    /* margin-bottom: 0.1rem;*/
+    /*  border: 1px solid var(--border-color);
+    border-radius: 8px;*/
+    /*  & hr {
+        height: 1px;
+        background-color: var(--border-color);
+        border: none;
+        width: 80%;
+        margin: 0.5rem auto;
+    }*/
+
+    & > h3 {
+        text-transform: capitalize;
+        /* text-align: center;*/
+        /*font-weight: 600;*/
+        position: relative;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+
+        @media @smallDevice {
+            font-size: 1.1rem;
+            line-height: 1.4rem;
+        }
+
+        @media @largeDevice {
+            font-size: 1.2rem;
+            line-height: 1.6rem;
+        }
+        /*
+        & button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+
+            &:hover {
+                & svg.stroked path {
+                    stroke: var(--hover-color);
+                }
+            }
+        }*/
+    }
+}
+
+.comments-list__ancestry {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
+
+    &.show {
+        max-height: 99999px;
+        opacity: 1;
+    }
+}
+
+.comments-list__card {
+ 
+
+    &:not(.pinned){
+   border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    }
+
+    & .btn-group {
+        margin-top: 1rem;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+}
+
+.comments-list__text {
+    position: relative;
+    /* font-size: 1.2rem;
+    line-height: 1.6rem;*/
+    /*max-height: 8.8rem;*/ /* 5 lines � 1.4rem + 1 x 1.8 */
+    /*overflow: hidden;
+    transition: max-height 0.8s ease;
+
+    &:not(.truncated) {
+        max-height: 200rem;
+    }*/
+    & .shared__richtext {
+        max-height: 7.8rem; // 6 lines � 1.3rem
+        overflow: hidden;
+        transition: max-height 0.8s ease;
+
+        &:not(.truncated) {
+            max-height: 200rem;
+        }
+
+        /*&.truncated:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3rem;*/ /* adjust based on your design */
+            /*background: linear-gradient(to bottom, transparent, var(--background-color));
+            pointer-events: none;*/ /* ensures clicks pass through */
+            /*transition: opacity 0.4s ease;
+        }*/
+    }
+
+    & .not {
+        font-style: italic;
+    }
+}
+
+.comment-lists__stats {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+
+    & p {
+        display: flex;
+        align-items: center;
+
+        & span {
+            font-weight: 600;
+            margin-right: 0.1rem;
+        }
+    }
+}
+
+
+/* THE INLINE TEXT FADE */
+.comments-list__show-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3rem; /* adjust based on your design */
+    background: linear-gradient(to bottom, transparent, var(--background-color));
+    transition: opacity 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    /*width: 40%;*/ /* Spans wide enough to give a smooth horizontal fade out before the words */
+    /*height: 1.8rem;*/ /* Matches the approximate baseline height of your typography */
+    /* Horizontal gradient: Fades text out gracefully from left to right */
+    /*background: linear-gradient( to right, transparent 0%, var(--background-color) 45%, var(--background-color) 100% );
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;*/ /* Pins the link right against the margin */
+    /*padding-left: 2rem;*/
+
+    & .caret-down {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        vertical-align: middle;
+        border-left: 0.3rem solid transparent;
+        border-right: 0.3rem solid transparent;
+        border-top: 0.3rem solid var(--text-color); /* inherits text color */
+    }
+
+    &:hover {
+        background: none;
+
+        & .caret-down {
+            border-top-color: var(--hover-color); /* inherits text color */
+        }
+    }
+}
+
+/*.comments-list__show-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 3rem;*/ /* Space for the fade effect */
+    /*background: linear-gradient(to right, transparent, var(--background-color) 40%);
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+
+    & button {
+        color: var(--text-color);
+        font-weight: 600;
+
+        &:hover {
+            color: var(--hover-color);
+        }
+    }
+}*/
+
+.comments-list__metadata {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    column-gap: 0.5rem;
+    /*justify-content: center;*/
+    color: var(--muted-text-color);
+
+    @media @phone {
+        font-size: 0.85rem;
+    }
+
+    @media @phablet {
+        font-size: 0.9rem;
+    }
+
+    @media @largeDevice {
+        font-size: 1rem;
+    }
+
+    & button.favorite {
+        display: inline-flex;
+        align-items: center;
+        height: 100%;
+        font-weight: 600;
+        color: var(--text-color);
+
+        &:hover {
+            color: var(--hover-color);
+        }
+    }
+}
+
+
+.comments-list__other-metadata {
+    color: var(--muted-text-color);
+    display: flex;
+    align-items: center;
+}
+
+.comments-list__filter-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+
+    @media @phone {
+        font-size: 0.8rem;
+    }
+
+    @media @phablet {
+        font-size: 0.85rem;
+    }
+
+    @media @largeDevice {
+        font-size: 0.95rem;
+    }
+
+    & .show-ancestry {
+
+        &:after {
+            content: "Show Thread";
+        }
+
+        &.active {
+
+            &:after {
+                content: "Hide Thread";
+            }
+        }
+    }
+}
+
+.comments-list__filter {
+    width: auto;
+    display: flex;
+    column-gap: 0.25rem;
+}
+
+.comments-list__filter-text {
+    text-transform: capitalize;
+    /*   height: 50px;
+    display: flex;*/
+    /*align-items: center;*/
+    width: auto;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.comments-list__show-filter {
+    height: 50px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    column-gap: 0.25rem;
+
+    & .caret {
+        width: 0;
+        height: 0;
+        vertical-align: middle;
+        border-top: 6px solid var(--text-color);
+        border-right: 6px solid transparent;
+        border-left: 6px solid transparent;
+
+        &.active {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.comments-list__filter-options {
+    display: none;
+    /*border-bottom: 1px solid var(--border-color);*/
+    flex-grow: 1;
+
+    &.active {
+        display: block;
+    }
+
+    & button {
+        height: 40px;
+        /*border-top: 1px solid var(--border-color);*/
+        width: 100%;
+        display: flex;
+        align-items: center;
+
+        &.active {
+            display: none;
+        }
+    }
+}
+
+.comments-list__top-action {
+    display: flex;
+    align-items: center;
+    height: 30px;
+
+    & button {
+        /*height: 50px;*/
+        /* display: flex;
+        align-items: center;*/
+    }
+}
+
+
+.comments-list__reply-actions {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    column-gap: 0.5rem;
+    /*justify-content: center;*/
+    color: var(--muted-text-color);
+}
+
+
+.comments-list__actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    text-transform: uppercase;
+
+    &.alt{
+        justify-content: flex-end;
+    }
+
+    @media @smallDevice {
+        column-gap: 0.5rem;
+    }
+
+    @media @largeDevice {
+        column-gap: 1rem;
+    }
+
+
+    & button {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        column-gap: 0.25rem;
+        font-weight: 600;
+
+        & span {
+            font-size: 0.85rem;
+        }
+
+        &:hover {
+            color: var(--hover-color);
+            /* &.active {
+
+                & svg.stroked {
+
+                    & path, & circle, & rect, & line, & polyline, & polygon {
+                        stroke: var(--hover-color);
+                    }
+                }
+            }*/
+
+            svg {
+
+                &.stroked path {
+                    stroke: var(--hover-color);
+                    stroke-width: 1px;
+                }
+
+                &.filled path {
+                    fill: var(--hover-color);
+                }
+            }
+        }
+
+        &.active {
+
+            & svg.stroked {
+
+                & path, & circle, & rect, & line, & polyline, & polygon {
+                    fill: var(--text-color);
+                }
+            }
+        }
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        transition: stroke 800ms ease-in-out, transform 0.2s ease;
+    }
+}
+
+.comments-list__rating-actions {
+    display: flex;
+    align-items: center;
+
+    @media @smallDevice {
+        column-gap: 0.5rem;
+    }
+
+    @media @largeDevice {
+        column-gap: 1rem;
+    }
+}
+
+.comments-list__other-actions {
+    display: flex;
+    align-items: center;
+
+    @media @phone {
+        font-size: 0.75rem;
+    }
+
+    @media @phablet {
+        font-size: 0.8rem;
+    }
+
+  
+    @media @smallDevice {
+        column-gap: 0.5rem;
+
+        & span {
+            display: none !important;
+        }
+    }
+
+    @media @largeDevice {
+        column-gap: 1rem;
+        font-size: 0.85rem;
+    }
+    /*  @media @phone {
+        & span{
+            display: none !important;
+        }
+    }*/
+}
+
+
+.comments-list__hamburger {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 100%;
+    padding: 2px 0;
+
+    & div {
+        width: 4px;
+        height: 4px;
+        background-color: var(--text-color);
+        transition: 0.4s;
+        border-radius: 100%;
+    }
+
+    &:hover {
+        background-color: var(--background-color);
+        /*  & div {
+                background-color: var(--contrast-text-color);
+            }*/
+    }
+}
+
+
+.comments-list__brief {
+   /* font-size: 0.9rem;
+    line-height: 1.1rem;*/
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    display: block;
+
+    & h6 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/*.comments-list__brief-meta {
+    display: flex;
+    height: 40px;
+    align-items: center;*/
+    /* justify-content: center;*/
+    /*font-size: 0.95rem;
+    color: var(--muted-text-color);
+
+    @media @smallDevice {
+        column-gap: 0.5rem;
+    }
+
+    @media @largeDevice {
+        column-gap: 1rem;
+    }
+
+    & a,
+    & button {
+        font-weight: 600;
+
+        &:hover {
+            color: var(--hover-color);
+
+            & svg.stroked path {
+                stroke: var(--hover-color);
+            }
+        }
+    }
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.comment {
+    border-bottom: 1px solid var(--border-color);*/
+    /*  border-radius: 8px;*/
+    /*padding-bottom: 1rem;
+    margin-bottom: 1rem;
+
+    & hr {*/
+        /* background-color: var(--border-color);*/
+    /*}
+
+
+
+    & .comment-votes {
+        display: flex;
+        align-items: center;
+        margin: 0.5rem 0;
+        height: auto;
+        font-size: 0.8rem;
+
+        & button {
+            height: 30px;
+
+            &:hover {
+
+                svg {
+
+                    &.stroked path {
+                        stroke: @link-color;
+                    }
+
+                    &.filled path {
+                        fill: @link-color;
+                    }
+                }
+            }
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+
+            &.user-vote-indicator {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 4px;
+                transform: scale(1);
+                transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                animation: popIn 0.2s ease-out;
+            }
+        }
+    }
+
+}*/
+
+
+    /* When the @if block first renders it, add a simple entrance animation */
+    @keyframes popIn {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }

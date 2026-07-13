@@ -1,0 +1,98 @@
+@import "variables.less";
+
+
+.timeline-details__card {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    width: 100%;
+    height: auto;
+}
+
+.timeline-details__metadata {
+    height: auto;
+    display: flex;
+    margin-bottom: 0.5rem;
+
+    @media @smallDevice {
+       flex-direction: column;
+       row-gap: 0.5rem;
+    }
+
+    @media @largeDevice {
+        justify-content: space-between;
+    }
+}
+
+.timeline-details__type {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    align-self: flex-start;
+
+    & a {
+        color: @white-color;
+    }
+
+    &:hover {
+        opacity: 0.5;
+    }
+
+    &.account {
+        background-color: #FC9A00;
+    }
+
+    &.tale {
+        background-color: #6A01D0;
+    }
+
+    &.comment {
+        background-color: #2AB4DE;
+    }
+
+    &.insight {
+        background-color: #259745;
+    }
+
+    &.support {
+        background-color: #019898;
+    }
+
+    &.writer {
+        background-color: #F96979;
+    }
+
+    &.role {
+        background-color: #7FBA00;
+    }
+}
+
+.timeline-details__date {
+    text-transform: capitalize;
+    color: var(--muted-text-color);
+}
+
+.timeline-details__text {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+
+    & p:not(:empty):first-of-type::first-letter,
+    & div:not(:empty):first-of-type::first-letter {
+        font-size: 1.5rem; /* Bold and Large */
+        line-height: 1.8rem; /* Keeps the text flow tight */
+        padding: 0 3px;
+        font-family: 'Serif', Georgia, Times; /* Fiction looks best in Serif */
+        font-weight: 600;
+    }
+
+    & button,
+    & a {
+        font-weight: 600;
+
+        &:hover {
+            color: var(--hover-color);
+        }
+    }
+}

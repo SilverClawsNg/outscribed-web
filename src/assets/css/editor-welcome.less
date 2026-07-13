@@ -1,0 +1,51 @@
+@import "variables.less";
+
+.editor-hero {
+    background-color: var(--hero-background-color);
+    border-bottom: 2px solid @link-color;
+    width: 100%;
+    padding: 30px 0;
+
+    @media @smallDevice {
+        height: auto;
+    }
+
+    @media @largeDevice {
+        height: 550px;
+    }
+
+}
+
+.editor-hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media @smallDevice {
+        height: auto;
+        width: 100%;
+        max-width: 550px;
+        margin: 0 auto;
+        flex-direction: column-reverse;
+    }
+
+    @media @largeDevice {
+        width: @max-width;
+        max-width: calc(100% - 20px);
+        height: 100%;
+        margin: 0 auto;
+    }
+}
+
+.editor-hero-image {
+    width: 300px;
+    height: auto;
+    max-width: 100%;
+    padding: 20px;
+    border: 1px solid @link-color;
+
+    & img {
+        height: auto;
+        width: 100%;
+    }
+}

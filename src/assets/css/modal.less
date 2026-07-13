@@ -1,0 +1,353 @@
+@import "variables.less";
+
+/*#region MODALS */
+
+/* --- Keyframes --- */
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Modal Container --- */
+#modal {
+    position: fixed;
+    width: 100%;
+    height: 100lvh;
+    z-index: 1002;
+    overflow: hidden;
+    display: none; /* hidden by default */
+    top: 0;
+    left: 0;
+
+    &.open {
+        display: block; /* only visible when open */
+    }
+    /* Overlay background */
+    & .close-modal-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        z-index: 1002;
+        background-color: var(--modal-background-color);
+        pointer-events: auto;
+
+        &.active {
+            animation: fade-in 0.3s forwards;
+            pointer-events: auto;
+        }
+
+        &:not(.active) {
+            animation: fade-out 0.3s forwards;
+            pointer-events: none; /* click-through when overlay is inactive */
+        }
+    }
+    /* Inner modal container */
+    & .inner-modal {
+        height: 100%;
+        position: absolute;
+        right: 0;
+        margin: 0 auto;
+        z-index: 1005;
+        transition: all 0.9s ease;
+
+        @media @phone {
+            width: 100%;
+        }
+
+        @media @phablet {
+            width: 100%;
+        }
+
+        @media @tablet {
+            width: @min-width;
+            max-width: 100%;
+        }
+
+        @media @largeDevice {
+            width: @min-width;
+            max-width: 100%;
+
+            &.expand {
+                width: 100%;
+            }
+        }
+    }
+    /* Modal contents */
+
+    & .modal-contents {
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--background-color);
+        box-shadow: rgba(0,0,0,0.15) 0px 4px 12px;
+        transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+        overflow: hidden;
+        /* Top modal (active) */
+        &.top {
+            /*  transform: scale(1);*/
+            /*  filter: none;*/
+            /*  opacity: 1;*/
+            z-index: 1005;
+        }
+        /* Background modals (stacked underneath) */
+
+        &.background {
+            /*transform: scale(0.95);*/ /* slightly smaller */
+            /*filter: blur(2px);*/ /* subtle blur */
+            /* opacity: 0.7; */ /* dimmed */
+            z-index: 1000; /* lower than top */
+        }
+        /* Animations */
+
+        &.enter {
+            animation: slide-in 0.5s forwards;
+            //animation: slide-in 0.9s forwards;
+        }
+
+        &.leave {
+            animation: slide-out 0.5s forwards;
+            //animation: slide-out 0.9s forwards;
+        }
+        /* Header */
+        & .modal-header {
+            height: 50px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 2003;
+            border-bottom: 1px solid var(--border-color);
+            /*background-color: @header-background-color;*/
+
+            & button svg.stroked path {
+                stroke: var(--text-color);
+            }
+
+            & .inner-modal-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: @mid-width;
+                max-width: calc(100% - 20px);
+                margin: 0 auto;
+                height: 100%;
+            }
+
+            & button.close {
+                font-family: @font-family;
+                display: flex;
+                align-items: center;
+                height: 100%;
+                color: var(--text-color);
+                text-transform: capitalize;
+                border-bottom: 2px solid transparent;
+
+                & span {
+                    margin-left: 5px;
+                }
+
+                &:hover {
+                    border-bottom-color: var(--border-color);
+                }
+            }
+
+            & .modal-header-menu {
+                display: flex;
+                height: 100%;
+
+                & button {
+                    width: 50px;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--text-color);
+                    border-bottom: 3px solid transparent;
+                    /*   & svg.stroked {
+                        stroke: @white-color;
+                    }*/
+
+                    &.maximize, &.minimize {
+                        @media @smallDevice {
+                            display: none;
+                        }
+                    }
+
+                    &:hover {
+                        border-bottom-color: var(--border-color);
+                    }
+                }
+            }
+        }
+        /* Body */
+
+
+        & .modal-body {
+            height: calc(100lvh - 50px);
+            width: 100%;
+            margin: 0 auto;
+            overflow-y: auto;
+            padding: 20px 0 120px 0;
+            scrollbar-color: rgb(136,136,136);
+            scrollbar-width: thin;
+
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: rgb(136,136,136);
+                border-radius: 25px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background-color: rgb(100,100,100);
+            }
+
+            &::-webkit-scrollbar-thumb:active {
+                background-color: rgb(68,68,68);
+            }
+        }
+
+        & .inner-modal-body {
+            width: 100%;
+            height: auto;
+            min-height: 100%;
+            width: @mid-width;
+            max-width: calc(100% - 20px);
+            margin: 0 auto;
+            overflow-x: hidden;
+
+            & h3.modal-page-heading {
+                border-top: 1px solid var(--border-color);
+                border-bottom: 1px solid var(--border-color);
+                margin: 5px 0;
+                padding: 5px 0;
+                text-transform: capitalize;
+                font-weight: 600;
+            }
+
+            & h4.instruct {
+                margin: 5px 0;
+                font-style: italic;
+            }
+
+          /*  & .form-container {
+
+                & fieldset {
+                    background-color: var(--native-background-color) !important;
+                }
+
+                & input.form-field,
+                & textarea.form-field {
+                    background-color: var(--native-background-color) !important;
+
+                    &:-webkit-autofill,
+                    &:-webkit-autofill:hover,
+                    &:-webkit-autofill:focus,
+                    &:-webkit-autofill:active {
+                        background-color: var(--native-background-color);
+                    }
+
+                    &:disabled {
+                        background-color: var(--lightbackground-color) !important;
+                    }
+
+                    &:focus,
+                    &:active {
+                        background-color: var(--native-background-color) !important;
+                    }
+                }
+
+                & textarea {
+                    height: 150px;
+                }
+
+                & select.form-field {
+                    background-color: var(--native-background-color) !important;
+
+                    &:-webkit-autofill,
+                    &:-webkit-autofill:hover,
+                    &:-webkit-autofill:focus,
+                    &:-webkit-autofill:active {
+                        background-color: var(--native-background-color);
+                    }
+
+                    &:disabled {
+                        background-color: var(--native-background-color);
+                    }
+
+                    &:focus,
+                    &:active {
+                        background-color: var(--native-background-color);
+                    }
+                }
+
+                & .otp-input-group {
+
+                    & input.otp-box {
+                        background-color: var(--native-background-color) !important;
+                    }
+                }
+            }*/
+
+        }
+    }
+}
+    /*#endregion */
+

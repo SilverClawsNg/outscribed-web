@@ -1,0 +1,46 @@
+@import "variables.less";
+
+.page-status-message-container {
+    width: @mid-width;
+    max-width:calc(100% - 20px);
+    height: auto;
+    margin: 0 auto;
+    z-index: 998;
+  
+
+}
+
+.page-status-message {
+    width: 500px;
+    max-width: calc(100% - 20px);
+
+    & h1 {
+        margin-bottom: 0.25rem;
+        letter-spacing: 0.2px;
+        font-size: clamp(1.3rem, 3vw + 1rem, 1.5rem);
+        line-height: clamp(1.5rem, 3vw + 1rem, 1.7rem);
+    }
+
+    & p {
+        color: red;
+    }
+
+    & svg {
+        width: 80px;
+        height: 80px;
+        stroke: var(--muted-text-color);
+    }
+
+    & .actions {
+        width: 100%;
+        padding-top: 0.5rem;
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.25rem;
+
+        & svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}

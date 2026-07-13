@@ -1,0 +1,709 @@
+@import "variables.less";
+
+html, body {
+    font-family: @font-family;
+    height: auto;
+    word-wrap: break-word;
+    width: 100%;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: @base-font-size;
+    line-height: @base-line-height;
+}
+
+html {
+    /* Reserves space for the scrollbar so the page doesn't "jump" when modals open */
+    scrollbar-gutter: stable;
+}
+
+body.modal-open {
+    overflow: hidden;
+    //padding-right: 15px; /* Prevents "jumping" when the scrollbar disappears */
+}
+
+.main-layout-wrapper {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.container{
+    margin: 0 auto;
+    position: relative;
+    width: @mid-width;
+    max-width: calc(100% - 20px);
+    padding: 2rem 0;
+}
+
+main {
+    width: 100%;
+    height: auto;
+
+    &.main-layout {
+        padding-bottom: 100px;
+        
+        // 🎯 Add this line to smoothly slide the content down with the header
+       // 🎯 Match the header's duration and easing curve perfectly
+        transition: padding-top 0.55s cubic-bezier(0.4, 0, 0.2, 1), 
+                    min-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+
+        @media @largeDevice {
+            padding-top: 150px;
+            min-height: calc(100lvh - 150px);
+
+            &.state-neutral {
+                padding-top: 100px;
+                min-height: calc(100lvh - 100px);
+            }
+        }
+
+        @media @smallDevice {
+            padding-top: 80px;
+        }
+    }
+
+    &.form-layout {
+        width: auto;
+        height: auto;
+    }
+}
+
+.form-page {
+    height: auto;
+    min-height: 100lvh;
+    background-color: var(--background-color);
+    width: 100%;
+    position: relative;
+    z-index: 999;
+
+    &.boxed {
+        max-width: calc(100% - 20px);
+    }
+
+    @media @smallDevice {
+        padding-top: 2rem;
+    }
+
+    @media @largeDevice {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+
+
+h1.logo {
+    z-index: 1000;
+    position: relative;
+    display: flex;
+    column-gap: 2px;
+
+    & span {
+        @media @smallDevice {
+            width: 28px;
+            height: 28px;
+        }
+
+        @media @largeDevice {
+            width: 30px;
+            height: 30px;
+        }
+
+        transform: translateY(-2px);
+
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    & svg {
+        fill: var(--text-color);
+        width: auto;
+
+        @media @smallDevice {
+            height: 28px; /* Your desired height */
+        }
+
+        @media @largeDevice {
+            height: 32px; /* Your desired height */
+        }
+    }
+}
+
+.at {
+
+    &:before {
+        font-weight: 600;
+        color: var(--text-color);
+        content: "\0040";
+    }
+
+    &:hover {
+        &:before {
+            color: var(--hover-color);
+        }
+    }
+}
+
+span.divider.line {
+    margin: 0 0.25rem;
+    font-weight: 600;
+
+    &:before {
+        font-weight: normal;
+        color: var(--text-color);
+        content: "|";
+    }
+}
+
+span.divider.circle {
+    margin: 0 0.25rem;
+    font-weight: 600;
+    display: inline;
+    vertical-align:middle;
+    height: 3px; /* Same value for height and width */
+    width: 3px; /* Same value for height and width */
+    background-color: var(--text-color); /* Adds color to the circle */
+    border-radius: 50%; /* Rounds the corners to create a circle */
+}
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+}
+
+.progress-bar {
+    width: 100.8px;
+    height: 16.8px;
+    background: linear-gradient(#FE0000 0 0) left/0% 100% no-repeat #F1F1F1;
+    animation: progress-jgv380 2s infinite linear;
+}
+
+@keyframes progress-jgv380 {
+    100% {
+        background-size: 100% 100%;
+    }
+}
+
+.no-content{
+    color: red;
+    font-style: italic;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: var(--text-color);
+    background-color: var(--background-color);
+
+    & .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+}
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+
+    &::after {
+        content: "An error has occurred."
+    }
+}
+
+
+.double-links {
+    width: 100%;
+    display: flex;
+    column-gap: 20px;
+}
+
+svg {
+
+    &.tiktok {
+        & path {
+            fill: @black-color;
+        }
+    }
+
+    &.whatsapp {
+        fill: #25D366;
+    }
+
+    &.instagram {
+        fill: #E4405F;
+    }
+
+    &.stroked {
+
+        & path, & circle, & rect, & line, & polyline, & polygon {
+            fill: none;
+            stroke: var(--hover-color);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1px;
+        }
+
+        &.error {
+            & path, & circle, & rect, & line, & polyline, & polygon {
+                stroke: red;
+            }
+        }
+
+        &.success {
+            & path, & circle, & rect, & line, & polyline, & polygon {
+                stroke: green;
+            }
+        }
+    }
+
+    &.filled {
+        fill: none;
+
+        & path, & circle, & rect, & line, & polyline, & polygon {
+            fill: var(--text-color);
+            stroke-width: 2px;
+        }
+
+        &.linkedin {
+            & path, & circle, & rect, & line, & polyline, & polygon {
+                fill: #0077B5;
+            }
+        }
+
+        &.facebook {
+            & path, & circle, & rect, & line, & polyline, & polygon {
+                fill: #1877F2;
+            }
+        }
+
+        &.twitter {
+            & path, & circle, & rect, & line, & polyline, & polygon {
+                fill: var(--text-color);
+            }
+        }
+
+
+        &.email {
+            & path, & circle, & rect, & line, & polyline, & polygon {
+                fill: #EF4444;
+            }
+        }
+    }
+}
+
+/*span.divider {
+    margin: 0 10px;
+    color: var(--border-color);*/
+    /*position: relative;*/
+
+    /*&:before {
+        content: "|";*/
+        /*position: absolute;*/
+    /*}
+}*/
+
+.no-image {
+    width: 250px;
+    height: 250px;
+    background-color: #FAFAFA;
+    position: relative;
+
+    &.small {
+        border-radius: 8px;
+    }
+
+    &.large {
+        border-radius: 8px;
+    }
+
+    & span{
+        position: absolute;
+        bottom: 10px;
+        text-align:center;
+        text-transform: uppercase;
+        font-size: smaller;
+    }
+
+    & svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+
+        & stroke,
+        & circle {
+            color: var(--text-color);
+        }
+    }
+}
+
+@keyframes ripple {
+    0% {
+        background-color: transparent;
+    }
+
+    30% {
+        background-color: var(--cell-color);
+    }
+
+    60% {
+        background-color: transparent;
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.skeleton {
+    background-color: var(--skeleton-background-color);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient( 90deg, transparent 0%, var(--skeleton-shimmer-color) 40%, var(--skeleton-shimmer-color) 60%, transparent 100% );
+        background-size: 200% 100%; /* wide enough for smooth sweep */
+        animation: shimmer 0.5s infinite ease-in-out;
+    }
+}
+
+h1.skeleton,
+h2.skeleton,
+h3.skeleton,
+h4.skeleton,
+h5.skeleton,
+h6.skeleton,
+p.skeleton {
+    height: 50px;
+    border: 0;
+    margin-bottom: 10px;
+}
+
+div.skeleton {
+    height: 200px;
+    margin-bottom: 10px;
+    border: 0;
+}
+
+form.skeleton{
+    height: 200px;
+}
+
+
+@keyframes shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+#scroll-sentinel {
+    height: 1px;
+}
+
+.end-of-file {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 0;
+    color: red;
+    font-size: 0.9rem;
+
+    & .error-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: red;
+        font-size: 0.9rem;
+
+        & p {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+
+.time-loader {
+    --c1: #673b14;
+    --c2: #f8b13b;
+    width: 25px;
+    height: 50px;
+    border-top: 4px solid var(--c1);
+    border-bottom: 4px solid var(--c1);
+    background: linear-gradient(90deg, var(--c1) 2px, var(--c2) 0 5px,var(--c1) 0) 50%/7px 8px no-repeat;
+    display: grid;
+    overflow: hidden;
+    animation: l5-0 2s infinite linear;
+}
+
+.time-loader::before,
+.time-loader::after {
+    content: "";
+    grid-area: 1/1;
+    width: 75%;
+    height: calc(50% - 4px);
+    margin: 0 auto;
+    border: 2px solid var(--c1);
+    border-top: 0;
+    box-sizing: content-box;
+    border-radius: 0 0 40% 40%;
+    //-webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat, linear-gradient(#000 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    background: linear-gradient(var(--d,0deg),var(--c2) 50%,#0000 0) bottom /100% 205%, linear-gradient(var(--c2) 0 0) center/0 100%;
+    background-repeat: no-repeat;
+    animation: inherit;
+    animation-name: l5-1;
+}
+
+.time-loader::after {
+    transform-origin: 50% calc(100% + 2px);
+    transform: scaleY(-1);
+    --s: 3px;
+    --d: 180deg;
+}
+
+@keyframes l5-0 {
+    80% {
+        transform: rotate(0)
+    }
+
+    100% {
+        transform: rotate(0.5turn)
+    }
+}
+
+@keyframes l5-1 {
+    10%,70% {
+        background-size: 100% 205%,var(--s,0) 100%
+    }
+
+    70%,100% {
+        background-position: top,center
+    }
+}
+
+.loader-container {
+    width: 100%;
+    height: auto;
+    min-height: calc(100lvh - 100px);
+    z-index: 998;
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
+    padding-top: 50px;
+}
+
+.loader {
+    width: 12px;
+    height: 12px;
+    margin: 0 auto;
+    border-radius: 100%;
+    background-color: yellow;
+    box-shadow: 12px 0 green, -12px 0 red;
+    position: relative;
+    animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+    0% {
+        background-color: yellow;
+        box-shadow: 12px 0 green, -12px 0 red;
+    }
+
+    50% {
+        background-color: red;
+        box-shadow: 12px 0 yellow, -12px 0 green;
+    }
+
+    100% {
+        background-color: green;
+        box-shadow: 12px 0 red, -12px 0 yellow;
+    }
+}
+
+.loader-large {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    background-color: yellow;
+    box-shadow: 24px 0 green, -24px 0 red;
+    position: relative;
+    animation: flash-large 0.5s ease-out infinite alternate;
+    margin: 30px auto;
+}
+@keyframes flash-large {
+    0% {
+        background-color: yellow;
+        box-shadow: 24px 0 green, -24px 0 red;
+    }
+
+    50% {
+        background-color: red;
+        box-shadow: 24px 0 yellow, -24px 0 green;
+    }
+
+    100% {
+        background-color: green;
+        box-shadow: 24px 0 red, -24px 0 yellow;
+    }
+}
+
+.loaded {
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background-color: yellow;
+    box-shadow: 24px 0 green, -24px 0 red;
+    position: relative;
+/*    display: none;
+
+    &.active {
+        display: block;
+    }*/
+}
+
+.page-title {
+    width: @mid-width;
+    font-weight: 600;
+    margin: 0 auto 1rem auto;
+    height: auto;
+
+    & h1 {
+        text-transform: uppercase;
+        font-size: 1.1rem;
+        line-height: 1.35rem;
+        margin-bottom: 5px;
+        display: flex;
+        width: auto;
+        column-gap: 1rem;
+        align-items: center;
+
+        & a,
+        & button {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+
+            &:hover {
+                color: @link-color;
+            }
+        }
+    }
+
+    & hr {
+        height: 3px;
+        background-color: @link-color;
+        border: none;
+        width: 50px;
+    }
+}
+
+/* --- 2. THE RECONNECT MODAL (System Lockdown) --- */
+#components-reconnect-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /*background: rgba(0, 0, 0, 0.8);*/
+    background-color: var(--modal-background-color);
+    /*backdrop-filter: blur(5px);*/
+    z-index: 20000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    padding: 2rem;
+
+    & button{
+        color: @link-color;
+        font-weight: 600;
+
+        &:hover{
+            color:@link-alt-color;
+        }
+    }
+
+  
+}
+
+/* Blazor auto-applies this class when connection is lost */
+#components-reconnect-modal.components-reconnect-show {
+    display: flex;
+}
+
+.modal-content-box {
+   /* background: #1a1a1a;*/
+    background-color: var(--background-color);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    max-width: @min-width;
+}
+
+/* Spinner for the modal */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hide sub-messages unless active */
+#components-reconnect-modal > div > div {
+    display: none;
+}
+
+#components-reconnect-modal.components-reconnect-show .state-reconnecting {
+    display: block;
+
+    & p.shared__loader {
+        margin-top: 0.5rem;
+    }
+}
+
+#components-reconnect-modal.components-reconnect-failed .state-failed {
+    display: block;
+}
+
+#components-reconnect-modal.components-reconnect-rejected .state-rejected {
+    display: block;
+}
