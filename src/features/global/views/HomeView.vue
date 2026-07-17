@@ -124,7 +124,7 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       title= 'No content!'
-      message='Sorry. We couldn't find any tale'>
+      message='Sorry. We could not find any tale'>
     </PageStatusMessage>
 
   </template>
@@ -152,7 +152,7 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       title= 'No content!'
-      message='Sorry. We couldn't find any insight'>
+      message='Sorry. We could not find any insight'>
     </PageStatusMessage>
 
   </template>
