@@ -93,7 +93,7 @@ onUnmounted(() => {
   <template v-else-if="loadingError">
 
     <PageStatusMessage 
-      :title="loadingError.title || '000: Error Occured!'" 
+      :title="loadingError.title || 'Error Occured!'" 
       :message="loadingError.detail || 'An unknown error loading homepage contents'">
     </PageStatusMessage>
     
@@ -124,7 +124,7 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       title= 'No content!'
-      message='Sorry. No tale has been published'>
+      message='Sorry. We couldn't find any tale'>
     </PageStatusMessage>
 
   </template>
@@ -152,7 +152,7 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       title= 'No content!'
-      message='Sorry. No insight has been published'>
+      message='Sorry. We couldn't find any insight'>
     </PageStatusMessage>
 
   </template>
