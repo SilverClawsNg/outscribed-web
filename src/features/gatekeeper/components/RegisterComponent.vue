@@ -30,7 +30,7 @@ const activeStep = ref(1)
 //const route = useRoute()
 
 
-// 🎯 Conditional layout environment prop flags
+// Conditional layout environment prop flags
 interface Props {
   isPage?: boolean
 }
@@ -86,7 +86,7 @@ async function onEmailSubmitted(email: string, captchaToken: string) {
     return
   } else {
 
-    // 🎯 CASE 2: The endpoint hit HTTP 200, but identity domain rules failed (e.g., wrong password)
+    // CASE 2: The endpoint hit HTTP 200, but identity domain rules failed (e.g., wrong password)
   if (!outcome.value || !outcome.value?.verificationId) {
 
       setError(new APIError(0, 'Server Error', 'An unknown server failure occurred. Refresh page and try again'))
@@ -157,11 +157,11 @@ async function onAccessCompleted(payload: { username: string; title: string; pas
   })
 
 
- // 🎯 2. Guard with an explicit check on outcome.isFailure
+ // 2. Guard with an explicit check on outcome.isFailure
   if (outcome.isFailure) {
   isFormLoading.value = false;
     
-    // 🛡️ THE FIX: Ensure outcome.error is not null before feeding it to setError
+    // THE FIX: Ensure outcome.error is not null before feeding it to setError
     if (outcome.error) {
       setError(outcome.error)
     } else {
