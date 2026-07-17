@@ -123,7 +123,7 @@ onUnmounted(() => {
     <template v-else>
 
     <PageStatusMessage 
-      title= '204: No content!'
+      title= 'No content!'
       message='Sorry. No tale has been published'>
     </PageStatusMessage>
 
@@ -151,7 +151,7 @@ onUnmounted(() => {
     <template v-else>
 
     <PageStatusMessage 
-      title= '204: No content!'
+      title= 'No content!'
       message='Sorry. No insight has been published'>
     </PageStatusMessage>
 
