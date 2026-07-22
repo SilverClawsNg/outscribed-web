@@ -67,7 +67,7 @@ async function loadFaqs(apiPathWithFilters: string): Promise<{ success: boolean;
 
     try {
 
-      const outcome = await postAsync('/api/insights/country', payload, true);
+      const outcome = await postAsync('/api/faqs/vote', payload, false);
 
       if (outcome.isFailure) return { success: false, error: outcome.error };
 

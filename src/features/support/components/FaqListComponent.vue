@@ -4,6 +4,7 @@ import { toLongDate } from '@/utils/dateExtensions'
 import type { FaqListDto, VoteRequest } from '../types/SupportTypes';
 import type { VoteType } from '@/utils/enumHelper';
 import { useFaqListStore } from '../stores/FaqListStore';
+import { sanitizeHtml } from '@/utils/markupHelper';
 
 // Declare compile-time parameter contract boundaries
 interface Props {
@@ -63,24 +64,29 @@ async function handleVote(type: VoteType) {
     </section>
 
     <section class="faq-lists__contents" :class="{ show: showAnswer }">
-      <div class="faq-lists__contents-answer" v-html="faq.answer"></div>
-      
+
+    <div class="shared__rich-text" v-html="sanitizeHtml(faq.answer)"></div>
+
       <p class="faq-lists__contents-date">
         This article was last updated at {{ toLongDate(faq.lastUpdatedAt) }}
       </p>
 
       <div class="faq-lists__contents-action">
+
         <template v-if="showVote">
+
           <p>Did you find this article helpful?</p>
           <div class="faq-lists__contents-action-buttons">
             <button class="btn primary" @click="handleVote('Upvote')">YES</button>
             <button class="btn secondary" @click="handleVote('Downvote')">NO</button>
           </div>
+
         </template>
-        
+
         <template v-else>
           <p :class="isErrorClass">{{ voteMessage }}</p>
         </template>
+
       </div>
     </section>
 
@@ -90,4 +96,5 @@ async function handleVote(type: VoteType) {
 
 <style lang="less" scoped>
 @import "@/assets/css/faq-lists.less";
+@import "@/assets/css/rich-text.less";
 </style>

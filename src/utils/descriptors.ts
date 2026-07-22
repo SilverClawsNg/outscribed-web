@@ -1,5 +1,5 @@
 import type { ContentType, ActivityType, Category, AccountStatus, ContactType, Country, TaleStatus, InsightStatus,
-SortType, GeneralSortType, VoteType, CommentStatus, LimitedContentType, FaqCategory, FlagType
+SortType, GeneralSortType, VoteType, CommentStatus, LimitedContentType, FlagType
  } from '@/utils/enumHelper'
 
   
@@ -7,17 +7,6 @@ SortType, GeneralSortType, VoteType, CommentStatus, LimitedContentType, FaqCateg
   Upvote: 'Upvote',
   Downvote: 'Downvote',
   None: 'None'
- 
-} as const;
-
-
-  export const FaqCategoryDescriptions: Record<FaqCategory, string> = {
-  General: 'General',
-  Account: 'Account',
-  Tale: 'Tale',
-  Insight: 'Insight',
-  Engagement: 'Engagement',
-  Moderation: 'Moderation'
  
 } as const;
 

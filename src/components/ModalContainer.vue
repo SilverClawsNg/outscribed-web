@@ -65,9 +65,9 @@ import FlagContentModal from '@/features/engagements/modals/FlagContentModal.vue
 
 import SearchModal from '@/features/global/modals/SearchModal.vue'
 
-import FaqListFilterModal from '@/features/support/modals/FaqListFilterModal.vue'
 import AskQuestionModal from '@/features/support/modals/AskQuestionModal.vue'
 import ProblemDefinitionModal from '@/features/support/modals/ProblemDefinitionModal.vue'
+import TaleDisclaimerModal from '@/features/tales/modals/TaleDisclaimerModal.vue'
 
 const modalStore = useModalStore()
 const isExpandModal = ref(false)
@@ -129,9 +129,9 @@ DraftCommentsFilter: DraftCommentsFilterModal,
 EngagementCommentsFilter: EngagementCommentsFilterModal,
 Search: SearchModal,
 FlagContent: FlagContentModal,
-FaqListFilter: FaqListFilterModal,
 AskQuestion: AskQuestionModal,
-ProblemDefinition: ProblemDefinitionModal
+ProblemDefinition: ProblemDefinitionModal,
+TaleDisclaimer: TaleDisclaimerModal
 }
 
 // Helper getter to deliver the raw payload directly without flattening

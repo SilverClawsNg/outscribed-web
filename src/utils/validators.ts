@@ -1,9 +1,9 @@
 import type{ Country, Category, SortType, ContentType, TaleStatus, ActivityType, GeneralSortType,
-  VoteType, InsightStatus, CommentStatus, FaqCategory, FlagType, LimitedContentType
+  VoteType, InsightStatus, CommentStatus, FlagType, LimitedContentType
  } from '@/utils/enumHelper'
 import { CountryDescriptions,  CategoryDescriptions, SortTypeDescriptions, ContentTypeDescriptions,
   TaleStatusDescriptions, ActivityTypeDescriptions, GeneralSortTypeDescriptions, VoteTypeDescriptions,
-  InsightStatusDescriptions, CommentStatusDescriptions, FaqCategoryDescriptions, FlagTypeDescriptions,
+  InsightStatusDescriptions, CommentStatusDescriptions, FlagTypeDescriptions,
   LimitedContentTypeDescriptions
  } from '@/utils/descriptors'
 
@@ -158,18 +158,6 @@ export function getValidVoteType(code: string | null | undefined): VoteType | nu
   return matchedKey || null
 }
 
-// 🌟 FIX: Find the correct PascalCase value case-insensitively
-export function getValidFaqCategory(code: string | null | undefined): FaqCategory | null {
-  if (!code || code === '-1') return null
-
-  const keys = Object.keys(FaqCategoryDescriptions) as FaqCategory[]
-  
-  // Look for the element where the lowercase strings align perfectly
-  const matchedKey = keys.find(key => key.toLowerCase() === code.toLowerCase())
-  
-  // Returns 'Account' (PascalCase) even if the browser sent 'account' (lowercase)
-  return matchedKey || null
-}
 
 // 🌟 FIX: Find the correct PascalCase value case-insensitively
 export function getValidFlagType(code: string | null | undefined): FlagType | null {

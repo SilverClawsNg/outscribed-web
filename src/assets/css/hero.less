@@ -11,7 +11,7 @@
 //border-top: 2px solid var(--secondary-button-border-color);
 //border-bottom: 2px solid var(--secondary-button-border-color);
     @media @smallDevice {
-        padding: 2rem 0;
+        padding-top: 2rem;
     }
 
     @media @largeDevice {
@@ -31,6 +31,7 @@
     @media @smallDevice {
         justify-content: center;
         width: @min-width;
+        flex-direction:column;
     }
 
     @media @largeDevice {
@@ -125,7 +126,8 @@
 .hero__image-container {
 
     @media @smallDevice {
-        display: none !important;
+        width: 100%;
+        margin-top: 1rem;
     }
 
     @media @largeDevice {
@@ -141,9 +143,19 @@
     height: 100%;
     width: 100%;
     line-height: 0;
+      @media @smallDevice {
+      display: flex;
+      justify-content: center;
+      align-items:end;
+    }
 
     & img {
         line-height: 0;
+
+         @media @smallDevice {
+        width: 100%;
+        max-width: 320px;
+    }
 
         @media @largeDevice {
             height: 100%;

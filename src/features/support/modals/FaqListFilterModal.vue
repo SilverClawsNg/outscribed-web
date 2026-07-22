@@ -2,7 +2,6 @@
 <script setup lang="ts">
 
 import { useRouter } from 'vue-router'
-import { useFaqListFilterStore } from '../stores/FaqListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
 import { FaqCategorySelectItems } from '@/utils/selectItemHelper'
 

@@ -406,14 +406,6 @@ export type CommentStatus =
   | 'ActiveToArchivedByCreator'
   | 'CertifiedToArchivedByCreator'
 
-export type FaqCategory = 
-  'General' 
-  | 'Account' 
-  | 'Tale'
-  | 'Insight' 
-  | 'Engagement'
-  | 'Moderation'
- 
 // 🎯 Content Type Semantics
 export type FlagType = 
   'Other' 

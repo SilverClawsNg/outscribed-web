@@ -129,7 +129,7 @@ function createComment() {
       </template>
 
       <!-- Renders safe HTML details -->
-      <section class="content-details__text" v-html="sanitizeHtml(tale.detail)"></section>
+      <section class="shared__rich-text" v-html="sanitizeHtml(tale.detail)"></section>
 
       <section v-if="tale.addendum && tale.addendumDate" class="content-details__addendum">
         <h4>Addendum - Last Updated {{ toShortDate(tale.addendumDate) }}</h4>
@@ -175,6 +175,13 @@ function createComment() {
         <span v-for="tag in tale.tags" :key="tag.tagId">
           #<router-link :to="`/tales?tag=${tag.tagId}`">{{ tag.name }}</router-link>
         </span>
+      </section>
+
+      <section class="content-disclaimer">
+        Disclaimer: OutScribed tales are informed speculative narratives. 
+         <button @click="modalStore.push('TaleDisclaimer', 'Disclaimer')">
+              [Read full disclaimer]
+            </button>
       </section>
 
       <section class="content-details__engagement-container">
@@ -384,4 +391,5 @@ function createComment() {
 
 <style lang="less" scoped>
 @import "@/assets/css/content-details.less";
+@import "@/assets/css/rich-text.less";
 </style>

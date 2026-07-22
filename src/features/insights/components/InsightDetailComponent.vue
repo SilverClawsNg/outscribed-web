@@ -128,7 +128,7 @@ function createComment() {
       </template>
 
       <!-- Renders safe HTML details -->
-      <section class="content-details__text rich" v-html="sanitizeHtml(insight.detail)"></section>
+      <section class="shared__rich-text" v-html="sanitizeHtml(insight.detail)"></section>
 
       <section v-if="insight.addendum && insight.addendumDate" class="content-details__addendum">
         <h4>Addendum - Last Updated {{ toShortDate(insight.addendumDate) }}</h4>
@@ -347,5 +347,5 @@ function createComment() {
 
 <style lang="less" scoped>
 @import "@/assets/css/content-details.less";
-
+@import "@/assets/css/rich-text.less";
 </style>
