@@ -1,9 +1,8 @@
-import type { FaqCategory, VoteType } from '@/utils/enumHelper'
+import type { VoteType } from '@/utils/enumHelper'
 
 export interface FaqListDto {
   faqId: string
   onboardedAt: string
-  category: FaqCategory
   question: string
   answer: string
   lastUpdatedAt: string
