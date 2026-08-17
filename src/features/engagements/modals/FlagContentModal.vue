@@ -23,7 +23,7 @@ const engageable = computed(() => props.payload as Engageable)
 // --- INITIALIZE FORM DATA FROM STORE ---
 const formData = ref<FlagRequest>({
    contentId: null,
-   content: null,
+   contentType: null,
    notes: '',
    type: null
 })
@@ -35,7 +35,7 @@ onBeforeMount(() => {
 
  // --- INITIALIZE FORM DATA FROM STORE ---
   formData.value.contentId = engageable.value.contentId
-  formData.value.content = engageable.value.contentType
+  formData.value.contentType = engageable.value.contentType
 
   resetProgress()
 

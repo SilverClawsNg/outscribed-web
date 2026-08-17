@@ -23,7 +23,7 @@ const props = defineProps<Props>()
    <article class="content-lists__card">
    
       <h1 class="content-lists__title alt">
-        <RouterLink :to="`/${source.content.toLowerCase}/${source.slug}`">{{ source.title }}</RouterLink>
+        <RouterLink :to="`/${source.contentType.toLowerCase}/${source.slug}`">{{ source.title }}</RouterLink>
       </h1>
 
       <div class="content-lists__metadata">

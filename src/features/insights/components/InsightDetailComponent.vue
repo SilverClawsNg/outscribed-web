@@ -208,6 +208,7 @@ function createComment() {
             :summary="insight.summary"
             :url="insight.slug"
             :content-id="insight.insightId"
+             :engageable="insight.engagement"
             content-type='Insight'
           />
           </div>
