@@ -10,6 +10,8 @@ import TaleDraftComponent from '../components/TaleDraftComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
+import { useLoginHint } from '@/utils/authHelper'
+import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore();
@@ -17,6 +19,9 @@ const taleFilterStore = useTaleDraftFilterStore();
 const router = useRouter()
 const route = useRoute()
 const modalStore = useModalStore()
+const isInitializing = ref(true)
+const isLoggedIn = useLoginHint()
+const authStore = useAuthStore()
 
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
@@ -68,16 +73,7 @@ async function initPage() {
   const { success, error } = await taleStore.loadTales(cleanApiPath)
 
   if (!success) {
-    if (error) {
-    loadingError.value = error
-  }
-  else{
-    loadingError.value = new APIError(
-        500,
-        'Unknown Error!',
-        'Unknown error occured while retrieving drafts. Refresh page and try again.'
-      );
-  }
+       loadingError.value = error ?? new APIError(500, 'Unknown Error!', 'Unknown error occured while retrieving drafts. Refresh page and try again.')
   }
 
   // No matter the result, stop loading
@@ -86,11 +82,30 @@ async function initPage() {
 
 // --- MOUNT PAGE ---
 onMounted(async () => {
+  
+  //start with initializing set to true so page starts on loading
+
+  if(!isLoggedIn.value){ //if there is no hint, show login form
+    isInitializing.value = false 
+  }
+  else{
+
+      // 1. Force the store to finish its network/hint verification routine completely
+      var result = await authStore.verifyAuthoring()
+
+      if(result){
+      // 2. Hand control over to the store's computed workflow state
+      isInitializing.value = false
+      }
+  
+  }
+
   await initPage();
 })
 
 // Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
 watch(() => route.query, () => {
+  loadingError.value = null
   initPage();
 }, { deep: true });
 
@@ -104,7 +119,37 @@ onUnmounted(() => {
 
 <template>
 
-  <template v-if="isLoading">
+  <template v-if=isInitializing>
+      <p class="shared__loader"></p>
+  </template>
+
+  
+  <template v-else-if="!isLoggedIn || !authStore.hasAccessToken">
+
+      <PageStatusMessage 
+        title="401: Unauthorized!" 
+        message="It appears you are not logged in or have been logged out. Login or register to continue."
+      >
+        <template #actions>
+          <button class="btn primary" @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
+        </template>
+
+      </PageStatusMessage>
+
+    </template>
+
+     <template v-else-if="authStore.writerStatus === 'None'">
+      <PageStatusMessage 
+        title="401: Unauthorized!" 
+        message="Your account is not currently authorized to publish tales. Upgrade now. It is free and easy."
+      >
+        <template #actions>
+          <button class="btn primary" @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
+        </template>
+      </PageStatusMessage>
+    </template>
+   
+  <template v-else-if="isLoading">
 
     <div class="loader-container">
       <p class="loader"></p>

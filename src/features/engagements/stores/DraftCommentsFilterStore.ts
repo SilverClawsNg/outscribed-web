@@ -27,9 +27,9 @@ const contenttype = ref<string | null>(null)
   }
 
   function reset() {
-    sort.value = null
-    status.value = null
-    contenttype.value = null
+    sort.value = '-1'
+    status.value = '-1'
+    contenttype.value = '-1'
 
     keyword.value = null;
     pointer.value = '1';
@@ -48,9 +48,9 @@ console.log('Contains query parameters');
 
 if(queryParameters.status){
      // 🎯 Parse & Validate Sort
-    const validatedCStatus = getValidCommentStatus(queryParameters.status)
-    status.value = validatedCStatus || null
-      if(!validatedCStatus) wasClean = false
+    const validatedStatus = getValidCommentStatus(queryParameters.status)
+    status.value = validatedStatus || null
+      if(!validatedStatus) wasClean = false
 
 }
 
@@ -132,7 +132,7 @@ function getAsDictionary(): Record<string, string> {
     if (status.value && status.value !== '-1') 
       urlParams.append('status', status.value);
 
-    if (contenttype.value && sort.value !== '-1') 
+    if (contenttype.value && contenttype.value !== '-1') 
       urlParams.append('contenttype', contenttype.value);
 
     if (keyword.value && keyword.value.trim() !== '') 

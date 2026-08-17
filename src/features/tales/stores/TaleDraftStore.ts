@@ -8,7 +8,7 @@ import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
 
 import type { 
   TaleDraftListDto, GetTaleDraftListResponse, CreateRequest, UpdateRequest, CreateResponse,
-  UpdateCountryRequest, UpdateSummaryRequest, UpdateDetailRequest, UpdateWatchlistRequest, 
+  UpdateCountryRequest, UpdateSummaryRequest, UpdateDetailRequest, UpdateRealityCheckRequest, 
   UpdatePhotoRequest, TagRequest, UntagRequest, ConfirmRequest, UpdateAddendumRequest
 } from '../types/TalesTypes.ts';
 
@@ -86,14 +86,26 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       if (targetIndex !== -1) {
         const serverItem = processedItems[targetIndex];
         if (serverItem) {
-          if (new Date(ghost.lastUpdatedAt) >= new Date(serverItem.lastUpdatedAt)) {
-            processedItems[targetIndex] = ghost;
-          } else {
-            localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${ghost.taleId}`);
+
+         // Convert ANY valid ISO string (whether +00:00 or Z) into pure UTC epoch milliseconds:
+          const ghostMs = Date.parse(ghost.lastUpdatedAt); 
+          const serverMs = Date.parse(serverItem.lastUpdatedAt);
+
+          // Date.parse() returns NaN if invalid, otherwise pure UTC milliseconds
+          if (!isNaN(ghostMs) && !isNaN(serverMs)) {
+            if (ghostMs > (serverMs + 2000)) {
+              // Keep ghost
+              processedItems[targetIndex] = ghost;
+            } else {
+              // Delete ghost
+               localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${ghost.taleId}`);
+            }
           }
+
         }
       }
     }
+    console.groupEnd();
     return processedItems;
   }
 
@@ -119,8 +131,12 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
   // --- Store Actions ---
 
   async function loadTales(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+    
     try {
+
       feedController = new AbortController();
+
+      // 1. Read stored anchor for initial fetch (if available)
       const outcome = await getAsync<GetTaleDraftListResponse>(apiPathWithFilters, true, {} as GetTaleDraftListResponse, feedController.signal);
       
       if (outcome.isFailure) {
@@ -133,9 +149,18 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         hasNext.value = outcome.value.hasNext;
         pointer.value = outcome.value.pointer;
         anchor.value = outcome.value.anchor;
+
+         if (outcome.value.anchor) {
+          localStorage.setItem('tale:anchor:drafts', outcome.value.anchor);
+        }
+       
       } else {
         tales.value = [];
+        // Still persist the anchor returned by server (even if bucket is empty)
       }
+
+      // ALWAYS persist the anchor if the server returned one
+   
 
       await reconcileNewDrafts();
       return { success: true, error: null };
@@ -221,10 +246,10 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         hasEngagement: false,
         country: null,
         tags: [],
-        watchlistTitle: null,
-        watchlistSummary: null,
-        watchlistSource: null,
-        watchlistUrl: null
+        realityCheckTitle: null,
+        realityCheckSummary: null,
+        realityCheckSource: null,
+        realityCheckUrl: null
       };
       
       tales.value.unshift(newTaleDraft);
@@ -260,6 +285,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -282,6 +308,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -305,6 +332,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -327,6 +355,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
       activeTale.value = null;
       return { success: true, error: null };
@@ -354,6 +383,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -363,22 +393,23 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     }
   }
 
-  async function updateTaleWatchlist(payload: UpdateWatchlistRequest) {
+  async function updateTaleRealityCheck(payload: UpdateRealityCheckRequest) {
     try {
-      const outcome = await postAsync('/api/tales/watchlist', payload, true);
+      const outcome = await postAsync('/api/tales/realitycheck', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
-          tale.watchlistTitle = payload.title;
-          tale.watchlistSummary = payload.summary;
-          tale.watchlistUrl = payload.sourceUrl;
-          tale.watchlistSource = payload.source;
+          tale.realityCheckTitle = payload.title;
+          tale.realityCheckSummary = payload.summary;
+          tale.realityCheckUrl = payload.sourceUrl;
+          tale.realityCheckSource = payload.source;
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -407,6 +438,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       return { success: true, error: null };
@@ -428,6 +460,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       return { success: true, error: null };
@@ -457,6 +490,22 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
   async function launchTale(payload: ConfirmRequest) {
     try {
+
+ if(activeTale.value?.title == null 
+        || activeTale.value?.category == null
+        || activeTale.value?.detail == null
+      || activeTale.value?.summary == null
+    || activeTale.value?.photo == null
+  || activeTale.value?.photoCaption == null
+|| activeTale.value?.realityCheckSource == null
+|| activeTale.value?.realityCheckSummary == null
+|| activeTale.value?.realityCheckTitle == null
+|| activeTale.value?.realityCheckUrl == null){
+
+          return { success: false, error: new APIError(400, 'Bad Request', 'Tale cannot be pubished without a title, category, details, summary, photo, or reality check') };
+
+      }
+
       const outcome = await postAsync('/api/tales/launch', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
@@ -468,6 +517,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -494,6 +544,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -520,6 +571,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
 
       activeTale.value = null;
@@ -542,6 +594,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        localStorage.removeItem('tale:anchor:drafts');
       }
       activeTale.value = null;
       return { success: true, error: null };
@@ -576,6 +629,6 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleCountry, updateTaleBasic, 
     deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTaleSummary, updateTalePhoto,
-    clearActiveTale, updateTaleAddendum, updateTaleWatchlist, cleanLocalDraft, resetState, abort
+    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, resetState, abort
   };
 });

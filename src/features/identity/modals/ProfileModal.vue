@@ -101,13 +101,16 @@ onUnmounted(() => {
 
              <div class="profile-details__metadata">
             Joined {{ toShortDate(profileStore.profile.registeredAt) }}
-            <template v-if="profileStore.profile.country">
-                <span class="divider circle"></span>
-                {{ CountryDescriptions[profileStore.profile.country] }}
-            </template>
+          
             <span class="divider circle"></span>
             {{ formatCounts(profileStore.profile.viewsCount) }} Views
             </div>
+
+             <template v-if="profileStore.profile.country">
+              <p class="profile-details__country">
+              <i>OutScribing from </i>{{ CountryDescriptions[profileStore.profile.country] }}
+              </p>
+            </template>
 
              <figure class="profile-details__image">
               <div class="profile-details__image-wrapper">
@@ -247,7 +250,7 @@ onUnmounted(() => {
 
     <template v-else>
      <PageStatusMessage
-         title='000: Error'
+         title='Unknown Error'
         message="An unknown error occured loading profileStore.profile. Refresh page and try again.">
       </PageStatusMessage>
     </template>

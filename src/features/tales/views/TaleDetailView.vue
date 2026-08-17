@@ -192,7 +192,7 @@ onUnmounted(() => {
 
     <template v-else>
      <PageStatusMessage
-         title='000: Error'
+         title='Unknown Error'
         message="An unknown error occured. Refresh page and try again.">
       </PageStatusMessage>
     </template>

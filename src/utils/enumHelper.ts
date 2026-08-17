@@ -14,7 +14,15 @@ export type ContentType =
   | 'Comment'
   | 'Authoring'
   | 'Role'
-  
+  | 'Engagement'
+
+  export type PrivateList = 
+  'saves' 
+  | 'flags' 
+  | 'shares' 
+  | 'votes' 
+  | 'upvotes'
+
 // 🎯 Content Type Semantics
 export type LimitedContentType = 
   'Tale' 
@@ -39,6 +47,9 @@ export type LimitedContentType =
    | 'AccountModerated_Account'
    | 'ModerationApplied_Account'
    | 'AccountMilestoned_Account'
+   | 'AccountSelfArchived_Account'
+   | 'AccountSelfUnarchived_Account'
+   | 'AccountSuspensionAppealed_Account'
 
   // Role
    | 'RoleAssigned_Role'
@@ -62,7 +73,7 @@ export type LimitedContentType =
    | 'TaleSummaryUpdated_Tale'
    | 'TaleDetailUpdated_Tale'
    | 'TaleCountryUpdated_Tale'
-   | 'TaleWatchlistUpdated_Tale'
+   | 'TaleRealityCheckUpdated_Tale'
    | 'TalePhotoUpdated_Tale'
    | 'TaleSuspended_Tale'
    | 'TaleModerated_Tale'
@@ -73,6 +84,7 @@ export type LimitedContentType =
    | 'TaleUntagged_Tale'
    | 'TaleCertified_Tale'
    | 'TaleMilestoned_Tale'
+   | 'TaleUpdated_Tale'
 
   // Insight
    | 'InsightCreated_Insight'
@@ -94,11 +106,12 @@ export type LimitedContentType =
    | 'InsightSuspended_Insight'
    | 'InsightModerated_Insight'
    | 'InsightMilestoned_Insight'
+   | 'InsightHasEngagement_Insight'
+   | 'InsightUpdated_Insight'
 
   // Comment
    | 'Commented_Comment'
    | 'Replied_Comment'
-   | 'CommentReplied_Comment'
    | 'CommentSelfDeleted_Comment'
    | 'CommentSelfArchived_Comment'
    | 'CommentSuspended_Comment'
@@ -107,13 +120,11 @@ export type LimitedContentType =
    | 'CommentCertified_Comment'
    | 'CommentAddendumUpdated_Comment'
    | 'CommentUpdated_Comment'
-   | 'ReplySelfDeleted_Comment'
    | 'CommentMilestoned_Comment'
+   | 'CommentHasEngagement_Comment'
 
   // Engagement
    | 'ContentSavedToFavorites_Engagement'
-   | 'ContentRemovedFromFavorites_Engagement'
-   | 'ContentRestoredToFavorites_Engagement'
    | 'ContentFlagged_Engagement'
    | 'ContentShared_Engagement'
    | 'ContentUpvoted_Engagement'
@@ -121,19 +132,21 @@ export type LimitedContentType =
 
 // 1. Core domain enumeration 
 export type Category =
-  'PoliticsGovernance'
-  | 'Sports'
-  | 'FashionEntertainment'
-  | 'Education'
+ 'Tributuary'
+  | 'PoliticsGovernance'
+  | 'SportsGaming'
   | 'ScienceTechnology'
+  | 'Education'
   | 'BusinessEconomy'
+  | 'ArtsEntertainment'
   | 'MedicineHealthcare'
   | 'LawOrder'
-  | 'HumanInterestLifestyle'
+  | 'SocietalNormsValues'
   | 'HistoryCulture'
-  | 'TheEnvironment'
+  | 'EnvironmentClimate'
+  | 'ReligionSpirituality'
+  | 'FamilyRelationships'
   | 'Miscellaneous'
-
 
 // 🎯 Content Type Semantics
 export type AccountStatus = 
@@ -141,6 +154,7 @@ export type AccountStatus =
   | 'HiddenByModeration' 
   | 'SuspendedByAdmin' 
   | 'BannedByAdmin'
+  | 'SelfArchived'
 
 // 🎯 Content Type Semantics
 export type ContactType = 
@@ -148,6 +162,7 @@ export type ContactType =
   | 'Facebook' 
   | 'Twitter' 
   | 'LinkedIn'
+  | 'CopyLink'
 
 // src/enums/Country.ts
 

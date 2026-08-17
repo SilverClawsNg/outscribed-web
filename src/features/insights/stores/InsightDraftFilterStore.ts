@@ -72,7 +72,7 @@ const status = ref<string | null>(null)
     status.value = validatedStatus || null
       if(!validatedStatus) wasClean = false
     }
-   
+
     if(queryParameters.keyword){
     // Parse Keyword
     keyword.value = parseValue(queryParameters.keyword)
@@ -133,23 +133,26 @@ function getAsDictionary(): Record<string, string> {
     if (sort.value && sort.value !== '-1') 
       urlParams.append('sort', sort.value);
 
-    if (country.value && sort.value !== '-1') 
+    if (country.value && country.value !== '-1') 
       urlParams.append('country', country.value);
 
-    if (category.value && sort.value !== '-1') 
+    if (category.value && category.value !== '-1') 
       urlParams.append('category', category.value);
 
-    if (status.value && sort.value !== '-1') 
+    if (status.value && status.value !== '-1') 
       urlParams.append('status', status.value);
-
+    
     if (keyword.value && keyword.value.trim() !== '') 
       urlParams.append('keyword', keyword.value);
 
     const currentPointer = overridePointer ? String(overridePointer) : String(pointer.value);
       urlParams.append('pointer', currentPointer);
+    
+   // Fall back to localStorage if no explicit anchor is passed in
+  const resolvedAnchor = anchor ?? localStorage.getItem('insight:anchor:drafts');
+  if (resolvedAnchor) 
+    urlParams.append('anchor', resolvedAnchor);
 
-    if (anchor) 
-      urlParams.append('anchor', anchor);
 
     const queryString = urlParams.toString();
     return queryString ? `${baseRoute}?${queryString}` : baseRoute;

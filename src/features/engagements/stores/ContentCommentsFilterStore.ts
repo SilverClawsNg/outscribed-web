@@ -14,7 +14,7 @@ const username = ref<string | null>(null);
   const pointer = ref<string | null>('1');
 
   function reset() {
-    sort.value = null
+    sort.value = '-1'
 
     keyword.value = null;
     username.value = null;

@@ -106,13 +106,13 @@ export function getEngagementMetadata(item: Engageable) {
 
 export interface VoteRequest {
   contentId: string;
-  content: ContentType;
+  contentType: ContentType
   type: VoteType
 }
 
 export interface FavoriteRequest {
   contentId: string;
-  content: ContentType;
+  contentType: ContentType
 }
 
 export interface EngagementResponse {
@@ -124,6 +124,7 @@ export interface EngagementResponse {
   favoritesCount: number;
   flagsCount: number;
   sharesCount: number;
+  viewsCount:number;
 }
 
 export interface GetFavoriteIdsResponse {
@@ -149,6 +150,7 @@ export interface CommentPageListDto {
   commentatorUsername: string;
    contentId: string;
   contentType: ContentType;
+  isVisible: boolean;
    engagement: Engageable;
 }
 
@@ -185,7 +187,7 @@ export interface CommentListDto {
   pinnedReply: CommentListDto | null;
   ancestors: CommentListDto[];
   hasReplied: boolean | false
-
+hasLoadedReplies: boolean;
 }
 
 export interface GetContentCommentsResponse {
@@ -228,11 +230,12 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
     pinnedReply: rawComment.pinnedReply ?? null,
     ancestors: rawComment.ancestors ?? null,
     title: rawComment.title ?? null,
-    hasReplied: rawComment.hasReplied ?? null,
+    hasReplied: false,
+    hasLoadedReplies: false,
     // 🛡️ Guarantee the nested engagement layer exists
     engagement: {
-     contentId: rawComment.commentId || '',
-      contentType: 'Comment',
+    contentId: rawComment.commentId || '',
+    contentType: 'Comment',
       
       
       // 📊 Phase 1 Defaults (Overwritten during lazy-loaded metrics sync)
@@ -258,6 +261,7 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
     }
   };
 }
+
 export function initializeCommentPageListEngagement(rawComment: any, isNew = false): CommentPageListDto {
   
   return {
@@ -269,6 +273,7 @@ export function initializeCommentPageListEngagement(rawComment: any, isNew = fal
     commentatorUsername: rawComment.commentatorUsername ?? null,
      contentId: rawComment.contentId,
     contentType: rawComment.contentType ?? 'Comment',
+    isVisible: rawComment.isVisible ?? true,
     // 🛡️ Guarantee the nested engagement layer exists
     engagement: {
     contentId: rawComment.commentId || '',
@@ -308,30 +313,29 @@ export interface ActiveContentContext {
   pinnedComment: CommentListDto | null;
 }
 
-
 export interface CreateCommentRequest {
     contentid: string;
-    content: ContentType; 
+    contentType: ContentType; 
     detail: string;
 }
 
 export interface ReplyCommentRequest {
     contentid: string;
-    content: ContentType; 
+    contentType: ContentType; 
     detail: string;
     parentId: string;
 }
 
 export interface UpdateCommentRequest {
     contentid: string;
-    content: ContentType; 
+    contentType: ContentType; 
     detail: string;
     commentId: string;
 }
 
 export interface UpdateAddendumRequest {
  contentid: string;
-    content: ContentType; 
+    contentType: ContentType; 
     addendum: string | null;
     commentId: string;
 }
@@ -355,7 +359,7 @@ export interface SourceContentDto {
   creatorId: string;
   creatorUsername: string;
   date: string;
-  content: ContentType;
+  contentType: ContentType
   summary: string;
 }
 
@@ -413,7 +417,7 @@ export interface ConfirmRequest {
 
 export interface FlagRequest {
   contentId: string | null;
-  content: ContentType | null;
+  contentType: ContentType | null;
   type: FlagType | null;
   notes: string | '';
 }

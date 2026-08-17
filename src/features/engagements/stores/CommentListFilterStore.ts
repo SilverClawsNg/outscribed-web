@@ -3,17 +3,30 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { 
-   getValidContentType, getValidSortType, 
+   getValidContentType, getValidSortType, getValidVoteType
 } from '@/utils/validators'; 
+import { getStoredAnchor, type TypeLabel } from '@/utils/anchorStorage';
 
 export const useCommentListFilterStore = defineStore('commentListFilter', () => {
+
+    const activeTypeLabel = ref<TypeLabel>('comment');
+    const activeType = ref<string | null>(null);
+  
+    // Set current list contextual types
+    function setActiveType(typeLabel: TypeLabel, type: string | null) {
+      activeTypeLabel.value = typeLabel;
+      activeType.value = type;
+    }
   
 // State
 const username = ref<string | null>(null)
 const contenttype = ref<string | null>(null)
+const votetype = ref<string | null>(null)
+
 const keyword = ref<string | null>(null);
 const sort = ref<string | null>(null)
 const pointer = ref<string | null>('1');
+const isactive = ref<string | null>(null);
 
    // --- 3. HELPER UTILITIES ---
   // Pure parsing helper: returns null if missing, empty, or placeholder
@@ -27,7 +40,9 @@ const pointer = ref<string | null>('1');
   function reset() {
     sort.value = '-1'
     username.value = ''
+    isactive.value=''
     contenttype.value = '-1'
+    votetype.value = '-1'
 
     keyword.value = '';
     pointer.value = '1';
@@ -55,10 +70,24 @@ if(queryParameters.username){
   username.value = parseValue(queryParameters.username)
 }
 
+if(queryParameters.isactive){
+   // 🎯 Parse & Validate Activity
+  isactive.value = parseValue(queryParameters.isactive)
+}
+
 if(queryParameters.keyword){
    // 🎯 Parse & Validate Activity
   keyword.value = parseValue(queryParameters.keyword)
 }
+
+
+if(queryParameters.votetype){
+   // 🎯 Parse & Validate Activity
+    const validatedVote = getValidVoteType(queryParameters.votetype)
+    votetype.value = validatedVote || null
+    if(!validatedVote) wasClean = false
+}
+
 
 if(queryParameters.sort){
  // 🎯 Parse & Validate Sort
@@ -79,6 +108,8 @@ function getAsDictionary(): Record<string, string> {
   const rawValues: Record<string, any> = {
       username: username.value,
       contenttype: contenttype.value,
+      votetype: votetype.value,
+      isactive: isactive.value,
       keyword: keyword.value,
       sort: sort.value,
       pointer: '1'
@@ -115,17 +146,23 @@ function getAsDictionary(): Record<string, string> {
 }
 
   // 3. Build API url string
-  function buildApiPath(baseRoute: string, overridePointer?: string | null, anchor?: string | null): string {
+  function buildApiPath(baseRoute: string, overridePointer?: string | null, overrideAnchor?: string | null): string {
     const urlParams = new URLSearchParams();
 
     if (sort.value && sort.value !== '-1') 
       urlParams.append('sort', sort.value);
 
-    if (contenttype.value && sort.value !== '-1') 
+    if (contenttype.value && contenttype.value !== '-1') 
       urlParams.append('contenttype', contenttype.value);
 
     if (username.value && username.value.trim() !== '') 
       urlParams.append('username', username.value);
+
+    if (votetype.value && votetype.value !== '-1') 
+      urlParams.append('votetype', votetype.value);
+
+      if (isactive.value && isactive.value.trim() !== '') 
+      urlParams.append('isactive', isactive.value);
 
     if (keyword.value && keyword.value.trim() !== '') 
       urlParams.append('keyword', keyword.value);
@@ -133,15 +170,27 @@ function getAsDictionary(): Record<string, string> {
     const currentPointer = overridePointer ? String(overridePointer) : String(pointer.value);
       urlParams.append('pointer', currentPointer);
 
-        if (anchor) 
-      urlParams.append('anchor', anchor);
+    let resolvedAnchor: string | null = null;
 
+  if (overrideAnchor) {
+    // Explicit override passed (e.g., fetching Page 2+ for ANY feed: public or private)
+    resolvedAnchor = overrideAnchor;
+  } else if (activeType.value) {
+    // Initial load (Page 1) for a PRIVATE list: pull from localStorage fallback
+    const storageKey = `${activeTypeLabel.value}:anchor:${activeType.value}`;
+    resolvedAnchor = localStorage.getItem(storageKey);
+  }
+  // Note: Initial load (Page 1) for PUBLIC lists (activeType === null) will remain null.
+
+  if (resolvedAnchor) {
+    urlParams.append('anchor', resolvedAnchor);
+  }
     const queryString = urlParams.toString();
     return queryString ? `${baseRoute}?${queryString}` : baseRoute;
   }
 
   return {
-    sort, username, contenttype, keyword, pointer,
-    reset, rehydrate, getAsDictionary, buildApiPath
+    sort, username, contenttype, keyword, pointer, activeType, activeTypeLabel, isactive, votetype,
+    reset, rehydrate, getAsDictionary, buildApiPath, setActiveType
   };
 });

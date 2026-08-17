@@ -119,7 +119,7 @@ onBeforeMount(() => {
       </figure>
         </template>
          <template v-else>
-                                 <p class="no-content">Your central image goes here!</p>
+            <p class="no-content">Your central image goes here!</p>
 
         </template>
 
@@ -128,7 +128,7 @@ onBeforeMount(() => {
           — {{ calculateReadingTime(taleStore.activeTale!.detail) }} Minutes Read
         </section>
 
-        <section class="content-details__text" v-html="taleStore.activeTale!.detail"></section>
+        <section class="shared__rich-text" v-html="taleStore.activeTale!.detail"></section>
         </template>
          <template v-else>
              <section class="content-details__reading-time">
@@ -151,29 +151,28 @@ onBeforeMount(() => {
         </ol>
       </section>
         </template>
-       
 
-       <template v-if="taleStore.activeTale!.watchlistTitle">
-   <section class="content-details__watchlist">
+       <template v-if="taleStore.activeTale!.realityCheckTitle">
+   <section class="content-details__realitycheck">
        
-        <h2 class="content-details__watchlist-source">
-         / fact check / {{ taleStore.activeTale!.watchlistSource }}
+        <h2 class="content-details__realitycheck-source">
+         / reality check / {{ taleStore.activeTale!.realityCheckSource }}
         </h2>
-  <h3 class="content-details__watchlist-title">
-          {{ taleStore.activeTale!.watchlistTitle }}
+  <h3 class="content-details__realitycheck-title">
+          {{ taleStore.activeTale!.realityCheckTitle }}
         </h3>
-        <div class="content-details__watchlist-summary">
-          {{ taleStore.activeTale!.watchlistSummary }}
+        <div class="content-details__realitycheck-summary">
+          {{ taleStore.activeTale!.realityCheckSummary }}
           <button @click="showExternalLink = !showExternalLink">...Continue Reading</button>
           
           <div v-if="showExternalLink" class="shared__popover">
             <div class="shared__popover-arrow"></div>
-            <p class="shared__popover-text">You would be redirected to {{ taleStore.activeTale!.watchlistUrl }}</p>
+            <p class="shared__popover-text">You would be redirected to {{ taleStore.activeTale!.realityCheckUrl }}</p>
             <div class="shared__popover-actions">
               <a 
-                :href="taleStore.activeTale!.watchlistUrl ?? '#'" 
+                :href="taleStore.activeTale!.realityCheckUrl ?? '#'" 
                 target="_blank" 
-                class="content-details__watchlist-action"
+                class="content-details__realitycheck-action"
                 @click="showExternalLink = false">
                 Yes
               </a>
@@ -184,9 +183,9 @@ onBeforeMount(() => {
       </section>
         </template>
          <template v-else>
-               <section class="content-details__watchlist">
+     <section class="content-details__realitycheck">
        
-      <p class="no-content">Your watchlist goes here!</p>
+      <p class="no-content">Your reality check goes here!</p>
 
       </section>
         </template>
@@ -216,4 +215,5 @@ onBeforeMount(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/content-details.less";
+@import "@/assets/css/rich-text.less";
 </style>

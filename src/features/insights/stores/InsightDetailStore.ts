@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import {type CommentPageListDto } from '@/features/engagements/types/EngagementTypes.ts'
-import { type InsightLatestListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
 import {initializeAccountEngagement } from '@/features/identity/types/IdentityTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
@@ -16,7 +15,6 @@ export const useInsightDetailStore = defineStore('insightDetail', () => {
   
   // State
     const insight = ref<InsightDetailDto | null>(null);
-    const latestInsights = ref<InsightLatestListDto[]>([]);
     const latestComments = ref<CommentPageListDto[]>([]);
 
     const isLoggedIn = useLoginHint()
@@ -310,7 +308,6 @@ async function recordView() {
 
   function reset() {
     insight.value = null
-    latestInsights.value = []
     latestComments.value = []
     abort()
   }
@@ -339,7 +336,7 @@ async function recordView() {
   }
 
   return {
-    insight, hasLoadedEnrichment, latestInsights, latestComments, loadInsight, loadArchivedInsight, enrichInsight, recordView, reset, abort
+    insight, hasLoadedEnrichment, latestComments, loadInsight, loadArchivedInsight, enrichInsight, recordView, reset, abort
   };
 
 });

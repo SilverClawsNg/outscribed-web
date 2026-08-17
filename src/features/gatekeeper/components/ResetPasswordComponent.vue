@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import TurnstileWidget from '@/components/TurnstileWidget.vue'
-import { useFormProgress } from '@/composables/useFormProgress'
 
 const props = defineProps<{ isLoading: boolean; }>()
-const emit = defineEmits<{ (e: 'submit', password: string, confirm: boolean): void }>()
+const emit = defineEmits<{ 
+  (e: 'submit', password: string, confirm: boolean): void
+  (e: 'warning', message: string): void
+  (e: 'clear-warning'): void }>()
 
 const password = ref('')
 const confirm = ref<boolean>(false)
 const passwordVisible = ref(false)
-
-const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
@@ -46,10 +45,10 @@ watch(
     if (!submitted) return
 
     if (!isValid) {
-      setWarning('Ensure all fields are filled out correctly before submission.')
+      emit('warning', 'Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      emit('clear-warning')
     }
   }, 
   { immediate: true }
@@ -71,7 +70,7 @@ function handleSubmit() {
 <template>
   <form @submit.prevent="handleSubmit">
 
-    <fieldset class="password-box" :disabled="progressState.type === 'Loading'">
+    <fieldset class="password-box" :disabled="isLoading">
       <button 
         type="button" 
         class="show-password" 
@@ -91,7 +90,7 @@ function handleSubmit() {
     {{ validationErrors.password }}
   </span>
 
-  <fieldset :disabled="progressState.type === 'Loading'">
+  <fieldset :disabled="isLoading">
 
     <div class="ticks">
        <input v-model="confirm" type="checkbox" id="Confirm" />

@@ -76,7 +76,7 @@ function replyComment() {
 }
 
 function returnAncestor() {
-  modalStore.push('CommentReplies', 'Replies', props.comment)
+  modalStore.popAncestors(props.comment.commentId)
 }
 
 </script>
@@ -121,26 +121,34 @@ function returnAncestor() {
   <span class="divider circle"></span>
   
   <!-- If it's an ancestor, it acts as a smooth rewind trigger -->
+   
+      <template  v-if="isAncestor" >
+        
   <button 
-    v-if="isAncestor" 
     class="reply-trigger ancestor-rewind" 
     @click="returnAncestor"
   >
-    Return to Thread
+    Thread
   </button>
 
+        </template>
+
   <!-- Default behavior: open fresh replies deeper down the stack -->
+   
+      <template  v-else>
+        
   <button 
-    v-else 
     :disabled="uiMeta.isRepliesDisabled" 
     @click="viewReplies"
   >
     {{ formatCounts(comment.engagement?.commentsCount) }} Replies
   </button>
+  
+        </template>
+
 </template>
 
     </div>
-
   
   </section>
 
@@ -166,9 +174,14 @@ function returnAncestor() {
         <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>
       </button>
 
+      <template  v-if="!isAncestor">
+        
       <button @click="replyComment">
          <SvgIcons name='reply' /> <span>Reply</span>
       </button>
+
+      </template>
+
     </section>
    
     <section class="comments-list__other-actions">

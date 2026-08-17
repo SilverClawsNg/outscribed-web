@@ -81,27 +81,6 @@ function createComment() {
     </dl>
 
     <dl>
-      <dt>Insights</dt>
-      <dd>
-        {{ formatCounts(insight.engagement.insightsCount) }}
-        <router-link 
-          v-if="insight.engagement.insightsCount > 0" 
-          :to="`/insights?insightId=${insight.insightId}`" 
-          title="View Insights"
-        >
-          View Insights
-        </router-link>
-        <a v-else href="#" title="Insights" class="disabled" @click.prevent>
-          View Insights
-        </a>
-        <span class="divider line"></span>
-        <button title="Create Insight" @click="modalStore.push('CreateInsight', 'Create Insight', payload)">
-          New Insight
-        </button>
-      </dd>
-    </dl>
-
-    <dl>
       <dt>Comments</dt>
       <dd>
         {{ formatCounts(insight.engagement.commentsCount) }}

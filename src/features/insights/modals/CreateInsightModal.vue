@@ -86,7 +86,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -140,7 +143,7 @@ resetProgress()
 
   <template v-if="!isLoggedIn">
       <PageStatusMessage 
-        title="401: Unauthorized!" 
+        title="Unauthorized!" 
         message="It appears you are not logged in or have been logged out. Login/register to continue."
       >
         <template #actions>
@@ -152,9 +155,10 @@ resetProgress()
 
      <template v-else>
     
-  <template v-if=isSuccessful>
+  <template v-if="isSuccessful">
         <PageStatusMessage 
-        title="201: Created!" 
+        :is-success=true
+        title="Created!" 
         message="Your insight has been created but you have to use your editor to update and launch."
       >
         <template #actions>

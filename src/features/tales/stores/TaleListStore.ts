@@ -6,7 +6,7 @@ import {type GetFavoriteIdsResponse } from '@/features/engagements/types/Engagem
 import { APIError } from '@/api/apiTypes.ts'
 import { useTaleListFilterStore } from './TaleListFilterStore.ts'
 import { useLoginHint } from '@/utils/authHelper'
-
+import { setStoredAnchor } from '@/utils/anchorStorage';
 import {type TaleListDto, type GetTaleListResponse, initializeTaleListEngagement} from '../types/TalesTypes.ts';
 
 // Native JS Set wrapper implementation shortcut
@@ -30,6 +30,7 @@ export const useTaleListStore = defineStore('taleList', () => {
   const anchor = ref<string | null>(null);
   const baseRoute = ref<string>('api/tales'); 
   const loadMoreError = ref<APIError | null>(null)
+  const markAsAuthorized = ref(false)
 
   // 🔒 Keep the controller private/local to this store context
 let feedController: AbortController | null = null;
@@ -46,17 +47,31 @@ let feedController: AbortController | null = null;
     // the background list until they actually hit 'Save'
     baseRoute.value = apiUrl;
   }
+  
+  function resetState() {
+    tales.value = [];
+    markAsAuthorized.value = false;
+    isFetchingMore.value = false;
+    pointer.value = '1';
+    hasNext.value = false;
+     anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/tales';
+  }
+
+  
 
 // 1. Initial Load Path
-async function loadTales(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+async function loadTales(apiPathWithFilters: string, isAuthorized: boolean): Promise<{ success: boolean; error: APIError | null }> {
 
   try {
 
       // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
+        markAsAuthorized.value = isAuthorized;
 
     // Note: Assuming getAsync is part of your API client layer
-    const outcome = await getAsync<GetTaleListResponse>(apiPathWithFilters, false, {} as GetTaleListResponse,
+    const outcome = await getAsync<GetTaleListResponse>(apiPathWithFilters, isAuthorized, {} as GetTaleListResponse,
       feedController.signal
     );
 
@@ -72,6 +87,11 @@ async function loadTales(apiPathWithFilters: string): Promise<{ success: boolean
       hasNext.value = outcome.value.hasNext;
       pointer.value = outcome.value.pointer;
       anchor.value = outcome.value.anchor;
+
+      // Persist fresh anchor to local storage for private lists
+        if (anchor.value && filterStore.activeType) {
+          setStoredAnchor(filterStore.activeTypeLabel, filterStore.activeType, anchor.value);
+        }
 
 // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
       const freshItems = outcome.value.tales.map((item: any) => initializeTaleListEngagement(item));
@@ -98,7 +118,6 @@ async function loadTales(apiPathWithFilters: string): Promise<{ success: boolean
   }
 }
 
-
 async function loadMoreTales() {
   // 1. Load structural batch into UI array stream
   await executeLoadMoreTales();
@@ -108,7 +127,6 @@ async function loadMoreTales() {
     await hydratePersonals(); 
   }
 }
-
 
   // 2. Infinite Scroll Path (LoadMore)
   async function executeLoadMoreTales() {
@@ -124,7 +142,7 @@ async function loadMoreTales() {
 
         const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value)
 
-        const outcome = await getAsync<GetTaleListResponse>(nextPageUrl, false, {} as GetTaleListResponse,
+        const outcome = await getAsync<GetTaleListResponse>(nextPageUrl, markAsAuthorized.value, {} as GetTaleListResponse,
           feedController.signal
         )
 
@@ -176,14 +194,6 @@ async function loadMoreTales() {
 
   }
  
-  function resetState() {
-    tales.value = [];
-    pointer.value = '1';
-    hasNext.value = false;
-     anchor.value = null;
-  }
-
-  
   /**
    * 💧 Parameterless Hydration (Self-Draining)
    */

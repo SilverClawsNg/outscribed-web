@@ -16,7 +16,6 @@ import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 const modalStore = useModalStore()
 const engage = useEngagement()
 
-
 // Declare compile-time parameter contract boundaries
 interface Props {
   insight: InsightListDto

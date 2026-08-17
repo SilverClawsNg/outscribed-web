@@ -9,13 +9,14 @@ import {
 export const useTaleDraftFilterStore = defineStore('taleDraftFilter', () => {
   
   // State
-  const sort = ref<string | null>(null)
+const sort = ref<string | null>(null)
 const country = ref<string | null>(null)
 const category = ref<string | null>(null)
 const status = ref<string | null>(null)
+const isactive = ref<string | null>(null);
 
-  const keyword = ref<string | null>(null);
-  const pointer = ref<string | null>('1');
+const keyword = ref<string | null>(null);
+const pointer = ref<string | null>('1');
 
    // --- 3. HELPER UTILITIES ---
   // Pure parsing helper: returns null if missing, empty, or placeholder
@@ -31,6 +32,7 @@ const status = ref<string | null>(null)
     country.value = '-1'
     category.value = '-1'
     status.value = '-1'
+    isactive.value=''
 
     keyword.value = '';
     pointer.value = '1';
@@ -66,6 +68,11 @@ const status = ref<string | null>(null)
       if(!validatedCategory) wasClean = false
     }
 
+    if(queryParameters.isactive){
+   // 🎯 Parse & Validate Activity
+  isactive.value = parseValue(queryParameters.isactive)
+}
+
     if(queryParameters.status){
      // 🎯 Parse & Validate status
     const validatedStatus = getValidTaleStatus(queryParameters.status)
@@ -77,7 +84,7 @@ const status = ref<string | null>(null)
     // Parse Keyword
     keyword.value = parseValue(queryParameters.keyword)
     }
- 
+
     }
 
     return { isClean: wasClean }
@@ -92,6 +99,7 @@ function getAsDictionary(): Record<string, string> {
       country: country.value,
       category: category.value,
       status: status.value,
+      isactive: isactive.value,
       keyword: keyword.value,
       pointer: '1'
   }
@@ -133,14 +141,17 @@ function getAsDictionary(): Record<string, string> {
     if (sort.value && sort.value !== '-1') 
       urlParams.append('sort', sort.value);
 
-    if (country.value && sort.value !== '-1') 
+    if (country.value && country.value !== '-1') 
       urlParams.append('country', country.value);
 
-    if (category.value && sort.value !== '-1') 
+    if (category.value && category.value !== '-1') 
       urlParams.append('category', category.value);
 
-    if (status.value && sort.value !== '-1') 
+    if (status.value && status.value !== '-1') 
       urlParams.append('status', status.value);
+
+    if (isactive.value && isactive.value.trim() !== '') 
+      urlParams.append('isactive', isactive.value);
 
     if (keyword.value && keyword.value.trim() !== '') 
       urlParams.append('keyword', keyword.value);
@@ -148,15 +159,20 @@ function getAsDictionary(): Record<string, string> {
     const currentPointer = overridePointer ? String(overridePointer) : String(pointer.value);
       urlParams.append('pointer', currentPointer);
 
-    if (anchor) 
-      urlParams.append('anchor', anchor);
+   // Fall back to localStorage if no explicit anchor is passed in
+  const resolvedAnchor = anchor ?? localStorage.getItem('tale:anchor:drafts');
+
+
+  
+  if (resolvedAnchor) 
+    urlParams.append('anchor', resolvedAnchor);
 
     const queryString = urlParams.toString();
     return queryString ? `${baseRoute}?${queryString}` : baseRoute;
   }
 
   return {
-    sort, country, category, status, keyword, pointer,
+    sort, country, category, status, keyword, pointer, 
     reset, rehydrate, getAsDictionary, buildApiPath
   };
 });

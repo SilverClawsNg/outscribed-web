@@ -134,6 +134,7 @@ if(requiresLogin.value){
 
 // Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
 watch(() => route.query, () => {
+  loadingError.value = null
   initPage();
 }, { deep: true });
 
@@ -182,7 +183,7 @@ onUnmounted(() => {
    
       <div class="shared__page-title">
         <h1>{{ pageTitle }}</h1>
-        <button class="btn primary" @click="modalStore.push('WriterListFilter', 'Filter Lists')">Filter</button>
+        <button class="btn primary" @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
       </div>
 
       <template v-if="wasCleaned">
@@ -190,7 +191,7 @@ onUnmounted(() => {
        <span class="icon">⚠️</span>
       <p>
       Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('WriterListFilter', 'Filter Lists')">filter</button> link to filter correctly.
+      <button @click="modalStore.push('WriterFilter', 'Filter Writers')">filter</button> link to filter correctly.
       </p>
       
      </div>

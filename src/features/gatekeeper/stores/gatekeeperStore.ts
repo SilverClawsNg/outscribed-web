@@ -10,7 +10,7 @@ import { APIError } from '@/api/apiTypes'
 import type { ChangePasswordRequest } from '@/features/identity/types/IdentityTypes'
 import type { WriterStatus } from '@/utils/enumHelper'
 import { setLoginHint, clearLoginHint, checkIsLoggedIn, clearByPatterns } from '@/utils/authHelper'
-import type { LoginRequest } from '@/features/gatekeeper/types/GatewayTypes'
+import type { LoginRequest, LogoutRequest } from '@/features/gatekeeper/types/GatewayTypes'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
@@ -252,15 +252,37 @@ async function createAccess(formData: any): Promise<Result<boolean>> {
   }
 }
 
-function logout(logoutData: any): void {
+function logout(logoutData: LogoutRequest): void {
 
- apiClient.post('/api/logout', logoutData, {
+  // Destructure `flushCache` out, gathering all backend-expected properties into `payload`
+  const { flushCache, ...payload } = logoutData;
+
+ apiClient.post('/api/logout', payload, {
   meta: { requiresAuth: false } 
 }).catch(err => console.error('[Auth Store]: Remote session revocation drop failure:', err))
   
 // 2. Clear the persistent user hint from disk and reactive memory
- unsetAccessToken() // Clears state, disk tracking, and signals helper [cite: 71]
-  clearByPatterns(['tale:draft', 'insight:draft', 'comment:draft'])
+  unsetAccessToken() // Clears state, disk tracking, and signals helper [cite: 71]
+if(logoutData.flushCache){
+
+ if (flushCache) {
+  clearByPatterns([
+    // 1. Purge all offline draft contents
+    'tale:drafts', 
+    'insight:drafts', 
+    'comment:drafts',
+
+    // 2. Purge all pagination anchors (covers base, favorites, upvotes, flags, etc.)
+    'tale:anchor', 
+    'insight:anchor', 
+    'comment:anchor',
+
+    // 3. Purge user network anchors
+    'user:anchor'
+  ]);
+}
+}
+
 }
 
 /**

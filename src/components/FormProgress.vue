@@ -62,8 +62,5 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
-/* Move your shared progress overlay styles here */
 @import "../assets/css/form-progress.less";
-
-/* Ensure components remain visually consistent across layouts */
 </style>

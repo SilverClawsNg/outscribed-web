@@ -12,7 +12,6 @@ import { useProfileStore } from '../stores/ProfileStore.ts' // 🚀 Import Profi
 const profileStore = useProfileStore() // 💡 Instantiate Store
 const profile = computed(() => profileStore.profile!)
 
-import { type ContactDto } from '../types/IdentityTypes.ts'
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
 
@@ -27,7 +26,6 @@ const emit = defineEmits<{
 function handleRefresh() {
   emit('refresh')
 }
-
 
 function handleEditContactClick(platform: ContactType) {
   // 1. Establish the exact domain entity context frame
@@ -55,13 +53,16 @@ function handleEditContactClick(platform: ContactType) {
 
     <div class="profile-details__metadata">
       Joined {{ toShortDate(profile.registeredAt) }}
-      <template v-if="profile.country">
-        <span class="divider circle"></span>
-        {{ CountryDescriptions[profile.country] }}
-      </template>
+    
       <span class="divider circle"></span>
       {{ formatCounts(profile.viewsCount) }} Views
     </div>
+
+    <template v-if="profile.country">
+       <p class="profile-details__country">
+      <i>OutScribing from </i>{{ CountryDescriptions[profile.country] }}
+       </p>
+    </template>
 
     <UpdateProfilePhotoComponent :payload="profile" @completed="handleRefresh" />
 
@@ -75,7 +76,6 @@ function handleEditContactClick(platform: ContactType) {
           </p>
             </template>
                     </div>
-  
 
     <div class="profile-details__actions">
       <button @click="modalStore.push('UpdateProfile', 'Update Profile')">
@@ -83,6 +83,9 @@ function handleEditContactClick(platform: ContactType) {
       </button>
       <button @click="modalStore.push('ChangePassword', 'Change Password')">
         <SvgIcons name="padlock" />  Change password
+      </button>
+       <button @click="modalStore.push('Archive', 'Archive Profile')">
+        <SvgIcons name="archive" />  Archive profile
       </button>
     </div>
 
@@ -159,6 +162,23 @@ function handleEditContactClick(platform: ContactType) {
         </RouterLink>
         <RouterLink to="/comments/my/votes?votetype=Downvote" class="btn primary" title="Comments">
           <span class="value">{{ formatCounts(profile.commentDownvotesCount) }}</span> <span class="field">Comments</span>
+        </RouterLink>
+      </div>
+    </div>
+
+    <div class="profile-details__stats">
+      <h4 class="profile-details__stats-header">
+        <SvgIcons name="flag" />  Flags
+      </h4>
+      <div class="profile-details__stats-body">
+        <RouterLink to="/tales/my/flags" class="btn primary" title="Tales Upvotes">
+          <span class="value">{{ formatCounts(profile.taleFlagsCount) }}</span> <span class="field">Tales</span>
+        </RouterLink>
+        <RouterLink to="/insights/my/flags" class="btn primary" title="Insights Upvotes">
+          <span class="value">{{ formatCounts(profile.insightFlagsCount) }}</span> <span class="field">Insights</span>
+        </RouterLink>
+        <RouterLink to="/comments/my/flags" class="btn primary" title="Comments">
+          <span class="value">{{ formatCounts(profile.commentFlagsCount) }}</span> <span class="field">Comments</span>
         </RouterLink>
       </div>
     </div>
@@ -242,8 +262,8 @@ function handleEditContactClick(platform: ContactType) {
     </div>
 
   </div>
+  
 </template>
-
 
 <style lang="less" scoped>
 /* You can safely drop your layout timeline.less or unique home rules down here */

@@ -17,6 +17,7 @@ import { getEngagementMetadata, type ActiveContentContext } from '@/features/eng
 import { type InsightDetailDto } from '../types/InsightsTypes';
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { sanitizeHtml } from '@/utils/markupHelper';
+import ShareBar from '@/components/ShareBar.vue';
 
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
@@ -140,7 +141,7 @@ function createComment() {
       </section>
 
       <section v-if="insight.tags && insight.tags.length > 0" class="content-details__tags">
-        <h4>Tagged In:</h4>
+        <h4>Tagged In</h4>
         <span class="divider line"></span>
         <span v-for="tag in insight.tags" :key="tag.tagId">
           #<router-link :to="`/insights?tag=${tag.tagId}`">{{ tag.name }}</router-link>
@@ -202,13 +203,13 @@ function createComment() {
           </div>
 
           <div class="content-details__engagement-share">
-            <h5> <SvgIcons name="share" />Tell others about this insight</h5>
-            <div class="content-details__engagement-share-buttons">
-              <button><SvgIcons name="facebook" /></button>
-              <button><SvgIcons name="twitter" /></button>
-              <button><SvgIcons name="linkedin" /></button>
-              <button><SvgIcons name="email" /></button>
-            </div>
+            <ShareBar 
+            :title="insight.title"
+            :summary="insight.summary"
+            :url="insight.slug"
+            :content-id="insight.insightId"
+            content-type='Insight'
+          />
           </div>
 
         </div>
@@ -284,27 +285,6 @@ function createComment() {
        <TaleBriefComponent 
             :tale="insight.source" 
           />
-
-      <section :class="['content-details__enrichment', insightStore.hasLoadedEnrichment ? 'show' : '']">
-
-        <template v-if="insightStore.hasLoadedEnrichment">
-          <LatestInsightComponent 
-            v-for="insight in insightStore.latestInsights" 
-            :key="insight.insightId" 
-            :insight="insight" 
-          />
-        </template>
-
-      </section>
-
-      <section class="content-details__enrichment-action">
-        <h5>
-          If this insight has started a fire, use an insight to direct the heat. With insights, you can present evidence-based analysis of issues raised by insights, explore its real world consequences, and address matters arising.
-        </h5>
-        <button title="Create Insight" @click="modalStore.push('CreateInsight', 'Create Insight', insight)">
-          <span class="icon-edit"></span> Write an insight
-        </button>
-      </section>
 
       <div class="shared__page-title">
         <h1>Featured Comments</h1>

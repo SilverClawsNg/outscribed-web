@@ -7,14 +7,14 @@ defineProps<{ isLoading: boolean; isUsernameError: boolean }>()
 const emit = defineEmits<{ 
   (e: 'blurUsername', username: string): void
   (e: 'submit', data: any): void 
+   (e: 'warning', message: string): void
+  (e: 'clear-warning'): void
 }>()
 
 const username = ref('')
 const password = ref('')
 const title = ref('')
 const passwordVisible = ref(false)
-
-const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
@@ -55,11 +55,11 @@ watch(
     // Don't disturb the user if they haven't tried to submit yet
     if (!submitted) return
 
-    if (!isValid) {
-      setWarning('Ensure all fields are filled out correctly before submission.')
+     if (!isValid) {
+      emit('warning', 'Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      emit('clear-warning')
     }
   }, 
   { immediate: true }
@@ -74,18 +74,19 @@ function handleSubmit() {
   if (!isFormValid.value) return
 
   emit('submit', {
-    username: username.value,
+    username: username.value.trim(),
     password: password.value,
     title: title.value
   })
 }
+
 </script>
 
 <template>
 
   <form @submit.prevent="handleSubmit">
 
-    <fieldset :disabled="progressState.type === 'Loading'">
+    <fieldset class="boxed" :disabled="isLoading">
       <input 
         v-model="username" 
         type="text" 
@@ -99,7 +100,7 @@ function handleSubmit() {
     {{ validationErrors.username }}
   </span>
 
-    <fieldset class="password-box" :disabled="progressState.type === 'Loading'">
+    <fieldset class="password-box" :disabled="isLoading">
       <button 
         type="button" 
         class="show-password" 
@@ -119,7 +120,7 @@ function handleSubmit() {
     {{ validationErrors.password }}
   </span>
 
-    <fieldset :disabled="progressState.type === 'Loading'">
+    <fieldset :disabled="isLoading">
       <input v-model="title" type="text" class="form-field" placeholder="Names" />
     </fieldset>
 

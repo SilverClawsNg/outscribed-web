@@ -9,7 +9,7 @@ export const useTimelineFilterStore = defineStore('timelineFilter', () => {
   
  // --- 1. STATE DEFINITIONS ---
   const sort = ref<string | null>(null)
-  const content = ref<string | null>(null)
+  const contenttype = ref<string | null>(null)
   const activity = ref<string | null>(null)
   
   const keyword = ref<string | null>(null)
@@ -38,7 +38,7 @@ export const useTimelineFilterStore = defineStore('timelineFilter', () => {
   // --- 2. RESET STATE PASS ---
   function reset() {
     sort.value = '-1'
-    content.value = '-1'
+    contenttype.value = '-1'
     activity.value = '-1'
     
     keyword.value = ''
@@ -66,10 +66,10 @@ export const useTimelineFilterStore = defineStore('timelineFilter', () => {
       }
  
 
-  if(queryParameters.content){
+  if(queryParameters.contenttype){
   // 🎯 Parse & Validate Content (Accepts lowercase from URL, stores PascalCase)
-  const validatedContent = getValidContentType(queryParameters.content)
-  content.value = validatedContent || null
+  const validatedContent = getValidContentType(queryParameters.contenttype)
+  contenttype.value = validatedContent || null
     if(!validatedContent) wasClean = false
   }
  
@@ -113,7 +113,7 @@ function getAsDictionary(): Record<string, string> {
   // 1. Collect all raw state values into a temporary workspace object
   const rawValues: Record<string, any> = {
     sort: sort.value,
-    content: content.value,
+    contenttype: contenttype.value,
     activity: activity.value,
     keyword: keyword.value,
     isprivate: isprivate.value,
@@ -159,10 +159,10 @@ function getAsDictionary(): Record<string, string> {
     if (sort.value && sort.value !== '-1') 
       urlParams.append('sort', sort.value);
 
-    if (content.value && sort.value !== '-1') 
-      urlParams.append('content', content.value);
+    if (contenttype.value && contenttype.value !== '-1') 
+      urlParams.append('contenttype', contenttype.value);
 
-    if (activity.value && sort.value !== '-1') 
+    if (activity.value && activity.value !== '-1') 
       urlParams.append('activity', activity.value);
 
     if (isprivate.value && isprivate.value.trim() !== '' && (isprivate.value.trim() === 'true' || isprivate.value.trim() === 'false')) 
@@ -191,7 +191,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, content, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,
+    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,
     reset, rehydrate, getAsDictionary, buildApiPath
   };
 });

@@ -50,10 +50,10 @@ export interface TaleDraftListDto {
   category: Category;
   status: TaleStatus,
   tags: TagDraftDto[];
-  watchlistTitle: string | null;
-  watchlistSummary: string | null;
-  watchlistSource: string | null;
-  watchlistUrl: string | null;
+  realityCheckTitle: string | null;
+  realityCheckSummary: string | null;
+  realityCheckSource: string | null;
+  realityCheckUrl: string | null;
 }
 
 export interface GetTaleListResponse {
@@ -76,7 +76,7 @@ export interface TaleListDto {
   insightsCount: number;
   country: Country | null;
   category: Category;
-  status: TaleStatus;
+  isVisible: boolean;
   engagement: Engageable
 }
 
@@ -86,6 +86,7 @@ export interface TaleDetailDto {
   createdAt: string;
   creator: CreatorDto;
   title: string;
+  slug: string;
   summary: string;
   detail: string;
   photo: string;
@@ -99,13 +100,12 @@ export interface TaleDetailDto {
   insightscount: number;
   readingTime: number;
   isArchived: boolean;
-  watchlistTitle: string;
-  watchlistSummary: string;
-  watchlistSource: string;
-  watchlistUrl: string;
+  realityCheckTitle: string;
+  realityCheckSummary: string;
+  realityCheckSource: string;
+  realityCheckUrl: string;
   engagement: Engageable
 }
-
 
 export interface CreateRequest {
     title: string; 
@@ -122,7 +122,6 @@ export interface TagDraftDto {
   tagId: string; // Using string to handle backend Ulid representation
   name: string;
 }
-
 
 export interface UpdateRequest {
   taleId: string;
@@ -150,7 +149,7 @@ export interface UpdateAddendumRequest {
   addendum: string | null;
 }
 
-export interface UpdateWatchlistRequest {
+export interface UpdateRealityCheckRequest {
   taleId: string;
   title: string | null;
   summary: string | null;

@@ -5,6 +5,7 @@ import { useModalStore } from '@/stores/modalStore'
 import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
 import { useRouter } from 'vue-router'
+import type { LogoutRequest } from '@/features/gatekeeper/types/GatewayTypes'
 
 const authStore = useAuthStore()
 const modalStore = useModalStore()
@@ -13,8 +14,10 @@ const { progressState, startLoading, resetProgress } = useFormProgress()
 
 // Local working state bound strictly to your official contract schema
 // Initialized with a placeholder string value for form dropdown validation
-const formData = ref<{ closeAll: boolean; }>({
-  closeAll: false
+const formData = ref<LogoutRequest>({
+  closeAll: false,
+  flushCache: false,
+  type: 2
 })
 
 function handleLogoutSubmission() {
@@ -23,10 +26,7 @@ function handleLogoutSubmission() {
 
   // 1. FIRE AND FORGET: Trigger the backend session drop in the background 
   // without using 'await'. The browser handles the request asynchronously.
-  authStore.logout({
-    closeAll: formData.value.closeAll,
-    type: 1 // FrontendType.Web
-  })
+  authStore.logout(formData.value)
 
   // 4. INSTANT UI RESET: Dismiss modal layout stack and go home
   //modalStore.closeAll()
@@ -42,11 +42,29 @@ onBeforeMount(() => {
 <template>
   <div class="form-container boxed">
     <h1>Logout</h1>
-    <h2>Continue to close your active sessions</h2>
+    <h2>Confirm your logout preferences</h2>
 
     <FormProgress :progress="progressState" />
 
     <form @submit.prevent="handleLogoutSubmission" autocomplete="off">
+
+      <fieldset :disabled="progressState.type === 'Loading'">
+        <div class="ticks">
+          <input 
+            type="checkbox" 
+            id="FlushCache" 
+            v-model="formData.flushCache" 
+          />
+          
+          <label for="FlushCache">
+            {{ formData.flushCache 
+              ? 'Remove all cached data (Recommended if this is a public device)' 
+              : 'Keep all cached data (Recommended if this is a private device)' 
+            }}
+          </label>
+
+        </div>
+</fieldset>
 
       <fieldset :disabled="progressState.type === 'Loading'">
         <div class="ticks">
@@ -58,8 +76,8 @@ onBeforeMount(() => {
           
           <label for="CloseAll">
             {{ formData.closeAll 
-              ? 'Untick to log out of current device only' 
-              : 'Tick to log out of all devices' 
+              ? 'Logout of all devices' 
+              : 'Logout of only current device' 
             }}
           </label>
 

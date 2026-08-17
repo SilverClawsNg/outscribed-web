@@ -101,7 +101,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -117,7 +120,7 @@ async function handleFormSubmission() {
 
   startLoading()
 
-  const { success, error } = await profileStore.UpdateProfileState(formData.value)
+  const { success, error } = await profileStore.updateProfileState(formData.value)
 
   if(!success){
 
@@ -181,14 +184,14 @@ onMounted(() => {
           <textarea 
             v-model="formData.bio" 
             type="text" 
-            id="Title" 
+            id="Bio" 
             class="form-field" 
             placeholder="Short Bio" 
           ></textarea>
         </fieldset>
 
-         <span v-if="formSubmitted && validationErrors.country" class="validation-message">
-        {{ validationErrors.country }}
+         <span v-if="formSubmitted && validationErrors.bio" class="validation-message">
+        {{ validationErrors.bio }}
       </span>
 
     <form @submit.prevent="handleFormSubmission">

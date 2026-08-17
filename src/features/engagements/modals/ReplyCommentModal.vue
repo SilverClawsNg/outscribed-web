@@ -81,7 +81,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -110,7 +113,15 @@ const { success, error } = await commentsStore.replyComment(formData.value.detai
  
     comment.value.hasReplied = true;
    //Redirect to load comments
-        modalStore.push('CommentReplies', 'Replies', comment.value)
+
+if(!comment.value.hasLoadedReplies){
+modalStore.push('CommentReplies', 'Replies', comment.value)
+}
+else{
+  modalStore.pop()
+}
+
+        
   }
   
 }

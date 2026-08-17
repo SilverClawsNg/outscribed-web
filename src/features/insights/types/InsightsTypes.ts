@@ -54,7 +54,7 @@ export interface InsightListDto {
   photo: string;
   country: Country | null;
   category: Category;
-  status: InsightStatus;
+  isVisible: boolean;
   engagement: Engageable
 }
 
@@ -63,6 +63,7 @@ export interface InsightDetailDto {
   createdAt: string;
   creator: CreatorDto;
   title: string;
+  slug: string;
   summary: string;
   detail: string;
   photo: string;
@@ -79,7 +80,6 @@ export interface InsightDetailDto {
   source: SourceTaleDto;
   engagement: Engageable
 }
-
 
 export interface CreateRequest {
     taleId: string;

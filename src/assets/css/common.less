@@ -59,7 +59,12 @@ main {
         }
 
         @media @smallDevice {
-            padding-top: 80px;
+            padding-top: calc(100lvh - 80px);
+
+            &.state-neutral {
+                padding-top: 80px;
+                min-height: calc(100lvh - 80px);
+            }
         }
     }
 

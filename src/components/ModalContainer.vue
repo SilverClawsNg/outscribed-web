@@ -10,6 +10,9 @@ import ResetModal from '@/features/gatekeeper/modals/ResetModal.vue'
 import UpdateContactModal from '@/features/identity/modals/UpdateContactModal.vue'
 import UpdateProfileModal from '@/features/identity/modals/UpdateProfileModal.vue'
 import ChangePasswordModal from '@/features/identity/modals/ChangePasswordModal.vue'
+import ArchiveProfileModal from '@/features/identity/modals/ArchiveProfileModal.vue'
+import UnarchiveProfileModal from '@/features/identity/modals/UnarchiveProfileModal.vue'
+import AppealSuspensionModal from '@/features/identity/modals/AppealSuspensionModal.vue'
 import ProfileModal from '@/features/identity/modals/ProfileModal.vue'
 import TimelineFilterModal from '@/features/global/modals/TimelineFilterModal.vue'
 import StructuralAttestationModal from '@/features/authoring/modals/StructuralAttestationModal.vue'
@@ -19,7 +22,7 @@ import CreateTaleModal from '@/features/tales/modals/CreateTaleModal.vue'
 import UpdateTaleDetailModal from '@/features/tales/modals/UpdateTaleDetailModal.vue'
 import UpdateTaleModal from '@/features/tales/modals/UpdateTaleModal.vue'
 import UpdateTaleCountryModal from '@/features/tales/modals/UpdateTaleCountryModal.vue'
-import UpdateTaleWatchlistModal from '@/features/tales/modals/UpdateTaleWatchlistModal.vue'
+import UpdateTaleRealityCheckModal from '@/features/tales/modals/UpdateTaleRealityCheckModal.vue'
 import UpdateTaleSummaryModal from '@/features/tales/modals/UpdateTaleSummaryModal.vue'
 import UpdateTaleTagsModal from '@/features/tales/modals/UpdateTaleTagsModal.vue'
 import UpdateTaleAddendumModal from '@/features/tales/modals/UpdateTaleAddendumModal.vue'
@@ -56,10 +59,11 @@ import CommentModal from '@/features/engagements/modals/CommentModal.vue'
 import CommentThreadModal from '@/features/engagements/modals/CommentThreadModal.vue'
 import CommentRepliesModal from '@/features/engagements/modals/CommentRepliesModal.vue'
 import ReplyCommentModal from '@/features/engagements/modals/ReplyCommentModal.vue'
+import CommentListFilterModal from '@/features/engagements/modals/CommentListFilterModal.vue'
 
 import ContentCommentsFilterModal from '@/features/engagements/modals/ContentCommentsFilterModal.vue'
 import DraftCommentsFilterModal from '@/features/engagements/modals/DraftCommentsFilterModal.vue'
-import EngagementCommentsFilterModal from '@/features/engagements/modals/EngagementCommentsFilterModal.vue'
+import EngagementCommentsFilterModal from '@/features/engagements/modals/CommentListFilterModal.vue'
 
 import FlagContentModal from '@/features/engagements/modals/FlagContentModal.vue'
 
@@ -68,6 +72,8 @@ import SearchModal from '@/features/global/modals/SearchModal.vue'
 import AskQuestionModal from '@/features/support/modals/AskQuestionModal.vue'
 import ProblemDefinitionModal from '@/features/support/modals/ProblemDefinitionModal.vue'
 import TaleDisclaimerModal from '@/features/tales/modals/TaleDisclaimerModal.vue'
+
+import WriterFilterModal from '@/features/authoring/modals/WriterFilterModal.vue'
 
 const modalStore = useModalStore()
 const isExpandModal = ref(false)
@@ -90,7 +96,7 @@ const componentMap: Record<string, any> = {
   UpdateTale: UpdateTaleModal,
   UpdateTaleSummary: UpdateTaleSummaryModal,
   UpdateTaleCountry: UpdateTaleCountryModal,
-  UpdateTaleWatchlist: UpdateTaleWatchlistModal,
+  UpdateTaleRealityCheck: UpdateTaleRealityCheckModal,
 UpdateTaleTags: UpdateTaleTagsModal,
 UpdateTaleAddendum: UpdateTaleAddendumModal,
 UpdateTalePhoto: UpdateTalePhotoModal,
@@ -120,6 +126,7 @@ InsightStats: InsightStatsModal,
 InsightPreview: InsightPreviewModal,
 ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,
+CommentListFilter: CommentListFilterModal,
 Comment: CommentModal,
 CommentThread: CommentThreadModal,
 CommentReplies: CommentRepliesModal,
@@ -131,7 +138,11 @@ Search: SearchModal,
 FlagContent: FlagContentModal,
 AskQuestion: AskQuestionModal,
 ProblemDefinition: ProblemDefinitionModal,
-TaleDisclaimer: TaleDisclaimerModal
+TaleDisclaimer: TaleDisclaimerModal,
+WriterFilter: WriterFilterModal,
+ArchiveProfile: ArchiveProfileModal,
+UnarchiveProfile: UnarchiveProfileModal,
+AppealSuspension: AppealSuspensionModal
 }
 
 // Helper getter to deliver the raw payload directly without flattening

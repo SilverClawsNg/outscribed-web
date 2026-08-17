@@ -38,7 +38,7 @@ const props = defineProps<Props>()
     <section class="content-lists__summary">
       <div>
         {{ insight.summary.length > 500 ? insight.summary.substring(0, 500) + '...' : insight.summary }}
-        <RouterLink :to="`/insight/${insight.slug}`">Continue Reading</RouterLink>
+        <RouterLink :to="`/tale/${insight.slug}`">Continue Reading</RouterLink>
       </div>
     </section>
 

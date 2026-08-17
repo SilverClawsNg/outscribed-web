@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
-import { useContentCommentsStore } from '../stores/ContentCommentsStore.ts';
-import { useContentCommentsFilterStore } from '../stores/ContentCommentsFilterStore.ts'; 
+import { useCommentThreadStore } from '../stores/CommentThreadStore.ts';
 import { APIError } from '@/api/apiTypes.ts'
-import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integrated safely
+import PageStatusMessage from '@/components/PageStatusMessage.vue' 
 import Comment from './CommentModal.vue'
-import { useLoginHint } from '@/utils/authHelper'
 
-import { useModalStore } from '@/stores/modalStore';
 import {type CommentListDto,  type SourceContentDto} from '../types/EngagementTypes.ts';
 import SourceContentComponent from '../components/SourceContentComponent.vue';
 
@@ -17,14 +14,9 @@ const props = defineProps<{
 
 const commentId = computed(() => props.payload as string)
 
-
 const baseRoute = computed(() => `api/comments/thread/${commentId.value}`)
 
-const commentsStore = useContentCommentsStore();
-const commentFilterStore = useContentCommentsFilterStore();
-
-
-const modalStore = useModalStore();
+const commentsStore = useCommentThreadStore();
 
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
@@ -77,9 +69,7 @@ if (ancestors.value.length > 0) {
 
 if (hydrationBatch.length !== 0) {
 
-             await commentsStore.hydratePersonals(hydrationBatch)
-
-
+  await commentsStore.hydratePersonals(hydrationBatch)
 
 // 📋 Flatten and snapshot the live state to see if hydration stuck
   console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(hydrationBatch)));
@@ -139,10 +129,8 @@ onMounted(async () => {
 
   </template>
 
-
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/comment-lists.less";
-
 </style>

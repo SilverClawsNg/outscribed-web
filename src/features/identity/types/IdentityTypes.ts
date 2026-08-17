@@ -33,6 +33,10 @@ export interface GetMyProfileResponse {
   taleDownvotesCount : number
   insightDownvotesCount : number
   commentDownvotesCount : number
+
+  taleFlagsCount : number
+  insightFlagsCount : number
+  commentFlagsCount : number
   
   favoritersCount : number
   taleFavoritesCount : number
@@ -101,6 +105,8 @@ export interface GetUserProfileResponse {
   
   followersCount : number
   followsCount : number
+
+  IsVisible: boolean
 
   user: UserDto
 
@@ -190,4 +196,14 @@ export function initializeUserListEngagement(rawAccount: any): UserListDto {
 export interface UpdatePhotoRequest {
   base64String: string;
   contentType: string;
+}
+
+
+export interface ArchiveProfileRequest {
+  confirm: boolean;
+}
+
+export interface AppealSuspensionRequest {
+  notes: string;
+  confirm: boolean;
 }

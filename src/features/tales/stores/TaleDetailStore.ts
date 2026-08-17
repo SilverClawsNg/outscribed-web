@@ -219,7 +219,7 @@ async function loadArchivedTale(taleId: string): Promise<{ success: boolean; err
 
         // Replace with your actual Axios/Fetch HTTP abstraction layout instance
         const outcome = await getAsync<GetTalePageEnrichmentResponse>(`api/tales/enrichment/${tale.value?.taleId}`, 
-         true, {} as GetTalePageEnrichmentResponse, enrichController.signal);
+         false, {} as GetTalePageEnrichmentResponse, enrichController.signal);
 
        if (outcome.isSuccess) {
   console.log('[Enrich Debug] Network success. Data:', outcome.value);

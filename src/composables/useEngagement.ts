@@ -148,6 +148,7 @@ const alert = useAlert();
     successMessage.value = `You downvoted this ${typeLabel} — your opinion has been recorded.`;
   }
 
+
 }
 
   function rollbackVote(engageable: Engageable) {
@@ -176,11 +177,11 @@ const alert = useAlert();
 
    const formData: VoteRequest = {
     contentId: engageable.contentId,
-    content: engageable.contentType,
+    contentType: engageable.contentType,
     type: engageable.myVote
     }
 
-    const outcome = await postAsync<{ engagementResponse: EngagementResponse }>('/api/voting', formData,  true)
+    const outcome = await postAsync<EngagementResponse>('/api/voting', formData,  true)
 
     if(outcome.isFailure){
         
@@ -205,8 +206,24 @@ const alert = useAlert();
       successMessage.value,
       'Success')
 
-          if(outcome.value && outcome.value.engagementResponse){
-            Object.assign(engageable, outcome.value.engagementResponse);
+          if(outcome.value){
+            Object.assign(engageable, outcome.value);
+
+             const typeLabel = engageable.contentType.toLowerCase();
+              localStorage.removeItem(`${typeLabel}:anchor:votes`);
+
+
+            //const stats = outcome.value;
+
+            // Mutate the reactive properties on engageable directly
+            //engageable.upvotesCount = stats.upvotesCount;
+            //engageable.downvotesCount = stats.downvotesCount;
+            //engageable.commentsCount = stats.commentsCount;
+            //engageable.sharesCount = stats.sharesCount;
+            //engageable.favoritesCount = stats.favoritesCount;
+            //engageable.flagsCount = stats.flagsCount;
+            //engageable.viewsCount = stats.viewsCount;
+
         }
     }
 
@@ -316,14 +333,14 @@ const alert = useAlert();
 
    const formData: FavoriteRequest = {
     contentId: engageable.contentId,
-    content: engageable.contentType
+    contentType: engageable.contentType
     }
 
     const endpoint = engageable.isFavorite 
     ? `api/favoriting/add` 
     : `api/favoriting/remove`;
 
-    const outcome = await postAsync<{ engagementResponse: EngagementResponse }>(endpoint, formData,  true)
+    const outcome = await postAsync<EngagementResponse>(endpoint, formData,  true)
 
     if(outcome.isFailure){
         
@@ -352,8 +369,22 @@ const alert = useAlert();
       'Success'
     );
 
-        if(outcome.value && outcome.value.engagementResponse){
-            Object.assign(engageable, outcome.value.engagementResponse);
+        if(outcome.value){
+            Object.assign(engageable, outcome.value);
+
+             const typeLabel = engageable.contentType.toLowerCase();
+              localStorage.removeItem(`${typeLabel}:anchor:saves`);
+
+            //const stats = outcome.value;
+
+            // Mutate the reactive properties on engageable directly
+            //engageable.upvotesCount = stats.upvotesCount;
+            //engageable.downvotesCount = stats.downvotesCount;
+            //engageable.commentsCount = stats.commentsCount;
+            //engageable.sharesCount = stats.sharesCount;
+            //engageable.favoritesCount = stats.favoritesCount;
+            //engageable.flagsCount = stats.flagsCount;
+            //engageable.viewsCount = stats.viewsCount;
         }
     }
 
@@ -426,10 +457,24 @@ async function flag(engageable: Engageable, formData: FlagRequest): Promise<{ su
             
            if(outcome.value.hasFlagged){
 
-              Object.assign(engageable, outcome.value);
+             Object.assign(engageable, outcome.value);
+
+              const typeLabel = engageable.contentType.toLowerCase();
+              localStorage.removeItem(`${typeLabel}:anchor:flags`);
+
+            //const stats = outcome.value;
+
+            // Mutate the reactive properties on engageable directly
+            //engageable.upvotesCount = stats.upvotesCount;
+            //engageable.downvotesCount = stats.downvotesCount;
+            //engageable.commentsCount = stats.commentsCount;
+            //engageable.sharesCount = stats.sharesCount;
+            //engageable.favoritesCount = stats.favoritesCount;
+            //engageable.flagsCount = stats.flagsCount;
+            //engageable.viewsCount = stats.viewsCount;
             
             // Fixed the casing dynamic based on your request payload ('content' vs 'contentType')
-            const typeName = (engageable.contentType || formData.content || 'content').toLowerCase();
+            const typeName = (engageable.contentType || formData.contentType || 'content').toLowerCase();
             alert.set(`You flagged this ${typeName}`, 'Success');
           
             } else{
