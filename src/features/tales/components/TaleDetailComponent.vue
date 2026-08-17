@@ -16,6 +16,7 @@ import { getEngagementMetadata, type ActiveContentContext } from '@/features/eng
 import { type TaleDetailDto } from '../types/TalesTypes';
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { sanitizeHtml } from '@/utils/markupHelper';
+import ShareBar from '@/components/ShareBar.vue';
 
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
@@ -50,7 +51,6 @@ function viewComments() {
 function createComment() {
   modalStore.push('CreateComment', 'New Comment', content)
 }
-
 
 </script>
 
@@ -140,26 +140,26 @@ function createComment() {
         </ol>
       </section>
 
-      <section v-if="tale.watchlistTitle" class="content-details__watchlist">
+      <section v-if="tale.realityCheckTitle" class="content-details__realitycheck">
        
-        <h2 class="content-details__watchlist-source">
-         / fact check / {{ tale.watchlistSource }}
+        <h2 class="content-details__realitycheck-source">
+         / <span>reality check</span> / {{ tale.realityCheckSource }}
         </h2>
-  <h3 class="content-details__watchlist-title">
-          {{ tale.watchlistTitle }}
+        <h3 class="content-details__realitycheck-title">
+          {{ tale.realityCheckTitle }}
         </h3>
-        <div class="content-details__watchlist-summary">
-          {{ tale.watchlistSummary }}
+        <div class="content-details__realitycheck-summary">
+          {{ tale.realityCheckSummary }}
           <button @click="showExternalLink = !showExternalLink">...Continue Reading</button>
           
           <div v-if="showExternalLink" class="shared__popover">
             <div class="shared__popover-arrow"></div>
-            <p class="shared__popover-text">You would be redirected to {{ tale.watchlistUrl }}</p>
+            <p class="shared__popover-text">You would be redirected to {{ tale.realityCheckUrl }}</p>
             <div class="shared__popover-actions">
               <a 
-                :href="tale.watchlistUrl" 
+                :href="tale.realityCheckUrl" 
                 target="_blank" 
-                class="content-details__watchlist-action"
+                class="content-details__realitycheck-action"
                 @click="showExternalLink = false">
                 Yes
               </a>
@@ -170,7 +170,7 @@ function createComment() {
       </section>
 
       <section v-if="tale.tags && tale.tags.length > 0" class="content-details__tags">
-        <h4>Tagged In:</h4>
+        <h4>Tagged In</h4>
         <span class="divider line"></span>
         <span v-for="tag in tale.tags" :key="tag.tagId">
           #<router-link :to="`/tales?tag=${tag.tagId}`">{{ tag.name }}</router-link>
@@ -178,7 +178,7 @@ function createComment() {
       </section>
 
       <section class="content-disclaimer">
-        Disclaimer: OutScribed tales are informed speculative narratives. 
+        Disclaimer: This story is a product of the writer's imaginations and artistic freedom. 
          <button @click="modalStore.push('TaleDisclaimer', 'Disclaimer')">
               [Read full disclaimer]
             </button>
@@ -238,15 +238,14 @@ function createComment() {
             </button>
           </div>
 
-          <div class="content-details__engagement-share">
-            <h5> <SvgIcons name="share" />Tell others about this tale</h5>
-            <div class="content-details__engagement-share-buttons">
-              <button><SvgIcons name="facebook" /></button>
-              <button><SvgIcons name="twitter" /></button>
-              <button><SvgIcons name="linkedin" /></button>
-              <button><SvgIcons name="email" /></button>
-            </div>
-          </div>
+          <ShareBar 
+            :title="tale.title"
+            :summary="tale.summary"
+            :url="tale.slug"
+            :content-id="tale.taleId"
+            content-type='Tale'
+            :engageable="tale.engagement"
+          />
           
         </div>
 
@@ -267,7 +266,7 @@ function createComment() {
               title="Creator Profile"
               @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
             >
-              <span class="icon-user"></span> Profile
+               <SvgIcons name="user" /> Profile
             </button>
 
             <button 
@@ -275,7 +274,7 @@ function createComment() {
               :disabled="creatorUiMeta.isFavoriteDisabled"
               @click="engage.favorite(tale.creator.engagement)"
             >
-              <span class="icon-bookmark"></span> {{ creatorUiMeta.favoriteAltText }}
+               <SvgIcons name="bookmark" /> {{ creatorUiMeta.favoriteAltText }}
             </button>
           </section>
 

@@ -122,6 +122,7 @@ async function handleModalUpdate(type: string, title: string) {
               Go To Page
             </router-link>
           </template>
+           
         </template>
 
       </template>
@@ -129,7 +130,9 @@ async function handleModalUpdate(type: string, title: string) {
       <button class="btn secondary" @click="handleModalUpdate('InsightPreview', 'Preview Insight')">
         Preview
       </button>
-
+ <router-link :to="`/tale/${insight.taleId}`" class="btn secondary">
+              Go To Tale
+            </router-link>
     </section>
   </article>
 

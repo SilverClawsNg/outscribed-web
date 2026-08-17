@@ -42,7 +42,7 @@ const isLoggedIn = useLoginHint()
 
       feedController = new AbortController();
 
-      const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, true, {} as GetContentCommentsResponse, 
+      const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, false, {} as GetContentCommentsResponse, 
         feedController.signal);
 
      if (outcome.isFailure) {
@@ -91,7 +91,7 @@ const isLoggedIn = useLoginHint()
   // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
                
-        const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, true, {} as GetContentCommentsResponse,
+        const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, false, {} as GetContentCommentsResponse,
             feedController.signal
         )
 

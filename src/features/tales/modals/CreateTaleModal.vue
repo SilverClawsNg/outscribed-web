@@ -51,7 +51,6 @@ const titleText = formData.value.title || '';
   }
 })
 
-
 // 3. Form is valid if all computed error fields are empty strings
 const isFormValid = computed(() => {
   return Object.values(validationErrors.value).every(error => error === '')
@@ -69,7 +68,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -159,7 +161,6 @@ onMounted(async () => {
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('WriterOnboarding', 'Writer Onboarding')">Upgrade To Writer</button>
-          <button class="btn secondary" @click="modalStore.push('WriterHelp', 'Writers Help', null, false)">Learn More</button>
         </template>
       </PageStatusMessage>
     </template>

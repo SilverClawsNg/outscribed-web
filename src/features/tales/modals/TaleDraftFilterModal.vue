@@ -88,6 +88,7 @@ function applyFilter() {
             </fieldset>
       </section>
 
+      
       <!-- 5. Form Actions Layout Triggers -->
       <div class="filter-buttons">
         <button type="button" @click="resetFilters" class="btn primary">Reset</button>

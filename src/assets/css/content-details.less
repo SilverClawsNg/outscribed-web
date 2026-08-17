@@ -225,7 +225,6 @@ figcaption.content-details__image-caption {
   line-height: 1.75;
   color: #1f2937;
 
-
 }
 
 .content-details__addendum {
@@ -234,17 +233,16 @@ figcaption.content-details__image-caption {
     & h4 {
         font-weight: 600;
         margin-top: 1rem;
-        text-transform: uppercase;
+        text-transform: capitalize;
     }
 
     & ol {
         list-style: decimal-leading-zero;
         list-style-position: inside;
-        padding-left: 0.5rem;
     }
 }
 
-.content-details__watchlist {
+.content-details__realitycheck {
     margin: 1rem 0;
     width: 100%;
     margin-bottom: 1.5rem;
@@ -253,24 +251,24 @@ figcaption.content-details__image-caption {
     padding: 0.5rem;**/
 }
 
-.content-details__watchlist-title {
-    margin-bottom: 1rem;
+.content-details__realitycheck-title {
+   margin-bottom: 1rem;
    font-size: 1.2rem;
-           font-weight: 600;
-
-
+   font-weight: 600;
 }
 
-.content-details__watchlist-source {
+.content-details__realitycheck-source {
     margin-bottom: 0.25rem;
-   font-size: 1.2rem;
-        color:var(--muted-text-color);
+    color:var(--muted-text-color);
+
+    & span{
+        font-weight: 600;
+    }
 }
 
-.content-details__watchlist-summary {
+.content-details__realitycheck-summary {
     margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-    line-height: 1.6rem;
+   
     position: relative;
 
     & > button{
@@ -282,18 +280,7 @@ figcaption.content-details__image-caption {
     }
 }
 
-.content-details__watchlist-image {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  /*  text-align:center;*/
-
-    & img {
-        width: auto;
-        height: auto;
-    }
-}
-
-.content-details__watchlist-action {
+.content-details__realitycheck-action {
     height: 40px;
     width: 100%;
     display: flex;
@@ -378,36 +365,13 @@ figcaption.content-details__image-caption {
 .content-details__engagement-favorite {
 
     & button {
-        color: var(--text-color);
-        font-weight: 600;
         display: flex;
         align-items: center;
         height: 40px;
 
-        &:hover {
-            color: var(--hover-color);
-        }
     }
 }
 
-.content-details__engagement-share {
-    border-top: 1px solid var(--border-color);
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
-
-    @media @smallDevice {
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 0.5rem;
-    }
-
-    & h5 {
-        margin-bottom: 0.5rem;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-        column-gap: 0.25rem;
-    }
-}
 
 .content-details__engagement-share-buttons {
     width: 100%;
@@ -532,8 +496,6 @@ figcaption.content-details__image-caption {
         }
     }
 }
-
-
 
 .content-details__enrichment {
     max-height: 0;

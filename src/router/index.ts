@@ -155,6 +155,12 @@ const router = createRouter({
           path: 'users/:creatorUsername/:relationType', 
           name: 'UserUsers',
           component: () => import('@/features/identity/views/UserListsView.vue')
+        },
+        {
+          path: 'account/resolution', // Renders at outscribed.com/account/resolution
+          name: 'AccountResolution',
+          component: () => import('@/features/identity/views/AccountResolutionView.vue'),
+          meta: { requiresAuth: true, authContext: 'account_resolution' }
         }
       ]
     },
@@ -185,7 +191,23 @@ const router = createRouter({
         }
       ]
     }
-  ]
+  ],
+
+  // Automatically scroll to the top on page navigation
+  scrollBehavior(to, from, savedPosition) {
+    // 1. If the user clicked the browser Back/Forward buttons, restore their scroll position
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    // 2. If the URL has a hash anchor (e.g. /tales/123#comments), scroll to that element
+    if (to.hash) {
+      return { el: to.hash };
+    }
+
+    // 3. For standard page navigation (e.g. list -> details), scroll to top left
+    return { top: 0, left: 0 };
+  }
 })
 
 router.onError((error, to) => {
@@ -212,6 +234,8 @@ router.beforeEach((to, from) => {
       } 
     }
   }
+
+  
 
   // 🟢 If authentication passes, returning undefined or true allows navigation to proceed
   return true 

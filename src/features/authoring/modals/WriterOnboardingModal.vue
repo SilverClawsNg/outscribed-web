@@ -70,7 +70,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -83,6 +86,8 @@ async function handleFinalOnboardingSubmit() {
 
   // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
   if (!isFormValid.value) return
+
+  startLoading()
 
     formData.value.confirm = authoringStore.isFullyCertified;
 
@@ -130,8 +135,8 @@ async function handleFinalOnboardingSubmit() {
       </span>
 
        <div class="ticks read-only-check" @click="modalStore.push('StructuralAttestation', 'Structure Attestation')">
-        <input type="checkbox" :checked="authoringStore.structureAcknowledged" disabled />
-        <label>I confirm that I have read and understood the OutScribed Story Structure
+        <input id="structure" type="checkbox" :checked="authoringStore.structureAcknowledged" disabled />
+        <label for="structure">I confirm that I have read and understood the OutScribed Story Structure
  guidelines. I will apply these principles when creating and publishing tales.</label>
       </div>
               <span v-if="formSubmitted && validationErrors.structural" class="validation-message">
@@ -139,8 +144,8 @@ async function handleFinalOnboardingSubmit() {
       </span>
 
       <div class="ticks read-only-check" @click="modalStore.push('LiabilityAttestation', 'Liability Attestation')">
-        <input type="checkbox" :checked="authoringStore.liabilityAcknowledged" disabled />
-        <label>I confirm that I have read and understood the OutScribed Legal Responsibility
+        <input id="legal" type="checkbox" :checked="authoringStore.liabilityAcknowledged" disabled />
+        <label for="legal">I confirm that I have read and understood the OutScribed Legal Responsibility
  guidelines. I will conform to these principles when creating and publishing tales.</label>
       </div>
 

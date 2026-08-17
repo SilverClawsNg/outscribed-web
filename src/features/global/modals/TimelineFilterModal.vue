@@ -42,11 +42,11 @@ const isActivityDisabled = computed(() => activityItems.value.length === 0)
 // 🌟 The core filtering wrapper logic
 function syncActivityDropdown() {
 
-  if (filterStore.content && filterStore.content !== '-1') {
+  if (filterStore.contenttype && filterStore.contenttype !== '-1') {
     // Populate your local UI list array using the generic dictionary utility
     activityItems.value = filterSelectItems(
       ActivityTypeDescriptions,
-      filterStore.content,
+      filterStore.contenttype,
       '_',
       -1
     )
@@ -89,11 +89,11 @@ function applyFilter() {
 const contentSelected = computed({
   // What the HTML dropdown sees: translate null to '-1'
   get() {
-    return filterStore.content || '-1'
+    return filterStore.contenttype || '-1'
   },
   // What the store sees: translate '-1' back to null
   set(newValue: string) {
-    filterStore.content = newValue === '-1' ? null : newValue
+    filterStore.contenttype = newValue === '-1' ? null : newValue
   }
 })
 

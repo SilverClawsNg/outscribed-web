@@ -4,11 +4,19 @@
 import { useRouter } from 'vue-router'
 import { useTaleListFilterStore } from '../stores/TaleListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
-import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems } from '@/utils/selectItemHelper'
+import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems, GeneralSortTypeSelectItems} from '@/utils/selectItemHelper'
+import { computed } from 'vue'
+import type { PrivateList } from '@/utils/enumHelper'
 
 const router = useRouter()
 const filterStore = useTaleListFilterStore()
 const modalStore = useModalStore()
+
+const props = defineProps<{
+  payload: unknown // Arrives untouched as the raw string AccountId from your container
+}>()
+
+const type = computed(() => props.payload as PrivateList)
 
 function resetFilters() {
   filterStore.reset()
@@ -25,11 +33,12 @@ function applyFilter() {
   modalStore.pop()
 }
 
-
 </script>
 
 <template>
+
   <div class="form-container">
+
     <form @submit.prevent="applyFilter">
       
       <!-- 1. Text Searching Content Inputs -->
@@ -57,6 +66,7 @@ function applyFilter() {
 
    <!-- 3. Dataset Result Record Filtering Parameters -->
       <section>
+
         <h3 class="form-heading">Filter</h3>
        
              <fieldset>
@@ -77,10 +87,62 @@ function applyFilter() {
             </fieldset>
       </section>
 
+      <template v-if="type === 'saves'">
+        <fieldset>
+          <div class="ticks">
+              <input 
+                    v-model="filterStore.isactive" 
+                    type="checkbox" 
+                    id="IncludeInactiveSaves"
+                  />
+                <label For="IncludeInactiveSaves">Tick to include inactive saves </label>
+            </div>
+          </fieldset>
+      </template>
+
+       <template v-if="type === 'votes'">
+         <fieldset>
+          <div class="ticks">
+             <p>
+              <input 
+                type="radio" 
+                id="Upvote" 
+                value="Upvote" 
+                name="votetype" 
+                v-model="filterStore.votetype"
+              />
+              <label for="Upvote">Only Upvotes</label>
+            </p>
+            <p>
+              <input 
+                type="radio" 
+                id="Downvote" 
+                value="Downvote" 
+                name="votetype" 
+                v-model="filterStore.votetype"
+              />
+              <label for="Downvote">Only Downvotes</label>
+            </p>
+
+          </div>
+        </fieldset>
+      </template>
+
       <!-- 4. Dataset Result Record Ordering Parameters -->
       <section>
         <h3 class="form-heading">Order</h3>
-        <fieldset>
+        <template v-if="type">
+            <fieldset>
+                <select v-model="filterStore.sort"  class="form-field">
+                    <option value="-1">-- sort by --</option>
+                    <option v-for="item in GeneralSortTypeSelectItems" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                    </option>
+                </select>
+            </fieldset>
+        </template>
+         <template v-else>
+            <fieldset>
                 <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>
                     <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
@@ -88,6 +150,8 @@ function applyFilter() {
                     </option>
                 </select>
             </fieldset>
+        </template>
+      
       </section>
 
       <!-- 5. Form Actions Layout Triggers -->

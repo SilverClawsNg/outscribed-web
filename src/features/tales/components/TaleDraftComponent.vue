@@ -6,7 +6,6 @@ import { toRelativeTime } from '@/utils/dateExtensions'
 import { useModalStore } from '@/stores/modalStore'
 import { useTaleDraftStore } from '../stores/TaleDraftStore';
 
-import { computed } from 'vue'
 
 const modalStore = useModalStore()
 const taleStore = useTaleDraftStore();
@@ -31,8 +30,8 @@ async function handleModalUpdate(type: string, title: string) {
 </script>
 
 <template>
-      
-  <article class="content-lists__card">
+
+<article class="content-lists__card">
     <div class="shared__content-status">
       <span class="status-title">Status</span>
        <span :class=TaleStatusClass[tale.status]>
@@ -90,10 +89,10 @@ async function handleModalUpdate(type: string, title: string) {
             </button>
           </template>
 
-          <button class="btn primary" @click="handleModalUpdate('UpdateTaleWatchlist', 'Update Tale Watchlist')">
-            Watchlist
+          <button class="btn primary" @click="handleModalUpdate('UpdateTaleRealityCheck', 'Update Reality Check')">
+            Reality Check
           </button>
-          <button class="btn primary" @click="handleModalUpdate('UpdateTaleTags', 'Update Tale Tags')">
+          <button class="btn primary" @click="handleModalUpdate('UpdateTaleTags', 'Update Tags')">
             Tags
           </button>
         </template>
@@ -121,7 +120,7 @@ async function handleModalUpdate(type: string, title: string) {
           </template>
 
           <template v-if="tale.status !== 'HiddenByAdmin' && tale.status !== 'HiddenByModeration'">
-            <router-link :to="`/insight/${tale.slug}`" class="btn secondary">
+            <router-link :to="`/tale/${tale.slug}`" class="btn secondary">
               Go To Page
             </router-link>
           </template>

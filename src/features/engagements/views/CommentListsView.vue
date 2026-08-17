@@ -1,135 +1,141 @@
 <script setup lang="ts"> 
-
-// --- IMPORTS ---
-import { ref, onMounted, watch, computed, onUnmounted } from 'vue' // 🛡️ Fix 2: Added missing 'watch' hook import
-import { useEngagementCommentsStore } from '../stores/EngagementCommentsStore.ts'; 
-import { useCommentListFilterStore } from '../stores/CommentListFilterStore.ts'; 
+import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
+import { useCommentListStore } from '../stores/CommentListStore'; 
+import { useCommentListFilterStore } from '../stores/CommentListFilterStore'; 
 import { useRouter, useRoute } from 'vue-router'
 import { APIError } from '@/api/apiTypes.ts'
 import CommentListComponent from '../components/CommentListComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import { useLoginHint } from '@/utils/authHelper'
+import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
 
-// --- INITIALIZE STORES ---
-const commentStore = useEngagementCommentsStore();
+// --- INITIALIZE STORES & ROUTER ---
+const commentStore = useCommentListStore();
 const commentFilterStore = useCommentListFilterStore();
 const router = useRouter()
 const route = useRoute()
 const modalStore = useModalStore()
 
-// --- DEFINE & INITIALIZE LOCAL VARIABLES ---
+// --- STATE ---
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 const wasCleaned = ref(false)
-
-// --- ROUTE OPTIONS ---
-const relationType = computed(() => route.params.relationType as string || '')
-const creatorUsername = computed(() => route.params.creatorUsername as string || '')
-
-const currentPath = encodeURIComponent(route.fullPath)
+const isAuthorized = ref<boolean>(false)
+const type = ref<string>('invalid');
 
 const apiUrl = ref('')
 const pageTitle = ref('')
 
-if (!relationType.value && !creatorUsername.value) {
-  apiUrl.value = 'api/comments'
-  pageTitle.value = ''
-  console.log('[CommentsViews]: relationType and creatorUsername null...');
-} else {
-  const type = relationType.value.toLowerCase()
-  if (!['votes', 'upvotes', 'saves'].includes(type)) {
-    router.push('/404')
-  } else {
-    apiUrl.value = creatorUsername.value
-      ? `api/comments/${creatorUsername.value}/${type}`
-      : `api/comments/my/${type}`
+const currentPath = computed(() => encodeURIComponent(route.fullPath))
+ const username = ref('')
+ 
 
-    pageTitle.value = creatorUsername.value
-      ? `${creatorUsername.value}'s ${relationType.value}`
-      : `My ${relationType.value}`
+// --- 1. DYNAMIC ROUTE RESOLVER ---
+// Evaluated every time the route path or params change
+function resolveRouteConfig() {
+ const relationType = (route.params.relationType as string) || ''
+ const creatorUsername = (route.params.creatorUsername as string) || ''
+ username.value = creatorUsername
+
+  if (!relationType && !creatorUsername) {
+    apiUrl.value = 'api/comments'
+    pageTitle.value = 'Browse Comments'
+    isAuthorized.value = false
+    commentFilterStore.setActiveType('comment', null) // Public Feed
+  } else {
+    type.value = relationType.toLowerCase()
+
+    if (!EngagementTypes.includes(type.value as RelationType)) {
+      router.push('/404')
+      return
+    }
+
+    // Is private list if viewing /my/... instead of /creatorUsername/...
+    isAuthorized.value = !creatorUsername
+
+    apiUrl.value = creatorUsername
+      ? `api/comments/${creatorUsername}/${type.value}`
+      : `api/comments/my/${type.value}`
+
+    pageTitle.value = creatorUsername
+      ? `${creatorUsername}'s ${relationType}`
+      : `My ${relationType}`
+
+    // Synchronize active type in filter store based on authorization state
+    commentFilterStore.setActiveType('comment', isAuthorized.value ? type.value : null)
   }
 }
 
-// --- DEFINE PAGE FUNCTIONS ---
-function redirectToLogin() {
-  router.push(`/login?returnUrl=${currentPath}`)
-}
-
-// --- DEFINE PAGE INITIALIZATION ---
+// --- 2. PAGE INITIALIZATION ---
 async function initPage() {
+  // Re-sync endpoint URLs & active types before initializing
+  resolveRouteConfig()
 
-  console.log('🚀 [Comment Lists View]: Presence verified via hint. Dispatching data fetch...')
+  console.log(`🚀 [Comment Lists View]: Fetching for path -> ${apiUrl.value}`)
 
-  // 1. Hydrate and check if the incoming URL string was pristine
+  // Hydrate and validate filter state
   const { isClean } = commentFilterStore.rehydrate(route.query);
 
-  // 2. 🛑 INTERCEPT TRASH: If parameters were stripped, update browser bar and halt!
   if (!isClean) {
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')
-    
-    wasCleaned.value  = true
+    wasCleaned.value = true
 
     await router.replace({
       path: route.path,
       query: commentFilterStore.getAsDictionary()
     })
-    
-    // Abort this execution flow completely! 
-    // The router update triggers your route.query watcher, handling the fetch smoothly.
     return
   }
 
-  // 1. Hydrate the Filter Store using the current active route parameters
-  //commentFilterStore.rehydrate(route.query);
-
-  // 2. Build the targeted API request endpoint string from those validated details
-  // 🛡️ Fix 4: Changed 'filterStore' to your actual variable 'commentFilterStore'
+  // Build clean API path with endpoint URL and active filters
   const cleanApiPath = commentFilterStore.buildApiPath(apiUrl.value);
 
-  // 3. Fetch from store
-  const { success, error } = await commentStore.loadComments(cleanApiPath)
+  // Set the base url for loadmore in list store
+  commentStore.setBaseRoute(apiUrl.value)
+
+  // Fetch data
+  isLoading.value = true
+  const { success, error } = await commentStore.loadComments(cleanApiPath, isAuthorized.value)
 
   if (!success) {
-    if (error) {
-    loadingError.value = error
-  }
-  else{
-    loadingError.value = new APIError(
-        500,
-        'Unknown Error!',
-        'Unknown error occured while retrieving comments. Refresh page and try again.'
-      );
-  }
+    loadingError.value = error || new APIError(
+      500,
+      'Unknown Error!',
+      'Unknown error occurred while retrieving comments. Refresh page and try again.'
+    );
   }
 
-  // No matter the result, stop loading
   isLoading.value = false
 
-
-  // 3. ⏳ Late-Binding Personal Layer Hydration (Runs seamlessly in background)
   if (success) {
     await commentStore.hydratePersonals(); 
   }
 }
 
-// --- MOUNT PAGE ---
+function redirectToLogin() {
+  router.push(`/login?returnUrl=${currentPath.value}`)
+}
+
+// --- MOUNT & WATCHERS ---
 onMounted(async () => {
-   await initPage();
+  await initPage();
 })
 
-// Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  initPage();
-}, { deep: true });
+// 🛡️ FIX: Watch fullPath instead of route.query so path transitions (/my/votes -> /comments) trigger re-fetch
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      loadingError.value = null
+      await initPage();
+    }
+  }
+);
 
-
-// inside your HomeView.vue
 onUnmounted(() => {
   commentStore.abort();
 });
-
 </script>
 
 <template>
@@ -159,7 +165,7 @@ onUnmounted(() => {
       <div class="shared__page-title">
         <h1>Comments</h1>
         <template v-if="pageTitle">
-          <p :class="{ at: creatorUsername }">
+          <p :class="{ at: username }">
             {{ pageTitle }}
           </p>
         </template>

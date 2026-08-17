@@ -31,3 +31,9 @@ export interface LoginRequest {
     username: string; 
     password: string; 
 }
+
+export interface LogoutRequest { 
+    closeAll: boolean; 
+    flushCache: boolean; 
+    type: number;
+}

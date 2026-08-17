@@ -90,7 +90,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -120,8 +123,11 @@ async function handleTagSubmission() {
  
     // Close down the active overlay panel instance securely
    //modalStore.pop()
-      setSuccess(tagFormData.value.name + ' was successfully added')
-tagFormData.value.name = ''
+    setSuccess(tagFormData.value.name + ' was successfully added')
+
+      tagFormData.value.name = ''
+
+      formSubmitted.value = false
   }
   
 }
@@ -197,11 +203,12 @@ currentTag.value = tagId
     </template>
     
    <template v-else>
-  <p class="warning">
+
+  <p class="shared__no-content">
       You have reached the limit of ten (10) tags per tale. To add a new tag, remove an existing one.
     </p>
-    </template>
 
+    </template>
 
     <template v-if="taleStore.activeTale?.tags && taleStore.activeTale.tags.length > 0">
       <form 
@@ -234,7 +241,8 @@ currentTag.value = tagId
     </template>
     
      <template v-else>
-  <p class="warning">
+
+  <p class="shared__no-content">
       You have not added any tag to your tale.
     </p>
     </template>

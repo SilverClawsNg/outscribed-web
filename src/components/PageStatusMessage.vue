@@ -6,6 +6,7 @@ import SvgIcons from '@/components/SvgIcons.vue'
 defineProps<{
   title?: string
   message?: string
+  isSuccess?: boolean
 }>()
 </script>
 
@@ -14,8 +15,18 @@ defineProps<{
   <div class="page-status-message-container">
 
     <div class="page-status-message">
-      
+
+      <template  v-if="isSuccess === true">
+
+       <SvgIcons name="check" />
+
+      </template>
+
+      <template  v-else>
+
        <SvgIcons name="broken-chain" />
+
+      </template>
 
       <h1 v-if="title">{{ title }}</h1>
       
@@ -34,6 +45,5 @@ defineProps<{
 </template>
 
 <style lang="less" scoped>
-/* Append the exact design rules from your page-status-message.less file here */
    @import "../assets/css/page-status-message.less";
 </style>

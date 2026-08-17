@@ -2,8 +2,7 @@
 import { ref, onMounted } from 'vue'
 
 defineProps<{ isLoading: boolean; timer: number; canResend: boolean }>()
-const emit = defineEmits<{ (e: 'verify', token: string): void; (e: 'resend'): void }>()
-
+const emit = defineEmits<{ (e: 'verify', token: string): void; (e: 'resend'): void}>()
 const inputs = ref<HTMLInputElement[]>([])
 const boxes = ref<string[]>(['', '', '', '', '', ''])
 

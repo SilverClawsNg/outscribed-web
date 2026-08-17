@@ -47,7 +47,6 @@ onBeforeMount(() => {
   formData.value.caption = taleStore.activeTale.photoCaption ?? ''
   photo.value = taleStore.activeTale.photo ?? null
   resetProgress()
-
 })
 
 
@@ -88,7 +87,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -179,8 +181,9 @@ function convertToBase64(file: File): Promise<string> {
  * 🚀 DISPATCH UNALTERED PAYLOAD TO MUTATION MONOLITH
  */
 async function handleFormSubmission() {
-  formSubmitted.value = true
 
+  formSubmitted.value = true
+  
   if (!isFormValid.value) return
 
   startLoading()
@@ -199,6 +202,7 @@ async function handleFormSubmission() {
   } else {
     modalStore.pop()
   }
+
 }
 
 </script>

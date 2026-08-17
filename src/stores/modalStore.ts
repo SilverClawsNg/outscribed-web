@@ -132,15 +132,19 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
   }
 
   function popAncestors(commentId: string): void {
+    console.log(`inside pop ancestors ${commentId}`)
+
   // 🎯 Clean, continuous rollback loop from the top of the stack
   while (modalStack.value.length > 0) {
-    const topIdx = modalStack.value.length - 1;
-    const top = modalStack.value[topIdx];
+    //const topIdx = modalStack.value.length - 1;
+    //const top = modalStack.value[topIdx];
+      const top = modalStack.value[0]
 
     if (!top) break;
 
     // The moment the active top layer matches our target context, we stop rolling back
     if (top.payload && top.payload.commentId === commentId) {
+
       break;
     }
 
@@ -148,7 +152,6 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
     remove(top);
   }
 }
-
 
   function isActiveComment(commentId: string): boolean {
     if (stackDepth.value === 0) return false
@@ -160,6 +163,7 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
    * Physical destruction and execution cleanup worker
    */
   function remove(modal: ModalInstance) {
+
     const index = modalStack.value.findIndex(m => m.id === modal.id)
     if (index !== -1) {
       // Resolve the parent's await thread loop task context assignment

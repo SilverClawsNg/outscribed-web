@@ -1,20 +1,64 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
+
 import { useContentCommentsFilterStore } from './ContentCommentsFilterStore.ts'
 import { APIError } from '@/api/apiTypes.ts'
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
-import type{CommentListDto, GetContentCommentsResponse, GetCommentThreadResponse, 
-    GetEngagementIdsResponse, LoadingCommentsResponse, 
-    LoadingCommentThreadResponse, SourceContentDto} from '../types/EngagementTypes.ts';
+import {initializeCommentPageListEngagement, 
+    type LoadingPageCommentsResponse,
+    type GetPageCommentsResponse, type CommentPageListDto, type GetFavoriteIdsResponse
+} from '../types/EngagementTypes.ts';
 import {initializeCommentListEngagement} from '../types/EngagementTypes.ts';
 import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
 import { useLoginHint } from '@/utils/authHelper'
+import { setStoredAnchor } from '@/utils/anchorStorage';
+import { useCommentListFilterStore } from './CommentListFilterStore.ts'
 
 export const useCommentListStore = defineStore('commentList', () => {
 
-  const isLoggedIn = useLoginHint()
+  const filterStore = useCommentListFilterStore()
+  
   let feedController: AbortController | null = null;
   let hydrateController: AbortController | null = null;
+
+  const isLoggedIn = useLoginHint()
+
+  // State
+    const comments = ref<CommentPageListDto[]>([]);
+
+    // 📥 Staging Queue: Holds references until the View explicitly triggers hydration
+  const awaitingHydration = ref<CommentPageListDto[]>([]);
+    
+    // Loading and Tracking flags matching your C# states
+    const isFetchingMore = ref<boolean>(false);
+    const hasNext = ref<boolean>(false);
+    const pointer = ref<string | null>('1');
+    const anchor = ref<string | null>(null);
+    const baseRoute = ref<string>('api/comments'); 
+    const loadMoreError = ref<APIError | null>(null)
+  const markAsAuthorized = ref(false)
+
+  
+  function resetState() {
+    comments.value = [];
+    pointer.value = '1';
+    hasNext.value = false;
+     anchor.value = null;
+     markAsAuthorized.value = false;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/comments';
+     isFetchingMore.value = false;
+     setBaseRoute;
+  }
+
+    
+  // Sets the target insight before a modal opens
+  function setBaseRoute(apiUrl: any) {
+    // We clone it using spread operator so the user doesn't alter 
+    // the background list until they actually hit 'Save'
+    baseRoute.value = apiUrl;
+  }
 
   // --- Core Actions ---
 
@@ -22,10 +66,14 @@ export const useCommentListStore = defineStore('commentList', () => {
    * 1. LoadComments (Initial setup for a Tale or Insight comment list)
    */
 
-  async function loadComments(apiPathWithFilters: string) : Promise<LoadingCommentsResponse>{
+  /**
+   * 1. LoadComments (Initial setup for a Tale or Insight comment list)
+   */
+
+  async function loadComments(apiPathWithFilters: string, isAuthorized: boolean) : Promise<LoadingPageCommentsResponse>{
   
       // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingCommentsResponse = {
+        const response: LoadingPageCommentsResponse = {
           success: false,
           comments: [],
           hasNext: false,
@@ -37,8 +85,9 @@ export const useCommentListStore = defineStore('commentList', () => {
     try {
 
       feedController = new AbortController();
+      markAsAuthorized.value = isAuthorized;
 
-      const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, true, {} as GetContentCommentsResponse, 
+      const outcome = await getAsync<GetPageCommentsResponse>(apiPathWithFilters, isAuthorized, {} as GetPageCommentsResponse, 
         feedController.signal);
 
      if (outcome.isFailure) {
@@ -46,13 +95,20 @@ export const useCommentListStore = defineStore('commentList', () => {
         return response;
       }
        
-      if (outcome.value && outcome.value.comments) {
+     if (outcome.isSuccess && outcome.value?.comments?.length) {
         response.hasNext = outcome.value.hasNext;
         response.pointer = outcome.value.pointer;
         response.anchor = outcome.value.anchor;
 
+           // Persist fresh anchor to local storage for private lists
+            if (response.anchor && filterStore.activeType) {
+                        setStoredAnchor(filterStore.activeTypeLabel, filterStore.activeType, response.anchor);
+                      }   
         // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      response.comments = outcome.value.comments.map((item: any) => initializeCommentListEngagement(item));
+      const freshItems = outcome.value.comments.map((item: any) => initializeCommentPageListEngagement(item));
+
+      comments.value.push(...freshItems);
+     awaitingHydration.value.push(...freshItems);
 
       console.log('--- Vue State Snapshot inside loading contents store ---', JSON.parse(JSON.stringify(response.comments)));
 
@@ -67,13 +123,24 @@ export const useCommentListStore = defineStore('commentList', () => {
     return response;
   }
   }
+
+async function loadMoreComments() {
+  // 1. Load structural batch into UI array stream
+  await executeLoadMoreComments();
+
+  // 2. Clear out the new batch references immediately after the scroll render cycle
+  if (isLoggedIn.value) {
+    await hydratePersonals(); 
+  }
+}
+
   /**
    * 2. LoadMoreComments (Infinite scroll continuation pipeline)
    */
-  async function loadMoreComments(apiPathWithFilters: string) : Promise<LoadingCommentsResponse> {
+  async function executeLoadMoreComments() : Promise<LoadingPageCommentsResponse> {
 
       // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingCommentsResponse = {
+        const response: LoadingPageCommentsResponse = {
           success: false,
           comments: [],
           hasNext: false,
@@ -87,7 +154,10 @@ export const useCommentListStore = defineStore('commentList', () => {
   // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
                
-        const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, true, {} as GetContentCommentsResponse,
+
+      const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value)
+              
+        const outcome = await getAsync<GetPageCommentsResponse>(nextPageUrl, markAsAuthorized.value, {} as GetPageCommentsResponse,
             feedController.signal
         )
 
@@ -98,7 +168,7 @@ export const useCommentListStore = defineStore('commentList', () => {
 
         
     // Consideration 2: Reconcile updates if data was retrieved
-        if (outcome.value && outcome.value.comments) {
+       if (outcome.isSuccess && outcome.value?.comments?.length) {
           // Reconcile updates against incoming block (handles slower message brokers)
           
           // Commit clean data to store state
@@ -106,8 +176,12 @@ export const useCommentListStore = defineStore('commentList', () => {
           response.pointer = outcome.value.pointer;
 
             // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      response.comments = outcome.value.comments.map((item: any) => initializeCommentListEngagement(item));
+      const freshItems = outcome.value.comments.map((item: any) => initializeCommentPageListEngagement(item));
 
+        comments.value.push(...freshItems);
+      
+      // 📌 Append the new batch to the staging queue
+      awaitingHydration.value.push(...freshItems);
 
         } else{ // stop infinite scrolling by setting has next to false
            response.hasNext = false
@@ -125,138 +199,32 @@ export const useCommentListStore = defineStore('commentList', () => {
   } 
   }
 
-  /**
-   * 3. LoadThread (Used when clicking external notification paths outside content page context)
-   */
-  async function loadThread(apiPath: string): Promise<LoadingCommentThreadResponse> {
 
-   
-      // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingCommentThreadResponse = {
-          success: false,
-          ancestors: [],
-          source: null,
-          focus: null,
-          error: null
-        };
-        
-
-    try {
-
-         // Spawn a fresh controller instance for this specific execution pass
-        feedController = new AbortController();
-
-     const outcome = await getAsync<GetCommentThreadResponse>(apiPath, true, {} as GetCommentThreadResponse,
-            feedController.signal
-        )
-        
-          if (outcome.isFailure) {
-      response.error = outcome.error || null
-        return response;
-      }
-
-        // Consideration 2: Reconcile updates if data was retrieved
-        if (outcome.value) {
-    
-          // Commit clean data to store state
-          //activeThread.value = outcome.value;
-
-          
-        // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      response.ancestors = outcome.value.ancestors.map((item: any) => initializeCommentListEngagement(item));
-      response.focus = initializeCommentListEngagement(outcome.value.focus)
-      response.source = outcome.value.source
-
-        // 🎯 Execute the layout assembly loop completely on the client side
-            buildAncestorChains(response.source, response.focus, response.ancestors);
-
-                //const batchToHydrate = [activeThread.value.focus, ...activeThread.value.ancestors];
-
-                //await hydratePersonals(batchToHydrate);
-
-                response.success = true
-
-        // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-        return response;
-
-    } 
-    
-      
-    // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-    response.error = new APIError(
-        404,
-        '404: Not Fount!',
-        'We could not find any thread with the provided id.'
-      );
-    return response;
-
-
-    }catch (err: any) {
-    // Fail-safe catch-all wrapper
-    response.error = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception')
-    return response;
-  }
   
-  }
-
   /**
- * Walks down a flat list of ancestors chronologically from the root 
- * down to the focus comment, building individual ancestry arrays for each node.
- */
-function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, ancestors: CommentListDto[]) {
-    
-  if (ancestors.length === 0) {
-   // If there are zero ancestors, the focus comment is the root
-      focus.ancestors = [];
-      focus.title = source.title;
-    return;
+   * 💧 Parameterless Hydration (Self-Draining)
+   */
+  async function hydratePersonals(): Promise<void> {
+    if (awaitingHydration.value.length === 0) return;
+
+    // 🛡️ Lock-free Snapshot: Copy references and clear immediately to 
+    // prevent rapid subsequent scroll ticks from causing double-hydration.
+    const itemsToHydrate = [...awaitingHydration.value];
+    awaitingHydration.value = [];
+
+    // Run the actual network metrics update over the isolated snapshot array
+    await executeHydration(itemsToHydrate);
   }
-
-  const sourceTitle = source.title;
-  const flatAncestors = ancestors;
-
-  // Step 1: Find the absolute root ancestor (where parentId is null or empty)
-  let current = flatAncestors.find(c => !c.parentId);
-
-  if (!current) return;
-
-  const runningChain: CommentListDto[] = [];
-
-  // Step 2: Walk sequentially down the parent -> child tree links
-  while (current) {
-    // Assign a shallow clone array of the ancestry history up to this point
-    current.ancestors = [...runningChain];
-    current.title = sourceTitle;
-
-    // Push the current node into the timeline history list for the next iteration
-    runningChain.push(current);
-
-    // Find the immediate child whose parentId points to this current comment's ID
-    const nextChildId: string = current.commentId;
-    current = flatAncestors.find(c => c.parentId === nextChildId);
-  }
-
-  // Step 3: Assign the complete history lineage path straight onto the Focus target
-  focus.ancestors = [...runningChain];
-  focus.title = sourceTitle;
-}
 
   /**
    * 4. HydratePersonals (The "Private Truth" authentication state loop with backoff resilience)
    */
-  async function hydratePersonals(currentBatch: CommentListDto[]) {
+  async function executeHydration(currentBatch: CommentPageListDto[]) {
   
-    // 1. Guard Clause: Skip entirely if anonymous or batch package is empty
-    if (!isLoggedIn || currentBatch.length === 0) {
-      activateEngagementButtons(currentBatch);
-      console.log('[HydratePersonals]: Not logged in or empty batch.');
-      return;
-    }
-
-    const maxRetries = 2; // Loops: 0, 1, 2 (Total 3 attempts)
+     const maxRetries = 2; // Loops: 0, 1, 2 (Total 3 attempts)
     const commentIds = currentBatch.map(x => x.commentId);
 
-    for (let i = 0; i <= maxRetries; i++) {
+ for (let i = 0; i <= maxRetries; i++) {
 
       try {
 
@@ -264,27 +232,20 @@ function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, an
         hydrateController = new AbortController();
 
        // Replace with your actual Axios/Fetch HTTP abstraction layout instance
-        const outcome = await postAsync<GetEngagementIdsResponse>('api/engagements/ids', { contentIds: commentIds }, true,
+        const outcome = await postAsync<GetFavoriteIdsResponse>('api/favorites/ids', { contentIds: commentIds }, true,
           hydrateController.signal
         );
 
         if (outcome.isSuccess) {
 
           const favSet = new Set<string>(outcome.value?.favoriteIds || []);
-          const flagSet = new Set<string>(outcome.value?.flagIds || []);
-          const upSet = new Set<string>(outcome.value?.upvoteIds || []);
-          const downSet = new Set<string>(outcome.value?.downvoteIds || []);
 
           currentBatch.forEach(comment => {
           if(comment.engagement){
 
             comment.engagement.isFavorite = favSet.has(comment.commentId);
-            comment.engagement.hasFlagged = flagSet.has(comment.commentId);
-            
-            if (upSet.has(comment.commentId)) comment.engagement.myVote = 'Upvote';
-            else if (downSet.has(comment.commentId)) comment.engagement.myVote = 'Downvote';
-            else comment.engagement.myVote = 'None';
-}
+        
+          }
 
           });
 
@@ -323,7 +284,7 @@ function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, an
     return statusCode >= 500 || statusCode === 408 || statusCode === 429;
   }
 
-  function activateEngagementButtons(currentBatch: CommentListDto[]) {
+  function activateEngagementButtons(currentBatch: CommentPageListDto[]) {
 
           console.log('[activateEngagementButtons]: Starting engagement activation.');
 
@@ -339,9 +300,7 @@ function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, an
 // 📋 Flatten and snapshot the live state to see if hydration stuck
   //console.log('--- Vue State Snapshot inside activateEngagementButtons ---', JSON.parse(JSON.stringify(currentBatch)));
 
-
   }
-
 
    function abort() {
     if (feedController) {
@@ -358,12 +317,8 @@ function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, an
 
   return {
    
-    hydratePersonals,
-    activateEngagementButtons,
-    loadComments,
-    loadMoreComments,
-    loadThread,
-       abort
+  comments, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute,
+    hydratePersonals, activateEngagementButtons, setBaseRoute, loadComments, loadMoreComments, resetState, abort
 
   };
 });

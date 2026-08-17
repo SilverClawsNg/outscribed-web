@@ -5,6 +5,7 @@ import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useLoginHint } from '@/utils/authHelper'
 
+
 // 1. Setup your services/stores
 const modalStore = useModalStore()
 const isLoggedIn = useLoginHint()
@@ -37,6 +38,7 @@ const CloseMenu = () => {
   currentState.value = 'Neutral'
   updateParent()
 }
+
 
 const TogglePublicMenu = () => {
   currentState.value = currentState.value === 'Public' ? 'Neutral' : 'Public'

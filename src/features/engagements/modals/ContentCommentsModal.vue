@@ -145,7 +145,6 @@ const apiPath = commentFilterStore.buildApiPath(baseRoute.value, pointer.value, 
 
   if(response.comments && response.comments.length !== 0){
 
-
           // Filter duplicates already caught by state or top navigation creations
           const existingIds = new HashSetOrSet(comments.value.map(t => t.commentId));
 

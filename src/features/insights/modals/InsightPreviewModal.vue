@@ -36,7 +36,7 @@ onBeforeMount(() => {
 
   <template v-if="unavailable">
     <PageStatusMessage 
-      title="204: Content Unavailable!" 
+      title="Content Unavailable!" 
       message="Unable to load current insight details. Refresh page and try again">
     </PageStatusMessage>
   </template>
@@ -126,7 +126,7 @@ onBeforeMount(() => {
           — {{ calculateReadingTime(insightStore.activeInsight!.detail) }} Minutes Read
         </section>
 
-        <section class="content-details__text" v-html="insightStore.activeInsight!.detail"></section>
+        <section class="shared__rich-text" v-html="insightStore.activeInsight!.detail"></section>
         </template>
          <template v-else>
              <section class="content-details__reading-time">
@@ -175,4 +175,5 @@ onBeforeMount(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/content-details.less";
+@import "@/assets/css/rich-text.less";
 </style>

@@ -8,11 +8,13 @@ import ProfileComponent from '../components/ProfileComponent.vue'
 import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
 import { APIError } from '@/api/apiTypes.ts'
 import { useLoginHint } from '@/utils/authHelper'
+import { useModalStore } from '@/stores/modalStore';
 
 // --- INITIALIZE STORES ---
 const router = useRouter()
 const route = useRoute()
 const profileStore = useProfileStore()
+const modalStore = useModalStore();
 
 // --- DEFINE & INITALIZE LOCAL VARIABLES ---
 const loadingError = ref<APIError | null>(null)
@@ -82,6 +84,11 @@ onUnmounted(() => {
         <template v-if="loadingError.status === 401" #actions>
           <button class="btn primary" @click="redirectToLogin">Login</button>
         </template>
+          <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
       </PageStatusMessage>
     </template>
 
@@ -91,7 +98,7 @@ onUnmounted(() => {
 
     <template v-else>
      <PageStatusMessage
-         title='000: Error'
+         title='Unknown Error'
         message="An unknown error occured loading profile. Refresh page and try again.">
       </PageStatusMessage>
     </template>

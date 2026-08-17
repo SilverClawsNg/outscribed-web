@@ -23,3 +23,10 @@ export interface AskQuestionRequest {
   question: string;
   emailAddress: string;
 }
+
+export interface FaqItem {
+  id: number;
+  category: string;
+  question: string;
+  answer: string;
+}

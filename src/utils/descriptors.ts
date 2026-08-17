@@ -1,26 +1,23 @@
 import type { ContentType, ActivityType, Category, AccountStatus, ContactType, Country, TaleStatus, InsightStatus,
 SortType, GeneralSortType, VoteType, CommentStatus, LimitedContentType, FlagType
  } from '@/utils/enumHelper'
-
   
   export const VoteTypeDescriptions: Record<VoteType, string> = {
   Upvote: 'Upvote',
   Downvote: 'Downvote',
   None: 'None'
- 
 } as const;
 
   export const SortTypeDescriptions: Record<SortType, string> = {
   MostRecent: 'Newest',
   LeastRecent: 'Oldest',
   MostViewed: 'By Views',
-  MostCommented: 'By Comemnts',
- MostFlagged: 'By Flags',
-    MostUpvoted: 'By Votes',
+  MostCommented: 'By Comments/Replies',
+  MostFlagged: 'By Flags',
+  MostUpvoted: 'By Votes',
   MostFavorited: 'By Saves',
-   MostShared: 'By Shares'
+  MostShared: 'By Shares'
 } as const;
-
   
   export const GeneralSortTypeDescriptions: Record<GeneralSortType, string> = {
   MostRecent: 'Newest',
@@ -53,9 +50,9 @@ export const CommentStatusClass: Record<CommentStatus, string> = {
   HiddenByModeration: 'Hidden',
   HiddenByAdmin: 'Suspended',
   CertifiedByAdmin: 'Certified',
-  ArchivedByAdmin: 'Archived',
-  ActiveToArchivedByCreator: 'Archived',
-  CertifiedToArchivedByCreator: 'Archived'
+  ArchivedByAdmin: 'Archived By Admin',
+  ActiveToArchivedByCreator: 'Active -> Archived By Me',
+  CertifiedToArchivedByCreator: 'Certified -> Archived By me'
 } as const;
 
   export const TaleStatusDescriptions: Record<TaleStatus, string> = {
@@ -64,8 +61,8 @@ export const CommentStatusClass: Record<CommentStatus, string> = {
   HiddenByModeration: 'Hidden',
   HiddenByAdmin: 'Suspended',
   CertifiedByAdmin: 'Certified',
-  ArchivedByAdmin: 'Archived',
-  LaunchedToArchivedByCreator: 'Archived',
+  ArchivedByAdmin: 'Archived By Admin',
+  LaunchedToArchivedByCreator: 'Active -> Archived By Me',
   CertifiedToArchivedByCreator: 'Archived'
 } as const;
 
@@ -75,9 +72,9 @@ export const CommentStatusClass: Record<CommentStatus, string> = {
   HiddenByModeration: 'Hidden',
   HiddenByAdmin: 'Suspended',
   CertifiedByAdmin: 'Certified',
-  ArchivedByAdmin: 'Archived',
-  LaunchedToArchivedByCreator: 'Archived',
-  CertifiedToArchivedByCreator: 'Archived'
+  ArchivedByAdmin: 'Archived By Admin',
+  LaunchedToArchivedByCreator: 'Active -> Archived By Me',
+  CertifiedToArchivedByCreator: 'Certified -> Archived By me'
 } as const;
 
 export const InsightStatusClass: Record<InsightStatus, string> = {
@@ -85,10 +82,10 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   LaunchedByCreator: 'info',
   HiddenByModeration: 'warning',
   HiddenByAdmin: 'warning',
-   CertifiedByAdmin: 'info',
-    ArchivedByAdmin: 'danger',
+  CertifiedByAdmin: 'info',
+  ArchivedByAdmin: 'danger',
   LaunchedToArchivedByCreator: 'danger',
-   CertifiedToArchivedByCreator: 'danger'
+  CertifiedToArchivedByCreator: 'danger'
 } as const;
 
 
@@ -96,7 +93,8 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   Email: 'Email',
   Facebook: 'Facebook',
   Twitter: 'Twitter',
-  LinkedIn: 'LinkedIn'
+  LinkedIn: 'LinkedIn',
+  CopyLink: 'Copy Link'
 } as const;
 
 
@@ -104,21 +102,25 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   Active: 'Active',
   HiddenByModeration: 'Hidden',
   SuspendedByAdmin: 'Suspended',
-  BannedByAdmin: 'Banned'
+  BannedByAdmin: 'Banned',
+  SelfArchived: 'Self Archived'
 } as const;
 
   export const CategoryDescriptions: Record<Category, string> = {
+  Tributuary: 'Tributuary',
   PoliticsGovernance: 'Politics & Government',
-  Sports: 'Sports',
-  FashionEntertainment: 'Fashion & Entertainment',
+  SportsGaming: 'Sports & Gaming',
+  ScienceTechnology: 'Science & Technology',
   Education: 'Education',
-  ScienceTechnology : 'Science & Technology',
-  BusinessEconomy : 'Business & Ecconomy',
+  BusinessEconomy : 'Business & Economy',
+  ArtsEntertainment : 'Arts & Entertainment',
   MedicineHealthcare: 'Medicine & Healthcare',
   LawOrder: 'Law & Order',
-  HumanInterestLifestyle: 'Human Interest & Lifestyle',
+  SocietalNormsValues: 'Societal Norms & Values',
   HistoryCulture: 'History & Culture',
-  TheEnvironment : 'The Environment',
+  EnvironmentClimate : 'Environment & Climate',
+  ReligionSpirituality: 'Religion & Spirituality',
+  FamilyRelationships: 'Family & Relationships',
   Miscellaneous : 'Miscellaneous'
 } as const;
 
@@ -128,7 +130,8 @@ export const ContentTypeDescriptions: Record<ContentType, string> = {
   Insight: 'Insights',
   Comment: 'Comments',
   Authoring : 'Authoring',
-  Role : 'Roles'
+  Role : 'Roles',
+  Engagement: 'Engagements'
 } as const;
 
 
@@ -148,7 +151,6 @@ export const FlagTypeDescriptions: Record<FlagType, string> = {
   ChildAbuse: 'Promotes Abuse of Children'
 } as const;
 
-
 export const ActivityTypeDescriptions: Record<ActivityType, string> = {
  // Account
    CreatedAccount_Account : 'Created Account',
@@ -166,6 +168,9 @@ export const ActivityTypeDescriptions: Record<ActivityType, string> = {
    AccountModerated_Account : 'Account Community Suspended',
    ModerationApplied_Account : 'Modeartion Applied',
    AccountMilestoned_Account : 'Milestone Reached',
+   AccountSelfArchived_Account: 'Account Self Archived',
+   AccountSelfUnarchived_Account: 'Account Self Unarchived',
+    AccountSuspensionAppealed_Account: 'Account Suspension Appealed',
 
   // Role
    RoleAssigned_Role : 'Role Assigned',
@@ -189,7 +194,7 @@ export const ActivityTypeDescriptions: Record<ActivityType, string> = {
    TaleSummaryUpdated_Tale : 'Tale Sumamry Updated',
    TaleDetailUpdated_Tale : 'Tale Details Updated',
    TaleCountryUpdated_Tale : 'Tale Country Updated',
-   TaleWatchlistUpdated_Tale : 'Tale Watchlist Updated',
+   TaleRealityCheckUpdated_Tale : 'Tale Watchlist Updated',
    TalePhotoUpdated_Tale : 'Tale Photo Updated',
    TaleSuspended_Tale : 'Tale Admin Suspended',
    TaleModerated_Tale : 'Tale Community Suspended',
@@ -221,11 +226,11 @@ export const ActivityTypeDescriptions: Record<ActivityType, string> = {
    InsightSuspended_Insight : 'Insight Admin Suspended',
    InsightModerated_Insight : 'Insight Community Suspended',
    InsightMilestoned_Insight : 'Insight Milestoned',
+   InsightHasEngagement_Insight: 'Insight Engaged',
 
   // Comment
    Commented_Comment : 'Commented',
    Replied_Comment : 'Replied',
-   CommentReplied_Comment : 'Comment Replied',
    CommentSelfDeleted_Comment : 'Comment Deleted',
    CommentSelfArchived_Comment : 'Comment Self Archived',
    CommentSuspended_Comment : 'Comment Admin Suspended',
@@ -234,13 +239,11 @@ export const ActivityTypeDescriptions: Record<ActivityType, string> = {
    CommentCertified_Comment : 'Comment Certified',
    CommentAddendumUpdated_Comment : 'Comment Addendum Updated',
    CommentUpdated_Comment : 'Comment Updated',
-   ReplySelfDeleted_Comment : 'Response Deleted',
    CommentMilestoned_Comment : 'Comment Milestoned',
+   CommentHasEngagement_Comment: 'Comment Engaged',
 
   // Engagement
    ContentSavedToFavorites_Engagement : 'Content Saved To Favorites',
-   ContentRemovedFromFavorites_Engagement : 'Content Removed From Favorites',
-   ContentRestoredToFavorites_Engagement : 'Content Restored To Favorites',
    ContentFlagged_Engagement : 'Content Flagged',
    ContentShared_Engagement : 'Content Shared',
    ContentUpvoted_Engagement : 'Content Upvoted',

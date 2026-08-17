@@ -5,7 +5,7 @@ import { ref, onBeforeMount, watch, computed } from 'vue'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
 import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
-import type { UpdateWatchlistRequest } from '../types/TalesTypes'
+import type { UpdateRealityCheckRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
 
 // --- INITIALIZE STORES ---
@@ -13,7 +13,7 @@ const taleStore = useTaleDraftStore()
 const modalStore = useModalStore()
 
 // --- INITIALIZE FORM DATA FROM STORE ---
-const formData = ref<UpdateWatchlistRequest>({
+const formData = ref<UpdateRealityCheckRequest>({
    taleId: '',
    title: '',
    summary: '',
@@ -41,10 +41,10 @@ onBeforeMount(() => {
 
  // --- INITIALIZE FORM DATA FROM STORE ---
   formData.value.taleId = taleStore.activeTale.taleId
-  formData.value.title = taleStore.activeTale.watchlistTitle ?? ''
-  formData.value.summary = taleStore.activeTale.watchlistSummary ?? ''
-  formData.value.source = taleStore.activeTale.watchlistSource ?? ''
-  formData.value.sourceUrl = taleStore.activeTale.watchlistUrl ?? ''
+  formData.value.title = taleStore.activeTale.realityCheckTitle ?? ''
+  formData.value.summary = taleStore.activeTale.realityCheckSummary ?? ''
+  formData.value.source = taleStore.activeTale.realityCheckSource ?? ''
+  formData.value.sourceUrl = taleStore.activeTale.realityCheckUrl ?? ''
   resetProgress()
 })
 
@@ -73,7 +73,7 @@ const urlText = formData.value.sourceUrl || '';
       : '',
 
        summary: summaryText === '' || summaryText.length < 8 || summaryText.length > 512
-      ? 'Summary must be between 8 and 128 characters'
+      ? 'Summary must be between 8 and 512 characters'
       : '',
 
        source: sourceText === '' || sourceText.length < 2 || sourceText.length > 36
@@ -106,7 +106,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -124,7 +127,7 @@ async function handleFormSubmission() {
 
   startLoading()
 
- const { success, error } = await taleStore.updateTaleWatchlist(formData.value!)
+ const { success, error } = await taleStore.updateTaleRealityCheck(formData.value!)
 
   if(!success){
 

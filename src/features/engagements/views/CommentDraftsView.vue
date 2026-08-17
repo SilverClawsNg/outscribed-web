@@ -89,6 +89,7 @@ onMounted(async () => {
 
 // Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
 watch(() => route.query, () => {
+  loadingError.value = null
   initPage();
 }, { deep: true });
 
@@ -125,8 +126,8 @@ onUnmounted(() => {
    <template v-else>
    
       <div class="shared__page-title">
-        <h1>Comment Drafts</h1>
-        <button class="btn primary" @click="modalStore.push('CommentDraftFilter', 'Filter Drafts')">Filter</button>
+        <h1>My Comments</h1>
+        <button class="btn primary" @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">Filter</button>
       </div>
 
       <template v-if="wasCleaned">
@@ -134,7 +135,7 @@ onUnmounted(() => {
        <span class="icon">⚠️</span>
       <p>
       Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('CommentDraftFilter', 'Filter Drafts')">filter</button> link to filter correctly.
+      <button @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">filter</button> link to filter correctly.
       </p>
       
      </div>

@@ -88,7 +88,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }
@@ -119,7 +122,10 @@ async function handleTagSubmission() {
     // Close down the active overlay panel instance securely
    //modalStore.pop()
       setSuccess(tagFormData.value.name + ' was successfully added')
-tagFormData.value.name = ''
+
+      tagFormData.value.name = ''
+
+      formSubmitted.value = false
   }
   
 }
@@ -193,7 +199,7 @@ currentTag.value = tagId
       </form>
     </template>
     <template v-else>
-  <p class="warning">
+  <p class="shared__no-content">
       You have reached the limit of ten (10) tags per insight. To add a new tag, remove an existing one.
     </p>
     </template>
@@ -229,7 +235,7 @@ currentTag.value = tagId
     </template>
     
      <template v-else>
-  <p class="warning">
+  <p class="shared__no-content">
       You have not added any tag to your insight.
     </p>
     </template>

@@ -5,8 +5,8 @@ import { getAsync } from '@/api/apiGetServices'
 import { postAsync } from '@/api/apiPostServices'
 
 import { type GetMyProfileResponse } from '@/features/identity/types/IdentityTypes'
-import { type ContactType } from '@/utils/enumHelper.ts'
-import type { ContactDto, UpdateProfileRequest, ChangePasswordRequest, UpdatePhotoRequest } from '../types/IdentityTypes.ts'
+import { type AccountStatus, type ContactType } from '@/utils/enumHelper.ts'
+import type { ContactDto, UpdateProfileRequest, ChangePasswordRequest, UpdatePhotoRequest, ArchiveProfileRequest } from '../types/IdentityTypes.ts'
 import { APIError } from '@/api/apiTypes.ts'
 
 export const useProfileStore = defineStore('profile', () => {
@@ -83,7 +83,6 @@ try{
 
   }
 
-
   /**
    * 📸 COMMAND: Upload and change user's display avatar
    */
@@ -122,41 +121,51 @@ try{
   /**
    * 📸 COMMAND: Upload and change user's display avatar
    */
-  async function updateContactState(newTitle: string) {
-
-const formData = {
+ async function updateContactState(newTitle: string) {
+  const formData = {
     title: newTitle,
     contactType: activeContactType.value
   }
-    const outcome = await postAsync<{ photoUrl: string }>('/api/contacts/update', formData,  true)
 
- if (outcome.isFailure) {
-      return { success: false, error: outcome.error || null }
+  const outcome = await postAsync<{ photoUrl: string }>('/api/contacts/update', formData, true)
+
+  if (outcome.isFailure) {
+    return { success: false, error: outcome.error || null }
+  }
+
+  if (profile.value) {
+    // Ensure contacts array exists
+    if (!profile.value.contacts) {
+      profile.value.contacts = []
     }
 
-  if(profile.value && activeContactDto.value && newTitle){
+    // Check if the contact already exists in the array
+    const existingContact = profile.value.contacts.find(
+      c => c.type === activeContactType.value
+    )
 
-      if (activeContactDto) {
-        activeContactDto.value.title = newTitle
-      } else {
-        profile.value.contacts.push({ 
-          type: activeContactType.value, 
-          title: newTitle 
-        } as ContactDto)
-      }
-
+    if (existingContact) {
+      // Update existing contact
+      existingContact.title = newTitle
+    } else if (newTitle) {
+      // Add new contact if it doesn't already exist
+      profile.value.contacts.push({
+        type: activeContactType.value,
+        title: newTitle
+      } as ContactDto)
+    }
   }
 
-      return { success: true, error: null }
-  }
+  return { success: true, error: null }
+}
 
 
   /**
    * 📸 COMMAND: Upload and change user's display avatar
    */
-  async function UpdateProfileState(formData: UpdateProfileRequest) {
+  async function updateProfileState(formData: UpdateProfileRequest) {
 
-    const outcome = await postAsync<{ photoUrl: string }>('/api/profile/update', formData,  true)
+    const outcome = await postAsync<{ photoUrl: string }>('/api/profiles/update', formData,  true)
 
  if (outcome.isFailure) {
       return { success: false, error: outcome.error || null }
@@ -180,6 +189,72 @@ const formData = {
   }
 
       return { success: true, error: null }
+  }
+
+  
+  /**
+   * 📸 COMMAND: Archive profile
+   */
+  async function archiveProfile(formData: ArchiveProfileRequest) {
+
+    const outcome = await postAsync('/api/accounts/user/archive', formData,  true)
+
+    if (outcome.isFailure) {
+      return { success: false, error: outcome.error || null }
+    }
+
+    if(profile.value){
+      profile.value.status = 'SelfArchived'
+    }
+
+      return { success: true, error: null }
+  }
+
+  /**
+   * 📸 COMMAND: Unarchive profile
+   */
+  async function unarchiveProfile(formData: ArchiveProfileRequest) {
+
+    const outcome = await postAsync('/api/accounts/user/unarchive', formData,  true)
+
+    if (outcome.isFailure) {
+      return { success: false, error: outcome.error || null }
+    }
+
+    if(profile.value){
+      profile.value.status = 'Active'
+    }
+
+      return { success: true, error: null }
+  }
+
+  
+  /**
+   * 📸 COMMAND: Appeal suspension
+   */
+  async function appealSuspension(formData: ArchiveProfileRequest) {
+
+    const outcome = await postAsync('/api/accounts/user/appeal', formData,  true)
+
+    if (outcome.isFailure) {
+      return { success: false, error: outcome.error || null }
+    }
+
+      return { success: true, error: null }
+  }
+
+  /**
+   * 📸 COMMAND: Get account status
+   */
+  async function getAccountStatus() {
+
+    const outcome = await getAsync<{status: AccountStatus}>('/api/account/status',  true)
+
+    if (outcome.isFailure) {
+      return { error: outcome.error || null, status: null }
+    }
+
+      return { error: null, status: outcome.value?.status }
   }
 
 
@@ -243,8 +318,12 @@ const statusClass = computed(() => {
     loadMyProfile,
     uploadProfilePhoto,
     updateContactState,
-    UpdateProfileState,
+    updateProfileState,
     setActiveContact,
+    archiveProfile,
+    getAccountStatus,
+    appealSuspension,
+    unarchiveProfile,
     clearActiveContext
   }
 })

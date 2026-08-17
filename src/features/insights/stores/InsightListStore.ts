@@ -6,6 +6,7 @@ import {type GetFavoriteIdsResponse } from '@/features/engagements/types/Engagem
 import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
 import { APIError } from '@/api/apiTypes.ts'
 import { useInsightListFilterStore } from './InsightListFilterStore.ts'
+import { setStoredAnchor } from '@/utils/anchorStorage';
 
 import {type InsightListDto, type GetInsightListResponse, initializeInsightListEngagement} from '../types/InsightsTypes.ts';
 import { useLoginHint } from '@/utils/authHelper'
@@ -32,6 +33,20 @@ export const useInsightListStore = defineStore('insightList', () => {
   const anchor = ref<string | null>(null);
   const baseRoute = ref<string>('api/insights'); 
   const loadMoreError = ref<APIError | null>(null)
+  const markAsAuthorized = ref(false)
+
+  
+  function resetState() {
+    insights.value = [];
+    pointer.value = '1';
+    hasNext.value = false;
+     anchor.value = null;
+       markAsAuthorized.value = false;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/insights';
+     isFetchingMore.value = false;setBaseRoute;
+  }
+
 
   // 🔒 Keep the controller private/local to this store context
   let feedController: AbortController | null = null;
@@ -50,15 +65,16 @@ export const useInsightListStore = defineStore('insightList', () => {
   }
 
 // 1. Initial Load Path
-async function loadInsights(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+async function loadInsights(apiPathWithFilters: string, isAuthorized: boolean): Promise<{ success: boolean; error: APIError | null }> {
 
   try {
 
       // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
+        markAsAuthorized.value = isAuthorized;
 
     // Note: Assuming getAsync is part of your API client layer
-    const outcome = await getAsync<GetInsightListResponse>(apiPathWithFilters, true, {} as GetInsightListResponse,
+    const outcome = await getAsync<GetInsightListResponse>(apiPathWithFilters, isAuthorized, {} as GetInsightListResponse,
       feedController.signal
     );
 
@@ -74,6 +90,11 @@ async function loadInsights(apiPathWithFilters: string): Promise<{ success: bool
       hasNext.value = outcome.value.hasNext;
       pointer.value = outcome.value.pointer;
       anchor.value = outcome.value.anchor;
+
+       // Persist fresh anchor to local storage for private lists
+    if (anchor.value && filterStore.activeType) {
+                setStoredAnchor(filterStore.activeTypeLabel, filterStore.activeType, anchor.value);
+              }          
 
 // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
       const freshItems = outcome.value.insights.map((item: any) => initializeInsightListEngagement(item));
@@ -124,7 +145,7 @@ async function loadMoreInsights() {
 
         const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value)
 
-        const outcome = await getAsync<GetInsightListResponse>(nextPageUrl, true, {} as GetInsightListResponse,
+        const outcome = await getAsync<GetInsightListResponse>(nextPageUrl, markAsAuthorized.value, {} as GetInsightListResponse,
           feedController.signal
         )
 
@@ -178,13 +199,6 @@ async function loadMoreInsights() {
 
   }
  
-  function resetState() {
-    insights.value = [];
-    pointer.value = '1';
-    hasNext.value = false;
-     anchor.value = null;
-  }
-
   
   /**
    * 💧 Parameterless Hydration (Self-Draining)

@@ -123,6 +123,7 @@ onMounted(async () => {
 
 // Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
 watch(() => route.query, () => {
+  loadingError.value = null
   initPage();
 }, { deep: true });
 

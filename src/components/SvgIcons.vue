@@ -3,7 +3,7 @@
 defineProps<{
   name: 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain' | 'padlock' | 'bookmark' | 'upvote'
   | 'downvote' | 'share' | 'facebook' | 'twitter' | 'linkedin' | 'email' | 'placeholder' | 'back-arrow'  | 'globe' | 'tag'
-  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats'
+  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive'
   size?: number
 }>()
 </script>
@@ -343,5 +343,39 @@ defineProps<{
   <rect x="11" y="10" width="3" height="11"/>
   <rect x="16" y="6" width="3" height="15"/>
 </svg>
+
+<svg 
+    v-else-if="name === 'check'" 
+    :width="size || 20" 
+    :height="size || 20" 
+    viewBox="0 0 32 32" 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="1" 
+    v-bind="$attrs">
+  <!-- Circle (open at top-right) -->
+  <path d="M16 2
+           a14 14 0 1 0 0 28
+           a14 14 0 1 0 0 -28
+           M28 10" />
+  <!-- First check -->
+  <path d="M9 17l4 4L23 11"/>
+
+</svg>
+
+<svg 
+v-else-if="name === 'archive'" 
+    :width="size || 20" 
+    :height="size || 20" 
+    viewBox="0 0 24 24"
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="1" 
+    v-bind="$attrs">
+  <path d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8" />
+  <rect x="1" y="3" width="22" height="5" rx="1" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
 
 </template>

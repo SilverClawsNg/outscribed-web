@@ -63,7 +63,7 @@ onUnmounted(() => {
     <div class="hero">
       <div class="hero__text">
         <h3>The Facts, The Fiction, <span>& Everything In-Between</span></h3>
-        <h1>We tell stories from <span class="highlight">alternate realities</span></h1>
+        <h1>We tell stories from <span class="highlight">alternate realities.</span></h1>
         <h2>
           Blending logic & artistic freedom, our writers attempt to re-imagine the past, reframe the present, and sculpt the future.
         </h2>
@@ -162,7 +162,5 @@ onUnmounted(() => {
 </template>
 
 <style lang="less" scoped>
-/* You can safely drop your layout timeline.less or unique home rules down here */
 @import "@/assets/css/hero.less";
-
 </style>

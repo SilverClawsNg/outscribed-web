@@ -2,8 +2,10 @@
 import { h, type SetupContext } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { TimelineDto } from './GlobalTypes'
-import { ActivityTypeDescriptions } from '@/utils/descriptors'
+import { ActivityTypeDescriptions, FlagTypeDescriptions } from '@/utils/descriptors'
 import { useModalStore } from '@/stores/modalStore'
+import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
+import type { Category, FlagType } from '@/utils/enumHelper'
 
 const modalStore = useModalStore()
 
@@ -23,6 +25,10 @@ export const TimelineActivityDispatcher = (
     return t.payload?.[key] || t[key]?.toString() || ''
   }
 
+  const getCount = (key: string): string => {
+    return t.payload?.[key] || t[key]?.toString() || '0'
+  }
+
   // --- 1. ROUTED LINKS HELPERS (Tales / Insights) ---
   const renderContentLink = (type: 'tale' | 'insight' | 'tag', slugKey: string = 'Slug', titleKey: string = 'Title') => {
     return h(
@@ -32,23 +38,65 @@ export const TimelineActivityDispatcher = (
     )
   }
 
-   const renderModalTrigger = (modalType: string, displayLabel: string, idKey: string) => {
+  function isCategory(key: string): key is Category {
+  return key in CategoryDescriptions;
+}
+
+ function isFlagType(key: string): key is FlagType {
+  return key in FlagTypeDescriptions;
+}
+
+const renderCategoryLink = (type: 'tales' | 'insights', rawCategory: string) => {
+
+  if (!rawCategory) return '';
+
+    // Safe lookup: if it's a valid category, grab the label; otherwise fallback to raw string
+    const label = isCategory(rawCategory) ? CategoryDescriptions[rawCategory] : rawCategory;
+    const href = `/${type}?category=${encodeURIComponent(rawCategory)}`;
+
+  //return h('a', { href, class: 'category-link' }, label);
+  
+    return h(
+      RouterLink, 
+      { to: href }, 
+      () => label
+    )
+}
+
+const renderModalTrigger = (modalType: string, modalLabel: string, idKey: string, displayLabel: string) => {
       return h(
         'a',
         {
           href: '#',
-          class: 'show-filter timeline-modal-trigger',
+            onClick: (e: MouseEvent) => {
+            e.preventDefault() // <-- Replicates builder.AddEventPreventDefaultAttribute
+           
+            // 🚀 Direct Testimony: Push straight to the global store layer.
+            // No events to listen for or maintain at the parent view level!
+            modalStore.push(modalType, modalLabel, idKey)
+          }
+        },
+        displayLabel
+      )
+}
+
+const renderProfileModalTrigger = (idKey: string, displayLabel: string) => {
+      return h(
+        'a',
+        {
+          href: '#',
+          class: 'at',
           onClick: (e: MouseEvent) => {
             e.preventDefault() // <-- Replicates builder.AddEventPreventDefaultAttribute
             
             // 🚀 Direct Testimony: Push straight to the global store layer.
             // No events to listen for or maintain at the parent view level!
-            modalStore.push(modalType, displayLabel, getVal(idKey))
+            modalStore.push('Profile', 'User Profile', idKey)
           }
         },
         displayLabel
       )
-    }
+}
 
 
   // ==========================================
@@ -93,6 +141,15 @@ export const TimelineActivityDispatcher = (
   if (act === 'AccountMilestoned_Account') {
     return h('p', `Your account reached a new milestone. Details: Engagement Score: ${getVal('EngagementScore')}, Total profile views: ${getVal('ViewsCount')}, Authenticated profile views: ${getVal('AuthViewsCount')}, Tales published: ${getVal('TalesCount')}, Insights published: ${getVal('InsightsCount')}, Comments: ${getVal('CommentsCount')}.`)
   }
+  if (act === 'AccountSelfArchived_Account') {
+    return h('p', `You successfully archived your account. Your profile would no longer be visible to other users.`)
+  }
+  if (act === 'AccountSelfUnarchived_Account') {
+    return h('p', `You successfully unarchived your account and your profile is now visible to other users.`)
+  }
+ if (act === 'AccountSuspensionAppealed_Account') {
+    return h('p', `You appealed your account suspension. Appeals are subject to administrative action.`)
+  }
 
   // ADMINISTRATIVE PRIVILEGES
   if (act === 'RoleAssigned_Role' || act === 'RoleReassigned_Role') {
@@ -109,7 +166,6 @@ export const TimelineActivityDispatcher = (
 
   
   // AUTHORING PRIVILEGES
-   
   if (act === 'WriterOnboarded_Authoring') {
     return h('p', `Congratulations. Your writing privilege onboarding was successfully completed and your membership of OutScribed's writers' guild confirmed.`)
   }
@@ -122,19 +178,31 @@ export const TimelineActivityDispatcher = (
 
   // TALES LAYOUT ENGINES
   if (act === 'TaleCreated_Tale' || act === 'TaleLaunched_Tale') {
+    const rawCategory = getVal('Category'); // e.g., 'PoliticsGovernance'
     const actionText = act === 'TaleCreated_Tale' ? 'created a new tale, ' : 'published a new tale, '
     return h('p', [
-      `You ${actionText}`, renderContentLink('tale'), ` in the category, ${getVal('Category')}.`
+      `You ${actionText}`, 
+      renderContentLink('tale'), 
+      ` in the category, `, 
+      renderCategoryLink('tales', rawCategory),
+    '.'
     ])
   }
-  if (act === 'TaleLaunched') {
-    return h('p', [
-      renderModalTrigger('Profile', 'User Profile', getVal('AccountId')),
-      ' published a new tale, ',
-      renderContentLink('tale'),
-      ` in the category, ${getVal('Category')}.`
-    ])
-  }
+
+if (act === 'TaleLaunched') {
+  const rawCategory = getVal('Category'); // e.g., 'PoliticsGovernance'
+
+  return h('p', [
+    renderModalTrigger('Profile', 'User Profile', getVal('AccountId'), getVal('Username')),
+    ' published a new tale, ',
+    renderContentLink('tale'),
+    ' in the category, ',
+    // Render the category link
+    renderCategoryLink('tales', rawCategory),
+    '.'
+  ]);
+}
+
   if (act === 'TaleAddendumUpdated_Tale') {
     return h('p', ['You added an addendum to your tale, ', renderContentLink('tale')])
   }
@@ -150,7 +218,7 @@ export const TimelineActivityDispatcher = (
   }
   if (act === 'TaleCountryUpdated_Tale') return h('p', ['You updated the target country of your tale, ', renderContentLink('tale')])
   if (act === 'TalePhotoUpdated_Tale') return h('p', ['You updated the central image of your tale, ', renderContentLink('tale')])
-  if (act === 'TaleWatchlistUpdated_Tale') return h('p', ['You updated the watchlist of your tale, ', renderContentLink('tale')])
+  if (act === 'TaleRealityCheckUpdated_Tale') return h('p', ['You updated the reality check of your tale, ', renderContentLink('tale')])
   if (act === 'TaleDetailUpdated_Tale') return h('p', ['You updated the detail of your tale, ', renderContentLink('tale')])
   if (act === 'TaleSummaryUpdated_Tale') return h('p', ['You updated the summary of your tale, ', renderContentLink('tale')])
   if (act === 'TaleUpdated_Tale') return h('p', ['You updated the basic details of your tale, ', renderContentLink('tale')])
@@ -164,30 +232,51 @@ export const TimelineActivityDispatcher = (
   }
   if (act === 'TaleSuspended_Tale') return h('p', ['Your tale, ', renderContentLink('tale'), ' was placed under administrative review.'])
   if (act === 'TaleModerated_Tale') return h('p', ['Your tale, ', renderContentLink('tale'), ' was flagged by community moderation and placed under administrative review.'])
-  if (act === 'TaleHasEngagement_Tale') return h('p', ['Your tale, ', renderContentLink('tale'), ' was engaged by the community and can no longer be updated.'])
+  if (act === 'TaleHasEngagement_Tale') return h('p', ['Your tale, ', renderContentLink('tale'), ' was engaged by the community and may no longer be directly updated or deleted.'])
   if (act === 'TaleCertified_Tale') return h('p', ['Your tale, ', renderContentLink('tale'), ' was reviewed and certified for public viewership.'])
   if (act === 'TaleMilestoned_Tale') {
-    return h('p', ['Your tale, ', renderContentLink('tale'), ` has reached a new milestone. Score: ${getVal('EngagementScore')}, Views: ${getVal('ViewsCount')}.`])
+    return h('p', ['Your tale, ', renderContentLink('tale'), ` has reached a new milestone. 
+      Authenticated Views: ${getCount('AuthViewsCount')}, 
+      Total Views: ${getCount('ViewsCount')}, 
+      Insights: ${getCount('InsightsCount')}, 
+      Comments: ${getCount('CommentsCount')}, 
+      Replies: ${getCount('RepliesCount')}, 
+      Saves: ${getCount('FavoritesCount')}, 
+      Upvotes: ${getCount('UpvotesCount')}, 
+      Downvotes: ${getCount('DownvotesCount')}, 
+      Flags: ${getCount('FlagsCount')}, 
+      Shares: ${getCount('SharesCount')}, 
+      Total Engagement Score: ${getCount('EngagementScore')}.`])
   }
+
 
   // INSIGHTS INTERPOLATION ENGINES
   if (act === 'InsightCreated_Insight' || act === 'InsightLaunched_Insight') {
-    const actionText = act === 'InsightCreated_Insight' ? 'created a new Insight, ' : 'published a new Insight, '
-    return h('p', [`You ${actionText}`, renderContentLink('insight'), ` in the category, ${getVal('Category')}.`])
-  }
-  if (act === 'InsightLaunched') {
+      const rawCategory = getVal('Category'); // e.g., 'PoliticsGovernance'
+    const actionText = act === 'InsightCreated_Insight' ? 'created a new insight, ' : 'published a new insight, '
     return h('p', [
-      renderModalTrigger('Profile', 'User Profile', getVal('AccountId')),
-      ' published a new Insight, ',
-      renderContentLink('insight'),
-      ` in the category, ${getVal('Category')}.`
+      `You ${actionText}`, 
+      renderContentLink('insight'), 
+      ` in the category, `, 
+      renderCategoryLink('insights', rawCategory),
+    '.'
     ])
   }
+
+if (act === 'InsightLaunched') {
+  const rawCategory = getVal('Category'); // e.g., 'PoliticsGovernance'
+
+  return h('p', [
+    renderModalTrigger('Profile', 'User Profile', getVal('AccountId'), getVal('Username')),
+    ' published a new insight, ',
+    renderContentLink('insight'),
+    ' in the category, ',
+    // Render the category link
+    renderCategoryLink('insights', rawCategory),
+    '.'
+  ]);
+}
   if (act === 'InsightUpdated_Insight') return h('p', ['You updated the basic details of your insight, ', renderContentLink('insight')])
-  if (act === 'InsightSelfArchived_Insight' || act === 'InsightSelfUnarchived_Insight') {
-    const mode = act === 'InsightSelfArchived_Insight' ? 'archived' : 'unarchived'
-    return h('p', [`You ${mode} your insight, `, renderContentLink('insight')])
-  }
   if (act === 'InsightSummaryUpdated_Insight') return h('p', ['You updated the summary of your insight, ', renderContentLink('insight')])
   if (act === 'InsightDetailUpdated_Insight') return h('p', ['You updated the detail of your insight, ', renderContentLink('insight')])
   if (act === 'InsightCountryUpdated_Insight') return h('p', ['You updated the target country of your insight, ', renderContentLink('insight')])
@@ -205,18 +294,111 @@ export const TimelineActivityDispatcher = (
   if (act === 'InsightSuspended_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was placed under administrative review.'])
   if (act === 'InsightModerated_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was flagged by community moderation and placed under review.'])
   if (act === 'InsightCertified_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was reviewed and certified for public viewership.'])
-  if (act === 'InsightMilestoned_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' has hit a milestone views metrics log accumulation limit.'])
+  if (act === 'InsightHasEngagement_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was engaged by the community and may no longer be directly updated or deleted.'])
+  if (act === 'InsightMilestoned_Insight') {
+    return h('p', ['Your insight, ', renderContentLink('insight'), ` has reached a new milestone. 
+      Authenticated Views: ${getCount('AuthViewsCount')}, 
+      Total Views: ${getCount('ViewsCount')}, 
+      Comments: ${getCount('CommentsCount')}, 
+      Replies: ${getCount('RepliesCount')}, 
+      Saves: ${getCount('FavoritesCount')}, 
+      Upvotes: ${getCount('UpvotesCount')}, 
+      Downvotes: ${getCount('DownvotesCount')}, 
+      Flags: ${getCount('FlagsCount')}, 
+      Shares: ${getCount('SharesCount')}, 
+      Total Engagement Score: ${getCount('EngagementScore')}.`])
+  }
 
   // --- 4. COMMENTS AND ENGAGEMENT THREAD ENGINES ---
-  if (act === 'Commented_Comment' || act === 'Replied_Comment') {
-    const actionLabel = act === 'Commented_Comment' ? 'You posted a new comment, ' : 'You posted a response, '
+  if (act === 'Commented_Comment') {
     const targetType = (getVal('ContentType') || 'Content').toLowerCase()
-    
+
     return h('p', [
-      actionLabel,
-      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId')),
+      'You posted a new comment, ',
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
       ` to the ${targetType}, `,
       h(RouterLink, { to: `/${targetType}/${getVal('Slug')}` }, () => getVal('Title'))
+    ])
+  }
+
+  if (act === 'Replied_Comment') {
+    const targetType = (getVal('ContentType') || 'Content').toLowerCase()
+
+    return h('p', [
+      'You posted a response, ',
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
+      ' to the ',
+      renderModalTrigger('CommentThread', 'Thread', getVal('ParentId'), 'comment'),
+      ` on the ${targetType}, `,
+      h(RouterLink, { to: `/${targetType}/${getVal('Slug')}` }, () => getVal('Title'))
+    ])
+  }
+
+   if (act === 'CommentHasEngagement_Comment') {
+    return h('p', [
+      'Your comment, ',
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
+      ' was engaged by the community and may no longer be directly updated or deleted.'
+    ])
+  }
+   if (act === 'CommentMilestoned_Comment') {
+    return h('p', ['Your comment, ', renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))), ` has reached a new milestone. 
+      Replies: ${getCount('RepliesCount')}, 
+      Saves: ${getCount('FavoritesCount')}, 
+      Upvotes: ${getCount('UpvotesCount')}, 
+      Downvotes: ${getCount('DownvotesCount')}, 
+      Flags: ${getCount('FlagsCount')}, 
+      Total Engagement Score: ${getCount('EngagementScore')}.`])
+  }
+
+  // --- Content Engagements ---
+  if (act === 'ContentSavedToFavorites_Engagement') {
+    
+    const targetType = (getVal('ContentType') || 'Content').toLowerCase()
+   
+    return h('p', [
+      `You saved the ${targetType}, `,
+      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
+      ` to your favorites folder.`
+    ])
+  }
+
+  // --- Content Engagements ---
+  if (act === 'ContentFlagged_Engagement') {
+
+    const flagType = getVal('FlagType');
+    const targetType = (getVal('ContentType') || 'Content').toLowerCase()
+     const label = isFlagType(flagType) ? FlagTypeDescriptions[flagType] : flagType;
+   
+    return h('p', [
+      `You reported the ${targetType}, `,
+      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
+      ` for violation '${label}'.`
+    ])
+  }
+
+   if (act === 'ContentShared_Engagement') {
+    
+    const targetType = (getVal('ContentType') || 'Content').toLowerCase()
+   
+    return h('p', [
+      `You shared the ${targetType}, `,
+      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub')))
+    ])
+  }
+
+  if (act === 'ContentUpvoted_Engagement' || act === 'ContentDownvoted_Engagement') {
+    
+    const targetType = (getVal('ContentType') || 'Content').toLowerCase();
+    const actionType = act === 'ContentUpvoted_Engagement' ? 'upvoted' : 'downvoted';
+   
+    return h('p', [
+      `You ${actionType} the ${targetType}, `,
+      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub')))
     ])
   }
 

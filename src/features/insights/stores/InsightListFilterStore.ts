@@ -5,15 +5,26 @@ import { ref } from 'vue';
 import { 
   getValidCountry, getValidCategory, getValidSortType, getValidVoteType
 } from '@/utils/validators'; 
+import { getStoredAnchor, type TypeLabel } from '@/utils/anchorStorage';
 
 export const useInsightListFilterStore = defineStore('insightListFilter', () => {
-  
+
+  const activeTypeLabel = ref<TypeLabel>('insight');
+  const activeType = ref<string | null>(null);
+
+  // Set current list contextual types
+  function setActiveType(typeLabel: TypeLabel, type: string | null) {
+    activeTypeLabel.value = typeLabel;
+    activeType.value = type;
+  }
+
 // State
 const username = ref<string | null>(null);
 
 const country = ref<string | null>(null)
 const category = ref<string | null>(null)
 const votetype = ref<string | null>(null)
+const isactive = ref<string | null>(null)
 
   const taleid = ref<string | null>(null);
   const tag = ref<string | null>(null);
@@ -36,6 +47,7 @@ const votetype = ref<string | null>(null)
     country.value = '-1'
     category.value = '-1'
     votetype.value = '-1'
+    isactive.value=''
 
     keyword.value = null;
     username.value = null;
@@ -58,6 +70,11 @@ if(queryParameters.username){
   username.value = parseValue(queryParameters.username)
     console.log('hydrating username: ${`queryParameters.username`}');
 
+}
+
+if(queryParameters.isactive){
+   // 🎯 Parse & Validate Activity
+  isactive.value = parseValue(queryParameters.isactive)
 }
 
 if(queryParameters.country){
@@ -118,6 +135,7 @@ function getAsDictionary(): Record<string, string> {
       country: country.value,
       category: category.value,
       votetype: votetype.value,
+      isactive: isactive.value,
       keyword: keyword.value,
       tag: tag.value,
       taleid: taleid.value,
@@ -156,21 +174,24 @@ function getAsDictionary(): Record<string, string> {
 }
 
   // 3. Build API url string
-  function buildApiPath(baseRoute: string, overridePointer?: string | null, anchor?: string | null): string {
+  function buildApiPath(baseRoute: string, overridePointer?: string | null, overrideAnchor?: string | null): string {
     
     const urlParams = new URLSearchParams();
 
     if (sort.value && sort.value !== '-1') 
       urlParams.append('sort', sort.value);
 
-    if (country.value && sort.value !== '-1') 
+    if (country.value && country.value !== '-1') 
       urlParams.append('country', country.value);
 
-    if (category.value && sort.value !== '-1') 
+    if (category.value && category.value !== '-1') 
       urlParams.append('category', category.value);
 
-    if (votetype.value && sort.value !== '-1') 
+    if (votetype.value && votetype.value !== '-1') 
       urlParams.append('votetype', votetype.value);
+
+    if (isactive.value && isactive.value.trim() !== '') 
+      urlParams.append('isactive', isactive.value);
 
     if (keyword.value && keyword.value.trim() !== '') 
       urlParams.append('keyword', keyword.value);
@@ -186,16 +207,28 @@ function getAsDictionary(): Record<string, string> {
 
     const currentPointer = overridePointer ? String(overridePointer) : String(pointer.value);
       urlParams.append('pointer', currentPointer);
+    
+    let resolvedAnchor: string | null = null;
 
-        if (anchor) 
-      urlParams.append('anchor', anchor);
+  if (overrideAnchor) {
+    // Explicit override passed (e.g., fetching Page 2+ for ANY feed: public or private)
+    resolvedAnchor = overrideAnchor;
+  } else if (activeType.value) {
+    // Initial load (Page 1) for a PRIVATE list: pull from localStorage fallback
+    const storageKey = `${activeTypeLabel.value}:anchor:${activeType.value}`;
+    resolvedAnchor = localStorage.getItem(storageKey);
+  }
+  // Note: Initial load (Page 1) for PUBLIC lists (activeType === null) will remain null.
 
+  if (resolvedAnchor) {
+    urlParams.append('anchor', resolvedAnchor);
+  }
     const queryString = urlParams.toString();
     return queryString ? `${baseRoute}?${queryString}` : baseRoute;
   }
 
   return {
-    sort, country, category, votetype, username, tag, keyword, pointer,
-    reset, rehydrate, getAsDictionary, buildApiPath
+    sort, country, category, votetype, isactive, username, tag, keyword, pointer, activeType, activeTypeLabel,
+    reset, rehydrate, getAsDictionary, buildApiPath, setActiveType
   };
 });

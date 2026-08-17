@@ -3,13 +3,20 @@
 
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useEngagementCommentsFilterStore } from '../stores/EngagementCommentsFilterStore'
+import { useCommentListFilterStore } from '../stores/CommentListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
-import { GeneralSortTypeSelectItems, LimitedContentTypeSelectItems } from '@/utils/selectItemHelper'
+import { GeneralSortTypeSelectItems, SortTypeSelectItems, LimitedContentTypeSelectItems } from '@/utils/selectItemHelper'
+import type { PrivateList } from '@/utils/enumHelper'
 
 const router = useRouter()
-const filterStore = useEngagementCommentsFilterStore()
+const filterStore = useCommentListFilterStore()
 const modalStore = useModalStore()
+
+const props = defineProps<{
+  payload: unknown // Arrives untouched as the raw string AccountId from your container
+}>()
+
+const type = computed(() => props.payload as PrivateList)
 
 function resetFilters() {
   filterStore.reset()
@@ -54,9 +61,9 @@ const sortSelected = computed({
       
       <!-- 1. Text Searching Content Inputs -->
       <section>
+        <h3 class="form-heading">Search</h3>
         <fieldset>
-              <legend>Search by keyword</legend>
-
+            
           <input 
             v-model="filterStore.keyword" 
             type="text" 
@@ -66,8 +73,7 @@ const sortSelected = computed({
           />
         </fieldset>
            <fieldset>
-                <legend>Search by username</legend>
-
+              
           <input 
             v-model="filterStore.username" 
             type="text" 
@@ -80,35 +86,97 @@ const sortSelected = computed({
 
    <!-- 3. Dataset Result Record Filtering Parameters -->
     <section>
+<h3 class="form-heading">Filter</h3>
 
-    <fieldset>
-    <legend>Filter by type</legend>
-    <div v-for="item in LimitedContentTypeSelectItems" :key="item.value">
-      <label>
-        <input
+<fieldset class="with-ticks">
+    
+<template v-for="item in LimitedContentTypeSelectItems" :key="item.value">
+  
+      <div class="ticks">
+       <input
           type="checkbox"
           :value="item.value"
           v-model="typeSelected"
         />
+           <label>
         {{ item.label }}
       </label>
-    </div>
+      </div>
+  
+  </template>
   </fieldset>
+ 
+  
+      <template v-if="type === 'saves'">
+        <fieldset>
+          <div class="ticks">
+              <input 
+                    v-model="filterStore.isactive" 
+                    type="checkbox" 
+                    id="IncludeInactiveSaves"
+                  />
+                <label For="IncludeInactiveSaves">Tick to include inactive saves </label>
+            </div>
+          </fieldset>
+      </template>
+
+       <template v-if="type === 'votes'">
+         <fieldset>
+          <div class="ticks">
+             <p>
+              <input 
+                type="radio" 
+                id="Upvote" 
+                value="Upvote" 
+                name="votetype" 
+                v-model="filterStore.votetype"
+              />
+              <label for="Upvote">Only Upvotes</label>
+            </p>
+            <p>
+              <input 
+                type="radio" 
+                id="Downvote" 
+                value="Downvote" 
+                name="votetype" 
+                v-model="filterStore.votetype"
+              />
+              <label for="Downvote">Only Downvotes</label>
+            </p>
+
+          </div>
+        </fieldset>
+      </template>
+
     </section>
    
+     
       <!-- 4. Dataset Result Record Ordering Parameters -->
       <section>
-        <fieldset>
-              <legend>Order</legend>
-
-                <select v-model="sortSelected"  class="form-field">
+        <h3 class="form-heading">Order</h3>
+        <template v-if="type">
+            <fieldset>
+                <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>
                     <option v-for="item in GeneralSortTypeSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
                     </option>
                 </select>
             </fieldset>
+        </template>
+         <template v-else>
+            <fieldset>
+                <select v-model="filterStore.sort"  class="form-field">
+                    <option value="-1">-- sort by --</option>
+                    <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                    </option>
+                </select>
+            </fieldset>
+        </template>
+      
       </section>
+
 
       <!-- 5. Form Actions Layout Triggers -->
       <div class="filter-buttons">

@@ -50,6 +50,9 @@ const CONTEXT_MESSAGES: Record<string, {message: string }> = {
   },
   session_expired: {
     message: 'Your session has timed out. Please sign in again to save your current work.'
+  },
+  account_resolution: {
+    message: 'Please sign in to resolve your account status.'
   }
 }
 

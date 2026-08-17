@@ -5,8 +5,12 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import { isValidEmail } from '@/utils/validators'
 
 const props = defineProps<{ isLoading: boolean; siteKey: string }>()
-const emit = defineEmits<{ (e: 'submit', email: string, captchaToken: string): void }>()
-const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
+
+const emit = defineEmits<{
+  (e: 'submit', email: string, captchaToken: string): void
+  (e: 'warning', message: string): void
+  (e: 'clear-warning'): void
+}>()
 
 const emailAddress = ref('')
 const captchaToken = ref<string | null>(null)
@@ -20,7 +24,7 @@ function handleCaptchaSuccess(token: string) {
 
 function handleCaptchaError() {
   captchaToken.value = null
-  setWarning("Error occurred while verifying captcha. Refresh page and try again.")
+  emit('warning', 'Error occurred while verifying captcha. Refresh page and try again.')
 }
 
 
@@ -54,10 +58,10 @@ watch(
     if (!submitted) return
 
     if (!isValid) {
-      setWarning('Ensure all fields are filled out correctly before submission.')
+      emit('warning', 'Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      emit('clear-warning')
     }
   }, 
   { immediate: true }
@@ -71,19 +75,19 @@ function handleSubmit() {
   // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
   if (!isFormValid.value || !captchaToken.value) return
 
-  startLoading()
-  
-  emit('submit', emailAddress.value, captchaToken.value)
+  emit('submit', emailAddress.value.trim(), captchaToken.value)
   
   // Clean up widget security listeners cleanly on submission (Matches your _turnstileRef.RemoveAsync())
   turnstileRef.value?.remove()
 }
+
 </script>
 
 <template>
   <form @submit.prevent="handleSubmit">
 
-    <fieldset class="boxed" :disabled="progressState.type === 'Loading'">
+  <fieldset class="boxed" :disabled="isLoading">
+
       <input 
         v-model="emailAddress" 
         type="email" 

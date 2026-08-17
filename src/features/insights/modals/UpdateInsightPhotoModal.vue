@@ -50,7 +50,6 @@ onBeforeMount(() => {
 
 })
 
-
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
@@ -88,7 +87,10 @@ watch(
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
       // Clear warning and clean up state immediately when compliance is met
-      resetProgress()
+      // 🎯 Only reset if we are clearing a warning!
+      if (progressState.value.type === 'Warning') {
+        resetProgress()
+      }
     }
   }, 
   { immediate: true }

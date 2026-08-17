@@ -61,7 +61,7 @@ function applyFilter() {
            
              <fieldset>
                 <select v-model="filterStore.contenttype" class="form-field">
-                    <option value="-1">-- by content --</option>
+                    <option value="-1">-- by contenttype --</option>
                     <option v-for="item in LimitedContentTypeSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
                     </option>

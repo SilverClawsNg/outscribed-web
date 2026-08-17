@@ -86,11 +86,22 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
       if (targetIndex !== -1) {
         const serverItem = processedItems[targetIndex];
         if (serverItem) {
-          if (new Date(ghost.lastUpdatedAt) >= new Date(serverItem.lastUpdatedAt)) {
-            processedItems[targetIndex] = ghost;
-          } else {
-            localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${ghost.insightId}`);
+
+            // Convert ANY valid ISO string (whether +00:00 or Z) into pure UTC epoch milliseconds:
+          const ghostMs = Date.parse(ghost.lastUpdatedAt); 
+          const serverMs = Date.parse(serverItem.lastUpdatedAt);
+
+          // Date.parse() returns NaN if invalid, otherwise pure UTC milliseconds
+          if (!isNaN(ghostMs) && !isNaN(serverMs)) {
+            if (ghostMs > (serverMs + 2000)) {
+              // Keep ghost
+              processedItems[targetIndex] = ghost;
+            } else {
+              // Delete ghost
+               localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${ghost.insightId}`);
+            }
           }
+
         }
       }
     }
@@ -133,6 +144,11 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
         hasNext.value = outcome.value.hasNext;
         pointer.value = outcome.value.pointer;
         anchor.value = outcome.value.anchor;
+
+         if (outcome.value.anchor) {
+          localStorage.setItem('insight:anchor:drafts', outcome.value.anchor);
+        }
+
       } else {
         insights.value = [];
       }
@@ -229,6 +245,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
       
       insights.value.unshift(newInsightDraft);
       localStorage.setItem(`insight:draft:new:${outcome.value.id}`, JSON.stringify(newInsightDraft));
+      localStorage.removeItem('insight:anchor:drafts');
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -260,6 +277,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -282,6 +300,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -305,6 +324,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -327,6 +347,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
       activeInsight.value = null;
       return { success: true, error: null };
@@ -354,6 +375,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -382,6 +404,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       return { success: true, error: null };
@@ -403,6 +426,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       return { success: true, error: null };
@@ -432,6 +456,18 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
 
   async function launchInsight(payload: ConfirmRequest) {
     try {
+
+      if(activeInsight.value?.title == null 
+        || activeInsight.value?.category == null
+        || activeInsight.value?.detail == null
+      || activeInsight.value?.summary == null
+    || activeInsight.value?.photo == null
+  || activeInsight.value?.photoCaption == null){
+
+          return { success: false, error: new APIError(400, 'Bad Request', 'Insight cannot be pubished without a title, category, details, summary, or photo') };
+
+      }
+
       const outcome = await postAsync('/api/insights/launch', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
@@ -443,6 +479,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -469,6 +506,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -495,6 +533,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
           insight.lastUpdatedAt = new Date().toISOString();
         }
         localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+        localStorage.removeItem('insight:anchor:drafts');
       }
 
       activeInsight.value = null;
@@ -517,6 +556,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
             insight.lastUpdatedAt = new Date().toISOString();
           }
           localStorage.setItem(`insight:draft:update:${payload.insightId}`, JSON.stringify(insights.value[index]));
+          localStorage.removeItem('insight:anchor:drafts');
         }
         activeInsight.value = null;
         return { success: true, error: null };

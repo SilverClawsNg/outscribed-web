@@ -86,11 +86,22 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
       if (targetIndex !== -1) {
         const serverItem = processedItems[targetIndex];
         if (serverItem) {
-          if (new Date(ghost.lastUpdatedAt) >= new Date(serverItem.lastUpdatedAt)) {
-            processedItems[targetIndex] = ghost;
-          } else {
-            localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${ghost.commentId}`);
+
+             // Convert ANY valid ISO string (whether +00:00 or Z) into pure UTC epoch milliseconds:
+          const ghostMs = Date.parse(ghost.lastUpdatedAt); 
+          const serverMs = Date.parse(serverItem.lastUpdatedAt);
+
+          // Date.parse() returns NaN if invalid, otherwise pure UTC milliseconds
+          if (!isNaN(ghostMs) && !isNaN(serverMs)) {
+            if (ghostMs > (serverMs + 2000)) {
+              // Keep ghost
+              processedItems[targetIndex] = ghost;
+            } else {
+              // Delete ghost
+               localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${ghost.commentId}`);
+            }
           }
+
         }
       }
     }
@@ -200,7 +211,7 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
       // Capture a local pointer to the context so TypeScript can safely narrow type fields
       const payload: CreateCommentRequest = {
         contentid: content.id,
-        content: content.contentType,
+        contentType: content.contentType,
         detail: detail
       };
   
@@ -225,7 +236,7 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
           detail: outcome.value.detail,
           commentatorUsername: authStore.username,
           commentatorId: authStore.userId,
-          contentType: payload.content,
+          contentType: payload.contentType,
           status: 'Active',
           contentId: payload.contentid,
           parentId: null,
@@ -275,7 +286,7 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
            // Capture a local pointer to the context so TypeScript can safely narrow type fields
         const payload: ReplyCommentRequest = {
           contentid: activeComment.contentId,
-          content: activeComment.contentType,
+          contentType: activeComment.contentType,
           parentId: activeComment.commentId,
           detail: detail
         };

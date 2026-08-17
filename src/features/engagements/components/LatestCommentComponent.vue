@@ -74,18 +74,12 @@ onMounted(async () => {
       <p class="comments-list__date">
         {{ toRelativeTime(props.comment.commentedAt) }}
       </p>
-     
-    </section>
 
-    
-    <section class="content-lists__actions alt">
-      
-      <button @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
-        <SvgIcons name="stats" /> View Thread
+      <span class="divider circle"></span>
+       <button @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
+        View Thread
       </button>
-    
     </section>
-
 
   </article>
  

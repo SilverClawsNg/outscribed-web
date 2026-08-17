@@ -1,0 +1,52 @@
+@import "variables.less";
+
+.fallback-share-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+
+.content-details__share-bar {
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+
+    @media @smallDevice {
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+    }
+
+}
+
+.content-details__share-links {
+    height: auto;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    & button.secondary
+    & a.primary {
+        width: 100%;
+        height: auto;
+        padding: 0.75rem 0;
+        border-radius: 4px;
+        flex-direction: column;
+        text-align: center;
+        text-transform: capitalize;
+        
+
+        & .field {
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
+
+        & .value {
+            font-size: 1.5rem;
+        }
+    }
+   
+}
+

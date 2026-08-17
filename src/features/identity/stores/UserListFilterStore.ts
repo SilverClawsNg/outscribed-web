@@ -121,7 +121,7 @@ function getAsDictionary(): Record<string, string> {
     if (sort.value && sort.value !== '-1') 
       urlParams.append('sort', sort.value);
 
-    if (country.value && sort.value !== '-1') 
+    if (country.value && country.value !== '-1') 
       urlParams.append('country', country.value);
 
     if (username.value && username.value.trim() !== '') 

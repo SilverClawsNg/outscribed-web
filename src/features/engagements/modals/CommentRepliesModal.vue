@@ -87,6 +87,7 @@ const apiPath = commentFilterStore.buildApiPath(baseRoute.value);
    if (response.comments && response.comments.length !== 0) {
 
       comments.value = response.comments
+      activeComment.value.hasLoadedReplies = true;
 
 const parentSnapshot = {
   ...activeComment.value,
@@ -196,19 +197,12 @@ pushedProxies.forEach(comment => {
   
 }
 
-
-function replyComment() {
-  modalStore.push('ReplyComment', 'Reply Comment', activeComment.value)
-}
-
-
 async function resetFilters() {
  
    commentFilterStore.reset();
 
   await loadData()
 }
-
   
 async function applySort(type: GeneralSortType) {
   currentSort.value = type;
@@ -380,7 +374,6 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
  
        </InfiniteScroller>
 
-  
     </template>
 
   </article>
@@ -391,5 +384,4 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
 <style lang="less" scoped>
 @import "@/assets/css/comment-lists.less";
-
 </style>
