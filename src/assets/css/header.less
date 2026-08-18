@@ -79,7 +79,8 @@ header.main-header {
 }
 
 .main-header__top-navigation-container {
-    width: 100%;
+    width: @max-width;
+    max-width: 100%;
     background: var(--background-color);
     position: relative;
     z-index: 999;
@@ -95,8 +96,7 @@ header.main-header {
 }
 
 .main-header__top-navigation {
-    width: @max-width;
-    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
     position: relative;
     display: flex;
