@@ -103,35 +103,21 @@ main {
 h1.logo {
     z-index: 1000;
     position: relative;
-    display: flex;
-    column-gap: 2px;
-
-    & span {
-        @media @smallDevice {
-            width: 28px;
-            height: 28px;
-        }
-
-        @media @largeDevice {
-            width: 30px;
-            height: 30px;
-        }
-
-        transform: translateY(-2px);
-
-        & img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
 
     & svg {
         fill: var(--text-color);
         width: auto;
 
-        @media @smallDevice {
-            height: 28px; /* Your desired height */
+       @media @phone {
+           height: 28px;
+        }
+
+         @media @phablet {
+            height: 29px;
+        }
+
+         @media @tablet {
+            height: 30px;
         }
 
         @media @largeDevice {

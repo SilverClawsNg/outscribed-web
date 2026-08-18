@@ -83,14 +83,26 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
-    padding: 0 10px;
 
     @media @smallDevice {
         height: 80px;
     }
 
+     @media @phone {
+        padding: 0 10px;
+    }
+
+     @media @phablet {
+        padding: 0 30px;
+    }
+
+     @media @tablet {
+        padding: 0 30px;
+    }
+
     @media @largeDevice {
         height: 100px;
+        padding: 0 10px;
     }
 }
 
