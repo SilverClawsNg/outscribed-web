@@ -4,6 +4,7 @@ import { getAsync } from '@/api/apiGetServices'
 import { APIError } from '@/api/apiTypes.ts'
 import type {GetTimelineResponse, TimelineDto} from '../types/GlobalTypes.ts';
 import { useTimelineFilterStore } from '../stores/TimelineFilterStore'
+import { setStoredAnchor } from '@/utils/anchorStorage';
 
 // Native JS Set wrapper implementation shortcut
 class HashSetOrSet extends Set<string> {}
@@ -13,6 +14,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     // State
       const timelines = ref<TimelineDto[]>([]); 
       const baseRoute = 'api/global/timeline'; 
+            const filterStore = useTimelineFilterStore()
 
     // Loading and Tracking flags matching your C# states
         const isFetchingMore = ref<boolean>(false);
@@ -49,6 +51,12 @@ export const useTimelineStore = defineStore('timeline', () => {
           hasNext.value = outcome.value.hasNext;
           pointer.value = outcome.value.pointer;
           anchor.value = outcome.value.anchor;
+
+           // Persist fresh anchor to local storage for private lists
+                  if (anchor.value && filterStore.activeType) {
+                    setStoredAnchor(filterStore.activeTypeLabel, filterStore.activeType, anchor.value);
+                  }
+
         } else {
           // Clear store list if server explicitly returned nothing/null to prevent stale state bleed
           timelines.value = [];
@@ -78,7 +86,6 @@ export const useTimelineStore = defineStore('timeline', () => {
             // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
 
-            const filterStore = useTimelineFilterStore()
             const nextPageUrl = filterStore.buildApiPath('api/global/timeline', pointer.value, anchor.value)
             const outcome = await getAsync<GetTimelineResponse>(nextPageUrl, true, {} as GetTimelineResponse, feedController.signal)
     

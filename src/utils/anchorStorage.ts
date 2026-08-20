@@ -1,8 +1,8 @@
 // utils/anchorStorage.ts
 
-export const EngagementTypes = ['saves', 'flags', 'shares', 'votes', 'upvotes'] as const;
+export const EngagementTypes = ['saves', 'flags', 'shares', 'votes', 'upvotes', 'all'] as const;
 export type RelationType = (typeof EngagementTypes)[number];
-export type TypeLabel = 'tale' | 'insight' | 'comment';
+export type TypeLabel = 'tale' | 'insight' | 'comment' | 'timeline';
 
 /**
  * Generates key in format: `${typeLabel}:anchor:${type}`
