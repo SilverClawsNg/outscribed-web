@@ -54,7 +54,7 @@ export const useTimelineStore = defineStore('timeline', () => {
 
            // Persist fresh anchor to local storage for private lists
                   if (anchor.value) {
-                    setStoredAnchor('timeline', 'all', anchor.value);
+                    localStorage.setItem('timeline:anchor', anchor.value);
                   }
 
         } else {

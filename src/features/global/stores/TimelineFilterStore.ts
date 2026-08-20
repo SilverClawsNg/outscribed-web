@@ -192,8 +192,7 @@ function getAsDictionary(): Record<string, string> {
     resolvedAnchor = overrideAnchor;
   } else{
     // Initial load (Page 1) for a PRIVATE list: pull from localStorage fallback
-    const storageKey = 'timeline:anchor:all';
-    resolvedAnchor = localStorage.getItem(storageKey);
+    resolvedAnchor = localStorage.getItem('timeline:anchor');
   }
   // Note: Initial load (Page 1) for PUBLIC lists (activeType === null) will remain null.
 
