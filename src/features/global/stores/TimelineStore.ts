@@ -52,8 +52,11 @@ export const useTimelineStore = defineStore('timeline', () => {
           pointer.value = outcome.value.pointer;
           anchor.value = outcome.value.anchor;
 
+          console.log(`outside anchor is ${anchor.value}`)
+
            // Persist fresh anchor to local storage for private lists
                   if (anchor.value) {
+                    console.log(`inside anchor is ${anchor.value}`)
                     localStorage.setItem('timeline:anchor', anchor.value);
                   }
 
