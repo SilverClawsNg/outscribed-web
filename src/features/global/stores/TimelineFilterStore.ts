@@ -9,16 +9,6 @@ import { getStoredAnchor, type TypeLabel } from '@/utils/anchorStorage';
 
 export const useTimelineFilterStore = defineStore('timelineFilter', () => {
 
-    const activeTypeLabel = ref<TypeLabel>('timeline');
-    const activeType = ref<string | null>(null);
-  
-    // Set current list contextual types
-    function setActiveType(typeLabel: TypeLabel, type: string | null) {
-      activeTypeLabel.value = typeLabel;
-      activeType.value = type;
-    }
-  
-  
  // --- 1. STATE DEFINITIONS ---
   const sort = ref<string | null>(null)
   const contenttype = ref<string | null>(null)
@@ -200,9 +190,9 @@ function getAsDictionary(): Record<string, string> {
   if (overrideAnchor) {
     // Explicit override passed (e.g., fetching Page 2+ for ANY feed: public or private)
     resolvedAnchor = overrideAnchor;
-  } else if (activeType.value) {
+  } else{
     // Initial load (Page 1) for a PRIVATE list: pull from localStorage fallback
-    const storageKey = `${activeTypeLabel.value}:anchor:${activeType.value}`;
+    const storageKey = 'timeline:anchor:all';
     resolvedAnchor = localStorage.getItem(storageKey);
   }
   // Note: Initial load (Page 1) for PUBLIC lists (activeType === null) will remain null.
@@ -216,7 +206,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,activeType, activeTypeLabel,
-    reset, rehydrate, getAsDictionary, buildApiPath, setActiveType
+    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,
+    reset, rehydrate, getAsDictionary, buildApiPath
   };
 });
