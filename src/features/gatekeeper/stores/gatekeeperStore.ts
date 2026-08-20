@@ -276,6 +276,7 @@ if(logoutData.flushCache){
     'tale:anchor', 
     'insight:anchor', 
     'comment:anchor',
+    'timeline:anchor',
 
     // 3. Purge user network anchors
     'user:anchor'

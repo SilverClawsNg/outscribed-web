@@ -4,8 +4,20 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getValidContentType, getValidGeneralSortType, getValidActivityType
 } from '@/utils/validators';
+import { getStoredAnchor, type TypeLabel } from '@/utils/anchorStorage';
+
 
 export const useTimelineFilterStore = defineStore('timelineFilter', () => {
+
+    const activeTypeLabel = ref<TypeLabel>('timeline');
+    const activeType = ref<string | null>(null);
+  
+    // Set current list contextual types
+    function setActiveType(typeLabel: TypeLabel, type: string | null) {
+      activeTypeLabel.value = typeLabel;
+      activeType.value = type;
+    }
+  
   
  // --- 1. STATE DEFINITIONS ---
   const sort = ref<string | null>(null)
@@ -153,7 +165,7 @@ function getAsDictionary(): Record<string, string> {
   return cleanQuery
 }
   // 3. Build API url string
-  function buildApiPath(baseRoute: string, overridePointer?: string | null, anchor?: string | null): string {
+  function buildApiPath(baseRoute: string, overridePointer?: string | null, overrideAnchor?: string | null): string {
     const urlParams = new URLSearchParams();
 
     if (sort.value && sort.value !== '-1') 
@@ -183,15 +195,28 @@ function getAsDictionary(): Record<string, string> {
     const currentPointer = overridePointer ? String(overridePointer) : String(pointer.value);
     urlParams.append('pointer', currentPointer);
 
-     if (anchor) 
-      urlParams.append('anchor', anchor);
+    let resolvedAnchor: string | null = null;
+
+  if (overrideAnchor) {
+    // Explicit override passed (e.g., fetching Page 2+ for ANY feed: public or private)
+    resolvedAnchor = overrideAnchor;
+  } else if (activeType.value) {
+    // Initial load (Page 1) for a PRIVATE list: pull from localStorage fallback
+    const storageKey = `${activeTypeLabel.value}:anchor:${activeType.value}`;
+    resolvedAnchor = localStorage.getItem(storageKey);
+  }
+  // Note: Initial load (Page 1) for PUBLIC lists (activeType === null) will remain null.
+
+  if (resolvedAnchor) {
+    urlParams.append('anchor', resolvedAnchor);
+  }
 
     const queryString = urlParams.toString();
     return queryString ? `${baseRoute}?${queryString}` : baseRoute;
   }
 
   return {
-    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,
-    reset, rehydrate, getAsDictionary, buildApiPath
+    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,activeType, activeTypeLabel,
+    reset, rehydrate, getAsDictionary, buildApiPath, setActiveType
   };
 });
