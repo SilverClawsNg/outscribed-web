@@ -48,7 +48,7 @@ onBeforeMount(() => {
 
     <form @submit.prevent="handleLogoutSubmission" autocomplete="off">
 
-      <fieldset :disabled="progressState.type === 'Loading'">
+      <fieldset class="expanded" :disabled="progressState.type === 'Loading'">
         <div class="ticks">
           <input 
             type="checkbox" 
