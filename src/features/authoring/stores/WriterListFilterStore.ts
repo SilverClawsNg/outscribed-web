@@ -11,11 +11,8 @@ export const useWriterListFilterStore = defineStore('writerListFilter', () => {
 // State
 const username = ref<string | null>(null);
 const country = ref<string | null>(null)
-
-  const keyword = ref<string | null>(null);
-  const sort = ref<string | null>(null)
-
-  const pointer = ref<string | null>('1');
+const sort = ref<string | null>(null)
+const pointer = ref<string | null>('1');
 
    // --- 3. HELPER UTILITIES ---
   // Pure parsing helper: returns null if missing, empty, or placeholder
@@ -29,7 +26,6 @@ const country = ref<string | null>(null)
   function reset() {
     sort.value = '-1'
     country.value = '-1'
-    keyword.value = '';
     username.value = '';
     pointer.value = '1';
   }
@@ -58,11 +54,6 @@ if(queryParameters.country){
 
 }
 
-if(queryParameters.keyword){
-   // 🎯 Parse & Validate Activity
-  keyword.value = parseValue(queryParameters.keyword)
-}
-
 if(queryParameters.sort){
  // 🎯 Parse & Validate Sort
   const validatedSort = getValidGeneralSortType(queryParameters.sort)
@@ -83,8 +74,6 @@ function getAsDictionary(): Record<string, string> {
   const rawValues: Record<string, any> = {
     username: username.value,
       country: country.value,
-      keyword: keyword.value,
-      
       sort: sort.value,
       pointer: '1'
   }
@@ -130,9 +119,6 @@ function getAsDictionary(): Record<string, string> {
     if (country.value && country.value !== '-1') 
       urlParams.append('country', country.value);
 
-    if (keyword.value && keyword.value.trim() !== '') 
-      urlParams.append('keyword', keyword.value);
-
     if (username.value && username.value.trim() !== '') 
       urlParams.append('username', username.value);
 
@@ -147,7 +133,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, country, username, keyword, pointer,
+    sort, country, username, pointer,
     reset, rehydrate, getAsDictionary, buildApiPath
   };
 });

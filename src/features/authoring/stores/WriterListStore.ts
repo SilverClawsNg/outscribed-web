@@ -61,7 +61,7 @@ async function loadWriters(apiPathWithFilters: string): Promise<{ success: boole
         feedController = new AbortController();
 
     // Note: Assuming getAsync is part of your API client layer
-    const outcome = await getAsync<GetWriterListResponse>(apiPathWithFilters, true, {} as GetWriterListResponse,
+    const outcome = await getAsync<GetWriterListResponse>(apiPathWithFilters, false, {} as GetWriterListResponse,
       feedController.signal
     );
 
@@ -148,7 +148,7 @@ async function loadMoreWriters() {
 
         const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value)
 
-        const outcome = await getAsync<GetWriterListResponse>(nextPageUrl, true, {} as GetWriterListResponse,
+        const outcome = await getAsync<GetWriterListResponse>(nextPageUrl, false, {} as GetWriterListResponse,
           feedController.signal
         )
 
