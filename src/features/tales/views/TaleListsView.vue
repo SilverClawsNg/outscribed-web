@@ -120,6 +120,7 @@ function redirectToLogin() {
 // --- MOUNT & WATCHERS ---
 onMounted(async () => {
   await initPage();
+  console.log(`✅ [Tale Lists View]: Page initialized for path -> ${apiUrl.value}, path -> ${pageTitle.value}`)
 })
 
 // 🛡️ FIX: Watch fullPath instead of route.query so path transitions (/my/votes -> /tales) trigger re-fetch

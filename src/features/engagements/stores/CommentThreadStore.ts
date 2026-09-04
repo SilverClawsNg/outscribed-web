@@ -35,7 +35,7 @@ export const useCommentThreadStore = defineStore('CommentThread', () => {
          // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
 
-     const outcome = await getAsync<GetCommentThreadResponse>(apiPath, true, {} as GetCommentThreadResponse,
+     const outcome = await getAsync<GetCommentThreadResponse>(apiPath, false, {} as GetCommentThreadResponse,
             feedController.signal
         )
         

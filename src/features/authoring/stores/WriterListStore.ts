@@ -129,9 +129,8 @@ async function loadMoreWriters() {
   await executeLoadMoreWriters();
 
   // 2. Clear out the new batch references immediately after the scroll render cycle
-  if (isLoggedIn.value) {
-    await hydratePersonals(); 
-  }
+      await hydratePersonals(); 
+
 }
 
   // 2. Infinite Scroll Path (LoadMore)

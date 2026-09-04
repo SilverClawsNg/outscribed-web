@@ -70,17 +70,10 @@ export const useCommentListStore = defineStore('commentList', () => {
    * 1. LoadComments (Initial setup for a Tale or Insight comment list)
    */
 
-  async function loadComments(apiPathWithFilters: string, isAuthorized: boolean) : Promise<LoadingPageCommentsResponse>{
+  async function loadComments(apiPathWithFilters: string, isAuthorized: boolean) : Promise<{ success: boolean; error: APIError | null }>{
   
       // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingPageCommentsResponse = {
-          success: false,
-          comments: [],
-          hasNext: false,
-          pointer: null,
-          anchor: null,
-          error: null
-        };
+      
         
     try {
 
@@ -91,18 +84,17 @@ export const useCommentListStore = defineStore('commentList', () => {
         feedController.signal);
 
      if (outcome.isFailure) {
-      response.error = outcome.error || null
-        return response;
+      return { success: false, error: outcome.error || null };
       }
        
      if (outcome.isSuccess && outcome.value?.comments?.length) {
-        response.hasNext = outcome.value.hasNext;
-        response.pointer = outcome.value.pointer;
-        response.anchor = outcome.value.anchor;
+        hasNext.value = outcome.value.hasNext;
+      pointer.value = outcome.value.pointer;
+      anchor.value = outcome.value.anchor;
 
            // Persist fresh anchor to local storage for private lists
-            if (response.anchor && filterStore.activeType) {
-                        setStoredAnchor(filterStore.activeTypeLabel, filterStore.activeType, response.anchor);
+            if (anchor.value && filterStore.activeType) {
+                        setStoredAnchor(filterStore.activeTypeLabel, filterStore.activeType, anchor.value);
                       }   
         // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
       const freshItems = outcome.value.comments.map((item: any) => initializeCommentPageListEngagement(item));
@@ -110,17 +102,20 @@ export const useCommentListStore = defineStore('commentList', () => {
       comments.value.push(...freshItems);
      awaitingHydration.value.push(...freshItems);
 
-      console.log('--- Vue State Snapshot inside loading contents store ---', JSON.parse(JSON.stringify(response.comments)));
+      console.log('--- Vue State Snapshot inside loading contents store ---', JSON.parse(JSON.stringify(comments.value)));
 
-      } 
-      response.success = true
+      } else {
+      // Clear store list if server explicitly returned nothing/null to prevent stale state bleed
+      comments.value = [];
+       hasNext.value = false;
+      pointer.value = '-1';
+    }
+
     // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-    return response;
-
+    return { success: true, error: null };
     } catch (err: any) {
     // Fail-safe catch-all wrapper
-    response.error = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception')
-    return response;
+    return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception') };
   }
   }
 
@@ -129,9 +124,7 @@ async function loadMoreComments() {
   await executeLoadMoreComments();
 
   // 2. Clear out the new batch references immediately after the scroll render cycle
-  if (isLoggedIn.value) {
-    await hydratePersonals(); 
-  }
+ await hydratePersonals(); 
 }
 
   /**
@@ -221,6 +214,13 @@ async function loadMoreComments() {
    */
   async function executeHydration(currentBatch: CommentPageListDto[]) {
   
+     // 1. Guard Clause: Skip entirely if anonymous or batch package is empty
+    if (!isLoggedIn || currentBatch.length === 0) {
+      activateEngagementButtons(currentBatch);
+      console.log('[HydratePersonals]: Not logged in or empty batch.');
+      return;
+    }
+
      const maxRetries = 2; // Loops: 0, 1, 2 (Total 3 attempts)
     const commentIds = currentBatch.map(x => x.commentId);
 

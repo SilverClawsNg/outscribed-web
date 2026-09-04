@@ -334,17 +334,17 @@ export interface UpdateCommentRequest {
 }
 
 export interface UpdateAddendumRequest {
- contentid: string;
-    contentType: ContentType; 
-    addendum: string | null;
-    commentId: string;
+contentid: string;
+contentType: ContentType; 
+addendum: string | null;
+commentId: string;
 }
 
 export interface CommentCreatedResponse { 
-    commentId: string; 
-    detail: string; 
-    createdAt: string;
-    commentsCount: number;
+ commentId: string; 
+ detail: string; 
+ createdAt: string;
+  commentsCount: number;
   upvotesCount: number;
   downvotesCount: number;
   favoritesCount: number;

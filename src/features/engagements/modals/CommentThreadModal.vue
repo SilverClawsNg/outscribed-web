@@ -48,14 +48,14 @@ async function loadData() {
       );
   }
   }
+  else{
 
   source.value = response.source
   focus.value = response.focus
   ancestors.value = response.ancestors
 
     console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(response.focus)));
-
-
+    
 // 2. Combine them into a single temporary execution batch
 const hydrationBatch: CommentListDto[] = [];
 
@@ -74,10 +74,14 @@ if (hydrationBatch.length !== 0) {
 // 📋 Flatten and snapshot the live state to see if hydration stuck
   console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(hydrationBatch)));
 
-  // No matter the result, stop loading
-  isLoading.value = false
 }
 
+  }
+
+
+
+  // No matter the result, stop loading
+  isLoading.value = false
 }
 
 onMounted(async () => {
@@ -108,6 +112,35 @@ onMounted(async () => {
 
   </template>
 
+  <template v-else>
+
+    <div class="comment-thread-modal">
+
+      <div class="comment-thread-modal__header">
+        <h2>Comment Thread</h2>
+      </div>
+
+      <div class="comment-thread-modal__content">
+
+        <template v-if="source">
+          <SourceContentComponent :source="source" />
+        </template>
+
+        <template v-if="ancestors">
+          <Comment 
+            v-for="comment in ancestors" 
+            :key="comment.commentId" 
+            :comment="comment"/>
+        </template>
+
+        <template v-if="focus">
+          <Comment :comment="focus"/>
+        </template>
+
+      </div>
+
+    </div>
+
    <template v-if="source">
    
     <SourceContentComponent :source="source" />
@@ -128,6 +161,8 @@ onMounted(async () => {
      <Comment :comment="focus"/>
 
   </template>
+
+</template>
 
 </template>
 
