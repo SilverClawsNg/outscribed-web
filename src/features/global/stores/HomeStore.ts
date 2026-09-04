@@ -5,7 +5,7 @@ import {postAsync } from '@/api/apiPostServices'
 import {type GetFavoriteIdsResponse } from '@/features/engagements/types/EngagementTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
-import type {GetHomeContentsResponse} from '../types/GlobalTypes.ts';
+import type {GetHomeContentsResponse, TagDetailDto} from '../types/GlobalTypes.ts';
 
 import {type TaleListDto, initializeTaleListEngagement} from '@/features/tales/types/TalesTypes.ts'
 import {type InsightListDto, initializeInsightListEngagement} from '@/features/insights/types/InsightsTypes.ts'
@@ -16,6 +16,9 @@ export const useHomeStore = defineStore('homeStore', () => {
     // State
       const tales = ref<TaleListDto[]>([]); 
       const insights = ref<InsightListDto[]>([]); 
+      const trendingThisWeek = ref<TagDetailDto[]>([]); 
+      const trendingThisMonth = ref<TagDetailDto[]>([]);
+      const trendingThisYear = ref<TagDetailDto[]>([]);
 const isLoggedIn = useLoginHint()
       // 🔒 Keep the controller private/local to this store context
   let feedController: AbortController | null = null;
@@ -43,6 +46,9 @@ let hydrateController: AbortController | null = null;
         // Ensure data mappings are assigned cleanly to reactive state trackers
         tales.value = outcome.value.tales || [];
         insights.value = outcome.value.insights || [];
+        trendingThisWeek.value = outcome.value.trendingThisWeek || [];
+        trendingThisMonth.value = outcome.value.trendingThisMonth || [];
+        trendingThisYear.value = outcome.value.trendingThisYear || [];
 
         // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
         if(tales.value) tales.value = outcome.value.tales.map((item: any) => initializeTaleListEngagement(item));
@@ -177,7 +183,7 @@ let hydrateController: AbortController | null = null;
     }
   }
 
-      return {tales,insights, loadhomecontents, hydratePersonals, abort
+      return {tales,insights, trendingThisWeek, trendingThisMonth, trendingThisYear, loadhomecontents, hydratePersonals, abort
   };
 
 });

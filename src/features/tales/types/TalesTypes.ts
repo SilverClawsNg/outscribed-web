@@ -4,6 +4,8 @@ import { reactive } from 'vue';
 import { type CreatorDto } from '@/features/identity/types/IdentityTypes' // 🎯 Import your clean semantics
 import { type InsightLatestListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
 
+import type{  TagListDto,  TagDraftDto} from '@/features/global/types/GlobalTypes' // 🎯 Import your clean semantics
+
 /**
  * 🧱 BASE TALE COMPONENT
  * The core property foundation shared by every single story representation
@@ -96,7 +98,7 @@ export interface TaleDetailDto {
   country: Country | null;
   category: Category;
   status: TaleStatus,
-  tags: TagDraftDto[];
+  tags: TagListDto[];
   insightscount: number;
   readingTime: number;
   isArchived: boolean;
@@ -118,10 +120,6 @@ export interface CreateResponse {
     createdAt: string 
 }
 
-export interface TagDraftDto {
-  tagId: string; // Using string to handle backend Ulid representation
-  name: string;
-}
 
 export interface UpdateRequest {
   taleId: string;

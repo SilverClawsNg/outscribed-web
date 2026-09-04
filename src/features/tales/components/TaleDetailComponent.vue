@@ -172,8 +172,8 @@ function createComment() {
       <section v-if="tale.tags && tale.tags.length > 0" class="content-details__tags">
         <h4>Tagged In</h4>
         <span class="divider line"></span>
-        <span v-for="tag in tale.tags" :key="tag.tagId">
-          #<router-link :to="`/tales?tag=${tag.tagId}`">{{ tag.name }}</router-link>
+        <span v-for="tag in tale.tags" :key="tag.slug">
+          #<router-link :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</router-link>
         </span>
       </section>
 

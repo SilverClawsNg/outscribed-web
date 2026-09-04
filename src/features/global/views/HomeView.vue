@@ -8,6 +8,7 @@ import { useHomeStore } from '../stores/HomeStore';
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import TaleListComponent from '@/features/tales/components/TaleListComponent.vue'
 import InsightListComponent from '@/features/insights/components/InsightListComponent.vue'
+import TagComponent from '../components/TagComponent.vue'
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -153,6 +154,87 @@ onUnmounted(() => {
     <PageStatusMessage 
       title= 'No content!'
       message='Sorry. We could not find any insight'>
+    </PageStatusMessage>
+
+  </template>
+
+   <div class="shared__page-title">
+        <h1>Trending This Week</h1>
+      </div>
+
+       <template v-if="homepageStore.trendingThisWeek && homepageStore.trendingThisWeek.length > 0">
+
+         <div class="shared__container">
+
+            <TagComponent 
+        v-for="tag in homepageStore.trendingThisWeek" 
+        :key="tag.tagId" 
+        :tag="tag" 
+      />
+
+        </div>
+    
+  </template>
+
+    <template v-else>
+
+    <PageStatusMessage 
+      title= 'No tags!'
+      message='Sorry. We could not find any tags'>
+    </PageStatusMessage>
+
+  </template>
+
+  <div class="shared__page-title">
+        <h1>Trending This Month</h1>
+      </div>
+
+       <template v-if="homepageStore.trendingThisMonth && homepageStore.trendingThisMonth.length > 0">
+
+         <div class="shared__container">
+
+            <TagComponent 
+        v-for="tag in homepageStore.trendingThisMonth" 
+        :key="tag.tagId" 
+        :tag="tag" 
+      />
+
+        </div>
+    
+  </template>
+
+    <template v-else>
+
+    <PageStatusMessage 
+      title= 'No tags!'
+      message='Sorry. We could not find any tags'>
+    </PageStatusMessage>
+
+  </template>
+
+  <div class="shared__page-title">
+        <h1>Trending This Year</h1>
+      </div>
+
+       <template v-if="homepageStore.trendingThisYear && homepageStore.trendingThisYear.length > 0">
+
+         <div class="shared__container">
+
+            <TagComponent 
+        v-for="tag in homepageStore.trendingThisYear" 
+        :key="tag.tagId" 
+        :tag="tag" 
+      />
+
+        </div>
+    
+  </template>
+
+    <template v-else>
+
+    <PageStatusMessage 
+      title= 'No tags!'
+      message='Sorry. We could not find any tags'>
     </PageStatusMessage>
 
   </template>
