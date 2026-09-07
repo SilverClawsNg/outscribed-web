@@ -24,33 +24,66 @@ const loadingError = ref<APIError | null>(null)
 const wasCleaned = ref(false)
 
 // --- ROUTE OPTIONS ---
-const relationType = computed(() => route.params.relationType as string || '')
+const relationType = computed(() => ((route.params.relationType as string) || '').toLowerCase())
 const creatorUsername = computed(() => route.params.creatorUsername as string || '')
 
 const currentPath = encodeURIComponent(route.fullPath)
 
+// --- Determine route validity ---
+const isValidType = computed(() => {
+  if (!relationType.value) return true // Base feed route
+  return ['followers', 'follows'].includes(relationType.value)
+})
 
-const apiUrl = ref('')
-const pageTitle = ref('')
+// Authorized ONLY when viewing "My" relational feeds (has relationType, but no creatorUsername)
+const isAuthorized = computed(() => Boolean(relationType.value) && !creatorUsername.value)
 
-if (!relationType.value && !creatorUsername.value) {
-  apiUrl.value = 'api/users'
-  pageTitle.value = 'Browse Users'
-  console.log('[UsersViews]: relationType and creatorUsername null...');
-} else {
-  const type = relationType.value.toLowerCase()
-  if (!['followers', 'follows'].includes(type)) {
-    router.push('/404')
-  } else {
-    apiUrl.value = creatorUsername.value
-      ? `api/users/${creatorUsername.value}/${type}`
-      : `api/users/${type}`
+const apiUrl = computed(() => {
+  if (!relationType.value && !creatorUsername.value) {
+    return 'api/users'
+  } 
+  
+  if (!isValidType.value) return ''
+  
+  return creatorUsername.value
+    ? `api/users/${creatorUsername.value}/${relationType.value}`
+    : `api/users/${relationType.value}`
 
-    pageTitle.value = creatorUsername.value
-      ? `${creatorUsername.value}'s ${relationType.value}`
-      : `My ${relationType.value}`
+})
+
+const pageTitle = computed(() => {
+  if (!relationType.value && !creatorUsername.value) {
+    return 'Browse Users'
   }
-}
+  
+  return creatorUsername.value
+    ? `${creatorUsername.value}'s ${relationType.value}`
+    : `My ${relationType.value}`
+})
+
+// --- Watch Route Changes ---
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
+
+    loadingError.value = null
+
+    if (!isValidType.value) {
+      router.push('/404')
+      return
+    }
+
+    userFilterStore.setActiveType(
+      'user',
+      isAuthorized.value ? relationType.value : null
+    )
+
+    await initPage() // fetch only; apiUrl/pageTitle already correct
+  },
+  { immediate: true }
+)
+ 
 
 // --- DEFINE PAGE FUNCTIONS ---
 function redirectToLogin() {
@@ -81,9 +114,6 @@ async function initPage() {
     return
   }
 
-  // 1. Hydrate the Filter Store using the current active route parameters
-  //userFilterStore.rehydrate(route.query);
-
   // 2. Build the targeted API request endpoint string from those validated details
   // 🛡️ Fix 4: Changed 'filterStore' to your actual variable 'userFilterStore'
   const cleanApiPath = userFilterStore.buildApiPath(apiUrl.value);
@@ -92,7 +122,7 @@ async function initPage() {
   userStore.setBaseRoute(apiUrl.value)
 
   // 3. Fetch from store
-  const { success, error } = await userStore.loadUsers(cleanApiPath)
+  const { success, error } = await userStore.loadUsers(cleanApiPath, isAuthorized.value)
 
   if (!success) {
     if (error) {
@@ -121,11 +151,6 @@ onMounted(async () => {
   await initPage();
 })
 
-// Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  loadingError.value = null
-  initPage();
-}, { deep: true });
 
 
 // inside your HomeView.vue

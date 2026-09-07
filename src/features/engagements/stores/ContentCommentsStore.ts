@@ -129,121 +129,6 @@ const isLoggedIn = useLoginHint()
   } 
   }
 
-  /**
-   * 3. LoadThread (Used when clicking external notification paths outside content page context)
-   */
-  async function loadThread(apiPath: string): Promise<LoadingCommentThreadResponse> {
-
-   
-      // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingCommentThreadResponse = {
-          success: false,
-          ancestors: [],
-          source: null,
-          focus: null,
-          error: null
-        };
-        
-
-    try {
-
-         // Spawn a fresh controller instance for this specific execution pass
-        feedController = new AbortController();
-
-     const outcome = await getAsync<GetCommentThreadResponse>(apiPath, true, {} as GetCommentThreadResponse,
-            feedController.signal
-        )
-        
-          if (outcome.isFailure) {
-      response.error = outcome.error || null
-        return response;
-      }
-
-        // Consideration 2: Reconcile updates if data was retrieved
-        if (outcome.value) {
-    
-          // Commit clean data to store state
-          //activeThread.value = outcome.value;
-
-          
-        // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      response.ancestors = outcome.value.ancestors.map((item: any) => initializeCommentListEngagement(item));
-      response.focus = initializeCommentListEngagement(outcome.value.focus)
-      response.source = outcome.value.source
-
-        // 🎯 Execute the layout assembly loop completely on the client side
-            buildAncestorChains(response.source, response.focus, response.ancestors);
-
-                //const batchToHydrate = [activeThread.value.focus, ...activeThread.value.ancestors];
-
-                //await hydratePersonals(batchToHydrate);
-
-                response.success = true
-
-        // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-        return response;
-
-    } 
-    
-      
-    // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-    response.error = new APIError(
-        404,
-        '404: Not Fount!',
-        'We could not find any thread with the provided id.'
-      );
-    return response;
-
-
-    }catch (err: any) {
-    // Fail-safe catch-all wrapper
-    response.error = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception')
-    return response;
-  }
-  
-  }
-
-  /**
- * Walks down a flat list of ancestors chronologically from the root 
- * down to the focus comment, building individual ancestry arrays for each node.
- */
-function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, ancestors: CommentListDto[]) {
-    
-  if (ancestors.length === 0) {
-   // If there are zero ancestors, the focus comment is the root
-      focus.ancestors = [];
-      focus.title = source.title;
-    return;
-  }
-
-  const sourceTitle = source.title;
-  const flatAncestors = ancestors;
-
-  // Step 1: Find the absolute root ancestor (where parentId is null or empty)
-  let current = flatAncestors.find(c => !c.parentId);
-
-  if (!current) return;
-
-  const runningChain: CommentListDto[] = [];
-
-  // Step 2: Walk sequentially down the parent -> child tree links
-  while (current) {
-    // Assign a shallow clone array of the ancestry history up to this point
-    current.ancestors = [...runningChain];
-    current.title = sourceTitle;
-
-    // Push the current node into the timeline history list for the next iteration
-    runningChain.push(current);
-
-    // Find the immediate child whose parentId points to this current comment's ID
-    const nextChildId: string = current.commentId;
-    current = flatAncestors.find(c => c.parentId === nextChildId);
-  }
-
-  // Step 3: Assign the complete history lineage path straight onto the Focus target
-  focus.ancestors = [...runningChain];
-  focus.title = sourceTitle;
-}
 
   /**
    * 4. HydratePersonals (The "Private Truth" authentication state loop with backoff resilience)
@@ -364,7 +249,6 @@ function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, an
     hydratePersonals,
     loadComments,
     loadMoreComments,
-    loadThread,
        abort
 
   };

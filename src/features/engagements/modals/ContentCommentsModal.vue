@@ -24,14 +24,12 @@ const props = defineProps<{
 
 const content = computed(() => props.payload as ActiveContentContext)
 
- const isLoggedIn = useLoginHint()
 
 const baseRoute = computed(() => `api/comments/content/${content.value.id}`)
 
 const commentsStore = useContentCommentsStore();
 const commentFilterStore = useContentCommentsFilterStore();
 
-  const pinnedComment = ref<CommentListDto | null>(null);
 class HashSetOrSet extends Set<string> {}
 
 const modalStore = useModalStore();

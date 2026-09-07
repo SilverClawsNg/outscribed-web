@@ -4,7 +4,7 @@
 import { useRouter } from 'vue-router'
 import { useTaleListFilterStore } from '../stores/TaleListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
-import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems, GeneralSortTypeSelectItems} from '@/utils/selectItemHelper'
+import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems} from '@/utils/selectItemHelper'
 import { computed } from 'vue'
 import type { PrivateList } from '@/utils/enumHelper'
 
@@ -135,7 +135,7 @@ function applyFilter() {
             <fieldset>
                 <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>
-                    <option v-for="item in GeneralSortTypeSelectItems" :key="item.value" :value="item.value">
+                    <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
                     </option>
                 </select>

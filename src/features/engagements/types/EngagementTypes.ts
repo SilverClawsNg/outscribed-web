@@ -421,3 +421,26 @@ export interface FlagRequest {
   type: FlagType | null;
   notes: string | '';
 }
+
+export interface VoteListDto {
+    voteId: string;
+    voterId: string;
+    votedAt: string;
+    username: string;
+}
+
+export interface GetContentVotesResponse {
+  votes: VoteListDto[];
+  hasNext: boolean;
+  anchor: string | null;
+  pointer: string | null; 
+}
+
+export interface LoadingVotesResponse {
+  success: boolean;
+  votes: VoteListDto[];
+  hasNext: boolean;
+  pointer: any;
+  anchor: any;
+  error: any | null;
+}

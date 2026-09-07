@@ -1,4 +1,6 @@
 <script setup lang="ts"> 
+
+// --- IMPORTS ---
 import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
 import { useInsightListStore } from '../stores/InsightListStore'; 
 import { useInsightListFilterStore } from '../stores/InsightListFilterStore'; 
@@ -21,59 +23,72 @@ const modalStore = useModalStore()
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 const wasCleaned = ref(false)
-const isAuthorized = ref<boolean>(false)
 const type = ref<string>('invalid');
 
-const apiUrl = ref('')
-const pageTitle = ref('')
-
 const currentPath = computed(() => encodeURIComponent(route.fullPath))
- const username = ref('')
- 
 
-// --- 1. DYNAMIC ROUTE RESOLVER ---
-// Evaluated every time the route path or params change
-function resolveRouteConfig() {
+// --- Reactive Route Params ---
+const relationType = computed(() => ((route.params.relationType as string) || '').toLowerCase())
+const creatorUsername = computed(() => (route.params.creatorUsername as string) || '')
 
- const relationType = (route.params.relationType as string) || ''
- const creatorUsername = (route.params.creatorUsername as string) || ''
- 
- username.value = creatorUsername
+// --- Determine route validity ---
+const isValidType = computed(() => {
+  if (!relationType.value) return true // If no relationType is provided, it's the base public feed (valid)
+  return EngagementTypes.includes(relationType.value as RelationType)  // Otherwise, it must match your defined engagement types
+})
 
-  if (!relationType && !creatorUsername) {
-    apiUrl.value = 'api/insights'
-    pageTitle.value = 'Browse Insights'
-    isAuthorized.value = false
-    insightFilterStore.setActiveType('insight', null) // Public Feed
-  } else {
-    type.value = relationType.toLowerCase()
+// Authorized ONLY when viewing "My" relational feeds (has relationType, but no creatorUsername)
+const isAuthorized = computed(() => Boolean(relationType.value) && !creatorUsername.value)
 
-    if (!EngagementTypes.includes(type.value as RelationType)) {
+// --- Calculate API Url ---
+const apiUrl = computed(() => {
+  if (!relationType.value && !creatorUsername.value) {
+    return 'api/insights'
+  }
+
+ if (!isValidType.value) return ''
+
+  return creatorUsername.value
+    ? `api/insights/${creatorUsername.value}/${relationType.value}`
+    : `api/insights/my/${relationType.value}`
+})
+
+// --- Calculate Page Title ---
+const pageTitle = computed(() => {
+  if (!relationType.value && !creatorUsername.value) {
+    return 'Browse Insights'
+  }
+  return creatorUsername.value
+    ? `${creatorUsername.value}'s ${relationType.value}`
+    : `My ${relationType.value}`
+})
+
+// --- Watch Route Changes ---
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
+
+    loadingError.value = null
+
+    if (!isValidType.value) {
       router.push('/404')
       return
     }
 
-    // Is private list if viewing /my/... instead of /creatorUsername/...
-    isAuthorized.value = !creatorUsername
+    insightFilterStore.setActiveType(
+      'insight',
+      isAuthorized.value ? relationType.value : null
+    )
 
-    apiUrl.value = creatorUsername
-      ? `api/insights/${creatorUsername}/${type.value}`
-      : `api/insights/my/${type.value}`
-
-    pageTitle.value = creatorUsername
-      ? `${creatorUsername}'s ${relationType}`
-      : `My ${relationType}`
-
-    // Synchronize active type in filter store based on authorization state
-    insightFilterStore.setActiveType('insight', isAuthorized.value ? type.value : null)
-  }
-}
+    await initPage() // fetch only; apiUrl/pageTitle already correct
+  },
+  { immediate: true }
+)
 
 // --- 2. PAGE INITIALIZATION ---
 async function initPage() {
-  // Re-sync endpoint URLs & active types before initializing
-  resolveRouteConfig()
-
+ 
   console.log(`🚀 [Insight Lists View]: Fetching for path -> ${apiUrl.value}`)
 
   // Hydrate and validate filter state
@@ -124,20 +139,10 @@ onMounted(async () => {
   await initPage();
 })
 
-// 🛡️ FIX: Watch fullPath instead of route.query so path transitions (/my/votes -> /insights) trigger re-fetch
-watch(
-  () => route.fullPath,
-  async (newPath, oldPath) => {
-    if (newPath !== oldPath) {
-      loadingError.value = null
-      await initPage();
-    }
-  }
-);
-
 onUnmounted(() => {
   insightStore.abort();
 });
+
 </script>
 
 <template>
@@ -168,7 +173,7 @@ onUnmounted(() => {
       <div class="shared__page-title">
         <h1>Insights</h1>
       <template v-if="pageTitle">
-          <p :class="{ at: username }">
+          <p :class="{ at: creatorUsername }">
             {{ pageTitle }}
           </p>
         </template>

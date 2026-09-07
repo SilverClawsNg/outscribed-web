@@ -24,38 +24,11 @@ const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 const wasCleaned = ref(false)
 
-// --- ROUTE OPTIONS ---
-const relationType = computed(() => route.params.relationType as string || '')
-const creatorUsername = computed(() => route.params.creatorUsername as string || '')
-
 const currentPath = encodeURIComponent(route.fullPath)
 const requiresLogin = ref(false)
-const isPersonalRoute = !creatorUsername.value && relationType.value
 const isLoggedIn = useLoginHint()
 const apiUrl = ref('')
 const pageTitle = ref('')
-
-if (isPersonalRoute && !isLoggedIn.value) {
-  // 🛡️ Guard execution: Flag login required and stop setup parsing
-  requiresLogin.value = true
-}else if (!relationType.value && !creatorUsername.value) {
-  apiUrl.value = 'api/writers'
-  pageTitle.value = 'Browse Writers'
-  console.log('[WritersViews]: relationType and creatorUsername null...');
-} else {
-  const type = relationType.value.toLowerCase()
-  if (!['votes', 'upvotes', 'saves'].includes(type)) {
-    router.push('/404')
-  } else {
-    apiUrl.value = creatorUsername.value
-      ? `api/writers/${creatorUsername.value}/${type}`
-      : `api/writers/my/${type}`
-
-    pageTitle.value = creatorUsername.value
-      ? `User's ${relationType.value}`
-      : `My ${relationType.value}`
-  }
-}
 
 // --- DEFINE PAGE FUNCTIONS ---
 function redirectToLogin() {
@@ -85,9 +58,6 @@ async function initPage() {
     // The router update triggers your route.query watcher, handling the fetch smoothly.
     return
   }
-
-  // 1. Hydrate the Filter Store using the current active route parameters
-  //writerFilterStore.rehydrate(route.query);
 
   // 2. Build the targeted API request endpoint string from those validated details
   // 🛡️ Fix 4: Changed 'filterStore' to your actual variable 'writerFilterStore'

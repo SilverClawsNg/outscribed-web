@@ -172,6 +172,7 @@ function getAsDictionary(): Record<string, string> {
 
     let resolvedAnchor: string | null = null;
 
+    
   if (overrideAnchor) {
     // Explicit override passed (e.g., fetching Page 2+ for ANY feed: public or private)
     resolvedAnchor = overrideAnchor;

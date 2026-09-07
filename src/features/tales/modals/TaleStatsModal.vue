@@ -129,9 +129,9 @@ function createComment() {
         {{ formatCounts(tale.engagement.upvotesCount) }}
         <button 
           :disabled="tale.engagement.upvotesCount === 0 && tale.engagement.downvotesCount === 0" 
-          @click="modalStore.push('Comments', 'Comments', payload)"
+          @click="modalStore.push('ContentVotes', 'Tale Upvotes', tale.taleId)"
         >
-          View All Votes
+          View Votes
         </button>
       </dd>
     </dl>
@@ -140,12 +140,6 @@ function createComment() {
       <dt>Downvotes</dt>
       <dd>
         {{ formatCounts(tale.engagement.downvotesCount) }}
-        <button 
-          :disabled="tale.engagement.upvotesCount === 0 && tale.engagement.downvotesCount === 0" 
-          @click="modalStore.push('Comments', 'Comments', payload)"
-        >
-          View All Votes
-        </button>
       </dd>
     </dl>
 
@@ -153,12 +147,6 @@ function createComment() {
       <dt>Saves</dt>
       <dd>
         {{ formatCounts(tale.engagement.favoritesCount) }}
-        <button 
-          :disabled="tale.engagement.favoritesCount === 0" 
-          @click="modalStore.push('Comments', 'Comments', payload)"
-        >
-          View Saves
-        </button>
       </dd>
     </dl>
 

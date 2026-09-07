@@ -60,6 +60,8 @@ import CommentThreadModal from '@/features/engagements/modals/CommentThreadModal
 import CommentRepliesModal from '@/features/engagements/modals/CommentRepliesModal.vue'
 import ReplyCommentModal from '@/features/engagements/modals/ReplyCommentModal.vue'
 import CommentListFilterModal from '@/features/engagements/modals/CommentListFilterModal.vue'
+import ContentVotesModal from '@/features/engagements/modals/ContentVotesModal.vue'
+import CommentStatsModal from '@/features/engagements/modals/CommentStatsModal.vue'
 
 import ContentCommentsFilterModal from '@/features/engagements/modals/ContentCommentsFilterModal.vue'
 import DraftCommentsFilterModal from '@/features/engagements/modals/DraftCommentsFilterModal.vue'
@@ -127,7 +129,9 @@ InsightPreview: InsightPreviewModal,
 ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,
 CommentListFilter: CommentListFilterModal,
+ContentVotes: ContentVotesModal,
 Comment: CommentModal,
+CommentStats: CommentStatsModal,
 CommentThread: CommentThreadModal,
 CommentReplies: CommentRepliesModal,
 ReplyComment: ReplyCommentModal,

@@ -46,7 +46,7 @@ export const useUserListStore = defineStore('userList', () => {
    */
 
 // 1. Initial Load Path
-async function loadUsers(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+async function loadUsers(apiPathWithFilters: string, isAuthorized: boolean): Promise<{ success: boolean; error: APIError | null }> {
 
   try {
 
@@ -54,7 +54,7 @@ async function loadUsers(apiPathWithFilters: string): Promise<{ success: boolean
         feedController = new AbortController();
 
     // Note: Assuming getAsync is part of your API client layer
-    const outcome = await getAsync<GetUserListResponse>(apiPathWithFilters, true, {} as GetUserListResponse,
+    const outcome = await getAsync<GetUserListResponse>(apiPathWithFilters, isAuthorized, {} as GetUserListResponse,
       feedController.signal
     );
 

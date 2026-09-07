@@ -1,4 +1,6 @@
 <script setup lang="ts"> 
+
+// --- IMPORTS ---
 import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
 import { useTaleListStore } from '../stores/TaleListStore'; 
 import { useTaleListFilterStore } from '../stores/TaleListFilterStore'; 
@@ -21,57 +23,72 @@ const modalStore = useModalStore()
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 const wasCleaned = ref(false)
-const isAuthorized = ref<boolean>(false)
 const type = ref<string>('invalid');
 
-const apiUrl = ref('')
-const pageTitle = ref('')
-
 const currentPath = computed(() => encodeURIComponent(route.fullPath))
- const username = ref('')
- 
 
-// --- 1. DYNAMIC ROUTE RESOLVER ---
-// Evaluated every time the route path or params change
-function resolveRouteConfig() {
- const relationType = (route.params.relationType as string) || ''
- const creatorUsername = (route.params.creatorUsername as string) || ''
- username.value = creatorUsername
+// --- Reactive Route Params ---
+const relationType = computed(() => ((route.params.relationType as string) || '').toLowerCase())
+const creatorUsername = computed(() => (route.params.creatorUsername as string) || '')
 
-  if (!relationType && !creatorUsername) {
-    apiUrl.value = 'api/tales'
-    pageTitle.value = 'Browse Tales'
-    isAuthorized.value = false
-    taleFilterStore.setActiveType('tale', null) // Public Feed
-  } else {
-    type.value = relationType.toLowerCase()
+// --- Determine route validity ---
+const isValidType = computed(() => {
+  if (!relationType.value) return true // If no relationType is provided, it's the base public feed (valid)
+  return EngagementTypes.includes(relationType.value as RelationType)  // Otherwise, it must match your defined engagement types
+})
 
-    if (!EngagementTypes.includes(type.value as RelationType)) {
+// Authorized ONLY when viewing "My" relational feeds (has relationType, but no creatorUsername)
+const isAuthorized = computed(() => Boolean(relationType.value) && !creatorUsername.value)
+
+// --- Calculate API Url ---
+const apiUrl = computed(() => {
+  if (!relationType.value && !creatorUsername.value) {
+    return 'api/tales'
+  }
+
+ if (!isValidType.value) return ''
+
+  return creatorUsername.value
+    ? `api/tales/${creatorUsername.value}/${relationType.value}`
+    : `api/tales/my/${relationType.value}`
+})
+
+// --- Calculate Page Title ---
+const pageTitle = computed(() => {
+  if (!relationType.value && !creatorUsername.value) {
+    return 'Browse Tales'
+  }
+  return creatorUsername.value
+    ? `${creatorUsername.value}'s ${relationType.value}`
+    : `My ${relationType.value}`
+})
+
+// --- Watch Route Changes ---
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
+
+    loadingError.value = null
+
+    if (!isValidType.value) {
       router.push('/404')
       return
     }
 
-    // Is private list if viewing /my/... instead of /creatorUsername/...
-    isAuthorized.value = !creatorUsername
+    taleFilterStore.setActiveType(
+      'tale',
+      isAuthorized.value ? relationType.value : null
+    )
 
-    apiUrl.value = creatorUsername
-      ? `api/tales/${creatorUsername}/${type.value}`
-      : `api/tales/my/${type.value}`
-
-    pageTitle.value = creatorUsername
-      ? `${creatorUsername}'s ${relationType}`
-      : `My ${relationType}`
-
-    // Synchronize active type in filter store based on authorization state
-    taleFilterStore.setActiveType('tale', isAuthorized.value ? type.value : null)
-  }
-}
+    await initPage() // fetch only; apiUrl/pageTitle already correct
+  },
+  { immediate: true }
+)
 
 // --- 2. PAGE INITIALIZATION ---
 async function initPage() {
-  // Re-sync endpoint URLs & active types before initializing
-  resolveRouteConfig()
-
+ 
   console.log(`🚀 [Tale Lists View]: Fetching for path -> ${apiUrl.value}`)
 
   // Hydrate and validate filter state
@@ -123,17 +140,6 @@ onMounted(async () => {
   console.log(`✅ [Tale Lists View]: Page initialized for path -> ${apiUrl.value}, path -> ${pageTitle.value}`)
 })
 
-// 🛡️ FIX: Watch fullPath instead of route.query so path transitions (/my/votes -> /tales) trigger re-fetch
-watch(
-  () => route.fullPath,
-  async (newPath, oldPath) => {
-    if (newPath !== oldPath) {
-      loadingError.value = null
-      await initPage();
-    }
-  }
-);
-
 onUnmounted(() => {
   taleStore.abort();
 });
@@ -166,7 +172,7 @@ onUnmounted(() => {
       <div class="shared__page-title">
          <h1>Tales</h1>
         <template v-if="pageTitle">
-          <p :class="{ at: username }">
+          <p :class="{ at: creatorUsername }">
             {{ pageTitle }}
           </p>
         </template>

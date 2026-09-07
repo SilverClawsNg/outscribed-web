@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onUnmounted } from 'vue'
-import { getAsync } from '@/api/apiGetServices'
-import type { GetUserProfileResponse } from '@/features/identity/types/IdentityTypes' // Adjust paths accordingly
 import { APIError } from '@/api/apiTypes'
-import { formatCounts, truncateText } from '@/utils/stringHelpers'
+import { formatCounts } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
 import { CountryDescriptions } from '@/utils/descriptors'
 import { mediaHelper } from '@/utils/mediaHelper'
 import SvgIcons from '@/components/SvgIcons.vue'
-import { getEngagementMetadata, type EngagementState } from '@/features/engagements/types/EngagementTypes'
+import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement';
 import { RouterLink } from 'vue-router'
 import { useUserProfileStore } from '../stores/UserProfileStore'; 
@@ -27,7 +25,7 @@ const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 const engage = useEngagement()
 const uiMeta = computed(() => {
- const engagement = profileStore.profile?.user?.engagement
+const engagement = profileStore.profile?.user?.engagement
   
   if (!engagement) {
     // Return a safe, matching default structure to avoid template crashes

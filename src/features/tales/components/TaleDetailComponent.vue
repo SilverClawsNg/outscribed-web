@@ -251,7 +251,7 @@ function createComment() {
 
         <div class="content-details__creator-details">
           <div class="content-details__creator-details-title">
-            <h4>Written By</h4>
+            <h4>Scribed By</h4>
             <button 
               title="Creator Profile"
               class="at"

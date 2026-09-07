@@ -82,7 +82,7 @@ onMounted(async () => {
       
      <div class="comments-list__other-metadata">
        <p>
-         {{ toRelativeTime(props.comment.commentedAt) }}
+         {{ toRelativeTime(comment.commentedAt) }}
        </p>
           <span class="divider circle"></span>
        <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">

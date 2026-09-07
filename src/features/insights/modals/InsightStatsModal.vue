@@ -108,9 +108,9 @@ function createComment() {
         {{ formatCounts(insight.engagement.upvotesCount) }}
         <button 
           :disabled="insight.engagement.upvotesCount === 0 && insight.engagement.downvotesCount === 0" 
-          @click="modalStore.push('Comments', 'Comments', payload)"
+          @click="modalStore.push('ContentVotes', 'Insight Upvotes', insight.insightId)"
         >
-          View All Votes
+          View Votes
         </button>
       </dd>
     </dl>
@@ -119,12 +119,6 @@ function createComment() {
       <dt>Downvotes</dt>
       <dd>
         {{ formatCounts(insight.engagement.downvotesCount) }}
-        <button 
-          :disabled="insight.engagement.upvotesCount === 0 && insight.engagement.downvotesCount === 0" 
-          @click="modalStore.push('Comments', 'Comments', payload)"
-        >
-          View All Votes
-        </button>
       </dd>
     </dl>
 
@@ -132,12 +126,6 @@ function createComment() {
       <dt>Saves</dt>
       <dd>
         {{ formatCounts(insight.engagement.favoritesCount) }}
-        <button 
-          :disabled="insight.engagement.favoritesCount === 0" 
-          @click="modalStore.push('Comments', 'Comments', payload)"
-        >
-          View Saves
-        </button>
       </dd>
     </dl>
 

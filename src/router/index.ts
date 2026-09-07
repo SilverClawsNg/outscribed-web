@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
 import FormLayout from '@/layouts/FormLayout.vue'
 import { checkIsLoggedIn } from '@/utils/authHelper'
+import { useModalStore } from '@/stores/modalStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -239,6 +240,14 @@ router.beforeEach((to, from) => {
 
   // 🟢 If authentication passes, returning undefined or true allows navigation to proceed
   return true 
+})
+
+router.afterEach(() => {
+  const modalStore = useModalStore()
+  // Automatically pops/clears active modal stack on route change
+  if (modalStore.isOpen) {
+    modalStore.pop()
+  }
 })
 
 export default router

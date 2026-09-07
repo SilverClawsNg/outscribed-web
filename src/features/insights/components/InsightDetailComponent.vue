@@ -217,7 +217,7 @@ function createComment() {
 
         <div class="content-details__creator-details">
           <div class="content-details__creator-details-title">
-            <h4>Written By</h4>
+            <h4>Scribed By</h4>
             <button 
               title="Creator Profile"
               class="at"
@@ -232,7 +232,7 @@ function createComment() {
               title="Creator Profile"
               @click="modalStore.push('Profile', 'Profile', insight.creator.accountId)"
             >
-              <span class="icon-user"></span> Profile
+              <SvgIcons name="user" /> Profile
             </button>
 
             <button 
@@ -240,18 +240,18 @@ function createComment() {
               :disabled="creatorUiMeta.isFavoriteDisabled"
               @click="engage.favorite(insight.creator.engagement)"
             >
-              <span class="icon-bookmark"></span> {{ creatorUiMeta.favoriteAltText }}
+              <SvgIcons name="bookmark" /> {{ creatorUiMeta.favoriteAltText }}
             </button>
           </section>
 
           <div class="content-details__creator-details-links">
             <router-link 
-              :to="`/insights?username=${insight.creator.username}`" 
+              :to="`/tales?username=${insight.creator.username}`" 
               class="btn secondary" 
-              title="Insights"
+              title="Tales"
             >
-              <span class="value">{{ formatCounts(insight.creator.insightsCount) }}</span> 
-              <span class="field">Insights</span>
+              <span class="value">{{ formatCounts(insight.creator.talesCount) }}</span> 
+              <span class="field">Tales</span>
             </router-link>
             <router-link 
               :to="`/insights?username=${insight.creator.username}`" 

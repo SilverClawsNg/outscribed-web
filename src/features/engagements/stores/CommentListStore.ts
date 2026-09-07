@@ -66,14 +66,9 @@ export const useCommentListStore = defineStore('commentList', () => {
    * 1. LoadComments (Initial setup for a Tale or Insight comment list)
    */
 
-  /**
-   * 1. LoadComments (Initial setup for a Tale or Insight comment list)
-   */
-
   async function loadComments(apiPathWithFilters: string, isAuthorized: boolean) : Promise<{ success: boolean; error: APIError | null }>{
   
       // 2. Initialize the default response layout envelope right at the entrance gate
-      
         
     try {
 

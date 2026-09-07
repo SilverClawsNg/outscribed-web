@@ -3,7 +3,7 @@
 defineProps<{
   name: 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain' | 'padlock' | 'bookmark' | 'upvote'
   | 'downvote' | 'share' | 'facebook' | 'twitter' | 'linkedin' | 'email' | 'placeholder' | 'back-arrow'  | 'globe' | 'tag'
-  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive'
+  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' 
   size?: number
 }>()
 </script>

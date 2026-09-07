@@ -9,6 +9,7 @@ import { useLoginHint } from '@/utils/authHelper'
 import { setStoredAnchor } from '@/utils/anchorStorage';
 import {type TaleListDto, type GetTaleListResponse, initializeTaleListEngagement} from '../types/TalesTypes.ts';
 
+
 // Native JS Set wrapper implementation shortcut
 class HashSetOrSet extends Set<string> {}
 
