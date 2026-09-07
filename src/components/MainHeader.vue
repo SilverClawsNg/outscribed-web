@@ -84,11 +84,11 @@ const ToggleUserMenu = () => {
 
           <div class="main-header__top-navigation-right">
 
-            <button class="btn primary" @click="modalStore.push('Search', 'Search Contents')">
-               <SvgIcons name="search" :size="20" /> <span>Search</span>
+            <button @click="modalStore.push('Search', 'Search Contents')">
+               <SvgIcons name="search" :size="28" /> 
             </button>
 
-            <button class="btn secondary" @click="modalStore.push('CreateTale', 'Create Tale')">
+            <button class="btn spin" @click="modalStore.push('CreateTale', 'Create Tale')">
               <SvgIcons name="edit" :size="20" /> <span>Spin-A-Tale</span>
             </button>
 

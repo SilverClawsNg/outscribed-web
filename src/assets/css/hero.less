@@ -3,7 +3,8 @@
 .hero-wrapper {
     height: auto;
     width: 100%;
-    background-color: var(--hero-background-color);
+    border-bottom: 2px solid var(--border-color);
+    //background-color: var(--hero-background-color);
     margin-bottom: 2rem;
       //border-top: 2px solid var(--native-background-color);
      //border-bottom: 2px solid var(--native-background-color);
@@ -36,6 +37,7 @@
     @media @largeDevice {
         justify-content: space-between;
         width: @mid-width;
+        align-items: center;
     }
 }
 
@@ -115,7 +117,6 @@
         justify-content: center;
         transition: background 0.3s;
         width: 50%;
-        border:none;
 
         &.btn.primary {
             background-color: var(--background-color);

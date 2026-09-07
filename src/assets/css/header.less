@@ -10,6 +10,7 @@ header.main-header {
     left: 0;
     z-index: 1000;
     background-color: var(--background-color);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
 }
 
 .main-header__wrapper {
@@ -28,7 +29,7 @@ header.main-header {
     &.state-neutral {
 
         @media @largeDevice {
-            height: 100px;
+            height: 65px;
         }
     }
 
@@ -40,7 +41,7 @@ header.main-header {
         }
 
         @media @largeDevice {
-            height: 150px;
+            height: 115px;
         }
     }
 
@@ -83,6 +84,7 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
+    
 
     @media @smallDevice {
         height: 80px;
@@ -101,7 +103,7 @@ header.main-header {
     }
 
     @media @largeDevice {
-        height: 100px;
+        height: 65px;
         padding: 0 10px;
     }
 }
@@ -160,13 +162,15 @@ header.main-header {
 
     @media @largeDevice {
         column-gap: 0.5rem;
-        column-gap: 0.25rem;
     }
 
-    & button.primary,
-    & button.secondary {
-        display: flex;
-        column-gap: 0.2rem;
+    & button {
+
+        &.spin{
+            border: 1px solid var(--text-color);
+            display: flex;
+            column-gap: 0.25rem;
+        }
 
         @media @smallDevice {
             border: none;
@@ -202,7 +206,8 @@ header.main-header {
     background: var(--background-color);
     z-index: 998;
     transition: max-height 0.8s ease-in-out;
- transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
+    transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
+    border-top: 1px solid var(--border-color);
 
     @media @smallDevice {
         max-height: 0;

@@ -12,7 +12,7 @@
     border-radius: 99999px;
     text-transform: capitalize;
     color: var(--text-color);
-    border: 2px solid transparent;
+    border: 1px solid transparent;
      min-width: 100px;
 
 
@@ -26,8 +26,7 @@
 
     &.primary {
         background-color: inherit;
-
-       border-color: var(--hero-background-color);
+        border-color: var(--text-color);
 
        
 
@@ -44,10 +43,8 @@
     }
 
     &.secondary {
-        background-color: var(--hero-background-color);
-        border-color: var(--secondary-button-border-color);
-        border-color: var(--hero-background-color);
- border-color: var(--native-background-color);
+        background-color: var(--text-color);
+        color: var(--native-background-color);
         &:hover {
             /*box-shadow: var(--hightlight-shadow-color);*/
             box-shadow: @box-shadow;

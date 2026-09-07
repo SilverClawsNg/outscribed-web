@@ -8,15 +8,12 @@
 .content-details__header-container {
     width: 100%;
     height: auto;
-    background-color: var(--hero-background-color);
     padding: 2rem 0;
     margin-bottom: 2rem;
-    border-top: 2px solid var(--native-background-color);
-     border-bottom: 2px solid var(--native-background-color);
+   
 }
 
 .content-details__header {
-    text-align: center;
     margin: 0 auto;
     width: @mid-width;
     max-width: calc(100% - 20px);
@@ -39,14 +36,15 @@
 .content-details__metadata {
     margin: 1rem 0;
     position: relative;
-    padding-right: 35px;
+    padding: 10px 35px 10px 0;
     display: flex;
     gap: 1rem;
     align-items:center;
-    justify-content:center;
     flex-wrap: wrap;
     position: relative;
     font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
 
     & a,
     & button{
@@ -71,8 +69,8 @@
 
 .content-details__hamburger {
    position: absolute;
-   right: 15px;
-   top: 0;
+   right: 0;
+   top: 10px;
 
     & button {
         width: 28px;
@@ -123,17 +121,13 @@ h1.content-details__title {
     text-transform: capitalize;
     font-weight: normal;
     margin-bottom: 1rem;
-    font-size: clamp(1.8rem, 3vw + 1rem, 3.3rem);
-    line-height: clamp(2rem, 3vw + 1rem, 3.5rem);
-    text-align: center;
+    font-size: clamp(1.8rem, 3vw + 1rem, 2.6rem);
+    line-height: clamp(2rem, 3vw + 1rem, 2.8rem);
 }
 
 .content-details__metadata-lowbar {
     color: var(--muted-text-color);
 }
-
-
-
 
 .content-details__metadata-writer {
 
@@ -192,15 +186,7 @@ margin-bottom: 1rem;
         object-fit: cover;
         z-index: 2;
      background-color: var(--hero-background-color);
-     border: 3px solid var(--native-background-color);
 
-        @media @smallDevice {
-            border-radius: 8px;
-        }
-
-        @media @largeDevice {
-            border-radius: 21px;
-        }
     }
 }
 
@@ -246,9 +232,10 @@ figcaption.content-details__image-caption {
     margin: 1rem 0;
     width: 100%;
     margin-bottom: 1.5rem;
-  /**border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.5rem;**/
+    background-color: #F5F5F5;
+    border-top: 2px solid var(--text-color);
+    padding: 0.5rem;
+
 }
 
 .content-details__realitycheck-title {
