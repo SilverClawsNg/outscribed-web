@@ -20,8 +20,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'search'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -34,8 +34,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'edit'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -48,8 +48,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'user'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -62,8 +62,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'maximize'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -79,8 +79,8 @@ defineProps<{
 
    <svg 
     v-else-if="name === 'minimize'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -96,8 +96,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'broken-chain'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -110,8 +110,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'padlock'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 48 48" 
     fill="none" 
     stroke="currentColor" 
@@ -127,8 +127,8 @@ defineProps<{
 
     <svg 
     v-else-if="name === 'bookmark'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -141,8 +141,8 @@ defineProps<{
     
     <svg 
     v-else-if="name === 'upvote'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -154,8 +154,8 @@ defineProps<{
 
    <svg 
     v-else-if="name === 'downvote'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -167,8 +167,8 @@ defineProps<{
 
    <svg 
     v-else-if="name === 'share'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -185,8 +185,8 @@ defineProps<{
 
     <svg 
     v-else-if="name === 'twitter'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 32 32" 
     class="filled twitter" 
     v-bind="$attrs">
@@ -195,8 +195,8 @@ defineProps<{
     
       <svg 
     v-else-if="name === 'facebook'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 32 32" 
     class="filled facebook" 
     v-bind="$attrs">
@@ -205,8 +205,8 @@ defineProps<{
 
              <svg 
     v-else-if="name === 'linkedin'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
      viewBox="0 0 32 32" 
       class="filled linkedin" 
     v-bind="$attrs">
@@ -215,8 +215,8 @@ defineProps<{
 
    <svg 
     v-else-if="name === 'email'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
      class="filled email" 
     v-bind="$attrs">
     <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
@@ -224,8 +224,8 @@ defineProps<{
 
   <svg 
     v-else-if="name === 'placeholder'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 64 64" 
     fill="none" 
     stroke="currentColor" 
@@ -240,8 +240,8 @@ defineProps<{
 
  <svg 
     v-else-if="name === 'back-arrow'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -252,8 +252,8 @@ defineProps<{
 
    <svg 
     v-else-if="name === 'globe'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -266,8 +266,8 @@ defineProps<{
 </svg>
 <svg 
     v-else-if="name === 'tag'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -281,8 +281,8 @@ defineProps<{
 
 <svg 
     v-else-if="name === 'clock'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -293,8 +293,8 @@ defineProps<{
 
 <svg 
     v-else-if="name === 'reply'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 32 32"
     fill="none" 
     stroke="currentColor" 
@@ -305,8 +305,8 @@ defineProps<{
 
 <svg 
     v-else-if="name === 'flag'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -318,8 +318,8 @@ defineProps<{
 
 <svg 
     v-else-if="name === 'comment'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -330,8 +330,8 @@ defineProps<{
 
 <svg 
     v-else-if="name === 'stats'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -346,8 +346,8 @@ defineProps<{
 
 <svg 
     v-else-if="name === 'check'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 32 32" 
     fill="none" 
     stroke="currentColor" 
@@ -365,8 +365,8 @@ defineProps<{
 
 <svg 
 v-else-if="name === 'archive'" 
-    :width="size || 20" 
-    :height="size || 20" 
+    :width="size || 16" 
+    :height="size || 16" 
     viewBox="0 0 24 24"
     fill="none" 
     stroke="currentColor" 

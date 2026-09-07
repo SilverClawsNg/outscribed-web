@@ -181,7 +181,9 @@ function createComment() {
               title="Bookmark"
                @click="engage.favorite(insight.engagement)"
             >
-              <SvgIcons name="bookmark" /> {{ uiMeta.favoriteLongText }}
+               <div class="svg-container">
+                <SvgIcons name="bookmark" />
+              </div> {{ uiMeta.favoriteLongText }}
             </button>
           </div>
 
@@ -192,13 +194,17 @@ function createComment() {
               title="Flag"
                 @click="modalStore.push('FlagContent', 'Flag Insight', insight.engagement)"
             >
-             <SvgIcons name="flag" /> {{ uiMeta.flagLongText }}
+             <div class="svg-container">
+                <SvgIcons name="flag" />
+              </div> {{ uiMeta.flagLongText }}
             </button>
           </div>
 
           <div class="content-details__engagement-stats">
             <button @click="modalStore.push('InsightStats', 'Insight Stats', insight)">
-               <SvgIcons name="stats" />  View full stats for insight
+                  <div class="svg-container">
+                <SvgIcons name="stats" />
+              </div>  View full stats for insight
             </button>
           </div>
 

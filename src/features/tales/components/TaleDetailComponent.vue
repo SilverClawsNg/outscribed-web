@@ -217,7 +217,10 @@ function createComment() {
               title="Bookmark"
                @click="engage.favorite(tale.engagement)"
             >
-             <SvgIcons name="bookmark" /> {{ uiMeta.favoriteLongText }}
+              <div class="svg-container">
+                <SvgIcons name="bookmark" />
+              </div>
+              {{ uiMeta.favoriteLongText }}
             </button>
           </div>
 
@@ -228,13 +231,19 @@ function createComment() {
               title="Flag"
                 @click="modalStore.push('FlagContent', 'Flag Tale', tale.engagement)"
             >
-              <SvgIcons name="flag" /> {{ uiMeta.flagLongText }}
+             <div class="svg-container">
+                <SvgIcons name="flag" />
+              </div>
+               {{ uiMeta.flagLongText }}
             </button>
           </div>
 
           <div class="content-details__engagement-stats">
             <button @click="modalStore.push('TaleStats', 'Tale Stats', tale)">
-              <SvgIcons name="stats" /> View full stats for tale
+             <div class="svg-container">
+                <SvgIcons name="stats" />
+              </div>
+              View full stats for tale
             </button>
           </div>
 
