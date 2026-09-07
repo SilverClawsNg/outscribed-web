@@ -42,14 +42,6 @@ export const useWriterListStore = defineStore('writerList', () => {
   // 1. Initial Load Path
  // Inside useWriterStore
 
- 
-  // Sets the target writer before a modal opens
-  function setBaseRoute(apiUrl: any) {
-    // We clone it using spread operator so the user doesn't alter 
-    // the background list until they actually hit 'Save'
-    baseRoute.value = apiUrl;
-  }
-
 // 1. Initial Load Path
 async function loadWriters(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
 
@@ -338,7 +330,7 @@ async function loadMoreWriters() {
 
   return {
     writers, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute,
-    hydratePersonals, activateEngagementButtons, setBaseRoute, loadWriters, loadMoreWriters, reset, abort
+    hydratePersonals, activateEngagementButtons, loadWriters, loadMoreWriters, reset, abort
   };
 
 });

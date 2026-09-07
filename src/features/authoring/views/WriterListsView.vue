@@ -27,8 +27,6 @@ const wasCleaned = ref(false)
 const currentPath = encodeURIComponent(route.fullPath)
 const requiresLogin = ref(false)
 const isLoggedIn = useLoginHint()
-const apiUrl = ref('')
-const pageTitle = ref('')
 
 // --- DEFINE PAGE FUNCTIONS ---
 function redirectToLogin() {
@@ -61,10 +59,7 @@ async function initPage() {
 
   // 2. Build the targeted API request endpoint string from those validated details
   // 🛡️ Fix 4: Changed 'filterStore' to your actual variable 'writerFilterStore'
-  const cleanApiPath = writerFilterStore.buildApiPath(apiUrl.value);
-
-  // 2b. Set the base url for loadmore
-  writerStore.setBaseRoute(apiUrl.value)
+  const cleanApiPath = writerFilterStore.buildApiPath(writerStore.baseRoute);
 
   // 3. Fetch from store
   const { success, error } = await writerStore.loadWriters(cleanApiPath)
@@ -152,7 +147,7 @@ onUnmounted(() => {
    <template v-else>
    
       <div class="shared__page-title">
-        <h1>{{ pageTitle }}</h1>
+        <h1>Browse Writers</h1>
         <button class="btn primary" @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
       </div>
 
