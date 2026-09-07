@@ -239,7 +239,7 @@ figcaption.content-details__image-caption {
     margin: 1rem 0;
     width: 100%;
     margin-bottom: 1.5rem;
-    background-color: #F5F5F5;
+    background-color:var(--light-background-color);
     border-top: 2px solid var(--text-color);
     padding: 1rem 0.5rem;
 
@@ -247,17 +247,21 @@ figcaption.content-details__image-caption {
 
 .content-details__realitycheck-title {
    margin-bottom: 1rem;
-   font-size: 1.2rem;
-   font-weight: 600;
+   font-size: 1.4rem;
 }
 
-.content-details__realitycheck-source {
-    margin-bottom: 0.25rem;
+.content-details__realitycheck-heading {
+    margin-bottom: 1rem;
     color:var(--muted-text-color);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
 
-    & span{
-        font-weight: 600;
+    & h2{
+    text-transform: uppercase;
+
     }
+
 }
 
 .content-details__realitycheck-summary {
@@ -272,11 +276,25 @@ figcaption.content-details__image-caption {
             color: var(--hover-color);
         }
     }
+
+    & .button-holder{
+        width: 100%;
+        height: auto;
+        margin-top: 1rem;
+
+        & button.btn.secondary{
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 0.25rem;
+           
+        }
+
+    }
 }
 
 .content-details__realitycheck-action {
     height: 40px;
-    width: 100%;
+    width: auto;
     display: flex;
     align-items: center;
     padding: 0 0.9rem;

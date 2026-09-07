@@ -142,16 +142,25 @@ function createComment() {
 
       <section v-if="tale.realityCheckTitle" class="content-details__realitycheck">
        
-        <h2 class="content-details__realitycheck-source">
-         / <span>reality check</span> / {{ tale.realityCheckSource }}
-        </h2>
+        <div class="content-details__realitycheck-heading">
+        <h2>Reality Check</h2>
+          <p>
+            {{ tale.realityCheckSource }}
+          </p>
+        </div>
         <h3 class="content-details__realitycheck-title">
           {{ tale.realityCheckTitle }}
         </h3>
         <div class="content-details__realitycheck-summary">
+
           {{ tale.realityCheckSummary }}
-          <button @click="showExternalLink = !showExternalLink">...Continue Reading</button>
-          
+
+          <div class="button-holder">
+            
+          <button class="btn secondary" @click="showExternalLink = !showExternalLink"> Visit Source</button>
+        
+          </div>
+
           <div v-if="showExternalLink" class="shared__popover">
             <div class="shared__popover-arrow"></div>
             <p class="shared__popover-text">You would be redirected to {{ tale.realityCheckUrl }}</p>
@@ -159,11 +168,10 @@ function createComment() {
               <a 
                 :href="tale.realityCheckUrl" 
                 target="_blank" 
-                class="content-details__realitycheck-action"
                 @click="showExternalLink = false">
                 Yes
               </a>
-              <button class="btn-cancel" @click="showExternalLink = false">No</button>
+              <button @click="showExternalLink = false">No</button>
             </div>
           </div>
         </div>
