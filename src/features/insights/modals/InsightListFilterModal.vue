@@ -5,7 +5,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useInsightListFilterStore } from '../stores/InsightListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
-import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems, GeneralSortTypeSelectItems } from '@/utils/selectItemHelper'
+import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems } from '@/utils/selectItemHelper'
 
 const router = useRouter()
 const filterStore = useInsightListFilterStore()
@@ -132,7 +132,7 @@ function applyFilter() {
             <fieldset>
                 <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>
-                    <option v-for="item in GeneralSortTypeSelectItems" :key="item.value" :value="item.value">
+                    <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
                     </option>
                 </select>
