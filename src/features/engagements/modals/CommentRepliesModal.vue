@@ -7,7 +7,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integ
 import { type GeneralSortType } from '@/utils/enumHelper.ts'
 import { GeneralSortTypeDescriptions } from '@/utils/descriptors'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import Comment from '../CommentComponent.vue'
+import Comment from '../components/CommentComponent.vue'
 
 import { useModalStore } from '@/stores/modalStore';
 import {type CommentListDto

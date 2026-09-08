@@ -145,7 +145,7 @@ export const useSnapshotStore = defineStore('snapshotStore', () => {
           feedController = new AbortController();
   
       // Note: Assuming getAsync is part of your API client layer
-      const outcome = await getAsync<SnapshotDetailDto>(`api/snapshots/checklist/${id}`, true, {} as SnapshotDetailDto, feedController.signal);
+      const outcome = await getAsync<SnapshotDetailDto>(`api/snapshots/detail/${id}`, true, {} as SnapshotDetailDto, feedController.signal);
   
       // Consideration 1: Check if any error and immediately return to caller
       if (outcome.isFailure) {

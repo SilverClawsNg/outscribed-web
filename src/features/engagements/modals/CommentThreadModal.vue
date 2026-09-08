@@ -3,7 +3,7 @@ import { onMounted, ref, computed } from 'vue';
 import { useCommentThreadStore } from '../stores/CommentThreadStore.ts';
 import { APIError } from '@/api/apiTypes.ts'
 import PageStatusMessage from '@/components/PageStatusMessage.vue' 
-import Comment from '../CommentComponent.vue'
+import Comment from '../components/CommentComponent.vue'
 
 import {type CommentListDto,  type SourceContentDto} from '../types/EngagementTypes.ts';
 import SourceContentComponent from '../components/SourceContentComponent.vue';

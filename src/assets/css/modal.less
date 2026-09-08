@@ -101,19 +101,11 @@
         z-index: 1005;
         transition: all 0.9s ease;
 
-        @media @phone {
+        @media @smallDevice {
             width: 100%;
         }
 
-        @media @phablet {
-            width: 100%;
-        }
-
-        @media @tablet {
-            width: @min-width;
-            max-width: 100%;
-        }
-
+      
         @media @largeDevice {
             width: @min-width;
             max-width: 100%;
@@ -286,65 +278,6 @@
                 margin: 5px 0;
                 font-style: italic;
             }
-
-          /*  & .form-container {
-
-                & fieldset {
-                    background-color: var(--native-background-color) !important;
-                }
-
-                & input.form-field,
-                & textarea.form-field {
-                    background-color: var(--native-background-color) !important;
-
-                    &:-webkit-autofill,
-                    &:-webkit-autofill:hover,
-                    &:-webkit-autofill:focus,
-                    &:-webkit-autofill:active {
-                        background-color: var(--native-background-color);
-                    }
-
-                    &:disabled {
-                        background-color: var(--lightbackground-color) !important;
-                    }
-
-                    &:focus,
-                    &:active {
-                        background-color: var(--native-background-color) !important;
-                    }
-                }
-
-                & textarea {
-                    height: 150px;
-                }
-
-                & select.form-field {
-                    background-color: var(--native-background-color) !important;
-
-                    &:-webkit-autofill,
-                    &:-webkit-autofill:hover,
-                    &:-webkit-autofill:focus,
-                    &:-webkit-autofill:active {
-                        background-color: var(--native-background-color);
-                    }
-
-                    &:disabled {
-                        background-color: var(--native-background-color);
-                    }
-
-                    &:focus,
-                    &:active {
-                        background-color: var(--native-background-color);
-                    }
-                }
-
-                & .otp-input-group {
-
-                    & input.otp-box {
-                        background-color: var(--native-background-color) !important;
-                    }
-                }
-            }*/
 
         }
     }

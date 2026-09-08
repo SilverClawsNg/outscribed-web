@@ -6,9 +6,12 @@ import { useModalStore } from '@/stores/modalStore'
 import { type CommentListDto } from '@/features/engagements/types/EngagementTypes' // 🎯 Import your clean semantics
 import { toLongDate } from '@/utils/dateExtensions'
 import { formatCounts } from '@/utils/stringHelpers'
+import { useEngagement } from '@/composables/useEngagement';
+import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
+const engage = useEngagement()
 
 const props = defineProps<{
   payload: unknown // Accept as unknown for maximum flexibility
@@ -16,6 +19,9 @@ const props = defineProps<{
 
 // 🔒 Strongly-type cast the payload context for your template and logic
 const comment = computed(() => props.payload as CommentListDto)
+
+// Transform state properties reactively on demand
+const uiMeta = computed(() => getEngagementMetadata(comment.value.engagement));
 
 </script>
 
@@ -61,19 +67,27 @@ const comment = computed(() => props.payload as CommentListDto)
       <dt>Saves</dt>
       <dd>
         {{ formatCounts(comment.engagement.favoritesCount) }}
+         <button 
+        title="Add To Favorites"
+        :disabled="uiMeta.isFavoriteDisabled"
+        @click="engage.favorite(comment.engagement)"
+      >
+        Add To Favorites
+      </button>
       </dd>
     </dl>
 
     <dl>
       <dt>Reports</dt>
-      <dd>{{ formatCounts(comment.engagement.flagsCount) }}</dd>
-       <button 
+      <dd>{{ formatCounts(comment.engagement.flagsCount) }}
+    <button 
         title="Report"
+        :disabled="uiMeta.isFlagDisabled"
        @click="modalStore.push('FlagContent', 'Flag Comment', comment.engagement)"
       >
-        Report Comment
+      Report Comment
       </button>
-
+      </dd>
     </dl>
   </div>
 </template>

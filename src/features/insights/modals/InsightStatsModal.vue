@@ -7,10 +7,15 @@ import { type InsightDetailDto } from '@/features/insights/types/InsightsTypes' 
 import { toLongDate } from '@/utils/dateExtensions'
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
-import { type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
+import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
+import { useEngagement } from '@/composables/useEngagement';
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
+const engage = useEngagement()
+
+// Transform state properties reactively on demand
+const uiMeta = computed(() => getEngagementMetadata(insight.value.engagement));
 
 const props = defineProps<{
   payload: unknown // Accept as unknown for maximum flexibility
@@ -126,6 +131,14 @@ function createComment() {
       <dt>Saves</dt>
       <dd>
         {{ formatCounts(insight.engagement.favoritesCount) }}
+          <button 
+              :disabled="uiMeta.isFavoriteDisabled || insight.isArchived" 
+              aria-label="Bookmark this insight"
+              title="Bookmark"
+               @click="engage.favorite(insight.engagement)"
+            >
+              Add To Favorites
+            </button>
       </dd>
     </dl>
 
@@ -136,7 +149,16 @@ function createComment() {
 
     <dl>
       <dt>Reports</dt>
-      <dd>{{ formatCounts(insight.engagement.flagsCount) }}</dd>
+      <dd>{{ formatCounts(insight.engagement.flagsCount) }}
+          <button 
+              :disabled="uiMeta.isFlagDisabled" 
+              aria-label="Report this insight"
+              title="Flag"
+                @click="modalStore.push('FlagContent', 'Flag Insight', insight.engagement)"
+            >
+          Report Insight
+            </button>
+      </dd>
     </dl>
   </div>
 </template>

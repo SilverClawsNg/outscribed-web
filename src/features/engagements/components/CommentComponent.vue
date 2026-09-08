@@ -174,8 +174,6 @@ function returnAncestor() {
         <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>
       </button>
 
-     
-
     </section>
    
     <section class="comments-list__other-actions">
@@ -194,8 +192,6 @@ function returnAncestor() {
         <SvgIcons name='bookmark' />
         <span>{{ uiMeta.favoriteText }}</span>
       </button>
-
-    
 
       <button class="comments-list__hamburger" @click="modalStore.push('CommentStats', 'Comment Stats', comment)">
         <div></div><div></div><div></div>

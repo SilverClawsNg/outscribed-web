@@ -7,10 +7,12 @@ import { type TaleDetailDto } from '@/features/tales/types/TalesTypes' // 🎯 I
 import { toLongDate } from '@/utils/dateExtensions'
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
-import { type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
+import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
+import { useEngagement } from '@/composables/useEngagement';
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
+const engage = useEngagement()
 
 const props = defineProps<{
   payload: unknown // Accept as unknown for maximum flexibility
@@ -18,6 +20,9 @@ const props = defineProps<{
 
 // 🔒 Strongly-type cast the payload context for your template and logic
 const tale = computed(() => props.payload as TaleDetailDto)
+
+// Transform state properties reactively on demand
+const uiMeta = computed(() => getEngagementMetadata(tale.value.engagement));
 
 const content: ActiveContentContext = {
     id: tale.value.taleId,
@@ -147,6 +152,14 @@ function createComment() {
       <dt>Saves</dt>
       <dd>
         {{ formatCounts(tale.engagement.favoritesCount) }}
+          <button 
+              :disabled="uiMeta.isFavoriteDisabled || tale.isArchived" 
+              aria-label="Bookmark this tale"
+              title="Bookmark"
+               @click="engage.favorite(tale.engagement)"
+            >
+             Add To Favorites
+            </button>
       </dd>
     </dl>
 
@@ -157,7 +170,16 @@ function createComment() {
 
     <dl>
       <dt>Reports</dt>
-      <dd>{{ formatCounts(tale.engagement.flagsCount) }}</dd>
+      <dd>{{ formatCounts(tale.engagement.flagsCount) }}
+        <button 
+              :disabled="uiMeta.isFlagDisabled" 
+              aria-label="Report this tale"
+              title="Flag"
+                @click="modalStore.push('FlagContent', 'Flag Tale', tale.engagement)"
+            >
+            Report Tale
+            </button>
+      </dd>
     </dl>
   </div>
 </template>

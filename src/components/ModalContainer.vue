@@ -55,7 +55,6 @@ import InsightPreviewModal from '@/features/insights/modals/InsightPreviewModal.
 
 import ContentCommentsModal from '@/features/engagements/modals/ContentCommentsModal.vue'
 import CreateCommentModal from '@/features/engagements/modals/CreateCommentModal.vue'
-import CommentModal from '@/features/engagements/modals/CommentModal.vue'
 import CommentThreadModal from '@/features/engagements/modals/CommentThreadModal.vue'
 import CommentRepliesModal from '@/features/engagements/modals/CommentRepliesModal.vue'
 import ReplyCommentModal from '@/features/engagements/modals/ReplyCommentModal.vue'
@@ -132,7 +131,6 @@ ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,
 CommentListFilter: CommentListFilterModal,
 ContentVotes: ContentVotesModal,
-Comment: CommentModal,
 CommentStats: CommentStatsModal,
 CommentThread: CommentThreadModal,
 CommentReplies: CommentRepliesModal,
