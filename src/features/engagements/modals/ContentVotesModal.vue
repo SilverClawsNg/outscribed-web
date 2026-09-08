@@ -7,8 +7,6 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integ
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import Vote from '../components/VoteListComponent.vue'
 
-import { useModalStore } from '@/stores/modalStore';
-
 // --- DEFINE FORM DATA ---
 const props = defineProps<{
   payload: unknown 

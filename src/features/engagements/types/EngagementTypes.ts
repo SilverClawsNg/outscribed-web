@@ -436,11 +436,31 @@ export interface GetContentVotesResponse {
   pointer: string | null; 
 }
 
-export interface LoadingVotesResponse {
-  success: boolean;
-  votes: VoteListDto[];
+
+export interface SnapshotListDto{
+    id: string;
+    date: Date;
+    totalCount: number;
+}
+
+export interface GetSnapshotListResponse {
+  snapshots: SnapshotListDto[];
   hasNext: boolean;
-  pointer: any;
-  anchor: any;
-  error: any | null;
+  anchor: string | null;
+  pointer: string | null; 
+}
+
+  export interface SnapshotDetailDto{
+    date: Date;
+    viewsCount: number;
+    authViewsCount: number;
+    sharesCount: number;
+    commentsCount: number;
+    upvotesCount: number;
+    downvotesCount: number;
+    flagsCount: number;
+    favoritesCount: number;
+    talesCount: number;
+    insightsCount: number;
+    totalCounts: number
 }

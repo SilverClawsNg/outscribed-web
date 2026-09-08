@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 
 import { APIError } from '@/api/apiTypes.ts'
 import { getAsync } from '@/api/apiGetServices'
-import type{GetContentVotesResponse, LoadingVotesResponse, VoteListDto} from '../types/EngagementTypes.ts';
+import type{GetContentVotesResponse, VoteListDto} from '../types/EngagementTypes.ts';
 import { useContentVotesFilterStore } from './ContentVotesFilterStore.ts'
 
 // Native JS Set wrapper implementation shortcut

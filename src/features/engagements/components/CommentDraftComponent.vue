@@ -144,6 +144,10 @@ async function handleModalUpdate(type: string, title: string) {
         Thread
       </button>
 
+        <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', comment.commentId)">
+            Daily Metrics
+          </button>
+
     </section>
 
   </article>

@@ -62,6 +62,8 @@ import ReplyCommentModal from '@/features/engagements/modals/ReplyCommentModal.v
 import CommentListFilterModal from '@/features/engagements/modals/CommentListFilterModal.vue'
 import ContentVotesModal from '@/features/engagements/modals/ContentVotesModal.vue'
 import CommentStatsModal from '@/features/engagements/modals/CommentStatsModal.vue'
+import SnapshotDetailModal from '@/features/engagements/modals/SnapshotDetailModal.vue'
+import SnapshotListModal from '@/features/engagements/modals/SnapshotListModal.vue'
 
 import ContentCommentsFilterModal from '@/features/engagements/modals/ContentCommentsFilterModal.vue'
 import DraftCommentsFilterModal from '@/features/engagements/modals/DraftCommentsFilterModal.vue'
@@ -143,6 +145,8 @@ FlagContent: FlagContentModal,
 AskQuestion: AskQuestionModal,
 ProblemDefinition: ProblemDefinitionModal,
 TaleDisclaimer: TaleDisclaimerModal,
+SnapshotDetail: SnapshotDetailModal,
+SnapshotListModal: SnapshotListModal,
 WriterFilter: WriterFilterModal,
 ArchiveProfile: ArchiveProfileModal,
 UnarchiveProfile: UnarchiveProfileModal,

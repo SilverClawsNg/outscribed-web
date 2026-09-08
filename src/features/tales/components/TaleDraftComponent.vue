@@ -132,7 +132,14 @@ async function handleModalUpdate(type: string, title: string) {
         Preview
       </button>
 
+       <template v-if="tale.status !== 'Created'">
+      <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', tale.taleId)">
+            Daily Metrics
+          </button>
+      </template>
+
     </section>
+
   </article>
 
 </template>
