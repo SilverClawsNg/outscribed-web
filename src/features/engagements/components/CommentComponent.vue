@@ -160,7 +160,7 @@ function returnAncestor() {
         :disabled="uiMeta.isVoteDisabled"
         @click="engage.vote(comment.engagement, 'Upvote')"
       >
-       <SvgIcons name="upvote" />
+       <SvgIcons name="uparrow" />
         <span>{{ formatCounts(comment.engagement?.upvotesCount) }}</span>
       </button>
 
@@ -170,21 +170,22 @@ function returnAncestor() {
         :disabled="uiMeta.isVoteDisabled"
        @click="engage.vote(comment.engagement, 'Downvote')"
       >
-        <SvgIcons name="downvote" />
+        <SvgIcons name="downarrow" />
         <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>
       </button>
 
-      <template  v-if="!isAncestor">
+     
+
+    </section>
+   
+    <section class="comments-list__other-actions">
+       <template  v-if="!isAncestor">
         
       <button @click="replyComment">
          <SvgIcons name='reply' /> <span>Reply</span>
       </button>
 
       </template>
-
-    </section>
-   
-    <section class="comments-list__other-actions">
       <button 
         title="Add To Favorites"
         :disabled="uiMeta.isFavoriteDisabled"
@@ -194,14 +195,7 @@ function returnAncestor() {
         <span>{{ uiMeta.favoriteText }}</span>
       </button>
 
-      <button 
-        title="Report"
-        :disabled="uiMeta.isFlagDisabled"
-       @click="modalStore.push('FlagContent', 'Flag Comment', comment.engagement)"
-      >
-        <SvgIcons name='flag' />
-        <span>{{ uiMeta.flagText }}</span>
-      </button>
+    
 
       <button class="comments-list__hamburger" @click="modalStore.push('CommentStats', 'Comment Stats', comment)">
         <div></div><div></div><div></div>

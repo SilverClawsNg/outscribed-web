@@ -3,7 +3,7 @@
 defineProps<{
   name: 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain' | 'padlock' | 'bookmark' | 'upvote'
   | 'downvote' | 'share' | 'facebook' | 'twitter' | 'linkedin' | 'email' | 'placeholder' | 'back-arrow'  | 'globe' | 'tag'
-  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' 
+  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow' | 'downarrow'
   size?: number
 }>()
 </script>
@@ -375,6 +375,32 @@ v-else-if="name === 'archive'"
   <path d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8" />
   <rect x="1" y="3" width="22" height="5" rx="1" />
   <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+<!-- Upvote Arrow -->
+<svg 
+v-else-if="name === 'uparrow'" 
+    :width="size || 16" 
+    :height="size || 16" 
+    viewBox="0 0 24 24"
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="1" 
+    v-bind="$attrs">
+  <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+</svg>
+
+<!-- Downvote Arrow -->
+<svg 
+v-else-if="name === 'downarrow'" 
+    :width="size || 16" 
+    :height="size || 16" 
+    viewBox="0 0 24 24"
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="1" 
+    v-bind="$attrs">
+  <path d="M12 20l8-8h-6V4h-4v8H4z"/>
 </svg>
 
 

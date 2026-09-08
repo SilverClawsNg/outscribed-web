@@ -67,6 +67,13 @@ const comment = computed(() => props.payload as CommentListDto)
     <dl>
       <dt>Reports</dt>
       <dd>{{ formatCounts(comment.engagement.flagsCount) }}</dd>
+       <button 
+        title="Report"
+       @click="modalStore.push('FlagContent', 'Flag Comment', comment.engagement)"
+      >
+        Report Comment
+      </button>
+
     </dl>
   </div>
 </template>

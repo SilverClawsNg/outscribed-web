@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, reactive } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useContentCommentsStore } from '../stores/ContentCommentsStore.ts';
 import { useContentCommentsFilterStore } from '../stores/ContentCommentsFilterStore.ts'; 
 import { APIError } from '@/api/apiTypes.ts'
@@ -7,15 +7,13 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integ
 import { type GeneralSortType } from '@/utils/enumHelper.ts'
 import { GeneralSortTypeDescriptions } from '@/utils/descriptors'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import Comment from './CommentModal.vue'
-import { useLoginHint } from '@/utils/authHelper'
+import Comment from '../CommentComponent.vue'
 
 import { useModalStore } from '@/stores/modalStore';
-import {type CommentListDto, type GetContentCommentsResponse, initializeCommentListEngagement, 
-    type GetCommentThreadResponse, type CreateCommentRequest, type CommentCreatedResponse, type ReplyCommentRequest,
-    type Engageable, type GetEngagementIdsResponse, type ActiveContentContext, type GetCommentRepliesResponse,
-    type LoadingCommentsResponse
-} from '../types/EngagementTypes.ts';
+import {type CommentListDto, 
+    
+    type ActiveContentContext
+    } from '../types/EngagementTypes.ts';
 
 
 const props = defineProps<{
