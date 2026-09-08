@@ -133,12 +133,13 @@ async function handleModalUpdate(type: string, title: string) {
  <router-link :to="`/tale/${insight.taleId}`" class="btn secondary">
               Go To Tale
             </router-link>
-    </section>
-      <template v-if="insight.status !== 'Created'">
+               <template v-if="insight.status !== 'Created'">
      <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', insight.insightId)">
             Daily Metrics
           </button>
       </template>
+    </section>
+   
   </article>
 
 </template>

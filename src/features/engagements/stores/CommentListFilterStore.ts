@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { 
    getValidContentType, getValidSortType, getValidVoteType
 } from '@/utils/validators'; 
-import { getStoredAnchor, type TypeLabel } from '@/utils/anchorStorage';
+import { type TypeLabel } from '@/utils/anchorStorage';
 
 export const useCommentListFilterStore = defineStore('commentListFilter', () => {
 

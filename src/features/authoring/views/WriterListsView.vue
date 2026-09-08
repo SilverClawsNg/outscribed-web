@@ -10,7 +10,6 @@ import WriterListComponent from '../components/WriterListComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import { useLoginHint } from '@/utils/authHelper'
 
 // --- INITIALIZE STORES ---
 const writerStore = useWriterListStore();
@@ -25,8 +24,6 @@ const loadingError = ref<APIError | null>(null)
 const wasCleaned = ref(false)
 
 const currentPath = encodeURIComponent(route.fullPath)
-const requiresLogin = ref(false)
-const isLoggedIn = useLoginHint()
 
 // --- DEFINE PAGE FUNCTIONS ---
 function redirectToLogin() {
@@ -81,7 +78,7 @@ async function initPage() {
   isLoading.value = false
 
   // 3. ⏳ Late-Binding Personal Layer Hydration (Runs seamlessly in background)
-  if (success && isLoggedIn.value) {
+  if (success) {
     await writerStore.hydratePersonals(); 
   }
 }
@@ -89,11 +86,6 @@ async function initPage() {
 // --- MOUNT PAGE ---
 onMounted(async () => {
   
-if(requiresLogin.value){
-  isLoading.value = true
-  return
-}
-
   await initPage();
 })
 
@@ -121,17 +113,6 @@ onUnmounted(() => {
 
   </template>
 
-  <template v-else-if="requiresLogin">
-
- <PageStatusMessage 
-      title="401: Unauthorized!" 
-      message="This feature is protected and requires a login to continue">
-      <template #actions>
-        <button class="btn primary" @click=redirectToLogin>Login</button>
-      </template>
-    </PageStatusMessage>
-
-  </template>
   <template v-else-if="loadingError">
 
     <PageStatusMessage 

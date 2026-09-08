@@ -116,10 +116,6 @@ onMounted(async () => {
 
     <div class="comment-thread-modal">
 
-      <div class="comment-thread-modal__header">
-        <h2>Comment Thread</h2>
-      </div>
-
       <div class="comment-thread-modal__content">
 
         <template v-if="source">

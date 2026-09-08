@@ -43,16 +43,6 @@ const typeSelected = computed({
   }
 })
 
-const sortSelected = computed({
-  // What the HTML dropdown sees: translate null to '-1'
-  get() {
-    return filterStore.sort || '-1'
-  },
-  // What the store sees: translate '-1' back to null
-  set(newValue: string) {
-    filterStore.sort = newValue === '-1' ? null : newValue
-  }
-})
 </script>
 
 <template>
@@ -89,24 +79,25 @@ const sortSelected = computed({
 <h3 class="form-heading">Filter</h3>
 
 <fieldset class="with-ticks">
-    
+
 <template v-for="item in LimitedContentTypeSelectItems" :key="item.value">
   
       <div class="ticks">
        <input
-          type="checkbox"
+          type="radio"
+          name="contenttype"
           :value="item.value"
-          v-model="typeSelected"
+          :id="item.value"
+          v-model="filterStore.contenttype"
         />
-           <label>
+           <label :for="item.value">
         {{ item.label }}
       </label>
       </div>
   
   </template>
   </fieldset>
- 
-  
+   
       <template v-if="type === 'saves'">
         <fieldset>
           <div class="ticks">

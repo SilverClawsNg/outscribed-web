@@ -43,6 +43,6 @@ const emit = defineEmits<{
   </div>
 </template>
 
-<style lang="less" scoped>
+<style scoped>
    @import "@/assets/css/table.less";
 </style>

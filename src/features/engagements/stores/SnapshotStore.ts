@@ -38,7 +38,7 @@ export const useSnapshotStore = defineStore('snapshotStore', () => {
           feedController = new AbortController();
 
       // Note: Assuming getAsync is part of your API client layer
-      const outcome = await getAsync<GetSnapshotListResponse>(apiPathWithFilters, false, {} as GetSnapshotListResponse,
+      const outcome = await getAsync<GetSnapshotListResponse>(apiPathWithFilters, true, {} as GetSnapshotListResponse,
         feedController.signal
       );
 

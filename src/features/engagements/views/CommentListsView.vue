@@ -88,7 +88,7 @@ watch(
 // --- 2. PAGE INITIALIZATION ---
 async function initPage() {
   
-  console.log(`🚀 [Comment Lists View]: Fetching for path -> ${apiUrl.value}`)
+  console.log(`🚀 [Comment Lists View]: Fetching for path -> ${apiUrl.value}. Fetching for full path -> ${currentPath.value}`)
 
   // Hydrate and validate filter state
   const { isClean } = commentFilterStore.rehydrate(route.query);

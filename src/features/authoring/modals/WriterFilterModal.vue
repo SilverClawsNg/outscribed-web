@@ -4,10 +4,12 @@
 import { computed, ref, onMounted } from 'vue'
 import { useWriterListFilterStore } from '../stores/WriterListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
-import { SortTypeSelectItems, CountrySelectItems} from '@/utils/selectItemHelper'
+import { GeneralSortTypeSelectItems, CountrySelectItems} from '@/utils/selectItemHelper'
+import { useRouter } from 'vue-router'
 
 const filterStore = useWriterListFilterStore()
 const modalStore = useModalStore()
+const router = useRouter()
 
 function resetFilters() {
   filterStore.reset()
@@ -15,6 +17,12 @@ function resetFilters() {
 
 function applyFilter() {
   
+   // 🔗 Vue Router handles translating the filter state straight to the browser url parameters footprint
+  router.push({
+    path: router.currentRoute.value.path,
+    query: filterStore.getAsDictionary() // Generates a clean object removing all "-1" or null entries
+  })
+
   // Dismiss modal window from presentation tree tracking index safely
   modalStore.pop()
 }
@@ -23,6 +31,7 @@ function applyFilter() {
 
 <template>
   <div class="form-container">
+
     <form @submit.prevent="applyFilter">
       
       <!-- 1. Text Searching Content Inputs -->
@@ -59,7 +68,7 @@ function applyFilter() {
         <fieldset>
                 <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>
-                    <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
+                    <option v-for="item in GeneralSortTypeSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
                     </option>
                 </select>
