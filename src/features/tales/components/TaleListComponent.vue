@@ -36,42 +36,46 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
 <template>
  
    <article class="content-lists__card">
-    
-    <section class="content-lists__card-header">
-      <h1 class="content-lists__title">
-        <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
-      </h1>
+   
+    <section class="content-lists__image">
 
-      <div class="content-lists__metadata">
+       <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb') || undefined" :alt="tale.title" />
+
+         <div class="content-lists__metadata-writer">
+
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
         </button>
+        <span class="divider line"></span>
         {{ toRelativeTime(tale.createdAt) }}
+
       </div>
 
+    </section>
+
+    
       <div class="content-lists__metadata">
-        <SvgIcons name="tag" />
+       
         <RouterLink :to="`/tales?category=${tale.category}`">
           {{ CategoryDescriptions[tale.category] }}
         </RouterLink>
         
         <template v-if="tale.country">
-          <SvgIcons name="globe" />
+         <span class="divider circle"></span>
           <RouterLink :to="`/tales?country=${tale.country}`">
             {{ CountryDescriptions[tale.country] }}
           </RouterLink>
         </template>
       </div>
-    </section>
 
-    <section class="content-lists__image">
-       <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb') || undefined" :alt="tale.title" />
-    </section>
+      <h1 class="content-lists__title">
+        <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
+      </h1>
 
     <section class="content-lists__summary">
       <div>
         {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
-        <RouterLink :to="`/tale/${tale.slug}`">Continue Reading</RouterLink>
+       
       </div>
     </section>
 
@@ -84,12 +88,13 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
       <p><span>{{ formatCounts(tale.engagement.favoritesCount) }}</span> Saves</p>
     </section>
 
-    <section class="content-lists__favorite">
+    <section class="content-lists__footer">
+       <RouterLink class="btn secondary" :to="`/tale/${tale.slug}`">Read More</RouterLink>
       <button 
         @click="engage.favorite(tale.engagement)"
         :title="tale.engagement.isFavorite ? 'Remove From Saves' : 'Add To Favorites'"
         :disabled="uiMeta.isFavoriteDisabled">
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteText }}
+        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteLongText }}
       </button>
     </section>
 

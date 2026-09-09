@@ -39,7 +39,6 @@ const CloseMenu = () => {
   updateParent()
 }
 
-
 const TogglePublicMenu = () => {
   currentState.value = currentState.value === 'Public' ? 'Neutral' : 'Public'
   updateParent()

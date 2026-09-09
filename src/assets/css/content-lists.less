@@ -11,13 +11,17 @@
 .content-lists__card {
     width: 100%;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    //background-color: #E9EEF4;
+    border-bottom: 1px solid @header-background-color;
+    //border-radius: 8px;
+
+   
 }
 
 .content-lists__card-header {
-    text-align: center;
+    //text-align: center;
     margin: 1rem auto;
 
    & .content-lists__metadata {
@@ -32,10 +36,11 @@
 }
 
 .content-lists__title {
-    font-size: clamp(1.4rem, 3vw + 1rem, 2.6rem);
-    line-height: clamp(2rem, 3vw + 1rem, 3.2rem);
+    font-size: clamp(1.4rem, 3vw + 1rem, 1.8rem);
+    line-height: clamp(2rem, 3vw + 1rem, 2.4rem);
     text-transform: capitalize;
-    margin: 0.5rem 0;
+     margin-bottom: 0.5rem;
+    font-weight: 700;
 
     &.alt {
         font-size: 1.2rem;
@@ -51,7 +56,7 @@
 }
 
 .content-lists__metadata {
-    text-transform: capitalize;
+    text-transform: uppercase;
     font-size: 0.9rem;
     color: var(--muted-text-color);
     display: flex;
@@ -85,12 +90,49 @@
     }
 }
 
+.content-lists__metadata-writer{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 0.5rem;
+    display: flex;
+    column-gap: 0.25rem;
+    font-weight: 700;
+    color: @white-color;
+
+    & span.divider.line::before {
+   font-weight: 700;
+    color: @white-color;
+}
+
+    & .at {
+
+    &:before {
+        font-weight: 700;
+        color: @white-color;
+        content: "\0040";
+    }
+
+    &:hover {
+        &:before {
+            color: var(--hover-color);
+        }
+    }
+}
+
+}
+
 .content-lists__image {
     width: 100%;
     height: 250px;
     margin-bottom: 1rem;
     background-color: var(--hero-background-color);
-
+    position: relative;
+ 
         
     & img {
         width: 100%;
@@ -124,18 +166,21 @@
     & p {
         display: flex;
         align-items: center;
+        column-gap: 0.25rem;
 
         & span {
             font-weight: 600;
-            margin-right: 0.1rem;
+           
         }
     }
 }
 
-.content-lists__favorite {
+.content-lists__footer {
     display: flex;
-    justify-content: flex-end;
-
+    align-items: center;
+    column-gap: 1rem;
+    margin-top: 1rem;
+    
     & button {
         display: inline-flex;
         align-items: center;
@@ -147,6 +192,12 @@
            color: var(--hover-color);
         }
     }
+}
+
+.content-lists__favorite {
+    display: flex;
+    justify-content: flex-end;
+
 }
 
 .content-lists__actions {

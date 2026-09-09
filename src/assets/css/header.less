@@ -9,10 +9,10 @@ header.main-header {
     top: 0;
     left: 0;
     z-index: 1000;
-    //background-color: var(--background-color);
-    //box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
-    background-color: @header-background-color;
-    color: @white-color;
+    background-color: var(--background-color);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    //background-color: @header-background-color;
+    //color: @white-color;
 }
 
 .main-header__wrapper {
@@ -86,8 +86,8 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
-     background-color: @header-background-color;
-    color: @white-color;
+     //background-color: @header-background-color;
+    //color: @white-color;
 
     @media @smallDevice {
         height: 60px;
@@ -177,8 +177,8 @@ header.main-header {
          border: 1px solid var(--text-color);
             display: flex;
             column-gap: 0.25rem;
-            background-color: #12A4E2;
-            color: @white-color;
+             background-color: var(--text-color);
+        color: var(--native-background-color);
             padding: 0.25rem 0.5rem;
     }
         }
@@ -192,7 +192,7 @@ header.main-header {
 
          & svg {
                
-                stroke: @white-color;
+                //stroke: @white-color;
           stroke-width: 2px;
             }
  
@@ -315,7 +315,7 @@ header.main-header {
 
                 @media @largeDevice {
                     border-bottom-color: var(--text-color);
-                    border-bottom-color: #12A4E2;
+                    border-bottom-color: #007CBE;
                 }
             }
 
@@ -345,14 +345,14 @@ header.main-header {
     & div {
         width: 100%;
         height: 2px;
-        background-color:  @white-color;
+        background-color:  var(--text-color);
         transition: 0.4s;
     }
 
     &:hover {
 
         & div {
-            background-color: var(--hover-color);
+            background-color: #007CBE;
         }
     }
 }
