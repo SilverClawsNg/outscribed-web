@@ -9,8 +9,10 @@ header.main-header {
     top: 0;
     left: 0;
     z-index: 1000;
-    background-color: var(--background-color);
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    //background-color: var(--background-color);
+    //box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    background-color: @header-background-color;
+    color: @white-color;
 }
 
 .main-header__wrapper {
@@ -84,7 +86,8 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
-    
+     background-color: @header-background-color;
+    color: @white-color;
 
     @media @smallDevice {
         height: 60px;
@@ -135,11 +138,12 @@ header.main-header {
     & svg {
         width: 28px;
         height: 28px;
+            stroke-width: 2px;
 
         &.stroked {
             & path {
-                stroke: var(--text-color);
-                stroke-width: 1px;
+                stroke:  @white-color;
+                
             }
         }
     }
@@ -173,9 +177,25 @@ header.main-header {
          border: 1px solid var(--text-color);
             display: flex;
             column-gap: 0.25rem;
+            background-color: #12A4E2;
+            color: @white-color;
+            padding: 0.25rem 0.5rem;
     }
         }
 
+        &:not(.spin){
+             & svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+         & svg {
+               
+                stroke: @white-color;
+          stroke-width: 2px;
+            }
+ 
         @media @smallDevice {
             border: none;
             padding: 0;
@@ -186,16 +206,11 @@ header.main-header {
                 display: none;
             }
 
-            & svg {
+           & svg {
                 width: 28px;
                 height: 28px;
-                stroke: var(--text-color);
+            
 
-                &.stroked {
-                    & path {
-                        stroke: var(--hover-color);
-                    }
-                }
             }
 
             &:hover {
@@ -211,7 +226,9 @@ header.main-header {
     z-index: 998;
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
-    border-top: 1px solid var(--border-color);
+    //border-top: 1px solid var(--border-color);
+ background-color: @header-background-color;
+    color: @white-color;
 
     @media @smallDevice {
         max-height: 0;
@@ -242,6 +259,7 @@ header.main-header {
         font-weight: normal;
         text-decoration: underline;
         height: auto;
+        color:@white-color;
 
         &:hover {
             text-decoration: none;
@@ -284,7 +302,10 @@ header.main-header {
             transition: color 0.3s;
             display: flex;
             align-items: center;
-            font-weight: normal;
+            font-weight: 500;
+            color: @white-color;
+            font-family: Rubik, Rubik-bold-fallback, Arial, sans-serif;
+            font-size: 1.1rem;
 
             &.router-link-exact-active,
             &.active {
@@ -294,12 +315,13 @@ header.main-header {
 
                 @media @largeDevice {
                     border-bottom-color: var(--text-color);
+                    border-bottom-color: #12A4E2;
                 }
             }
 
             @media @largeDevice {
                 height: 100%;
-                border-bottom: 1px solid transparent;
+                border-bottom: 5px solid transparent;
             }
 
             @media @smallDevice {
@@ -311,30 +333,6 @@ header.main-header {
     }
 }
 
-.close-all {
-    position: absolute;
-    z-index: 1001;
-    top: 5px;
-    right: 5px;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    color: var(--background-color);
-    background-color: var(--text-color);
-    border-radius: 100%;
-    padding: 5px;
-
-    @media @largeDevice {
-        display: none !important;
-    }
-
-    &:hover {
-        background-color: var(--hover-color);
-    }
-}
 
 .hamburger {
     position: relative;
@@ -346,8 +344,8 @@ header.main-header {
 
     & div {
         width: 100%;
-        height: 1px;
-        background-color: var(--text-color);
+        height: 2px;
+        background-color:  @white-color;
         transition: 0.4s;
     }
 

@@ -100,8 +100,6 @@ const ToggleUserMenu = () => {
 
       <section class="main-header__menu-container">
 
-        <button href="#" class="close-all" @click="CloseMenu">X</button>
-
         <div class="main-header__menu">
           
           <nav class="main-header__public-menu">
