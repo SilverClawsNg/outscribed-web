@@ -37,7 +37,7 @@ const contentPath = 'tale'
       <template v-if="content.photo">
            
      <header class="content-card__media">
-       <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">
+       <RouterLink class="content-card__media-link" :to="`/${contentPath}/${content.slug}`">
           <img 
         :src="mediaHelper.getUrl(content.photo, contentType, 'thumb') || undefined" 
         :alt="content.title" 
