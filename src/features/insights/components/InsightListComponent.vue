@@ -35,12 +35,16 @@ const contentPath = 'insight'
   
   <article class="content-card">
     <!-- Cover Image Header -->
-    <header class="content-card__media">
-      <img 
-        :src="mediaHelper.getUrl(content.photo, contentType, 'thumb') || undefined" 
-        :alt="content.title" 
-        class="content-card__image"
-      />
+       <template v-if="content.photo">
+             <header class="content-card__media">
+              <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">
+                  <img 
+                    :src="mediaHelper.getUrl(content.photo, contentType, 'thumb') || undefined" 
+                    :alt="content.title" 
+                    class="content-card__image"
+                  />
+              </RouterLink>
+    
       <div class="content-card__author-badge">
         <button class="content-card__author-link" @click="modalStore.push('Profile', 'Profile', content.creatorId)">
           {{ content.creatorUsername }}
@@ -49,6 +53,8 @@ const contentPath = 'insight'
         <time class="content-card__date">{{ toRelativeTime(content.createdAt) }}</time>
       </div>
     </header>
+        </template>
+
     
     <!-- Content Body -->
     <div class="content-card__body">
@@ -88,7 +94,7 @@ const contentPath = 'insight'
 
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">Read &gt;&gt;</RouterLink>
+      <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">View Insight</RouterLink>
       
       <button 
         class="content-card__save-btn"

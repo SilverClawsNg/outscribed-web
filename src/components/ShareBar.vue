@@ -141,16 +141,16 @@ const handleDesktopShareClick = (platformType: string) => {
   <article class="share-bar">
 
     <template v-if="isNativeShareSupported">
-        <div class="content-details__engagement-stats">
+        <div class="share-bar__share-button">
              <button @click="handleNativeShare">
-              <SvgIcons name='share' /> Share this tale
+              <SvgIcons name='share' /> Share tale
             </button>
           </div>
     </template>
 
     <template v-else>
     <!-- Path B: Desktop or Fallback Row -->
-    <div class="content-details__share-links">
+    <div class="share-bar__share-links">
       <a
         v-for="link in shareLinks"
         :key="link.type"

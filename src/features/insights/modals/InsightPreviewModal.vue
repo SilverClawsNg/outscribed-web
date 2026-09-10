@@ -15,16 +15,12 @@ const modalStore = useModalStore();
 const authStore = useAuthStore();
 const insightStore = useInsightDraftStore()
 
-const unavailable = ref<boolean>(false);
-
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
   if (!insightStore.activeInsight) {
     // 1. Lock down the form immediately to block accidental click updates
-    
-   unavailable.value = true
-    
+   
     return // 🛑 Stop initialization; do not attempt to read properties of null
   }
 
@@ -34,7 +30,7 @@ onBeforeMount(() => {
 
 <template>
 
-  <template v-if="unavailable">
+  <template v-if="!insightStore.activeInsight">
     <PageStatusMessage 
       title="Content Unavailable!" 
       message="Unable to load current insight details. Refresh page and try again">
@@ -45,129 +41,126 @@ onBeforeMount(() => {
   
   <article class="content-details">
     
-    <section class="content-details__header-container">
-      <div class="content-details__header">
-        <h1 class="content-details__title">{{ insightStore.activeInsight!.title }}</h1>
+    <header class="content-details__header-container">
 
-        <div class="content-details__metadata-writer">
+      <div class="content-details__header">
+
+        <h1 class="content-details__title">{{ insightStore.activeInsight.title }}</h1>
+
+        <div class="content-details__writer">
           By 
           <button 
-            class="at" 
+            type="button"
+             class="content-details__writer-link at" 
             @click="modalStore.push('Profile', 'Profile', authStore.userId)"
           >
             {{ authStore.username }}
           </button>
+           — <time>{{ toShortDate(insightStore.activeInsight.createdAt) }}</time>
         </div>
 
-        <section class="content-details__metadata">
-          <div class="content-details__metadata-date">
-            <SvgIcons name='clock' /> {{ toShortDate(insightStore.activeInsight!.createdAt) }}
-          </div>
-
-          <div class="content-details__metadata-category">
+         <div class="content-details__meta">
+        
+         <div class="content-details__meta-item">
            <SvgIcons name='tag' /> 
             <router-link 
               class="content-details__category" 
-              :to="`/insights?category=${insightStore.activeInsight!.category}`"
+              :to="`/insights?category=${insightStore.activeInsight.category}`"
             >
-             {{ CategoryDescriptions[insightStore.activeInsight!.category] }}
+             {{ CategoryDescriptions[insightStore.activeInsight.category] }}
             </router-link>
           </div>
 
-          <template  v-if="insightStore.activeInsight!.country">
+          <template  v-if="insightStore.activeInsight.country">
 
-          <div class="content-details__metadata-country">
+          <div class="content-details__meta-item">
              <SvgIcons name='globe' />
             <router-link 
               class="content-details__country" 
-              :to="`/insights?country=${insightStore.activeInsight!.country}`"
+              :to="`/insights?country=${insightStore.activeInsight.country}`"
             >
-              {{ CountryDescriptions[insightStore.activeInsight!.country] }}            
+              {{ CountryDescriptions[insightStore.activeInsight.country] }}            
             </router-link>
           </div>
           </template>
 
-        </section>
+             <template v-else >
+                   <p class="content-details__no-content">No country selected!</p>
+            </template>
+        </div>
 
-          <template v-if="insightStore.activeInsight!.summary">
-              <section class="content-details__summary">
+          <template v-if="insightStore.activeInsight.summary">
+              <p class="content-details__summary">
           
-           {{ insightStore.activeInsight!.summary }}
-        </section>
+           {{ insightStore.activeInsight.summary }}
+              </p>
               
             </template>
              <template v-else >
-                  <section class="content-details__summary">
-                          <p class="no-content">Summary goes here!</p>
-        
-        </section>
+                   <p class="content-details__no-content">Summary goes here!</p>
             </template>
       
       </div>
-    </section>  
+    </header>  
 
-    <section class="content-details__main-container">
+    <div class="content-details__main">
      
-     <template v-if="insightStore.activeInsight!.photo">
- <figure class="content-details__image">
-        <img :src="mediaHelper.getUrl(insightStore.activeInsight!.photo, 'insights', 'full')" :alt="insightStore.activeInsight!.photoCaption ?? 'photo caption goes here'" />
+     <template v-if="insightStore.activeInsight.photo">
+ <figure  class="content-details__media">
+        <img 
+        :src="mediaHelper.getUrl(insightStore.activeInsight.photo, 'insights', 'full')" 
+        :alt="insightStore.activeInsight.photoCaption ?? 'photo caption goes here'"
+        class="content-details__image" />
         <figcaption class="content-details__image-caption">
-          {{ insightStore.activeInsight!.photoCaption }}
+          {{ insightStore.activeInsight.photoCaption }}
         </figcaption>
       </figure>
         </template>
-         <template v-else>
-                                 <p class="no-content">Your central image goes here!</p>
+         <template v-else >
+                   <p class="content-details__no-content">Central image goes here!</p>
+            </template>
 
+       <template v-if="insightStore.activeInsight.detail">
+ <p class="content-details__reading-time">
+          — {{ calculateReadingTime(insightStore.activeInsight.detail) }} Minutes Read
+ </p>
+
+        <div class="shared__rich-text" v-html="insightStore.activeInsight.detail"></div>
         </template>
-
-       <template v-if="insightStore.activeInsight!.detail">
- <section class="content-details__reading-time">
-          — {{ calculateReadingTime(insightStore.activeInsight!.detail) }} Minutes Read
-        </section>
-
-        <section class="shared__rich-text" v-html="insightStore.activeInsight!.detail"></section>
-        </template>
          <template v-else>
-             <section class="content-details__reading-time">
+             <p class="content-details__reading-time">
           — 0 Minutes Read
-        </section>
+             </p>
+                  <p class="content-details__no-content">Detail goes here!</p>
 
-        <section class="content-details__text">
-                  <p class="no-content">Detail goes here!</p>
-
-        </section>
         </template>
     
-       <template v-if="insightStore.activeInsight!.addendum && insightStore.activeInsight!.addendumDate">
- <section class="content-details__addendum">
-        <h4>Addendum - Last Updated {{ toShortDate(insightStore.activeInsight!.addendumDate) }}</h4>
-        <ol>
-          <li v-for="(addendum, index) in formatAddendum(insightStore.activeInsight!.addendum)" :key="index">
-            {{ addendum }}
+       <template v-if="insightStore.activeInsight.addendum && insightStore.activeInsight.addendumDate">
+ <div class="content-details__addendum">
+        <h4 class="content-details__section-title">Addendum - Last Updated {{ toShortDate(insightStore.activeInsight.addendumDate) }}</h4>
+        <ol class="content-details__addendum-list">
+          <li v-for="(entry, index) in formatAddendum(insightStore.activeInsight.addendum)" :key="index">
+            {{ entry }}
           </li>
         </ol>
-      </section>
+      </div>
         </template>
-       
 
-       <template  v-if="insightStore.activeInsight!.tags && insightStore.activeInsight!.tags.length > 0">
-  <section class="content-details__tags">
-        <h4>Tagged In: </h4><span class="divider line"></span>
-        <span v-for="tag in insightStore.activeInsight!.tags" :key="tag.tagId">
+       <template  v-if="insightStore.activeInsight.tags && insightStore.activeInsight.tags.length > 0">
+  <div class="content-details__tags">
+       <h4 class="content-details__tag-title">Tagged In</h4>
+        <span class="divider line"></span>
+        <span v-for="tag in insightStore.activeInsight.tags" :key="tag.tagId"  class="content-details__tag-item">
           #<router-link :to="`/insights/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
         </span>
-      </section>
+      </div>
         </template>
-         <template v-else>
-              <section class="content-details__tags">
-                       <p class="no-content">Your tags goes here!</p>
+        <template v-else >
+                   <p class="content-details__no-content">Tags goes here!</p>
+            </template>
 
-      </section>
-        </template>
-    
+      </div>
 
-    </section>
   </article>
   </template>
 

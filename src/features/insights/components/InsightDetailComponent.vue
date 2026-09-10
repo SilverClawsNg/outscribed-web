@@ -62,6 +62,7 @@ function createComment() {
     <header class="content-details__header-container">
 
       <div class="content-details__header">
+
         <h1 class="content-details__title">{{ insight.title }}</h1>
 
         <div class="content-details__writer">
@@ -116,14 +117,17 @@ function createComment() {
 
         </div>
 
-        <section class="content-details__summary">
+        <p class="content-details__summary">
           {{ insight.summary }}
-        </section>
+        </p>
       </div>
     </header>
 
     <div class="content-details__main">
-      <figure v-if="insight.photo" class="content-details__media">
+
+       <template v-if="insight.photo">
+           
+      <figure class="content-details__media">
         <img 
         :src="mediaHelper.getUrl(insight.photo, 'insights', 'full') || undefined" 
         :alt="insight.photoCaption" 
@@ -133,9 +137,11 @@ function createComment() {
         </figcaption>
       </figure>
 
-      <section class="content-details__reading-time">
+        </template>
+
+      <p class="content-details__reading-time">
         — {{ insight.readingTime }} Minutes Read
-      </section>
+      </p>
 
       <template v-if="insight.isArchived">
           <div class="content-details__archived-banner">
@@ -149,7 +155,8 @@ function createComment() {
       <!-- Renders safe HTML details -->
       <div class="shared__rich-text" v-html="sanitizeHtml(insight.detail)"></div>
 
-      <div v-if="insight.addendum && insight.addendumDate"  class="content-details__addendum">
+      <template v-if="insight.addendum && insight.addendumDate">
+      <div  class="content-details__addendum">
         <h4 class="content-details__section-title">Addendum - Last Updated {{ toShortDate(insight.addendumDate) }}</h4>
         <ol class="content-details__addendum-list">
           <li v-for="(entry, index) in formatAddendum(insight.addendum)" :key="index">
@@ -158,13 +165,17 @@ function createComment() {
         </ol>
       </div>
 
-      <section v-if="insight.tags && insight.tags.length > 0" class="content-details__tags">
+      </template>
+    
+       <template  v-if="insight.tags && insight.tags.length > 0">
+   <div class="content-details__tags">
         <h4 class="content-details__tag-title">Tagged In</h4>
         <span class="divider line"></span>
        <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
           #<router-link :to="`/insights?tag=${tag.slug}`">{{ tag.name }}</router-link>
         </span>
-      </section>
+      </div>
+        </template>
 
       <div class="content-details__engagement-grid">
 

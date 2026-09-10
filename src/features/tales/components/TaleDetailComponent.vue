@@ -125,7 +125,8 @@ function createComment() {
     <!-- Main Content Container -->
     <div class="content-details__main">
       <!-- Media Figure -->
-      <figure v-if="tale.photo" class="content-details__media">
+        <template v-if="tale.photo">
+           <figure v-if="tale.photo" class="content-details__media">
         <img 
           :src="mediaHelper.getUrl(tale.photo, 'tales', 'full') || undefined" 
           :alt="tale.photoCaption || tale.title" 
@@ -135,11 +136,13 @@ function createComment() {
           {{ tale.photoCaption }}
         </figcaption>
       </figure>
+        </template>
+    
 
       <!-- Reading Time Indicator -->
-      <div class="content-details__reading-time">
+      <p class="content-details__reading-time">
         — {{ tale.readingTime }} Minutes Read
-      </div>
+      </p>
 
       <!-- Archive Banner -->
         <template v-if="tale.isArchived">
@@ -154,7 +157,8 @@ function createComment() {
       <div class="shared__rich-text" v-html="sanitizeHtml(tale.detail)"></div>
 
       <!-- Addendum Section -->
-      <div v-if="tale.addendum && tale.addendumDate" class="content-details__addendum">
+        <template v-if="tale.addendum && tale.addendumDate">
+        <div class="content-details__addendum">
         <h4 class="content-details__section-title">Addendum - Last Updated {{ toShortDate(tale.addendumDate) }}</h4>
         <ol class="content-details__addendum-list">
           <li v-for="(entry, index) in formatAddendum(tale.addendum)" :key="index">
@@ -162,9 +166,10 @@ function createComment() {
           </li>
         </ol>
       </div>
+      </template>
 
       <!-- Reality Check Section -->
-      <div v-if="tale.realityCheckTitle" class="content-details__realitycheck">
+      <div class="content-details__realitycheck">
         <h2 class="content-details__realitycheck-heading">Reality Check
           <span>✓</span>
         </h2>
@@ -197,7 +202,9 @@ function createComment() {
       </div>
 
       <!-- Taxonomy Tags -->
-      <div v-if="tale.tags && tale.tags.length > 0" class="content-details__tags">
+       
+       <template v-if="tale.tags && tale.tags.length > 0">
+    <div class="content-details__tags">
         <h4 class="content-details__tag-title">Tagged In</h4>
         <span class="divider line"></span>
         <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
@@ -205,6 +212,8 @@ function createComment() {
         </span>
       </div>
 
+        </template>
+     
       <!-- Legal Disclaimer -->
       <div class="content-details__disclaimer">
         Disclaimer: This content represents artistic expression and writer perspective. 

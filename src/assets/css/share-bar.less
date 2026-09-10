@@ -1,13 +1,6 @@
 @import "variables.less";
 
-.fallback-share-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-
-.content-details__share-bar {
+.share-bar {
     border-top: 1px solid var(--border-color);
     padding-top: 0.5rem;
     margin-top: 0.5rem;
@@ -17,9 +10,13 @@
         padding-bottom: 0.5rem;
     }
 
-}
-
-.content-details__share-links {
+     &__share-button {
+    display: flex;
+    align-items:center;
+    gap: 0.5rem;
+  }
+    
+&__share-links {
     height: auto;
     width: 100%;
     margin-bottom: 0.5rem;
@@ -50,3 +47,5 @@
    
 }
 
+
+}

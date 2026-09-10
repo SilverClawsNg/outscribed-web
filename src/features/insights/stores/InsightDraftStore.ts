@@ -460,11 +460,9 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
       if(activeInsight.value?.title == null 
         || activeInsight.value?.category == null
         || activeInsight.value?.detail == null
-      || activeInsight.value?.summary == null
-    || activeInsight.value?.photo == null
-  || activeInsight.value?.photoCaption == null){
+      || activeInsight.value?.summary == null){
 
-          return { success: false, error: new APIError(400, 'Bad Request', 'Insight cannot be pubished without a title, category, details, summary, or photo') };
+          return { success: false, error: new APIError(400, 'Bad Request', 'Insight cannot be published without a title, category, details, summary, or photo') };
 
       }
 
