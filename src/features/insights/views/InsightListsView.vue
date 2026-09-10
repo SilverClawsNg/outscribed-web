@@ -167,19 +167,25 @@ onUnmounted(() => {
 
   </template>
 
+  <template v-else>
 
-   <template v-else>
+    <header class="page-header">
+    <h1 v-if="pageTitle" class="page-header__subtitle" :class="{ 'page-header__subtitle--at': creatorUsername }">
+      {{ pageTitle }}
+    </h1>
+
+  <!-- Variant 1: Filter Button -->
+  <button 
+    type="button" 
+    class="btn primary" 
+    @click="modalStore.push('InsightListFilter', 'Filter Lists', type)"
+  >
+    <SvgIcons name="filter" />
+    <span>Filter</span>
+  </button>
+
+</header>
    
-      <div class="shared__page-title">
-        <h1>Insights</h1>
-      <template v-if="pageTitle">
-          <p :class="{ at: creatorUsername }">
-            {{ pageTitle }}
-          </p>
-        </template>
-        <button class="btn primary" @click="modalStore.push('InsightListFilter', 'Filter Lists', type)">Filter</button>
-      </div>
-
       <template v-if="wasCleaned">
      <div class="shared__content-warning">
        <span class="icon">⚠️</span>
@@ -206,7 +212,7 @@ onUnmounted(() => {
       <InsightListComponent 
         v-for="insight in insightStore.insights" 
         :key="insight.insightId" 
-        :insight="insight"/>
+        :content="insight"/>
 
   </div>
 

@@ -102,11 +102,11 @@ onUnmounted(() => {
 
   <template v-else>
 
-      <div class="shared__page-title">
-        <h1>Recent Tales</h1>
-      <RouterLink class="btn primary" to="/tales" title="Tales">View All</RouterLink>
-      </div>
-
+    <header class="page-header container">
+      <h1>Recent Tales</h1>
+      <RouterLink to="/tales" class="btn primary" title="Recent Tales"><span>View All</span></RouterLink>
+    </header>
+    
        <template v-if="homepageStore.tales && homepageStore.tales.length > 0">
 
          <div class="shared__container">
@@ -114,7 +114,7 @@ onUnmounted(() => {
             <TaleListComponent 
         v-for="tale in homepageStore.tales" 
         :key="tale.taleId" 
-        :tale="tale" 
+        :content="tale" 
       />
 
         </div>
@@ -129,12 +129,12 @@ onUnmounted(() => {
     </PageStatusMessage>
 
   </template>
-    
-      <div class="shared__page-title">
-        <h1>Recent Insights</h1>
-      <RouterLink class="btn primary" to="/insights" title="Insights">View All</RouterLink>
-      </div>
 
+   <header class="page-header container">
+      <h1>Recent Insights</h1>
+      <RouterLink to="/insights" class="btn primary" title="Recent Insights"><span>View All</span></RouterLink>
+    </header>
+    
        <template v-if="homepageStore.insights && homepageStore.insights.length > 0">
 
          <div class="shared__container">
@@ -142,7 +142,7 @@ onUnmounted(() => {
             <InsightListComponent 
         v-for="insight in homepageStore.insights" 
         :key="insight.insightId" 
-        :insight="insight" 
+        :content="insight" 
       />
 
         </div>

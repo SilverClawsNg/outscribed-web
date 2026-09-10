@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
-import { useTaleListStore } from '../stores/TaleListStore';
 import { useEngagement } from '@/composables/useEngagement';
 
 import { formatCounts } from '@/utils/stringHelpers'
@@ -15,93 +13,98 @@ import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { mediaHelper } from '@/utils/mediaHelper'
 
 // 2. Setup Shared Store Hooks
-const authStore = useAuthStore()
 const modalStore = useModalStore()
 const engage = useEngagement()
 
-const taleStore = useTaleListStore();
-
-// Declare compile-time parameter contract boundaries
 interface Props {
-  tale: TaleListDto
+  content: TaleListDto
 }
 
 const props = defineProps<Props>()
 
 // Transform state properties reactively on demand
-const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
+const uiMeta = computed(() => getEngagementMetadata(props.content.engagement));
+
+const contentType = 'tales'
+const contentPath = 'tale'
 
 </script>
 
 <template>
- 
-   <article class="content-lists__card">
-   
-    <section class="content-lists__image">
 
-       <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb') || undefined" :alt="tale.title" />
-
-         <div class="content-lists__metadata-writer">
-
-        <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-          {{ tale.creatorUsername }}
+  <article class="content-card">
+    <!-- Cover Image Header -->
+    <header class="content-card__media">
+      <img 
+        :src="mediaHelper.getUrl(content.photo, contentType, 'thumb') || undefined" 
+        :alt="content.title" 
+        class="content-card__image"
+      />
+      <div class="content-card__author-badge">
+        <button class="content-card__author-link" @click="modalStore.push('Profile', 'Profile', content.creatorId)">
+          {{ content.creatorUsername }}
         </button>
-        <span class="divider line"></span>
-        {{ toRelativeTime(tale.createdAt) }}
-
+        <span class="divider line alt"></span>
+        <time class="content-card__date">{{ toRelativeTime(content.createdAt) }}</time>
       </div>
-
-    </section>
-
+    </header>
     
-      <div class="content-lists__metadata">
-       
-        <RouterLink :to="`/tales?category=${tale.category}`">
-          {{ CategoryDescriptions[tale.category] }}
+    <!-- Content Body -->
+    <div class="content-card__body">
+      <!-- Taxonomy Metadata -->
+      <div class="content-card__meta">
+        <RouterLink :to="`/${contentType}?category=${content.category}`" class="content-card__meta-link">
+          {{ CategoryDescriptions[content.category] }}
         </RouterLink>
         
-        <template v-if="tale.country">
-         <span class="divider circle"></span>
-          <RouterLink :to="`/tales?country=${tale.country}`">
-            {{ CountryDescriptions[tale.country] }}
+        <template v-if="content.country">
+          <span class="divider circle"></span>
+          <RouterLink :to="`/${contentType}?country=${content.country}`" class="content-card__meta-link">
+            {{ CountryDescriptions[content.country] }}
           </RouterLink>
         </template>
       </div>
 
-      <h1 class="content-lists__title">
-        <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
-      </h1>
+      <!-- Title -->
+      <h2 class="content-card__title">
+        <RouterLink :to="`/${contentPath}/${content.slug}`">{{ content.title }}</RouterLink>
+      </h2>
 
-    <section class="content-lists__summary">
-      <div>
-        {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
-       
+      <!-- Summary -->
+      <p class="content-card__summary">
+        {{ content.summary.length > 500 ? content.summary.substring(0, 500) + '...' : content.summary }}
+      </p>
+
+      <!-- Engagement Metrics -->
+      <div class="content-card__stats">
+        <p class="content-card__stat"><span>{{ content.readingTime }}</span> Min Read</p>
+        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.commentsCount) }}</span> Comments</p>
+        <p v-if="content.insightsCount !== undefined" class="content-card__stat">
+          <span>{{ formatCounts(content.insightsCount) }}</span> Insights
+        </p>
+        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.viewsCount) }}</span> Views</p>
+        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.upvotesCount) }}</span> Upvotes</p>
+        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.favoritesCount) }}</span> Saves</p>
       </div>
-    </section>
+    </div>
 
-    <section class="content-lists__stats">
-      <p><span>{{ tale.readingTime }}</span> Minutes Read</p>
-      <p><span>{{ formatCounts(tale.engagement.commentsCount) }}</span> Comments</p>
-      <p><span>{{ formatCounts(tale.insightsCount) }}</span> Insights</p>
-      <p><span>{{ formatCounts(tale.engagement.viewsCount) }}</span> Views</p>
-      <p><span>{{ formatCounts(tale.engagement.upvotesCount) }}</span> Upvotes</p>
-      <p><span>{{ formatCounts(tale.engagement.favoritesCount) }}</span> Saves</p>
-    </section>
-
-    <section class="content-lists__footer">
-       <RouterLink class="btn secondary" :to="`/tale/${tale.slug}`">Read More</RouterLink>
+    <!-- Actions Footer -->
+    <footer class="content-card__footer">
+      <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">Read More</RouterLink>
+      
       <button 
-        @click="engage.favorite(tale.engagement)"
-        :title="tale.engagement.isFavorite ? 'Remove From Saves' : 'Add To Favorites'"
-        :disabled="uiMeta.isFavoriteDisabled">
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteLongText }}
+        class="content-card__save-btn"
+        @click="engage.favorite(content.engagement)"
+        :title="content.engagement.isFavorite ? 'Remove From Saves' : 'Add To Favorites'"
+        :disabled="uiMeta.isFavoriteDisabled"
+      >
+        <SvgIcons name="bookmark" /> 
+        <span>{{ uiMeta.favoriteLongText }}</span>
       </button>
-    </section>
-
+    </footer>
   </article>
- 
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/content-lists.less";
+@import "@/assets/css/content-card.less";
 </style>

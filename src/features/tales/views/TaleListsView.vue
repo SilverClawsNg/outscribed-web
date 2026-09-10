@@ -168,16 +168,22 @@ onUnmounted(() => {
   </template>
 
    <template v-else>
+
+     <header class="page-header container">
+   <h1 v-if="pageTitle" class="page-header__subtitle" :class="{ 'page-header__subtitle--at': creatorUsername }">
+      {{ pageTitle }}
+    </h1>
+  <!-- Variant 1: Filter Button -->
+  <button 
+    type="button" 
+    class="btn primary" 
+    @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
+  >
+    <SvgIcons name="filter" />
+    <span>Filter</span>
+  </button>
+  </header>
    
-      <div class="shared__page-title">
-         <h1>Tales</h1>
-        <template v-if="pageTitle">
-          <p :class="{ at: creatorUsername }">
-            {{ pageTitle }}
-          </p>
-        </template>
-        <button class="btn primary" @click="modalStore.push('TaleListFilter', 'Filter Lists', type)">Filter</button>
-      </div>
 
       <template v-if="wasCleaned">
      <div class="shared__content-warning">
@@ -205,7 +211,7 @@ onUnmounted(() => {
       <TaleListComponent 
         v-for="tale in taleStore.tales" 
         :key="tale.taleId" 
-        :tale="tale"/>
+        :content="tale"/>
 
   </div>
 

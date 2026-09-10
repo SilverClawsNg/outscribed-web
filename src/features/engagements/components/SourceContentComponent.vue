@@ -46,5 +46,5 @@ const props = defineProps<Props>()
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/content-lists.less";
+@import "@/assets/css/content-card.less";
 </style>
