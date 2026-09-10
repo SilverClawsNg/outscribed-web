@@ -1,0 +1,45 @@
+@import "variables.less";
+
+.content-x-card {
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+
+  &__title {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    text-transform: capitalize;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+
+    a {
+      color: var(--text-color);
+      font-weight: inherit;
+
+      &:hover {
+        color: var(--hover-color);
+      }
+    }
+  }
+
+
+  &__meta {
+    color: var(--muted-text-color);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  
+  &__summary {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+
+}

@@ -251,19 +251,9 @@
   // --- Engagement Grid ---
   &__engagement-grid {
     width: 100%;
-    margin-bottom: 2rem;
-  
+    max-width: @min-width;
+    margin: 0 auto 3rem auto;
 
-     @media @smallDevice {
-      max-width: @min-width;
-      margin: 0 auto;
-    }
-
-    @media @largeDevice {
-      display: flex;
-      justify-content: space-between;
-      column-gap: 2.5rem;
-    }
   }
 
   &__engagement {

@@ -18,32 +18,32 @@ const props = defineProps<Props>()
 
 <template>
  
-<article class="content-lists__card">
+ <article class="content-x-card">
 
-      <h1 class="content-lists__title alt">
+      <h1 class="content-x-card__title">
         <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
       </h1>
       
-      <section class="content-lists__metadata">
+      <div class="content-x-card__meta">
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
         </button>
-          <span>
+          <time>
             {{ toRelativeTime(tale.createdAt) }}
-          </span>
-      </section>
+          </time>
+        </div>
 
-    <section class="content-lists__summary">
+    <div class="content-x-card__summary">
       <div>
         {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
         <RouterLink :to="`/tale/${tale.slug}`">Continue Reading</RouterLink>
       </div>
-    </section>
+    </div>
 
   </article>
  
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/content-card.less";
+@import "@/assets/css/content-x-card.less";
 </style>

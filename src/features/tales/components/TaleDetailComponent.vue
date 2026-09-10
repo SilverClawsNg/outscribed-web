@@ -10,7 +10,7 @@ import LatestCommentComponent from '@/features/engagements/components/LatestComm
 import LatestInsightComponent from '@/features/insights/components/LatestInsightComponent.vue'
 
 import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
-import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
+import { toShortDate } from '@/utils/dateExtensions'
 import { mediaHelper } from '@/utils/mediaHelper'
 import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
 import { type TaleDetailDto } from '../types/TalesTypes';
@@ -73,7 +73,7 @@ function createComment() {
           >
             {{ tale.creator.username }}
           </button>
-          -- <time>{{ toShortDate(tale.createdAt) }}</time>
+          On <time>{{ toShortDate(tale.createdAt) }}</time>
         </div>
 
         <div class="content-details__meta">
@@ -88,7 +88,9 @@ function createComment() {
             </RouterLink>
           </div>
 
-          <div v-if="tale.country" class="content-details__meta-item">
+          <template  v-if="tale.country">
+
+          <div class="content-details__meta-item">
             <SvgIcons name="globe" />
             <RouterLink 
               :to="`/tales?country=${tale.country}`" 
@@ -97,6 +99,8 @@ function createComment() {
               {{ CountryDescriptions[tale.country] }}            
             </RouterLink>
           </div>
+
+          </template>
 
           <div class="content-details__actions">
             <button 
@@ -127,7 +131,7 @@ function createComment() {
           :alt="tale.photoCaption || tale.title" 
           class="content-details__image"
         />
-        <figcaption v-if="tale.photoCaption" class="content-details__caption">
+        <figcaption class="content-details__caption">
           {{ tale.photoCaption }}
         </figcaption>
       </figure>
@@ -138,11 +142,14 @@ function createComment() {
       </div>
 
       <!-- Archive Banner -->
-      <div v-if="tale.isArchived" class="content-details__archived-banner">
+        <template v-if="tale.isArchived">
+         <div class="content-details__archived-banner">
         <p>
           This tale has been archived by the author and is no longer publicly visible. We are showing you this archived version as a reference for discussions. Certain features such as voting, saving, and commenting have been disabled.
         </p>
       </div>
+      </template>
+    
 
       <!-- Safe Rich Text Content -->
       <div class="shared__rich-text" v-html="sanitizeHtml(tale.detail)"></div>
@@ -159,9 +166,9 @@ function createComment() {
 
       <!-- Reality Check Section -->
       <div v-if="tale.realityCheckTitle" class="content-details__realitycheck">
-                <h2 class="content-details__realitycheck-heading">Reality Check
-                   <span>✓</span>
-                </h2>
+        <h2 class="content-details__realitycheck-heading">Reality Check
+          <span>✓</span>
+        </h2>
         
         <h3 class="content-details__realitycheck-title">
           {{ tale.realityCheckTitle }}
@@ -243,6 +250,7 @@ function createComment() {
               class="content-details__utility-btn"
               :disabled="uiMeta.isFavoriteDisabled || tale.isArchived" 
               title="Bookmark"
+              aria-label="Bookmark this tale"
               @click="engage.favorite(tale.engagement)"
             >
               <SvgIcons name="bookmark" />
@@ -254,6 +262,7 @@ function createComment() {
               class="content-details__utility-btn"
               :disabled="uiMeta.isFlagDisabled" 
               title="Report"
+              aria-label="Report this tale"
               @click="modalStore.push('FlagContent', 'Flag Content', tale.engagement)"
             >
               <SvgIcons name="flag" />
@@ -287,7 +296,7 @@ function createComment() {
             <h4>Scribed By</h4>
             <button 
               type="button"
-              class="content-details__writer-link"
+              class="content-details__writer-link at"
               @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
             >
               @{{ tale.creator.username }}
@@ -297,6 +306,7 @@ function createComment() {
           <div class="content-details__creator-actions">
             <button 
               type="button"
+              title="Creator Profile"
               @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
             >
               <SvgIcons name="user" /> Profile
@@ -304,6 +314,7 @@ function createComment() {
 
             <button 
               type="button"
+              title="Follow Creator"
               :disabled="creatorUiMeta.isFavoriteDisabled"
               @click="engage.favorite(tale.creator.engagement)"
             >
@@ -329,7 +340,7 @@ function createComment() {
       </div>
 
       <!-- Recent Insights Enrichment Block -->
-      <header class="page-header container">
+      <header class="page-header">
         <h1>Recent Insights</h1>
         <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
@@ -367,7 +378,7 @@ function createComment() {
       </div>
 
       <!-- Recent Comments Enrichment Block -->
-      <header class="page-header container">
+      <header class="page-header">
         <h1>Recent Comments</h1>
         <button 
           type="button"
