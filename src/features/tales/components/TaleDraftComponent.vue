@@ -145,5 +145,5 @@ async function handleModalUpdate(type: string, title: string) {
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/content-lists.less";
+@import "@/assets/css/content-card.less";
 </style>
