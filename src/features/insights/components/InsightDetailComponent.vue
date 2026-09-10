@@ -73,7 +73,7 @@ function createComment() {
           >
             {{ insight.creator.username }}
           </button>
-           On <time>{{ toShortDate(insight.createdAt) }}</time>
+           — <time>{{ toShortDate(insight.createdAt) }}</time>
         </div>
 
          <div class="content-details__meta">

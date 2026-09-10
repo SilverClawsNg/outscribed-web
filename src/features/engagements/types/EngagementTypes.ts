@@ -98,8 +98,8 @@ export function getEngagementMetadata(item: Engageable) {
     favoriteText: item.isFavorite ? 'Saved' : 'Save',
     favoriteAltText: item.isFavorite ? 'Following' : 'Follow',
     favoriteLongText: item.isFavorite 
-      ? `Remove this ${contentTypeLower} from saved folder` 
-      : `Add this ${contentTypeLower} to saved folder`
+      ? `Remove ${contentTypeLower} from favorites` 
+      : `Add ${contentTypeLower} to favorites`
   };
 }
 

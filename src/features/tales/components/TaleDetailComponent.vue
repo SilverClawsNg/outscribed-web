@@ -73,7 +73,7 @@ function createComment() {
           >
             {{ tale.creator.username }}
           </button>
-          On <time>{{ toShortDate(tale.createdAt) }}</time>
+          — <time>{{ toShortDate(tale.createdAt) }}</time>
         </div>
 
         <div class="content-details__meta">
@@ -149,7 +149,6 @@ function createComment() {
         </p>
       </div>
       </template>
-    
 
       <!-- Safe Rich Text Content -->
       <div class="shared__rich-text" v-html="sanitizeHtml(tale.detail)"></div>

@@ -138,7 +138,7 @@ const handleDesktopShareClick = (platformType: string) => {
 
 <template>
 
-  <div class="content-details__share-bar">
+  <article class="share-bar">
 
     <template v-if="isNativeShareSupported">
         <div class="content-details__engagement-stats">
@@ -169,7 +169,7 @@ const handleDesktopShareClick = (platformType: string) => {
     </div>
     </template>
 
-  </div>
+  </article>
 </template>
 
 <style scoped>

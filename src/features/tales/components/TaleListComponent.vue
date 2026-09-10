@@ -90,12 +90,12 @@ const contentPath = 'tale'
 
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">Read More</RouterLink>
+      <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">Read &gt;&gt;</RouterLink>
       
       <button 
         class="content-card__save-btn"
         @click="engage.favorite(content.engagement)"
-        :title="content.engagement.isFavorite ? 'Remove From Saves' : 'Add To Favorites'"
+        :title="content.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         :disabled="uiMeta.isFavoriteDisabled"
       >
         <SvgIcons name="bookmark" /> 
