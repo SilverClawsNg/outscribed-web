@@ -73,14 +73,11 @@ function createComment() {
           >
             {{ tale.creator.username }}
           </button>
+          -- <time>{{ toShortDate(tale.createdAt) }}</time>
         </div>
 
         <div class="content-details__meta">
-          <div class="content-details__meta-item">
-            <SvgIcons name="clock" />
-            <time>{{ toShortDate(tale.createdAt) }}</time>
-          </div>
-
+        
           <div class="content-details__meta-item">
             <SvgIcons name="tag" /> 
             <RouterLink 
@@ -162,17 +159,19 @@ function createComment() {
 
       <!-- Reality Check Section -->
       <div v-if="tale.realityCheckTitle" class="content-details__realitycheck">
-        <div class="content-details__realitycheck-header">
-          <h2 class="content-details__realitycheck-heading">Reality Check</h2>
-          <span class="content-details__realitycheck-source">{{ tale.realityCheckSource }}</span>
-        </div>
+                <h2 class="content-details__realitycheck-heading">Reality Check
+                   <span>✓</span>
+                </h2>
         
         <h3 class="content-details__realitycheck-title">
           {{ tale.realityCheckTitle }}
         </h3>
         
         <div class="content-details__realitycheck-body">
-          <p>{{ tale.realityCheckSummary }}</p>
+          <p>
+            <span class="content-details__realitycheck-source">{{ tale.realityCheckSource }}</span> -
+            {{ tale.realityCheckSummary }}
+          </p>
 
           <div class="content-details__realitycheck-actions">
             <button type="button" class="btn secondary" @click="showExternalLink = !showExternalLink">
@@ -193,7 +192,7 @@ function createComment() {
 
       <!-- Taxonomy Tags -->
       <div v-if="tale.tags && tale.tags.length > 0" class="content-details__tags">
-        <h4 class="content-details__section-title">Tagged In</h4>
+        <h4 class="content-details__tag-title">Tagged In</h4>
         <span class="divider line"></span>
         <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
           #<RouterLink :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</RouterLink>
@@ -264,7 +263,7 @@ function createComment() {
             <button 
               type="button"
               class="content-details__utility-btn"
-              @click="modalStore.push('ContentStats', 'Stats', tale)"
+              @click="modalStore.push('TaleStats', 'Stats', tale)"
             >
               <SvgIcons name="stats" />
               <span>View stats</span>
