@@ -114,7 +114,7 @@ onUnmounted(() => {
             <TaleListComponent 
         v-for="tale in homepageStore.tales" 
         :key="tale.taleId" 
-        :content="tale" 
+        :tale="tale" 
       />
 
         </div>
@@ -142,7 +142,7 @@ onUnmounted(() => {
             <InsightListComponent 
         v-for="insight in homepageStore.insights" 
         :key="insight.insightId" 
-        :content="insight" 
+        :insight="insight" 
       />
 
         </div>
