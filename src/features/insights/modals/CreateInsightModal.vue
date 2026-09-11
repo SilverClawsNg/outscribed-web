@@ -209,7 +209,7 @@ resetProgress()
             class="btn primary" 
             :disabled="progressState.type === 'Loading'"
           >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Create' }}
+            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Create Draft' }}
           </button>
         </div>
         

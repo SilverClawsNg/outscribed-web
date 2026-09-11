@@ -18,13 +18,13 @@ const engage = useEngagement()
 
 // Declare compile-time parameter contract boundaries
 interface Props {
-  content: InsightListDto
+  insight: InsightListDto
 }
 
 const props = defineProps<Props>()
 
 // Transform state properties reactively on demand
-const uiMeta = computed(() => getEngagementMetadata(props.content.engagement));
+const uiMeta = computed(() => getEngagementMetadata(props.insight.engagement));
 
 const contentType = 'insights'
 const contentPath = 'insight'
@@ -35,71 +35,74 @@ const contentPath = 'insight'
   
   <article class="content-card">
     <!-- Cover Image Header -->
-       <template v-if="content.photo">
-             <header class="content-card__media">
-              <RouterLink class="content-card__media-link" :to="`/${contentPath}/${content.slug}`">
+     
+            <header class="content-card__media" :class="{ 'no-media': !insight.photo }">
+                <template v-if="insight.photo">
+              <RouterLink class="content-card__media-link" :to="`/${contentPath}/${insight.slug}`">
                   <img 
-                    :src="mediaHelper.getUrl(content.photo, contentType, 'thumb') || undefined" 
-                    :alt="content.title" 
+                    :src="mediaHelper.getUrl(insight.photo, contentType, 'thumb') || undefined" 
+                    :alt="insight.title" 
                     class="content-card__image"
                   />
               </RouterLink>
-    
-      <div class="content-card__author-badge">
-        <button class="content-card__author-link" @click="modalStore.push('Profile', 'Profile', content.creatorId)">
-          {{ content.creatorUsername }}
+               
+     </template>
+   <div class="content-card__author-badge" :class="{ 'stand-alone': !insight.photo }">
+        <button class="at" @click="modalStore.push('Profile', 'Profile', insight.creatorId)">
+          {{ insight.creatorUsername }}
         </button>
-        <span class="divider line alt"></span>
-        <time class="content-card__date">{{ toRelativeTime(content.createdAt) }}</time>
+        <span class="divider line"></span>
+        <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
       </div>
+     
     </header>
-        </template>
+       
 
     
     <!-- Content Body -->
     <div class="content-card__body">
       <!-- Taxonomy Metadata -->
       <div class="content-card__meta">
-        <RouterLink :to="`/${contentType}?category=${content.category}`" class="content-card__meta-link">
-          {{ CategoryDescriptions[content.category] }}
+        <RouterLink :to="`/${contentType}?category=${insight.category}`" class="content-card__meta-link">
+          {{ CategoryDescriptions[insight.category] }}
         </RouterLink>
         
-        <template v-if="content.country">
+        <template v-if="insight.country">
           <span class="divider circle"></span>
-          <RouterLink :to="`/${contentType}?country=${content.country}`" class="content-card__meta-link">
-            {{ CountryDescriptions[content.country] }}
+          <RouterLink :to="`/${contentType}?country=${insight.country}`" class="content-card__meta-link">
+            {{ CountryDescriptions[insight.country] }}
           </RouterLink>
         </template>
       </div>
 
       <!-- Title -->
       <h2 class="content-card__title">
-        <RouterLink :to="`/${contentPath}/${content.slug}`">{{ content.title }}</RouterLink>
+        <RouterLink :to="`/${contentPath}/${insight.slug}`">{{ insight.title }}</RouterLink>
       </h2>
 
       <!-- Summary -->
       <p class="content-card__summary">
-        {{ content.summary.length > 500 ? content.summary.substring(0, 500) + '...' : content.summary }}
+        {{ insight.summary.length > 500 ? insight.summary.substring(0, 500) + '...' : insight.summary }}
       </p>
 
       <!-- Engagement Metrics -->
       <div class="content-card__stats">
-        <p class="content-card__stat"><span>{{ content.readingTime }}</span> Min Read</p>
-        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.commentsCount) }}</span> Comments</p>
-        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.viewsCount) }}</span> Views</p>
-        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.upvotesCount) }}</span> Upvotes</p>
-        <p class="content-card__stat"><span>{{ formatCounts(content.engagement.favoritesCount) }}</span> Saves</p>
+        <p class="content-card__stat"><span>{{ insight.readingTime }}</span> Min Read</p>
+        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.commentsCount) }}</span> Comments</p>
+        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.viewsCount) }}</span> Views</p>
+        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.upvotesCount) }}</span> Upvotes</p>
+        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.favoritesCount) }}</span> Saves</p>
       </div>
     </div>
 
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn secondary" :to="`/${contentPath}/${content.slug}`">View Insight</RouterLink>
+      <RouterLink class="btn secondary" :to="`/${contentPath}/${insight.slug}`">View Insight</RouterLink>
       
       <button 
         class="content-card__save-btn"
-        @click="engage.favorite(content.engagement)"
-        :title="content.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+        @click="engage.favorite(insight.engagement)"
+        :title="insight.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         :disabled="uiMeta.isFavoriteDisabled"
       >
         <SvgIcons name="bookmark" /> 

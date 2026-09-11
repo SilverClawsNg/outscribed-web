@@ -28,39 +28,60 @@ async function handleModalUpdate(type: string, title: string) {
    modalStore.push(type, title); 
 }
 
+const contentType = 'insights'
+const contentPath = 'insight'
+
 </script>
 
 <template>
       
-  <article class="content-lists__card">
+  <article class="content-card">
+
     <div class="shared__content-status">
+
       <span class="status-title">Status</span>
+
        <span :class=InsightStatusClass[insight.status]>
          {{ InsightStatusDescriptions[insight.status] }}
       </span>
+
     </div>
 
-    <h1 class="content-lists__title">
-      {{ insight.title }}
-    </h1>
+    <div class="content-card__body">
 
-    <section class="content-lists__metadata">
-        {{ toRelativeTime(insight.createdAt) }}
-      <span class="divider circle"></span>
-        {{ CategoryDescriptions[insight.category] }}
-      
-      <template v-if="insight.country">
+       <div class="content-card__meta">
+
+         <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
+
         <span class="divider circle"></span>
-         {{ CountryDescriptions[insight.country] }}
+
+        <RouterLink :to="`/${contentType}?category=${insight.category}`" class="content-card__meta-link">
+          {{ CategoryDescriptions[insight.category] }}
+        </RouterLink>
+        
+        <template v-if="insight.country">
+          <span class="divider circle"></span>
+          <RouterLink :to="`/${contentType}?country=${insight.country}`" class="content-card__meta-link">
+            {{ CountryDescriptions[insight.country] }}
+          </RouterLink>
+        </template>
+      </div>
+
+        <h2 class="content-card__title">
+       {{ insight.title }}
+      </h2>
+
+       <template  v-if="insight.summary">
+
+         <p class="content-card__summary">
+        {{ insight.summary }}
+      </p>
+      
       </template>
-    </section>
 
-    <section class="content-lists__summary">
-      <p v-if="insight.summary">{{ insight.summary }}</p>
-      <p v-else class="shared__no-content">Your summary goes here</p>
-    </section>
+    </div>
 
-    <section class="btn-group">
+    <div class="btn-group">
       
       <template v-if="insight.status !== 'ArchivedByAdmin'">
         
@@ -127,18 +148,18 @@ async function handleModalUpdate(type: string, title: string) {
 
       </template>
 
-      <button class="btn secondary" @click="handleModalUpdate('InsightPreview', 'Preview Insight')">
-        Preview
-      </button>
- <router-link :to="`/tale/${insight.taleId}`" class="btn secondary">
+          <button class="btn secondary" @click="handleModalUpdate('InsightPreview', 'Preview Insight')">
+            Preview
+          </button>
+            <router-link :to="`/tale/${insight.taleId}`" class="btn secondary">
               Go To Tale
             </router-link>
                <template v-if="insight.status !== 'Created'">
-     <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', insight.insightId)">
+          <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', insight.insightId)">
             Daily Metrics
           </button>
       </template>
-    </section>
+    </div>
    
   </article>
 

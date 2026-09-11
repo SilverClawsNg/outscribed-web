@@ -170,7 +170,7 @@ onUnmounted(() => {
    <template v-else>
 
      <header class="page-header container">
-   <h1 v-if="pageTitle" class="page-header__subtitle" :class="{ 'page-header__subtitle--at': creatorUsername }">
+   <h1 v-if="pageTitle" class="page-header__title" :class="{ 'page-header__title--at': creatorUsername }">
       {{ pageTitle }}
     </h1>
   <!-- Variant 1: Filter Button -->
@@ -211,7 +211,7 @@ onUnmounted(() => {
       <TaleListComponent 
         v-for="tale in taleStore.tales" 
         :key="tale.taleId" 
-        :content="tale"/>
+        :tale="tale"/>
 
   </div>
 

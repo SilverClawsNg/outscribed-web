@@ -27,11 +27,15 @@ async function handleModalUpdate(type: string, title: string) {
    modalStore.push(type, title); 
 }
 
+const contentType = 'tales'
+const contentPath = 'tale'
+
 </script>
 
 <template>
 
-<article class="content-lists__card">
+<article class="content-card">
+
     <div class="shared__content-status">
       <span class="status-title">Status</span>
        <span :class=TaleStatusClass[tale.status]>
@@ -39,27 +43,42 @@ async function handleModalUpdate(type: string, title: string) {
       </span>
     </div>
 
-    <h1 class="content-lists__title">
-      {{ tale.title }}
-    </h1>
+    <div class="content-card__body">
 
-    <section class="content-lists__metadata">
-        {{ toRelativeTime(tale.createdAt) }}
-      <span class="divider circle"></span>
-        {{ CategoryDescriptions[tale.category] }}
-      
-      <template v-if="tale.country">
+       <div class="content-card__meta">
+
+        <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
+
         <span class="divider circle"></span>
-         {{ CountryDescriptions[tale.country] }}
+
+        <RouterLink :to="`/${contentType}?category=${tale.category}`" class="content-card__meta-link">
+          {{ CategoryDescriptions[tale.category] }}
+        </RouterLink>
+        
+        <template v-if="tale.country">
+          <span class="divider circle"></span>
+          <RouterLink :to="`/${contentType}?country=${tale.country}`" class="content-card__meta-link">
+            {{ CountryDescriptions[tale.country] }}
+          </RouterLink>
+        </template>
+      </div>
+
+      <h2 class="content-card__title">
+       {{ tale.title }}
+      </h2>
+
+      <template  v-if="tale.summary">
+
+         <p class="content-card__summary">
+        {{ tale.summary }}
+      </p>
+
       </template>
-    </section>
+      
 
-    <section class="content-lists__summary">
-      <p v-if="tale.summary">{{ tale.summary }}</p>
-      <p v-else class="shared__no-content">Your summary goes here</p>
-    </section>
+    </div>
 
-    <section class="btn-group">
+    <div class="btn-group">
       
       <template v-if="tale.status !== 'ArchivedByAdmin'">
         
@@ -138,7 +157,7 @@ async function handleModalUpdate(type: string, title: string) {
           </button>
       </template>
 
-    </section>
+    </div>
 
   </article>
 

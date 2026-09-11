@@ -76,11 +76,11 @@ const urlText = formData.value.sourceUrl || '';
       ? 'Summary must be between 8 and 512 characters'
       : '',
 
-       source: sourceText === '' || sourceText.length < 2 || sourceText.length > 36
+       source: sourceText !== '' && (sourceText.length < 2 || sourceText.length > 36)
       ? 'Source must be between 2 and 36 characters'
       : '',
 
-       url: urlText === '' || urlText.length < 8 || urlText.length > 256
+       url: urlText !== '' && (urlText.length < 8 || urlText.length > 256)
       ? 'Source Url must be between 3 and 256 characters'
       : ''
 
@@ -187,7 +187,7 @@ async function handleFormSubmission() {
             type="text" 
             id="Source" 
             class="form-field" 
-            placeholder="Source e.g. CNN" 
+            placeholder="Optional Source e.g. CNN" 
           />
         </fieldset>
   <span v-if="formSubmitted && validationErrors.source" class="validation-message">
@@ -199,7 +199,7 @@ async function handleFormSubmission() {
             type="text" 
             id="SourceUrl" 
             class="form-field" 
-            placeholder="Source url e.g. https://cnn.com" 
+            placeholder="Optional Source url e.g. https://cnn.com" 
           />
         </fieldset>
   <span v-if="formSubmitted && validationErrors.url" class="validation-message">

@@ -170,7 +170,7 @@ onUnmounted(() => {
   <template v-else>
 
     <header class="page-header">
-    <h1 v-if="pageTitle" class="page-header__subtitle" :class="{ 'page-header__subtitle--at': creatorUsername }">
+    <h1 v-if="pageTitle" class="page-header__title" :class="{ 'page-header__title--at': creatorUsername }">
       {{ pageTitle }}
     </h1>
 
@@ -212,7 +212,7 @@ onUnmounted(() => {
       <InsightListComponent 
         v-for="insight in insightStore.insights" 
         :key="insight.insightId" 
-        :content="insight"/>
+        :insight="insight"/>
 
   </div>
 

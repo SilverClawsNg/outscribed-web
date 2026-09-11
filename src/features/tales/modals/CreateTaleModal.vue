@@ -217,7 +217,7 @@ onMounted(async () => {
             class="btn primary" 
             :disabled="progressState.type === 'Loading'"
           >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
+            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Create Draft' }}
           </button>
         </div>
     </form>
