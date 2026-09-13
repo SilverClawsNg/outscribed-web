@@ -87,38 +87,34 @@ watch(
 )
 
 async function handleFormSubmission() {
+  formSubmitted.value = true;
 
-   // 1. Tell the ecosystem the user has initiated an action
-  formSubmitted.value = true
+  if (!isFormValid.value) return;
 
-  // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
-  if (!isFormValid.value) return
+  startLoading();
 
-  startLoading()
+  const { success, error, updatedContent } = await commentsStore.createComment(
+    formData.value.detail!, 
+    content.value
+  );
 
-  const { success, error } = await commentsStore.createComment(formData.value.detail!, content.value)
-
-  if(!success){
-
-    if(error){
-      setError(error)
-    } else{
-          setWarning('An unknown error occured. Refresh page and try again')
+  if (!success || !updatedContent) {
+    if (error) {
+      setError(error);
+    } else {
+      setWarning('An unknown error occurred. Refresh page and try again');
     }
-  } else{
- 
-    if(content.value.writeCommentFromInline){
-
-    // Close this modal to reveal already loaded comments
-    modalStore.pop()
-
-    } else{
-
-        //Redirect to load comments
-        modalStore.push('ContentComments', 'Comments', content.value)
-    }
+    return;
   }
-  
+
+  // Handle modal navigation using the freshly constructed content context
+  if (updatedContent.writeCommentFromInline) {
+    // Close modal to reveal updated inline comment list
+    modalStore.pop();
+  } else {
+    // Pass the fresh content instance down into the Comments view modal
+    modalStore.push('ContentComments', 'Comments', updatedContent);
+  }
 }
 
 </script>

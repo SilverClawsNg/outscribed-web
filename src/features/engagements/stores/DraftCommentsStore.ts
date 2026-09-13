@@ -203,117 +203,107 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
     }
   }
   
-    // Unified creation logic matching CreateTaleModal.vue expectation
-    async function createComment(detail: string, content: ActiveContentContext) {
-  
-      try {
-  
-      // Capture a local pointer to the context so TypeScript can safely narrow type fields
-      const payload: CreateCommentRequest = {
-        contentid: content.id,
-        contentType: content.contentType,
-        detail: detail
+  async function createComment(
+  detail: string, 
+  content: ActiveContentContext
+): Promise<{ success: boolean; error: APIError | null; updatedContent: ActiveContentContext | null }> {
+  try {
+    const payload: CreateCommentRequest = {
+      contentid: content.id,
+      contentType: content.contentType,
+      detail: detail
+    };
+
+    const outcome = await postAsync<CommentCreatedResponse>('/api/commenting/create', payload, true);
+    
+    if (outcome.isFailure || !outcome.value) {
+      return { 
+        success: false, 
+        error: outcome.error || new APIError(500, 'Blank Response', 'Request may have succeeded but server response blank. Refresh page before retrying'),
+        updatedContent: null 
       };
-  
-        const outcome = await postAsync<CommentCreatedResponse>('/api/commenting/create', payload, true);
-        
-        if (outcome.isFailure) {
-          return { success: false, error: outcome.error };
-        }
-  
-        if (!outcome.value) {
-          const error = new APIError(
-            500,
-            'Blank Response',
-            'Request may have succeeded but server response blank. Refresh page before retrying'
-          );
-          return { success: false, error: error };
-        } 
-  
-        const newComment: CommentListDto = initializeCommentListEngagement({
-          commentId: outcome.value.commentId,
-          commentedAt: outcome.value.createdAt,
-          detail: outcome.value.detail,
-          commentatorUsername: authStore.username,
-          commentatorId: authStore.userId,
-          contentType: payload.contentType,
-          status: 'Active',
-          contentId: payload.contentid,
-          parentId: null,
-          hasEngagement: false,
-          addendum: null,
-          replies: [],
-          title: null,
-          ancestors: [],
-          pinnedReply: null,
-         
-        }, true);
-      
-        //set new comment as pinned on the content
-         content.pinnedComment = newComment;
+    } 
 
-         //add new comment to in-memory storage
-         comments.value.unshift(newComment);
+    // 1. Build the fresh top-level comment record
+    const newComment: CommentListDto = initializeCommentListEngagement({
+      commentId: outcome.value.commentId,
+      commentedAt: outcome.value.createdAt,
+      detail: outcome.value.detail,
+      commentatorUsername: authStore.username,
+      commentatorId: authStore.userId,
+      contentType: payload.contentType,
+      status: 'Active',
+      contentId: payload.contentid,
+      parentId: null,
+      hasEngagement: false,
+      addendum: null,
+      replies: [],
+      title: null,
+      ancestors: [],
+      pinnedReply: null,
+    }, true);
 
-         //add new comment to local storage for eventual consistency
-        localStorage.setItem(`comment:draft:new:${newComment.commentId}`, JSON.stringify(newComment));
-  
-       // 2. 🚀 Update the parent content's reactive metrics via individual assignment
+    // 2. Mutate the existing content reference in-place to preserve memory references across feeds
+    content.pinnedComment = newComment;
+
+    if (content.engagement) {
       Object.assign(content.engagement, {
-          commentsCount: outcome.value.commentsCount,
-          upvotesCount: outcome.value.upvotesCount,
-          downvotesCount: outcome.value.downvotesCount,
-          favoritesCount: outcome.value.favoritesCount,
-          flagsCount: outcome.value.flagsCount,
-          sharesCount: outcome.value.sharesCount,
-          viewsCount: outcome.value.viewsCount
-        });
-  
-        return { success: true, error: null };
-      } catch (err: any) {
-        return { 
-          success: false, 
-          error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') 
-        };
-      }
+        commentsCount: outcome.value.commentsCount,
+        upvotesCount: outcome.value.upvotesCount,
+        downvotesCount: outcome.value.downvotesCount,
+        favoritesCount: outcome.value.favoritesCount,
+        flagsCount: outcome.value.flagsCount,
+        sharesCount: outcome.value.sharesCount,
+        viewsCount: outcome.value.viewsCount
+      });
     }
+
+    // 3. Add to local cache feeds
+    comments.value.unshift(newComment);
+    localStorage.setItem(`comment:draft:new:${newComment.commentId}`, JSON.stringify(newComment));
+
+    // 4. Return the exact same mutated instance back to the caller
+    return { success: true, error: null, updatedContent: content };
+
+  } catch (err: any) {
+    return { 
+      success: false, 
+      error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.'),
+      updatedContent: null 
+    };
+  }
+}
     
-      // Unified creation logic matching CreateTaleModal.vue expectation
-      async function replyComment(detail: string, activeComment: CommentListDto) {
+   async function replyComment(
+  detail: string, 
+  activeComment: CommentListDto
+): Promise<{ success: boolean; error: APIError | null; updatedComment: CommentListDto | null }> {
+  try {
+    const payload: ReplyCommentRequest = {
+      contentid: activeComment.contentId,
+      contentType: activeComment.contentType,
+      parentId: activeComment.commentId,
+      detail: detail
+    };
+
+    const outcome = await postAsync<CommentCreatedResponse>('/api/commenting/reply', payload, true);
     
-        try {
-    
-           // Capture a local pointer to the context so TypeScript can safely narrow type fields
-        const payload: ReplyCommentRequest = {
-          contentid: activeComment.contentId,
-          contentType: activeComment.contentType,
-          parentId: activeComment.commentId,
-          detail: detail
-        };
-    
-          const outcome = await postAsync<CommentCreatedResponse>('/api/commenting/reply', payload, true);
-          
-          if (outcome.isFailure) {
-            return { success: false, error: outcome.error };
-          }
-    
-          if (!outcome.value) {
-            const error = new APIError(
-              500,
-              'Blank Response',
-              'Request may have succeeded but server response blank. Refresh page before retrying'
-            );
-            return { success: false, error: error };
-          } 
-    
-    // 1. Create a safe, flat data snapshot of the parent to break the circular reference chain
+    if (outcome.isFailure || !outcome.value) {
+      return { 
+        success: false, 
+        error: outcome.error || new APIError(500, 'Blank Response', 'Server response blank.'),
+        updatedComment: null 
+      };
+    }
+
+    // 1. Create a safe parent snapshot to break circular references inside ancestors array
     const parentSnapshot = {
       ...activeComment,
-      pinnedReply: null, // 🛡️ CRITICAL: Sever the link back down to the child!
+      pinnedReply: null,
       ancestors: activeComment.ancestors || []
     };
-    
-    // 2. Build the fresh child reply record using the clean snapshot reference
+
+    // 2. Construct the fresh child reply
     const newReply: CommentListDto = initializeCommentListEngagement({
       commentId: outcome.value.commentId,
       commentedAt: outcome.value.createdAt,
@@ -323,48 +313,46 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
       status: 'Active',
       addendum: null,
       hasEngagement: false,
-    
       contentId: activeComment.contentId,
       contentType: activeComment.contentType,
       parentId: activeComment.commentId,
       title: activeComment.title,
-      
-      // 🎯 Use the safe snapshot instead of the raw activeComment reference
       ancestors: [...(activeComment.ancestors || []), parentSnapshot],
       pinnedReply: null
     }, true);
-    
-    // 3. Pin the new reply right inside the active parent comment card framework
-    activeComment.pinnedReply = newReply;
-   
-         //add new comment to in-memory storage
-         comments.value.unshift(newReply);
 
-         //add new comment to local storage for eventual consistency
-        localStorage.setItem(`comment:draft:new:${newReply.commentId}`, JSON.stringify(newReply));
-  
-    
-              console.log('--- Vue State Snapshot inside new reply ---', JSON.parse(JSON.stringify(newReply)));
-    
-    
-        // 3. 🚀 Map the database-calculated parent comment stats directly from the flat response
-        if (activeComment.engagement) {
-          Object.assign(activeComment.engagement, {
-            commentsCount: outcome.value.commentsCount, // Maps to the streamlined TotalReplies counter
-            upvotesCount: outcome.value.upvotesCount,
-            downvotesCount: outcome.value.downvotesCount,
-            flagsCount: outcome.value.flagsCount,
-            favoritesCount: outcome.value.favoritesCount
-          });
-        }
-          return { success: true, error: null };
-        } catch (err: any) {
-          return { 
-            success: false, 
-            error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') 
-          };
-        }
-      }
+    // 3. Mutate the active parent comment in-place
+    activeComment.pinnedReply = newReply;
+    activeComment.hasReplied = true;
+
+    if (activeComment.engagement) {
+      Object.assign(activeComment.engagement, {
+        commentsCount: outcome.value.commentsCount,
+        upvotesCount: outcome.value.upvotesCount,
+        downvotesCount: outcome.value.downvotesCount,
+        flagsCount: outcome.value.flagsCount,
+        favoritesCount: outcome.value.favoritesCount
+      });
+    }
+
+    comments.value.unshift(newReply);
+    localStorage.setItem(`comment:draft:new:${newReply.commentId}`, JSON.stringify(newReply));
+
+    // 4. Return the mutated instance reference back to the caller
+    return { 
+      success: true, 
+      error: null, 
+      updatedComment: activeComment 
+    };
+
+  } catch (err: any) {
+    return { 
+      success: false, 
+      error: err?.error || new APIError(500, 'Internal Client Error', err.message),
+      updatedComment: null 
+    };
+  }
+}
 
   async function updateCommentDetails(payload: UpdateDetailRequest) {
     try {

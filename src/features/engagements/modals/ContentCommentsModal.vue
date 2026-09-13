@@ -212,17 +212,16 @@ async function openAdvancedFilter() {
 
 
 onMounted(async () => {
+  // 🎯 EXTERNAL FLOW: If NOT inline, ContentComments was pushed on top of CreateComment.
+  // Silently drop CreateComment from underneath to keep the modal stack clean.
+  if (!content.value.writeCommentFromInline) {
+    await modalStore.popPrevious();
+  } else {
+    // 🛡️ Clean reset for safety in case the same context object survives
+    content.value.writeCommentFromInline = false;
+  }
 
-  // Check if coming from a new comment modal i.e. not 
-   if(!content.value.writeCommentFromInline){
-
-    // Close the previous modal which is likely the create modal form
-    modalStore.popPrevious()
-
-    }
-
-    await loadData()
-
+  await loadData();
 });
 
 

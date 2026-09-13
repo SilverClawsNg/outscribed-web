@@ -91,38 +91,31 @@ watch(
 )
 
 async function handleFormSubmission() {
+  formSubmitted.value = true;
+  if (!isFormValid.value) return;
 
-    // 1. Tell the ecosystem the user has initiated an action
-  formSubmitted.value = true
+  startLoading();
 
-  // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
-  if (!isFormValid.value) return
+  const { success, error, updatedComment } = await commentsStore.replyComment(
+    formData.value.detail, 
+    comment.value
+  );
 
-  startLoading()
-
-const { success, error } = await commentsStore.replyComment(formData.value.detail, comment.value)
-
-  if(!success){
-
-    if(error){
-    setError(error)
-    } else{
-          setWarning('An unknown error occured. Refresh page and try again')
+  if (!success || !updatedComment) {
+    if (error) {
+      setError(error);
+    } else {
+      setWarning('An unknown error occurred. Refresh page and try again.');
     }
-  } else{
- 
-    comment.value.hasReplied = true;
-   //Redirect to load comments
-
-if(!comment.value.hasLoadedReplies){
-modalStore.push('CommentReplies', 'Replies', comment.value)
-}
-else{
-  modalStore.pop()
-}
-       
+    return;
   }
-  
+
+  // Pass the returned, updated comment instance explicitly to the next modal
+  if (!updatedComment.hasLoadedReplies) {
+    modalStore.push('CommentReplies', 'Replies', updatedComment);
+  } else {
+    modalStore.pop();
+  }
 }
 
 </script>

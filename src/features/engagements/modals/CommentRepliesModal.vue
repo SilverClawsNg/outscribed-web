@@ -2,245 +2,174 @@
 import { onMounted, ref, computed } from 'vue';
 import { useContentCommentsStore } from '../stores/ContentCommentsStore.ts';
 import { useContentCommentsFilterStore } from '../stores/ContentCommentsFilterStore.ts'; 
-import { APIError } from '@/api/apiTypes.ts'
-import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integrated safely
-import { type GeneralSortType } from '@/utils/enumHelper.ts'
-import { GeneralSortTypeDescriptions } from '@/utils/descriptors'
-import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import Comment from '../components/CommentComponent.vue'
-
+import { APIError } from '@/api/apiTypes.ts';
+import PageStatusMessage from '@/components/PageStatusMessage.vue';
+import { type GeneralSortType } from '@/utils/enumHelper.ts';
+import { GeneralSortTypeDescriptions } from '@/utils/descriptors';
+import InfiniteScroller from '@/components/InfiniteScroller.vue';
+import Comment from '../components/CommentComponent.vue';
 import { useModalStore } from '@/stores/modalStore';
-import {type CommentListDto
-    
-    
-    } from '../types/EngagementTypes.ts';
-
+import { type CommentListDto } from '../types/EngagementTypes.ts';
 
 // --- DEFINE FORM DATA ---
 const props = defineProps<{
-  payload: unknown // Arrives untouched as the raw string AccountId from your container
-}>()
+  payload: unknown // Arrives as CommentListDto
+}>();
 
-const activeComment = computed(() => props.payload as CommentListDto)
+const activeComment = computed(() => props.payload as CommentListDto);
 
 class HashSetOrSet extends Set<string> {}
 
-const baseRoute = computed(() => `api/comments/replies/${activeComment.value.commentId}`)
+const baseRoute = computed(() => `api/comments/replies/${activeComment.value.commentId}`);
 
 const commentsStore = useContentCommentsStore();
 const commentFilterStore = useContentCommentsFilterStore();
-
-  const pinnedComment = ref<CommentListDto | null>(null);
-
 const modalStore = useModalStore();
 
-const isLoading = ref(true)
-const loadingError = ref<APIError | null>(null)
-const loadingMoreError = ref<APIError | null>(null)
+const isLoading = ref(true);
+const loadingError = ref<APIError | null>(null);
+const loadingMoreError = ref<APIError | null>(null);
 
 const showFilterDropdown = ref(false);
 const currentSort = ref<GeneralSortType>('MostRecent');
 
-const showAncestry = ref(false)
+const showAncestry = ref(false);
 
-  // Pagination & Flow Guards
-  const hasNext = ref<boolean>(false);
-  const pointer = ref<string | null>('1');
-  const anchor = ref<string | null>(null);
-  const isFetchingMore = ref<boolean>(false);
+// Pagination & Flow Guards
+const hasNext = ref<boolean>(false);
+const pointer = ref<string | null>('1');
+const anchor = ref<string | null>(null);
+const isFetchingMore = ref<boolean>(false);
 
-  const comments = ref<CommentListDto[]>([]);
-  
+const comments = ref<CommentListDto[]>([]);
 
-//Gets data
+// Gets data
 async function loadData() {
-  
-const apiPath = commentFilterStore.buildApiPath(baseRoute.value);
 
-    isLoading.value = true;
-    loadingError.value = null;
+  const apiPath = commentFilterStore.buildApiPath(baseRoute.value);
 
-  // 3. Fetch from store
-  const response = await commentsStore.loadComments(apiPath)
+  isLoading.value = true;
+  loadingError.value = null;
+
+  const response = await commentsStore.loadComments(apiPath);
 
   if (!response.success) {
-    if (response.error) {
-    loadingError.value = response.error
-  }
-  else{
-    loadingError.value = new APIError(
-        500,
-        'Unknown Error!',
-        'Unknown error occured while retrieving comments. Refresh page and try again.'
-      );
-  }
+    loadingError.value = response.error || new APIError(
+      500,
+      'Unknown Error!',
+      'Unknown error occurred while retrieving comments. Refresh page and try again.'
+    );
   }
 
-  hasNext.value = response.hasNext
-  pointer.value = response.pointer
-  anchor.value = response.anchor
+  hasNext.value = response.hasNext;
+  pointer.value = response.pointer;
+  anchor.value = response.anchor;
 
-   if (response.comments && response.comments.length !== 0) {
+  if (response.comments && response.comments.length !== 0) {
+    comments.value = response.comments;
+    activeComment.value.hasLoadedReplies = true;
 
-      comments.value = response.comments
-      activeComment.value.hasLoadedReplies = true;
+    // 1. Create a safe, flat parent snapshot to sever circular loops
+    const parentSnapshot = {
+      ...activeComment.value,
+      pinnedReply: null,
+      ancestors: activeComment.value.ancestors || []
+    };
 
-const parentSnapshot = {
-  ...activeComment.value,
-  pinnedReply: null, // 🛡️ Sever the link down to prevent cyclic loops
-  ancestors: activeComment.value.ancestors || []
-};
+    // 2. Hydrate title and ancestors across fetched items
+    comments.value.forEach(comment => {
+      comment.title = activeComment.value.title;
+      comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
+    });
 
+    await commentsStore.hydratePersonals(comments.value);
+  }
 
-// 2. Extract only the newly appended proxies from the target stream
-const pushedProxies = comments.value.slice(-response.comments.length);
-
-// 3. Populate the extensions efficiently
-pushedProxies.forEach(comment => {
-  comment.title = activeComment.value.title;
-  
-  // 🎯 Every child gets the exact same historical path without reference sharing bugs
-  comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
-  console.log(`Comment's ancestors count is ${comment.ancestors.length}`)
-
-});
-
- await commentsStore.hydratePersonals(pushedProxies)
-  
-    
-      // Always activate the engagement buttons to lift loading skeletons/spinners
-    //commentsStore.activateEngagementButtons(pushedProxies)
-      }
-
-
-// 📋 Flatten and snapshot the live state to see if hydration stuck
-  //console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(comments.value)));
-
-  // No matter the result, stop loading
-  isLoading.value = false
+  isLoading.value = false;
 }
 
-//Gets data
+// Gets more data (pagination)
 async function loadMoreData() {
-  
-   if (isFetchingMore.value || !hasNext.value || !comments) return;
+  if (isFetchingMore.value || !hasNext.value || !comments.value) return;
 
-       isFetchingMore.value = true;
+  isFetchingMore.value = true;
+  const apiPath = commentFilterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value);
 
-const apiPath = commentFilterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value);
+  loadingMoreError.value = null;
 
-    loadingMoreError.value = null;
-
-  // 3. Fetch from store
-  const response = await commentsStore.loadComments(apiPath)
+  const response = await commentsStore.loadComments(apiPath);
 
   if (!response.success) {
-    if (response.error) {
-    loadingMoreError.value = response.error
-  }
-  else{
-    loadingMoreError.value = new APIError(
-        500,
-        'Unknown Error!',
-        'Unknown error occured while retrieving comments. Refresh page and try again.'
-      );
-  }
+    loadingMoreError.value = response.error || new APIError(
+      500,
+      'Unknown Error!',
+      'Unknown error occurred while retrieving comments. Refresh page and try again.'
+    );
   }
 
-  hasNext.value = response.hasNext
-  pointer.value = response.pointer
+  hasNext.value = response.hasNext;
+  pointer.value = response.pointer;
 
-  if(response.comments && response.comments.length !== 0){
+  if (response.comments && response.comments.length !== 0) {
+    const existingIds = new HashSetOrSet(comments.value.map(t => t.commentId));
+    const uniqueComments = response.comments.filter((t: any) => !existingIds.has(t.commentId));
 
+    if (uniqueComments.length > 0) {
+      comments.value.push(...uniqueComments);
 
-          // Filter duplicates already caught by state or top navigation creations
-          const existingIds = new HashSetOrSet(comments.value.map(t => t.commentId));
+      const parentSnapshot = {
+        ...activeComment.value,
+        pinnedReply: null,
+        ancestors: activeComment.value.ancestors || []
+      };
 
-        // 1. Filter out duplicates and immediately shape the raw inputs into valid DTO structures
-        const uniqueComments = response.comments
-          .filter((t: any) => !existingIds.has(t.commentId));
+      // 🎯 Fix index calculation using uniqueComments length instead of total response length
+      const pushedProxies = comments.value.slice(-uniqueComments.length);
 
-          if (uniqueComments.length > 0) {
-     
-comments.value.push(...uniqueComments);
+      pushedProxies.forEach(comment => {
+        comment.title = activeComment.value.title;
+        comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
+      });
 
-// 1. Create a single, read-only snapshot of the parent ONCE outside the loop.
-// This completely breaks any potential circular reference chains.
-const parentSnapshot = {
-  ...activeComment.value,
-  pinnedReply: null, // 🛡️ Sever the link down to prevent cyclic loops
-  ancestors: activeComment.value.ancestors || []
-};
-
-// 2. Extract only the newly appended proxies from the target stream
-const pushedProxies = comments.value.slice(-response.comments.length);
-
-// 3. Populate the extensions efficiently
-pushedProxies.forEach(comment => {
-  comment.title = activeComment.value.title;
-  
-  // 🎯 Every child gets the exact same historical path without reference sharing bugs
-  comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
-});
-
-             await commentsStore.hydratePersonals(pushedProxies)
-
+      await commentsStore.hydratePersonals(pushedProxies);
     }
-
-
-  
   }
-  
+
+  isFetchingMore.value = false;
 }
 
 async function resetFilters() {
- 
-   commentFilterStore.reset();
-
-  await loadData()
+  commentFilterStore.reset();
+  await loadData();
 }
-  
+
 async function applySort(type: GeneralSortType) {
   currentSort.value = type;
   showFilterDropdown.value = false;
-  // Trigger your backend sort action reload logic here...
-
   commentFilterStore.reset();
   commentFilterStore.sort = type;
-
-  await loadData()
+  await loadData();
 }
 
 async function openAdvancedFilter() {
   showFilterDropdown.value = false;
-
-  // ⏳ Await the modal lifecycle loop completion!
   const filtersApplied = await modalStore.push('ContentCommentsFilter', 'Filter Comments', null, true);
 
-  // 🔄 If the user confirmed their search/filter changes, reload the feed
   if (filtersApplied) {
     await loadData();
   }
 }
 
 onMounted(async () => {
+  if (activeComment.value.hasReplied) {
+    activeComment.value.hasReplied = false;
+    modalStore.popPrevious();
+  }
 
+  console.log(`activeComment title is ${activeComment.value.title}`)
 
-console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(activeComment.value)));
-
-  // Check if coming from a new comment modal i.e. not 
-   if(activeComment.value.hasReplied){
-
-    // Close the previous modal which is likely the create modal form
-    modalStore.popPrevious()
-
-    }
-
-  await loadData()
-
+  await loadData();
 });
-
-
 </script>
 
 <template>
@@ -342,7 +271,7 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
     <PageStatusMessage 
         title="No Comment Found!"
-      message="We counld not retrieve any comment matching your search filters."
+      message="We could not retrieve any comment matching your search filters."
       :is-standalone="true"
       icon="inbox"
       >
