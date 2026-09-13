@@ -21,7 +21,6 @@ const commentsStore = useCommentThreadStore();
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 
-
   // Pagination & Flow Guards
   const source = ref<SourceContentDto | null>(null);
   const focus = ref<CommentListDto | null>(null);
@@ -76,9 +75,7 @@ if (hydrationBatch.length !== 0) {
 
 }
 
-  }
-
-
+}
 
   // No matter the result, stop loading
   isLoading.value = false
@@ -107,7 +104,9 @@ onMounted(async () => {
 
     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+        icon="warning"
+      :is-standalone="true">
     </PageStatusMessage>
 
   </template>

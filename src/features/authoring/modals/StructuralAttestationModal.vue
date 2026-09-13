@@ -16,6 +16,8 @@ function handleAcknowledgeAndClose() {
 
 <template>
 
+<article class="writer-onboarding">
+    
 <h4 class="writer-onboarding__instruction">
     Carefully read the following text and click on the "Continue" button at the bottom
     of the page to proceed to the next step of your writer onboarding
@@ -59,11 +61,12 @@ community debate rather than incite hate speech, extreme violence, or harassment
 </li>
 </ol>
 
-<div class="btn-holder">
+<div class="writer-onboarding__actions">
     <button class="btn primary" @click="handleAcknowledgeAndClose">
         Continue
     </button>
 </div>
+</article>
   
 </template>
 

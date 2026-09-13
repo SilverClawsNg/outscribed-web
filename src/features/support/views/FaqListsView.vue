@@ -14,13 +14,19 @@ const modalStore = useModalStore()
 </script>
 
 <template>
+
+   <header class="page-header shared__container">
+     <h1>FAQs</h1>
+      <!-- Variant 1: Filter Button -->
+      <button 
+        type="button" 
+        class="btn primary" 
+        @click="modalStore.push('AskQuestion', 'Ask a Question')"
+      >
+      Ask a Question
+      </button>
+    </header>
  
-      <div class="shared__page-title">
-        <h1>FAQs</h1>
-      <button class="btn secondary" @click="modalStore.push('AskQuestion', 'Ask a Question')">Ask a Question</button>
-
-      </div>
-
   <template v-if="faqData.length > 0">
 
        <div class="shared__container">
@@ -36,9 +42,11 @@ const modalStore = useModalStore()
 
   <template v-else>
     <PageStatusMessage
-      title="No Content!"
-      message="No faqs was found matching your search filters.">
-    </PageStatusMessage>
+      title="No FAQ Found!"
+      message="We did not find any frequently asked question."
+      icon="inbox"
+      :is-standalone="true"
+      />
   </template>
 
 </template>

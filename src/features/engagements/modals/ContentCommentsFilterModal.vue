@@ -72,6 +72,6 @@ function applyFilter() {
   </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 @import "@/assets/css/form-input.less";
 </style>

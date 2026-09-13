@@ -242,8 +242,6 @@ async function handleFormSubmission() {
 
 </template>
 
-<style scoped>
-/* 🌟 Import Quill's native core and bubble theme styles directly from node_modules */
+<style lang="less" scoped>
 @import "@/assets/css/form-input.less";
-
 </style>

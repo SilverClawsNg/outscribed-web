@@ -257,7 +257,9 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+        icon="warning"
+      :is-standalone="true">
     </PageStatusMessage>
 
   </template>
@@ -341,7 +343,8 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
     <PageStatusMessage 
         title="No Comment Found!"
       message="We counld not retrieve any comment matching your search filters."
-      :is-bordered="true"
+      :is-standalone="true"
+      icon="inbox"
       >
         <template #actions>
           <button class="btn primary" @click="resetFilters">Reset</button>

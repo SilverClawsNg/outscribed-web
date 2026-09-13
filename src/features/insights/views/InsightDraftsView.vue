@@ -168,8 +168,8 @@ onUnmounted(() => {
 
    <template v-else>
     <PageStatusMessage
-      title="No Drafts Found!"
-      message="No drafts was found for this account. Any draft tales created offline or in-progress will show up here."
+      title="No Insight Found!"
+      message="We could not find any insight for this account. Insight drafts created offline or in-progress will show up here."
       icon="inbox"
       :is-standalone="true">
     </PageStatusMessage>

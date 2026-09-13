@@ -4,6 +4,8 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integ
 import { useSnapshotStore } from '../stores/SnapshotStore';
 import { toLongDate } from '@/utils/dateExtensions'
 import { APIError } from '@/api/apiTypes';
+import { useRouter, useRoute } from 'vue-router'
+import { useModalStore } from '@/stores/modalStore'
 
 const props = defineProps<{
   payload: unknown // Arrives untouched as the raw string AccountId from your container
@@ -12,6 +14,9 @@ const props = defineProps<{
 const snapshotId = computed(() => props.payload as string)
 
 const snapshotStore = useSnapshotStore();
+const router = useRouter()
+const route = useRoute()
+const modalStore = useModalStore()
 
 // --- Component Reactive State ---
 const isLoading = ref(true)
@@ -41,6 +46,13 @@ async function initPage() {
 
 }
 
+const currentPath = encodeURIComponent(route.fullPath)
+
+// --- DEFINE PAGE FUNCTIONS ---
+function redirectToLogin() {
+  router.push(`/login?returnUrl=${currentPath}`)
+}
+
 // --- MOUNT PAGE ---
 onMounted(async () => {
   await initPage();
@@ -61,9 +73,19 @@ onMounted(async () => {
 
  <template v-else-if="loadingError">
 
-    <PageStatusMessage 
+     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
+        <template v-if="loadingError.status == 401" #actions>
+        <button class="btn primary" @click="redirectToLogin">Login</button>
+      </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
@@ -163,16 +185,15 @@ onMounted(async () => {
      </dl>
      </template>
   </template>
-  
 
-  <template v-else>
-
-    <PageStatusMessage 
-    title="500: Unknown Error!"
-    message="An unknown error occurred while retrieving the snapshot. Refresh page and try again.">
+   <template v-else>
+    <PageStatusMessage
+      title="Unknown Error!"
+      message="Unknown error occured while retrieving snapshot. Refresh page and try again."
+      icon="warning"
+      :is-standalone="true">
     </PageStatusMessage>
-
-  </template>
+    </template>
 
 </template>
 

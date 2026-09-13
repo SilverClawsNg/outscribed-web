@@ -10,7 +10,6 @@ import CommentDraftComponent from '../components/CommentDraftComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import { useLoginHint } from '@/utils/authHelper'
 
 // --- INITIALIZE STORES ---
 const commentStore = useDraftCommentsStore();
@@ -114,11 +113,18 @@ onUnmounted(() => {
   <template v-else-if="loadingError">
 
     <PageStatusMessage 
-      :title="loadingError.title || 'Error Loading Drafts'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
-      <template v-if="loadingError.status == 401" #actions>
+      :title="loadingError.title || 'Error Loading Lists'" 
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
+        <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
@@ -164,10 +170,13 @@ onUnmounted(() => {
 
   <template v-else>
     <PageStatusMessage
-      title="404: Not Found!"
-      message="No drafts found. Any draft comments created offline or in-progress will show up here.">
+      title="No Comment Found!"
+      message="We could not find any comment for this account. Any comment made will show up here."
+      icon="inbox"
+      :is-standalone="true">
     </PageStatusMessage>
-  </template>
+    </template>
+
   </template>
 
 </template>

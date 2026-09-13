@@ -128,7 +128,7 @@ async function handleFormSubmission() {
   <template v-if="!isLoggedIn">
 
     <PageStatusMessage 
-      title="401: Unauthorized!" 
+      title="Login Required!" 
       message="It appears you are not logged in or have been logged out. Login/register to continue.">
       <template #actions>
         <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
@@ -173,6 +173,6 @@ async function handleFormSubmission() {
 
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 @import "@/assets/css/form-container-editor.less";
 </style>

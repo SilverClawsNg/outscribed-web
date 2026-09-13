@@ -16,6 +16,9 @@ function handleAcknowledgeAndClose() {
 
 <template>
 
+    <article class="water-onboarding">
+
+        
 <h4 class="writer-onboarding__instruction">
     Carefully read the following text and click on the "Continue" button at the bottom
     of the page to proceed to the next step of your writer onboarding
@@ -49,12 +52,14 @@ deliberately misleads readers about facts (beyond the artistic framing of the Ta
 </li>
 </ol>
 
-<div class="btn-holder">
+<div class="writer-onboarding__actions">
     <button class="btn primary" @click="handleAcknowledgeAndClose">
         Continue
     </button>
 </div>
   
+    </article>
+
 </template>
 
 <style lang="less" scoped>

@@ -74,7 +74,9 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
     </PageStatusMessage>
 
   </template>
@@ -85,12 +87,10 @@ onUnmounted(() => {
 
     <template v-if="!votesStore.votes || votesStore.votes.length === 0">
 
-      <PageStatusMessage 
-        title="No Content!"
-      message="No votes was found."
-      >
-      
-      </PageStatusMessage>
+     <PageStatusMessage
+      title="No vote Found!"
+      message="We could not retrieve any vote matching your search criteria."
+       :is-standalone="true" />
 
     </template>
 

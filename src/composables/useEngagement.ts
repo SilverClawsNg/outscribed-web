@@ -24,9 +24,9 @@ const successMessage = ref('');
 
 export function useEngagement() {
   const alert = useAlert();
-const authStore = useAuthStore();
+  const authStore = useAuthStore();
   const modalStore = useModalStore();
-
+ 
   /**
    * Helper to ensure authentication before running an engagement operation.
    * If unauthenticated, queues the callback and opens the Auth modal.

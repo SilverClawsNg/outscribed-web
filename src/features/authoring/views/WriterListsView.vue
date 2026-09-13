@@ -115,12 +115,19 @@ onUnmounted(() => {
 
   <template v-else-if="loadingError">
 
-    <PageStatusMessage 
+     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
@@ -137,14 +144,14 @@ onUnmounted(() => {
     </header>
      
     <template v-if="wasCleaned">
-     <div class=" shared__container">
-          <PageStatusMessage 
+
+      <PageStatusMessage 
               title="Invalid Filters Removed!" 
               message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
               icon="warning" 
               :is-bordered="true"
             />
-        </div>
+
     </template>
 
   <template v-if="writerStore.writers && writerStore.writers.length > 0">
@@ -173,9 +180,10 @@ onUnmounted(() => {
   <template v-else>
     <PageStatusMessage
       title="No Writer Found!"
-      message="No writers was found matching your search filters."
-      icon="inbox">
-    </PageStatusMessage>
+      message="We did not find any writer matching your search filters."
+      icon="inbox"
+      :is-standalone="true"
+      />
   </template>
   </template>
 

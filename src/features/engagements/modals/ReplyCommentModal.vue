@@ -120,8 +120,7 @@ modalStore.push('CommentReplies', 'Replies', comment.value)
 else{
   modalStore.pop()
 }
-
-        
+       
   }
   
 }
@@ -133,8 +132,10 @@ else{
   <template v-if="!isLoggedIn">
 
     <PageStatusMessage 
-      title="401: Unauthorized!" 
-      message="It appears you are not logged in or have been logged out. Login/register to continue.">
+      title="Login Required!" 
+      message="It appears you are not logged in or have been logged out. Login/register to continue."
+      icon="warning"
+      :is-standalone="true">
       <template #actions>
         <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
          <button class="btn primary" @click="modalStore.push('RegisterUser', 'Register')">Register</button>
@@ -178,8 +179,6 @@ else{
 
 </template>
 
-<style scoped>
-/* 🌟 Import Quill's native core and bubble theme styles directly from node_modules */
+<style lang="less" scoped>
 @import "@/assets/css/form-container-editor.less";
-
 </style>

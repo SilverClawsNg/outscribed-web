@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // --- IMPORTS ---
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useSnapshotStore } from '../stores/SnapshotStore';
 import { useSnapshotFilterStore } from '../stores/SnapshotFilterStore'; 
 import DisplayComponent from '@/components/DisplayTable.vue';

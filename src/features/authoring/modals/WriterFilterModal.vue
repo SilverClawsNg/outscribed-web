@@ -1,7 +1,6 @@
 
 <script setup lang="ts">
 
-import { computed, ref, onMounted } from 'vue'
 import { useWriterListFilterStore } from '../stores/WriterListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
 import { GeneralSortTypeSelectItems, CountrySelectItems} from '@/utils/selectItemHelper'

@@ -156,12 +156,19 @@ onUnmounted(() => {
   
   <template v-else-if="loadingError">
 
-    <PageStatusMessage 
+      <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
@@ -203,7 +210,6 @@ onUnmounted(() => {
         :error="commentStore.loadMoreError"
         @load-more="commentStore.loadMoreComments"
         @retry="commentStore.loadMoreComments">
-
         
   <div class="shared__container">
 

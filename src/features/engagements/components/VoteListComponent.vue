@@ -19,25 +19,25 @@ const props = defineProps<Props>()
 </script>
 
 <template>
+  <article class="vote-card">
+    <header class="vote-card__header">
+      <div class="vote-card__user">
+        <button 
+          type="button" 
+          class="vote-card__username at" 
+          @click="modalStore.push('Profile', 'Profile', vote.voterId)"
+        >
+          {{ vote.username }}
+        </button>
+      </div>
 
-  <article class="votes-list__card">
-   
-    <section class="votes-list__content">
-
-      <button class="at" @click="modalStore.push('Profile', 'Profile', vote.voterId)">
-        {{ vote.username }}
-      </button>
-      
-     <p class="votes-list__date">
-        {{ toShortDate(props.vote.votedAt) }}
-      </p>
-      
-    </section>
-
+      <time class="vote-card__date">
+        {{ toShortDate(vote.votedAt) }}
+      </time>
+    </header>
   </article>
- 
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/vote-lists.less";
+@import "@/assets/css/vote-card.less";
 </style>

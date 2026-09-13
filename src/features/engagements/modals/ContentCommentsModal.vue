@@ -167,11 +167,7 @@ const pushedProxies = comments.value.slice(response.comments.length);
 
     
              await commentsStore.hydratePersonals(pushedProxies)
-
-
-
     }
-
     
   }
   
@@ -246,7 +242,9 @@ onMounted(async () => {
 
     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+       icon="warning"
+      :is-standalone="true">
     </PageStatusMessage>
 
   </template>
@@ -272,7 +270,7 @@ onMounted(async () => {
       <PageStatusMessage 
         title="No Comment Found!"
       message="We counld not retrieve any comment matching your search filters."
-      :is-bordered="true"
+      :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="resetFilters">Reset</button>
@@ -332,7 +330,6 @@ onMounted(async () => {
         @load-more="loadMoreData"
         @retry="loadMoreData">
         
-        
         <Comment 
           v-for="comment in (content.pinnedComment ? comments.filter(c => c.commentId !== content.pinnedComment?.commentId) : comments)" 
          :key="comment.commentId" 
@@ -340,7 +337,6 @@ onMounted(async () => {
         />
  
        </InfiniteScroller>
-
   
     </template>
 
