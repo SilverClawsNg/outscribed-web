@@ -122,13 +122,14 @@ onUnmounted(() => {
   <template v-if=isInitializing>
       <p class="shared__loader"></p>
   </template>
-
   
   <template v-else-if="!isLoggedIn || !authStore.hasAccessToken">
 
       <PageStatusMessage 
-        title="401: Unauthorized!" 
+        title="Login Required!" 
         message="It appears you are not logged in or have been logged out. Login or register to continue."
+        icon="warning"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
@@ -136,18 +137,20 @@ onUnmounted(() => {
 
       </PageStatusMessage>
 
-    </template>
+  </template>
 
-     <template v-else-if="authStore.writerStatus === 'None'">
+  <template v-else-if="authStore.writerStatus === 'None'">
       <PageStatusMessage 
-        title="401: Unauthorized!" 
+        title="Account Is Unauthorized!" 
         message="Your account is not currently authorized to publish tales. Upgrade now. It is free and easy."
+        icon="warning"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
         </template>
       </PageStatusMessage>
-    </template>
+  </template>
    
   <template v-else-if="isLoading">
 
@@ -161,36 +164,42 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Drafts'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="broken-chain"
+      :is-standalone="true">
       <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
 
    <template v-else>
    
-    <header class="page-header container">
-   <h1 class="page-header__title">
-      Tale Drafts
-    </h1>
-          <button type="button" class="btn primary" @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>
-  </header>
-     
+    <header class="page-header shared__container">
+    <h1 class="page-header__title">
+        Tale Drafts
+      </h1>
+      <button type="button" class="btn primary" @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>
+    </header>
 
-      <template v-if="wasCleaned">
-     <div class="shared__content-warning">
-       <span class="icon">⚠️</span>
-      <p>
-      Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">filter</button> link to filter correctly.
-      </p>
-      
-     </div>
+    <template v-if="wasCleaned">
+
+      <PageStatusMessage 
+              title="Invalid Filters Removed!" 
+              message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
+              icon="warning" 
+              :is-standalone="true"
+            />
+
     </template>
 
-  <template v-if="taleStore.tales && taleStore.tales.length > 0">
+    <template v-if="taleStore.tales && taleStore.tales.length > 0">
 
        <InfiniteScroller
         :has-next="taleStore.hasNext"
@@ -205,19 +214,22 @@ onUnmounted(() => {
         v-for="tale in taleStore.tales" 
         :key="tale.taleId" 
         :tale="tale"/>
-  </div>
-    
+ 
+      </div>
 
        </InfiniteScroller>
 
-  </template>
+    </template>
 
-  <template v-else>
+    <template v-else>
     <PageStatusMessage
-      title="404: Not Found!"
-      message="No drafts found. Any draft tales created offline or in-progress will show up here.">
+      title="No Drafts Found!"
+      message="No drafts was found for this account. Any draft tales created offline or in-progress will show up here."
+      icon="inbox"
+      :is-standalone="true">
     </PageStatusMessage>
-  </template>
+    </template>
+
   </template>
 
 </template>

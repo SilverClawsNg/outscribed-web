@@ -1,22 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, onBeforeMount } from 'vue'
 
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
 import { useModalStore } from '@/stores/modalStore'
 import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
 import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
-import { APIError } from '@/api/apiTypes'
 import type { UpdateProfileRequest } from '../types/IdentityTypes'
 import { CountrySelectItems } from '@/utils/selectItemHelper'
 import { type Country } from '@/utils/enumHelper'
 import { getValidCountry } from '@/utils/validators'
 
-
-const authStore = useAuthStore()
 const modalStore = useModalStore()
 const profileStore = useProfileStore() // 💡 Instantiate Store
-const profile = computed(() => profileStore.profile!)
 
 // 🎯 1. INITIALIZE LOCAL FORM DATA CONTAINER
 // Give it a strict type so your v-models benefit from IDE autocomplete
@@ -136,7 +131,6 @@ async function handleFormSubmission() {
   
   }
   
-
 }
 
 

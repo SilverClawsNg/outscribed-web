@@ -7,7 +7,6 @@ import SvgIcons from '@/components/SvgIcons.vue'
 import { useInsightDetailStore } from '../stores/InsightDetailStore';
 import { useEngagement } from '@/composables/useEngagement';
 import LatestCommentComponent from '@/features/engagements/components/LatestCommentComponent.vue'
-import TaleBriefComponent from '@/features/tales/components/TaleBriefComponent.vue'
 import { useRouter } from 'vue-router';
 
 import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
@@ -18,6 +17,8 @@ import { type InsightDetailDto } from '../types/InsightsTypes';
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { sanitizeHtml } from '@/utils/markupHelper';
 import ShareBar from '@/components/ShareBar.vue';
+import Content from '@/components/Content.vue'
+import WriterStats from '@/components/WriterStats.vue'
 
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
@@ -57,13 +58,15 @@ function createComment() {
 
 <template>
 
-  <article class="content-details">
+  <article class="content-details shared__container">
 
     <header class="content-details__header-container">
 
       <div class="content-details__header">
 
         <h1 class="content-details__title">{{ insight.title }}</h1>
+
+         <div class="content-details__top-meta">
 
         <div class="content-details__writer">
           By 
@@ -75,6 +78,19 @@ function createComment() {
             {{ insight.creator.username }}
           </button>
            — <time>{{ toShortDate(insight.createdAt) }}</time>
+        </div>
+
+        <button 
+              type="button"
+              class="content-details__menu-btn" 
+              @click="modalStore.push('InsightStats', 'Insight Stats', insight)"
+              title="Options"
+            >
+              <span class="content-details__menu-dot"></span>
+              <span class="content-details__menu-dot"></span>
+              <span class="content-details__menu-dot"></span>
+            </button>
+
         </div>
 
          <div class="content-details__meta">
@@ -101,19 +117,6 @@ function createComment() {
           </div>
 
           </template>
-
-            <div class="content-details__actions">
-            <button 
-              type="button"
-              class="content-details__menu-btn" 
-              click="modalStore.push('InsightStats', 'Insight Stats', insight)"
-              title="Options"
-            >
-              <span class="content-details__menu-dot"></span>
-              <span class="content-details__menu-dot"></span>
-              <span class="content-details__menu-dot"></span>
-            </button>
-          </div>
 
         </div>
 
@@ -144,12 +147,12 @@ function createComment() {
       </p>
 
       <template v-if="insight.isArchived">
-          <div class="content-details__archived-banner">
-        <p>
-           This insight has been archived by the author and is no longer publicly visible. We are showing you this archived version as a reference for the discussions and learnings that have stemmed from it. Certain features such as upvoting, downvoting, favoriting, and commenting have been disabled to respect the author's decision to archive. We encourage you to explore the author's other insights and insights for more of their perspectives and contributions.
-        </p>
-      </div>
-     
+         <PageStatusMessage 
+            title="Insight is archived!" 
+            message="This insight has been archived by the author and is no longer publicly visible. We are showing you this archived version as a reference for discussions. Certain features such as voting, saving, and commenting have been disabled."
+            icon="archive" 
+            :is-bordered="true"
+          />
       </template>
 
       <!-- Renders safe HTML details -->
@@ -168,13 +171,13 @@ function createComment() {
       </template>
     
        <template  v-if="insight.tags && insight.tags.length > 0">
-   <div class="content-details__tags">
-        <h4 class="content-details__tag-title">Tagged In</h4>
-        <span class="divider line"></span>
-       <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
-          #<router-link :to="`/insights?tag=${tag.slug}`">{{ tag.name }}</router-link>
-        </span>
-      </div>
+          <div class="content-details__tags">
+            <h4 class="content-details__tag-title">Tagged In</h4>
+            <span class="shared__divider shared__divider--line"></span>
+          <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
+              #<router-link :to="`/insights?tag=${tag.slug}`">{{ tag.name }}</router-link>
+            </span>
+          </div>
         </template>
 
       <div class="content-details__engagement-grid">
@@ -244,7 +247,7 @@ function createComment() {
             :summary="insight.summary"
             :url="insight.slug"
             :content-id="insight.insightId"
-             :engageable="insight.engagement"
+            :engageable="insight.engagement"
             content-type='Insight'
           />
           </div>
@@ -283,34 +286,19 @@ function createComment() {
             </button>
           </div>
 
-           <div class="content-details__creator-stats">
-            <router-link 
-              :to="`/tales?username=${insight.creator.username}`" 
-              class="btn secondary" 
-              title="Tales"
-            >
-              <span class="value">{{ formatCounts(insight.creator.talesCount) }}</span> 
-              <span class="field">Tales</span>
-            </router-link>
-            <router-link 
-              :to="`/insights?username=${insight.creator.username}`" 
-              class="btn secondary" 
-              title="Insights"
-            >
-              <span class="value">{{ formatCounts(insight.creator.insightsCount) }}</span> 
-              <span class="field">Insights</span>
-            </router-link>
-            <router-link 
-              :to="`/comments?username=${insight.creator.username}`" 
-              class="btn secondary" 
-              title="Comments"
-            >
-              <span class="value">{{ formatCounts(insight.creator.engagement.commentsCount) }}</span> 
-              <span class="field">Comments</span>
-            </router-link>
-          </div>
+           <WriterStats
+            :username="insight.creator.username"
+            :tales-count="insight.creator.talesCount"
+            :insights-count="insight.creator.insightsCount"
+            :comments-count="insight.creator.commentsCount"
+          />
+
         </div>
       </div>
+
+    </div>
+
+      <div class="content-details__footer">
 
       <header class="page-header">
         <h1>Inspired By</h1>
@@ -323,8 +311,15 @@ function createComment() {
        
     </header>
 
-       <TaleBriefComponent 
-            :tale="insight.source" 
+          <Content
+            :title="insight.source.title"
+            :slug="insight.source.slug"
+            :creator-id="insight.source.creatorId"
+            :creator-username="insight.source.creatorUsername"
+            :created-at="insight.source.createdAt"
+            content-type='tale'
+            :summary="insight.source.summary"
+            :is-bordered="true"
           />
 
       <header class="page-header">
@@ -350,21 +345,30 @@ function createComment() {
             :comment="comment" 
           />
         </template>
+          <template v-else>
+          <PageStatusMessage 
+            title="No Comments Found!" 
+            message="There are currently no comments attached to this insight."
+            icon="inbox" 
+            :is-bordered="true"
+          />
+          </template>
       </div>
 
      <div class="content-details__enrichment-action">
         <p class="content-details__enrichment-prompt">
-          If this insight has exposed the symptoms, comments help diagnose the cause. Join the on-going discussions and offer your perspectives on variety of issues raised by this insight.
+          Comments help diagnose the causes of rots exposed by insights. Join the on-going discussions and offer your perspectives on variety of issues raised by this insight.
         </p>
         <button 
         type="button" 
          :disabled="insight.isArchived"
+         class="btn secondary with-icon"
         title="Create Comment" 
         @click="createComment">
           <span class="icon-edit"></span> Write a comment
         </button>
       </div>
-    </div>
+      </div>
 
   </article>
 </template>

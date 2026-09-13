@@ -32,9 +32,10 @@ onBeforeMount(() => {
 
   <template v-if="!insightStore.activeInsight">
     <PageStatusMessage 
-      title="Content Unavailable!" 
-      message="Unable to load current insight details. Refresh page and try again">
-    </PageStatusMessage>
+      title="Insight Is Unavailable!" 
+      message="We were unable to load current insight details. Refresh page and try again"
+      icon="inbox"
+      :is-bordered="true" />
   </template>
 
     <template v-else>
@@ -96,9 +97,15 @@ onBeforeMount(() => {
               </p>
               
             </template>
-             <template v-else >
-                   <p class="content-details__no-content">Summary goes here!</p>
-            </template>
+             <template v-else>
+
+             <PageStatusMessage
+                title="No Summary Added!"
+                message="Add a concise but descriptive summary of the tale."
+                icon="inbox"
+                />
+
+          </template>
       
       </div>
     </header>  
@@ -116,9 +123,15 @@ onBeforeMount(() => {
         </figcaption>
       </figure>
         </template>
-         <template v-else >
-                   <p class="content-details__no-content">Central image goes here!</p>
-            </template>
+          <template v-else>
+
+             <PageStatusMessage
+                title="No Image Added!"
+                message="Add an image as a pictorial summary of the insight. Images are optional"
+                icon="inbox"
+                />
+                
+          </template>
 
        <template v-if="insightStore.activeInsight.detail">
  <p class="content-details__reading-time">
@@ -131,8 +144,11 @@ onBeforeMount(() => {
              <p class="content-details__reading-time">
           — 0 Minutes Read
              </p>
-                  <p class="content-details__no-content">Detail goes here!</p>
-
+                 <PageStatusMessage
+                title="No Details Added!"
+                message="Add the details of the insight."
+                icon="inbox"
+                />
         </template>
     
        <template v-if="insightStore.activeInsight.addendum && insightStore.activeInsight.addendumDate">
@@ -149,14 +165,18 @@ onBeforeMount(() => {
        <template  v-if="insightStore.activeInsight.tags && insightStore.activeInsight.tags.length > 0">
   <div class="content-details__tags">
        <h4 class="content-details__tag-title">Tagged In</h4>
-        <span class="divider line"></span>
+        <span class="shared__divider shared__divider--line"></span>
         <span v-for="tag in insightStore.activeInsight.tags" :key="tag.tagId"  class="content-details__tag-item">
           #<router-link :to="`/insights/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
         </span>
       </div>
         </template>
         <template v-else >
-                   <p class="content-details__no-content">Tags goes here!</p>
+            <PageStatusMessage
+                title="No Tags Added!"
+                message="Use trending tags to make your tale more visible"
+                icon="inbox"
+                />
             </template>
 
       </div>

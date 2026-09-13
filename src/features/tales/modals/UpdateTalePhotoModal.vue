@@ -215,7 +215,7 @@ async function handleFormSubmission() {
 
     <FormProgress :progress="progressState" />
 
- <div class="photo-preview">
+    <div class="photo-preview">
 
      <label class="large">
 

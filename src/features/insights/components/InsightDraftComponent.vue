@@ -28,9 +28,6 @@ async function handleModalUpdate(type: string, title: string) {
    modalStore.push(type, title); 
 }
 
-const contentType = 'insights'
-const contentPath = 'insight'
-
 </script>
 
 <template>
@@ -53,15 +50,15 @@ const contentPath = 'insight'
 
          <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
 
-        <span class="divider circle"></span>
+        <span class="shared__divider shared__divider--circle"></span>
 
-        <RouterLink :to="`/${contentType}?category=${insight.category}`" class="content-card__meta-link">
+        <RouterLink :to="`/insights?category=${insight.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[insight.category] }}
         </RouterLink>
         
         <template v-if="insight.country">
-          <span class="divider circle"></span>
-          <RouterLink :to="`/${contentType}?country=${insight.country}`" class="content-card__meta-link">
+          <span class="shared__divider shared__divider--circle"></span>
+          <RouterLink :to="`/insights?country=${insight.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[insight.country] }}
           </RouterLink>
         </template>
@@ -152,7 +149,7 @@ const contentPath = 'insight'
             Preview
           </button>
             <router-link :to="`/tale/${insight.taleId}`" class="btn secondary">
-              Go To Tale
+              View Tale
             </router-link>
                <template v-if="insight.status !== 'Created'">
           <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', insight.insightId)">

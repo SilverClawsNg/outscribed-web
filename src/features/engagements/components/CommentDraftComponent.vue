@@ -71,7 +71,7 @@ async function handleModalUpdate(type: string, title: string) {
 
     <section class="comments-list__metadata">
         {{ toRelativeTime(comment.commentedAt) }}
-      <span class="divider circle"></span>
+      <span class="shared__divider shared__divider--circle"></span>
        <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
          {{ ContentTypeDescriptions[comment.contentType] }}
       </RouterLink>

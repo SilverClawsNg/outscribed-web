@@ -12,7 +12,7 @@ function ensureDate(input: string | Date | number): Date {
 export function toShortDate(dateIn: string | Date): string {
   const date = ensureDate(dateIn)
   return date.toLocaleDateString('en-US', {
-    month: 'long',
+    month: 'short',
     day: '2-digit',
     year: 'numeric'
   })

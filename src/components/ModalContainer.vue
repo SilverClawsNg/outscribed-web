@@ -71,6 +71,7 @@ import EngagementCommentsFilterModal from '@/features/engagements/modals/Comment
 import FlagContentModal from '@/features/engagements/modals/FlagContentModal.vue'
 
 import SearchModal from '@/features/global/modals/SearchModal.vue'
+import TagDetailModal from '@/features/global/modals/TagDetailModal.vue'
 
 import AskQuestionModal from '@/features/support/modals/AskQuestionModal.vue'
 import ProblemDefinitionModal from '@/features/support/modals/ProblemDefinitionModal.vue'
@@ -139,6 +140,7 @@ ContentCommentsFilter: ContentCommentsFilterModal,
 DraftCommentsFilter: DraftCommentsFilterModal,
 EngagementCommentsFilter: EngagementCommentsFilterModal,
 Search: SearchModal,
+TagDetail: TagDetailModal,
 FlagContent: FlagContentModal,
 AskQuestion: AskQuestionModal,
 ProblemDefinition: ProblemDefinitionModal,

@@ -100,7 +100,5 @@ onBeforeMount(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/form-input.less";
-
-@import "@/assets/css/form-container.less";
-
+@import "@/assets/css/boxed-form.less";
 </style>

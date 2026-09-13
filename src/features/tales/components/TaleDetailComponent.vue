@@ -7,7 +7,6 @@ import SvgIcons from '@/components/SvgIcons.vue'
 import { useTaleDetailStore } from '../stores/TaleDetailStore';
 import { useEngagement } from '@/composables/useEngagement';
 import LatestCommentComponent from '@/features/engagements/components/LatestCommentComponent.vue'
-import LatestInsightComponent from '@/features/insights/components/LatestInsightComponent.vue'
 
 import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
@@ -17,6 +16,9 @@ import { type TaleDetailDto } from '../types/TalesTypes';
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { sanitizeHtml } from '@/utils/markupHelper';
 import ShareBar from '@/components/ShareBar.vue';
+import Content from '@/components/Content.vue'
+import WriterStats from '@/components/WriterStats.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
@@ -56,13 +58,16 @@ function createComment() {
 
 <template>
 
-  <article class="content-details">
+  <article class="content-details shared__container">
 
     <!-- Header Section -->
     <header class="content-details__header-container">
 
       <div class="content-details__header">
+
         <h1 class="content-details__title">{{ tale.title }}</h1>
+
+        <div class="content-details__top-meta">
 
         <div class="content-details__writer">
           By 
@@ -74,6 +79,20 @@ function createComment() {
             {{ tale.creator.username }}
           </button>
           — <time>{{ toShortDate(tale.createdAt) }}</time>
+          
+        </div>
+        
+           <button 
+              type="button"
+              class="content-details__menu-btn" 
+              @click="modalStore.push('TaleStats', 'Stats', tale)"
+              title="Options"
+            >
+              <span class="content-details__menu-dot"></span>
+              <span class="content-details__menu-dot"></span>
+              <span class="content-details__menu-dot"></span>
+            </button>
+
         </div>
 
         <div class="content-details__meta">
@@ -102,18 +121,6 @@ function createComment() {
 
           </template>
 
-          <div class="content-details__actions">
-            <button 
-              type="button"
-              class="content-details__menu-btn" 
-              @click="modalStore.push('TaleStats', 'Stats', tale)"
-              title="Options"
-            >
-              <span class="content-details__menu-dot"></span>
-              <span class="content-details__menu-dot"></span>
-              <span class="content-details__menu-dot"></span>
-            </button>
-          </div>
         </div>
 
         <p class="content-details__summary">
@@ -146,11 +153,12 @@ function createComment() {
 
       <!-- Archive Banner -->
         <template v-if="tale.isArchived">
-         <div class="content-details__archived-banner">
-        <p>
-          This tale has been archived by the author and is no longer publicly visible. We are showing you this archived version as a reference for discussions. Certain features such as voting, saving, and commenting have been disabled.
-        </p>
-      </div>
+            <PageStatusMessage 
+              title="Tale is archived!" 
+              message="This tale has been archived by the author and is no longer publicly visible. We are showing you this archived version as a reference for discussions. Certain features such as voting, saving, and commenting have been disabled."
+              icon="archive" 
+              :is-bordered="true"
+            />
       </template>
 
       <!-- Safe Rich Text Content -->
@@ -194,8 +202,8 @@ function createComment() {
             <div class="shared__popover-arrow"></div>
             <p class="shared__popover-text">You will be redirected to {{ tale.realityCheckUrl }}</p>
             <div class="shared__popover-actions">
-              <a :href="tale.realityCheckUrl" target="_blank" rel="noopener" @click="showExternalLink = false">Yes</a>
-              <button type="button" @click="showExternalLink = false">No</button>
+              <a :href="tale.realityCheckUrl" target="_blank" rel="noopener" class="btn primary" @click="showExternalLink = false">Yes</a>
+              <button type="button" class="btn secondary" @click="showExternalLink = false">No</button>
             </div>
           </div>
         </div>
@@ -204,19 +212,19 @@ function createComment() {
       <!-- Taxonomy Tags -->
        
        <template v-if="tale.tags && tale.tags.length > 0">
-    <div class="content-details__tags">
-        <h4 class="content-details__tag-title">Tagged In</h4>
-        <span class="divider line"></span>
-        <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
-          #<RouterLink :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</RouterLink>
-        </span>
-      </div>
+        <div class="content-details__tags">
+            <h4 class="content-details__tag-title">Tagged In</h4>
+            <span class="shared__divider shared__divider--line"></span>
+            <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
+              #<RouterLink :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</RouterLink>
+            </span>
+          </div>
 
         </template>
      
       <!-- Legal Disclaimer -->
       <div class="content-details__disclaimer">
-        Disclaimer: This content represents artistic expression and writer perspective. 
+        <span class="content-details__disclaimer-heading">Disclaimer</span>: This content represents the writer's perspective and exercise of artistic freedom. 
         <button type="button" class="content-details__disclaimer-btn" @click="modalStore.push('DisclaimerModal', 'Disclaimer')">
           [Read full disclaimer]
         </button>
@@ -307,7 +315,7 @@ function createComment() {
               class="content-details__writer-link at"
               @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
             >
-              @{{ tale.creator.username }}
+              {{ tale.creator.username }}
             </button>
           </div>
 
@@ -330,55 +338,68 @@ function createComment() {
             </button>
           </div>
 
-          <div class="content-details__creator-stats">
-            <RouterLink :to="`/tales?username=${tale.creator.username}`" class="btn secondary">
-              <span class="value">{{ formatCounts(tale.creator.talesCount) }}</span> 
-              <span class="field">Tales</span>
-            </RouterLink>
-            <RouterLink :to="`/insights?username=${tale.creator.username}`" class="btn secondary">
-              <span class="value">{{ formatCounts(tale.creator.insightsCount) }}</span> 
-              <span class="field">Insights</span>
-            </RouterLink>
-            <RouterLink :to="`/comments?username=${tale.creator.username}`" class="btn secondary">
-              <span class="value">{{ formatCounts(tale.creator.engagement.commentsCount) }}</span> 
-              <span class="field">Comments</span>
-            </RouterLink>
-          </div>
+            <WriterStats 
+            :username="tale.creator.username"
+            :tales-count="tale.creator.talesCount"
+            :insights-count="tale.creator.insightsCount"
+            :comments-count="tale.creator.commentsCount"
+          />
+
         </div>
       </div>
 
+    </div>
+
+  <div class="content-details__footer">
+    
       <!-- Recent Insights Enrichment Block -->
       <header class="page-header">
         <h1>Recent Insights</h1>
         <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
           :to="`/insights?taleId=${tale.taleId}`" 
-          class="page-header__action"
+          class="btn primary"
         >
           View {{ formatCounts(tale.engagement.insightsCount) }}
         </RouterLink>
-        <button v-else type="button" class="page-header__action" disabled>
+        <button v-else type="button" class="btn primary" disabled>
           View {{ tale.engagement.insightsCount }}
         </button>
       </header>
 
-      <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
-        <template v-if="taleStore.hasLoadedEnrichment">
-          <LatestInsightComponent 
-            v-for="insight in taleStore.latestInsights" 
-            :key="insight.insightId" 
-            :insight="insight" 
-          />
-        </template>
-      </div>
+     <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
+      <template v-if="taleStore.hasLoadedEnrichment && taleStore.latestInsights?.length">
+        <Content 
+          v-for="(insight, index) in taleStore.latestInsights" 
+          :key="insight.insightId || insight.slug" 
+          :title="insight.title"
+          :slug="insight.slug"
+          :creator-id="insight.creatorId"
+          :creator-username="insight.creatorUsername"
+          :created-at="insight.createdAt"
+          content-type="insight"
+          :summary="insight.summary"
+          :is-bordered="true"
+        />
+      </template>
+
+      <template v-else>
+      <PageStatusMessage 
+        title="No Insights Found!" 
+        message="There are currently no insights attached to this tale."
+        icon="inbox" 
+        :is-bordered="true"
+      />
+      </template>
+    </div>
 
       <div class="content-details__enrichment-action">
         <p class="content-details__enrichment-prompt">
-          If this piece started a fire, use an insight to direct the heat. Present evidence-based analysis, real-world consequences, or matters arising.
+          Insights are used to direct the heats of fires started by tales. Present evidence-based analysis, real-world consequences, or matters arising.
         </p>
         <button 
           type="button" 
-          class="content-details__action-btn"
+          class="btn secondary with-icon"
           @click="modalStore.push('CreateInsight', 'Create Insight', { taleId: tale.taleId, category: tale.category })"
         >
           <SvgIcons name="edit" /> Write an insight
@@ -390,7 +411,7 @@ function createComment() {
         <h1>Recent Comments</h1>
         <button 
           type="button"
-          class="page-header__action" 
+          class="btn primary" 
           :disabled="tale.engagement.commentsCount === 0"
           @click="viewComments"
         >
@@ -399,29 +420,37 @@ function createComment() {
       </header>
 
       <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
-        <template v-if="taleStore.hasLoadedEnrichment">
+        <template v-if="taleStore.hasLoadedEnrichment && taleStore.latestComments?.length">
           <LatestCommentComponent 
             v-for="comment in taleStore.latestComments" 
             :key="comment.commentId" 
             :comment="comment" 
           />
         </template>
+         <template v-else>
+          <PageStatusMessage 
+            title="No Comments Found!" 
+            message="There are currently no comments attached to this tale."
+            icon="inbox" 
+          />
+          </template>
       </div>
 
       <div class="content-details__enrichment-action">
         <p class="content-details__enrichment-prompt">
-          If this content exposed the symptoms, comments help diagnose the cause. Join ongoing discussions and share your perspective.
+        Comments help diagnose the causes of rots exposed by tales. Join ongoing discussions and share your perspective on variety of issues raised by this tale.
         </p>
         <button 
           type="button" 
-          class="content-details__action-btn"
+          class="btn secondary with-icon"
           :disabled="tale.isArchived"
           @click="createComment"
         >
           <SvgIcons name="edit" /> Write a comment
         </button>
       </div>
-    </div>
+  </div>
+
   </article>
 </template>
 

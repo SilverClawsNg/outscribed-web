@@ -1,37 +1,20 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
-import { APIError } from '@/api/apiTypes.ts'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts'
-import type { SendTokenResponse, CheckUsernameResponse} from '@/features/gatekeeper/types/GatewayTypes.ts'
+import { APIError } from '@/api/apiTypes'
+import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import type { SendTokenResponse, CheckUsernameResponse } from '@/features/gatekeeper/types/GatewayTypes'
 import { postAsync } from '@/api/apiPostServices'
 import { getAsync } from '@/api/apiGetServices'
 
-// Composables & Shared UI
-import { useFormProgress } from '@/composables/useFormProgress.ts'
+import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
+import TurnstileWidget from '@/components/TurnstileWidget.vue'
 
-// Step Subcomponents
 import SendTokenStep from './SendTokenComponent.vue'
 import ResendTokenStep from './ResendTokenComponent.vue'
 import VerifyTokenStep from './VerifyTokenComponent.vue'
 import CreateAccessStep from './CreateAccessComponent.vue'
 
-import { useModalStore } from '@/stores/modalStore'
-
-const modalStore = useModalStore()
-
-const authStore = useAuthStore()
-
-const isFormLoading = ref(false)
-const isUsernameError = ref(false)
-
-const activeStep = ref(1)
-
-//const router = useRouter()
-//const route = useRoute()
-
-
-// Conditional layout environment prop flags
 interface Props {
   isPage?: boolean
 }
@@ -39,45 +22,65 @@ withDefaults(defineProps<Props>(), {
   isPage: true
 })
 
-// 🎯 Add specialized modal action emits alongside your success emit
 const emit = defineEmits<{
   success: []
 }>()
 
-// Initialize state container with default state
+const authStore = useAuthStore()
+const isFormLoading = ref(false)
+const isUsernameError = ref(false)
+const activeStep = ref(1)
+
 const { progressState, startLoading, setSuccess, setWarning, setError, resetProgress } = useFormProgress()
 
-// State Persistence across Step Transitions
 const verificationId = ref<string | null>(null)
 const savedEmailAddress = ref('')
+const captchaToken = ref<string | null>(null)
 const countdownTimer = ref(0)
 const canResendToken = ref(false)
 
 let timerInterval: number | null = null
-
-// Derived from environment configs (swaps automatically between dev/prod)
 const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
 
-/**
- * --- STEP 1A: Initial Email & Captcha Verification ---
- * Hits POST /api/token
- */
-async function onEmailSubmitted(email: string, captchaToken: string) {
+// --- CAPTCHA GATE HANDLERS ---
+function handleCaptchaSuccess(token: string) {
+  captchaToken.value = token
+  setSuccess('Security check completed. You may now continue.')
+}
+
+function handleCaptchaError() {
+  captchaToken.value = null
+  setError(new APIError(0, 'Security Error', 'Error occurred while verifying captcha. Please refresh and try again.'))
+}
+
+function handleCaptchaExpired() {
+  captchaToken.value = null
+  setWarning('Security token expired. Please verify the captcha again.')
+}
+
+// --- STEP 1A: Email Submission (Uses saved captchaToken) ---
+async function onEmailSubmitted(email: string) {
+  if (!captchaToken.value) {
+    setWarning('Security token missing. Please complete the captcha.')
+    return
+  }
+
   isFormLoading.value = true
   savedEmailAddress.value = email
   startLoading()
 
   const sendTokenData = {
     emailAddress: email,
-    captchaToken: captchaToken,
-    type: 1 // PreRegistrationVerification Enum Value
+    captchaToken: captchaToken.value,
+    type: 1
   }
 
   const outcome = await postAsync<SendTokenResponse>('/api/token', sendTokenData, false)
 
   if (outcome.isFailure) {
     isFormLoading.value = false
-    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.  Refresh page and try again.'))
+    captchaToken.value = null // Invalidate token on failure to force fresh verification
+    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.'))
     return
   }
 
@@ -86,7 +89,6 @@ async function onEmailSubmitted(email: string, captchaToken: string) {
     return
   }
 
-  // Happy Path: Store verification ID and advance to Step 2
   setSuccess('Verification token sent successfully.')
   verificationId.value = outcome.value.verificationId
   activeStep.value = 2
@@ -94,11 +96,8 @@ async function onEmailSubmitted(email: string, captchaToken: string) {
   startResendTimer()
 }
 
-/**
- * --- STEP 1B: Resend Token Request ---
- * Hits POST /api/token/resend (requires existing verificationId and email)
- */
-async function onResendSubmitted(email: string, captchaToken: string) {
+// --- STEP 1B: Resend Token ---
+async function onResendSubmitted(email: string, newCaptchaToken: string) {
   if (!verificationId.value) {
     setError(new APIError(0, 'Client Error', 'Missing verification state. Please restart registration.'))
     return
@@ -110,7 +109,7 @@ async function onResendSubmitted(email: string, captchaToken: string) {
   const resendTokenData = {
     verificationId: verificationId.value,
     emailAddress: email,
-    captchaToken: captchaToken,
+    captchaToken: newCaptchaToken,
     type: 1
   }
 
@@ -118,12 +117,11 @@ async function onResendSubmitted(email: string, captchaToken: string) {
 
   if (outcome.isFailure) {
     isFormLoading.value = false
-    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.  Refresh page and try again.'))
+    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.'))
     return
   }
 
   if (outcome.value?.verificationId) {
-    // Update verificationId if server issues a new one
     verificationId.value = outcome.value.verificationId
   }
 
@@ -133,43 +131,36 @@ async function onResendSubmitted(email: string, captchaToken: string) {
   startResendTimer()
 }
 
-/**
- * --- STEP 2: Verify 6-Digit OTP Token ---
- */
+// --- STEP 2: Verify Token ---
 async function onTokenVerified(otpToken: string) {
   isFormLoading.value = true
   startLoading()
 
-   const verifyTokenData = {
-   verificationId: verificationId.value,
+  const verifyTokenData = {
+    verificationId: verificationId.value,
     token: otpToken,
-    type: 1 // PreRegistrationVerification Enum Value
+    type: 1
   }
 
-    const outcome = await postAsync<boolean>('/api/token/verify', verifyTokenData, false)
+  const outcome = await postAsync<boolean>('/api/token/verify', verifyTokenData, false)
 
-      if (outcome.isFailure) {
-      isFormLoading.value = false
-      setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.  Refresh page and try again.'))
-      return
-    }
-   
-    setSuccess('Verification completed successfully.')
-
-    if (timerInterval) clearInterval(timerInterval)
-    activeStep.value = 3
+  if (outcome.isFailure) {
     isFormLoading.value = false
+    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.'))
+    return
+  }
+
+  setSuccess('Verification completed successfully.')
+  if (timerInterval) clearInterval(timerInterval)
+  activeStep.value = 3
+  isFormLoading.value = false
 }
 
-/**
- * --- STEP 3: Complete Account Setup ---
- */
+// --- STEP 3: Complete Registration ---
 async function onAccessCompleted(payload: { username: string; title: string; password?: string }) {
   isFormLoading.value = true
-  
   startLoading()
-  
-// 🎯 Store does all token mutations under the hood, returning Result<boolean>
+
   const outcome = await authStore.createAccess({
     verificationId: verificationId.value,
     username: payload.username,
@@ -177,58 +168,44 @@ async function onAccessCompleted(payload: { username: string; title: string; pas
     password: payload.password
   })
 
-     if (outcome.isFailure) {
-        isFormLoading.value = false
-        setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.  Refresh page and try again.'))
-        return
-      }
+  if (outcome.isFailure) {
+    isFormLoading.value = false
+    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.'))
+    return
+  }
 
-  //router.push(returnUrl)
-    emit('success')
-
+  emit('success')
 }
 
-/**
- * --- Live Username Evaluation Hook ---
- * Exposed to Step 3 for real-time availability checks
- */
 async function checkUsernameAvailability(username: string): Promise<boolean> {
-  
   if (username.length < 3 || username.length > 20) return false
-  
   startLoading()
 
   const outcome = await getAsync<CheckUsernameResponse>(`/api/check/username?username=${username}`, false, {} as CheckUsernameResponse)
 
-     if (outcome.isFailure) {
-        isFormLoading.value = false
-        setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.  Refresh page and try again.'))
-         isUsernameError.value = true;
-        return false;
-      }
-      
-  if(outcome.value?.isAvailable){
+  if (outcome.isFailure) {
+    isFormLoading.value = false
+    setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.'))
+    isUsernameError.value = true
+    return false
+  }
 
-    isUsernameError.value = true;
+  if (outcome.value?.isAvailable) {
+    isUsernameError.value = true
     setWarning('Username is already in use. Please choose another.')
-    return false;
+    return false
   }
 
   setSuccess('Congrats. Username is free to use.')
- isUsernameError.value = false;
-  return true;
+  isUsernameError.value = false
+  return true
 }
 
-/**
- * --- Countdown Timer Utilities ---
- */
 function startResendTimer() {
   if (timerInterval) clearInterval(timerInterval)
-  
   canResendToken.value = false
   countdownTimer.value = 90
-  
-  // 🎯 Explicitly use window.setInterval to guarantee a numeric return type
+
   timerInterval = window.setInterval(() => {
     countdownTimer.value--
     if (countdownTimer.value <= 0) {
@@ -240,55 +217,63 @@ function startResendTimer() {
 
 function handleResendRequest() {
   if (timerInterval) clearInterval(timerInterval)
-  activeStep.value = 1 // Kick back to Step 1 to re-trigger Captcha challenges
+  activeStep.value = 1
 }
 
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval)
 })
-
 </script>
 
 <template>
 
-  <div class="form-container boxed">
+  <div class="form-container" :class="{ 'boxed': isPage }">
 
-     <template v-if="isPage">
-    <h1>Create Account</h1>
+    <template v-if="isPage">
+      <h1 class="form-header">Create Account</h1>
     </template>
 
-    <h2>Get started with a free membership</h2>
+    <h2 class="form-subheader">Get started with a free membership</h2>
 
-  <FormProgress :progress="progressState" :is-boxed="true" />
+    <FormProgress :progress="progressState" :is-boxed="true" />
 
-    <article class="multi-form">
-      
+    <!-- STEP 0: CAPTCHA GATE SCREEN -->
+    <div v-if="!captchaToken" class="captcha-gate">
+      <p class="captcha-gate__instruction">Complete the security check below to proceed:</p>
+      <TurnstileWidget 
+        :site-key="siteKey" 
+        @success="handleCaptchaSuccess"
+        @error="handleCaptchaError"
+        @expired="handleCaptchaExpired"
+      />
+    </div>
+
+    <!-- MAIN REGISTRATION ACCORDION (UNLOCKED UPON CAPTCHA SUCCESS) -->
+    <article v-else class="multi-form">
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 1 }"></span>
           <h3>Enter Email Address</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 1 }">
-         <!-- Initial Send Step (No verificationId yet) -->
-        <SendTokenStep 
-          v-if="activeStep === 1 && !verificationId"
-          :is-loading="isFormLoading" 
-          :site-key="siteKey" 
-          @submit="onEmailSubmitted"
-          @warning="setWarning"
-          @clear-warning="() => { if (progressState.type === 'Warning') resetProgress() }"
-        />
+          <SendTokenStep 
+            v-if="activeStep === 1 && !verificationId"
+            :is-loading="isFormLoading" 
+            :captcha-token="captchaToken"
+            @submit="onEmailSubmitted"
+            @warning="setWarning"
+            @clear-warning="() => { if (progressState.type === 'Warning') resetProgress() }"
+          />
 
-        <!-- Resend Token Step (Has verificationId, displays saved email read-only) -->
-        <ResendTokenStep 
-          v-if="activeStep === 1 && verificationId"
-          :is-loading="isFormLoading" 
-          :site-key="siteKey"
-          :email="savedEmailAddress"
-          @submit="onResendSubmitted"
-          @warning="setWarning"
-          @clear-warning="() => { if (progressState.type === 'Warning') resetProgress() }"
-        />
+          <ResendTokenStep 
+            v-if="activeStep === 1 && verificationId"
+            :is-loading="isFormLoading" 
+            :site-key="siteKey"
+            :email="savedEmailAddress"
+            @submit="onResendSubmitted"
+            @warning="setWarning"
+            @clear-warning="() => { if (progressState.type === 'Warning') resetProgress() }"
+          />
         </div>
       </section>
 
@@ -305,7 +290,6 @@ onUnmounted(() => {
             :can-resend="canResendToken"
             @verify="onTokenVerified"
             @resend="handleResendRequest"
-           
           />
         </div>
       </section>
@@ -327,11 +311,12 @@ onUnmounted(() => {
           />
         </div>
       </section>
-
     </article>
+
   </div>
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/form-container.less";
+@import "@/assets/css/boxed-form.less";
+@import "@/assets/css/multi-form.less";
 </style>

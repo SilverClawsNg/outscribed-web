@@ -1,13 +1,12 @@
 <script setup lang="ts">
 
 // --- IMPORTS ---
-import { ref, onBeforeMount, onUnmounted, watch, computed } from 'vue'
+import { ref, onBeforeMount, watch, computed } from 'vue'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
 import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { TagRequest, UntagRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
-
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
@@ -121,8 +120,6 @@ async function handleTagSubmission() {
     }
   } else{
  
-    // Close down the active overlay panel instance securely
-   //modalStore.pop()
     setSuccess(tagFormData.value.name + ' was successfully added')
 
       tagFormData.value.name = ''
@@ -156,9 +153,6 @@ currentTag.value = tagId
  
     setSuccess(name + ' was successfully removed')
 
-    // Close down the active overlay panel instance securely
-    //modalStore.pop()
-  
   }
   
 }
@@ -167,13 +161,14 @@ currentTag.value = tagId
 
 <template>
 
-     <div class="form-container">
+  <div class="form-container">
 
     <h2>Add your tale to trending issues</h2>
 
     <FormProgress :progress="progressState" />
 
     <template v-if="taleStore.activeTale && taleStore.activeTale.tags.length < 10">
+
     <form @submit.prevent="handleTagSubmission" autocomplete="off">
         <fieldset :disabled="progressState.type === 'Loading' || lockSubmission">
           <input 
@@ -189,7 +184,7 @@ currentTag.value = tagId
       </span>
 
 
-  <div class="button-holder">
+       <div class="button-holder">
           <button 
             type="submit" 
             class="btn primary" 
@@ -204,13 +199,17 @@ currentTag.value = tagId
     
    <template v-else>
 
-  <p class="shared__no-content">
-      You have reached the limit of ten (10) tags per tale. To add a new tag, remove an existing one.
-    </p>
-
+     <PageStatusMessage
+        title="Tags Limit Reached!"
+        message="You have reached the limit of ten (10) tags per tale. To add a new tag, remove an existing one."
+        icon="warning"
+        :is-bordered="true"
+        />
+   
     </template>
 
     <template v-if="taleStore.activeTale?.tags && taleStore.activeTale.tags.length > 0">
+
       <form 
         v-for="tag in taleStore.activeTale.tags" 
         :key="tag.tagId" 
@@ -236,15 +235,22 @@ currentTag.value = tagId
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Remove' }}
           </button>
+
         </div>
+
       </form>
+
     </template>
     
      <template v-else>
 
-  <p class="shared__no-content">
-      You have not added any tag to your tale.
-    </p>
+       <PageStatusMessage
+        title="No Tags Found!"
+        message="You have not added any tags to your tale. Any tags added appear here."
+        icon="inbox"
+        :is-bordered="true"
+        />
+
     </template>
 
   </div>

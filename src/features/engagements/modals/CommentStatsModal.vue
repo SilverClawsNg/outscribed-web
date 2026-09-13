@@ -44,11 +44,23 @@ const uiMeta = computed(() => getEngagementMetadata(comment.value.engagement));
     </dl>
 
     <dl>
+      <dt>Replies</dt>
+      <dd>{{ formatCounts(comment.engagement.commentsCount) }}
+        <button 
+          :disabled="comment.engagement.commentsCount === 0" 
+          @click="modalStore.push('CommentReplies', 'Replies', comment)"
+        >
+          View Replies
+        </button>
+      </dd>
+    </dl>
+
+    <dl>
       <dt>Upvotes</dt>
       <dd>
         {{ formatCounts(comment.engagement.upvotesCount) }}
         <button 
-          :disabled="comment.engagement.upvotesCount === 0 && comment.engagement.downvotesCount === 0" 
+          :disabled="comment.engagement.upvotesCount === 0" 
           @click="modalStore.push('ContentVotes', 'Comment Upvotes', comment.commentId)"
         >
           View Votes

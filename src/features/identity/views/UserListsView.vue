@@ -151,8 +151,6 @@ onMounted(async () => {
   await initPage();
 })
 
-
-
 // inside your HomeView.vue
 onUnmounted(() => {
   userStore.abort();
@@ -174,36 +172,37 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+       icon="warning"
+      :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
 
-
    <template v-else>
    
-      <div class="shared__page-title">
-        <h1>Users</h1>
-      <template v-if="pageTitle">
-          <p :class="{ at: creatorUsername }">
-            {{ pageTitle }}
-          </p>
-        </template>
+       <header class="page-header shared__container">
+          <h1 class="page-header__title"  :class="{ at: creatorUsername }">
+               {{ pageTitle }}
+            </h1>
         <button class="btn primary" @click="modalStore.push('UserListFilter', 'Filter Lists')">Filter</button>
-      </div>
+       </header>
 
-      <template v-if="wasCleaned">
-     <div class="shared__content-warning">
-       <span class="icon">⚠️</span>
-      <p>
-      Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('UserListFilter', 'Filter Lists')">filter</button> link to filter correctly.
-      </p>
-      
-     </div>
+       <template v-if="wasCleaned">
+      <PageStatusMessage 
+              title="Invalid Filters Removed!" 
+              message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
+              icon="warning" 
+              :is-bordered="true"
+            />
     </template>
 
   <template v-if="userStore.users && userStore.users.length > 0">
@@ -230,10 +229,12 @@ onUnmounted(() => {
   </template>
 
   <template v-else>
-    <PageStatusMessage
-      title="No Content!"
-      message="No users was found matching your search filters.">
-    </PageStatusMessage>
+   <PageStatusMessage
+      title="No User Found!"
+      message="We did not find any user matching your search filters."
+      icon="inbox"
+      :is-standalone="true"
+      />
   </template>
   </template>
 

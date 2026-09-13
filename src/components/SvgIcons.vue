@@ -3,7 +3,8 @@
 defineProps<{
   name: 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain' | 'padlock' | 'bookmark' | 'upvote'
   | 'downvote' | 'share' | 'facebook' | 'twitter' | 'linkedin' | 'email' | 'placeholder' | 'back-arrow'  | 'globe' | 'tag'
-  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow' | 'downarrow'
+  | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow' | 'downarrow' | 'inbox'
+  | 'warning'
   size?: number
 }>()
 </script>
@@ -403,5 +404,28 @@ v-else-if="name === 'downarrow'"
   <path d="M12 20l8-8h-6V4h-4v8H4z"/>
 </svg>
 
+ <svg 
+  v-else-if="name === 'inbox'" 
+      :width="size || 16" 
+      :height="size || 16" 
+      viewBox="0 0 24 24"
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="1" 
+      v-bind="$attrs">
+      <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+      <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+  </svg>
+  <svg 
+  v-else-if="name === 'warning'" 
+      :width="size || 16" 
+      :height="size || 16" 
+      viewBox="0 0 24 24"
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="1" 
+      v-bind="$attrs">
+  <path d="M1 21h22L12 2 1 21zm12-3h-2v2h2v-2zm0-8h-2v6h2V10z"/>
+</svg>
 
 </template>

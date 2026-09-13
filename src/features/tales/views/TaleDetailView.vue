@@ -9,11 +9,14 @@ import { useTaleDetailStore } from '../stores/TaleDetailStore';
 import { APIError } from '@/api/apiTypes.ts'
 import { generateTitleSlug } from '@/utils/urlSlugGenerator';
 import { useLoginHint } from '@/utils/authHelper'
+import InfiniteScroller from '@/components/InfiniteScroller.vue'
+import { useModalStore } from '@/stores/modalStore'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDetailStore();
 const route = useRoute();
 const router = useRouter();
+const modalStore = useModalStore()
 
 // --- DEFINE & INITALIZE LOCAL VARIABLES ---
 const loadingError = ref<APIError | null>(null)
@@ -111,9 +114,7 @@ onMounted(async () => {
   taleStore.reset()
   
   await initPage();
-
-  
-      //await nextTick();
+ 
     // 1. Instantly fire enrichment hydration pass in the background
     taleStore.enrichTale();
 
@@ -135,7 +136,9 @@ onUnmounted(() => {
 
     <PageStatusMessage 
       title="Tale ID Not Found!" 
-      :message="redirectMessage">
+      :message="redirectMessage"
+      icon="inbox"
+      :is-standalone="true">
 
       <template #actions>
         <router-link :to="redirectUrl" class="btn primary">
@@ -150,12 +153,14 @@ onUnmounted(() => {
       <div class="loader-container">
         <p class="loader"></p>
       </div>
-    </template>
+  </template>
 
    <template v-else-if="isUnauthorized">
     <PageStatusMessage 
-      title="401: Unauthorized!" 
-      message="It appears you are not logged in or your session has expired. Login to view this archived content.">
+      title="Login Required!" 
+      message="It appears you are not logged in or your session has expired. Login to view this archived content."
+      icon="warning"
+      :is-standalone="true">
       <template #actions>
         <button class="btn primary" @click="router.push(`/login?returnUrl=${currentPath}`)">Login</button>
       </template>
@@ -165,10 +170,17 @@ onUnmounted(() => {
     <template v-else-if="loadingError">
       <PageStatusMessage 
         :title="loadingError.title" 
-        :message="loadingError.detail">
+        :message="loadingError.detail"
+        icon="broken-chain"
+        :is-standalone="true">
            <template v-if="loadingError.status == 404" #actions>
         <button class="btn primary" @click="router.push(`/tales`)">Find other tales</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
       </PageStatusMessage>
     </template>
 
@@ -176,8 +188,10 @@ onUnmounted(() => {
 
        <template v-if="taleStore.tale.isArchived && !isArchiveRoute">
         <PageStatusMessage
-            title='404: Archived!'
-            message="Sorry.This tale has been temporarily archived and only available to persons who have previously engaged it through votes, saves, etc.">
+            title='Tale is Archived!'
+            message="Sorry.This tale has been temporarily archived and only available to persons who have previously engaged it through votes, saves, etc."
+            icon="archive"
+            :is-standalone="true">
             <template #actions>
               <button class="btn primary" @click="router.push(`/tale/archives/${taleId}`)">Continue to archives</button>
             </template>
@@ -185,7 +199,7 @@ onUnmounted(() => {
       </template>
 
       <template v-else>
-            <TaleDetailComponent />
+        <TaleDetailComponent />
       </template>
 
     </template>
@@ -193,8 +207,9 @@ onUnmounted(() => {
     <template v-else>
      <PageStatusMessage
          title='Unknown Error'
-        message="An unknown error occured. Refresh page and try again.">
-      </PageStatusMessage>
+        message="An unknown error occured. Refresh page and try again."
+        icon="broken-chain"
+        :is-standalone="true" />
     </template>
 
 </template>

@@ -7,7 +7,6 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import ProfileComponent from '../components/ProfileComponent.vue'
 import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
 import { APIError } from '@/api/apiTypes.ts'
-import { useLoginHint } from '@/utils/authHelper'
 import { useModalStore } from '@/stores/modalStore';
 
 // --- INITIALIZE STORES ---
@@ -21,17 +20,11 @@ const loadingError = ref<APIError | null>(null)
 const isLoading = ref<boolean>(true);
 const currentPath = encodeURIComponent(route.fullPath)
 
-// --- CHECK USER'S AUTHENTICATION HINT STATUS ---
-const isLoggedIn = useLoginHint()
-
 // --- DEFINE PAGE FUNCTIONS ---
 function redirectToLogin() {router.push(`/login?returnUrl=${currentPath}`)}
 
 // --- DEFINE PAGE INITIALIZATION ---
 async function initPage() {
-
-  // If there's no login hint in the browser, don't even bother trying to fetch data
-  if (!isLoggedIn.value) return
 
   console.log('🚀 [Profile View]: Presence verified via hint. Dispatching data fetch...')
   
@@ -61,17 +54,7 @@ onUnmounted(() => {
 
 <template>
  
-    <template v-if="!isLoggedIn">
-      <PageStatusMessage 
-        title="401: Unauthorized!" 
-        message="It appears you are not logged in or have been logged out. Login to continue to the timeline">
-        <template #actions>
-          <button class="btn primary" @click="redirectToLogin">Login</button>
-        </template>
-      </PageStatusMessage>
-    </template>
-    
-    <template v-else-if="isLoading">
+    <template v-if="isLoading">
       <div class="loader-container">
         <p class="loader"></p>
       </div>
@@ -80,7 +63,9 @@ onUnmounted(() => {
     <template v-else-if="loadingError">
       <PageStatusMessage 
         :title="loadingError.title" 
-        :message="loadingError.detail">
+        :message="loadingError.detail"
+        icon="warning" 
+        :is-standalone="true">>
         <template v-if="loadingError.status === 401" #actions>
           <button class="btn primary" @click="redirectToLogin">Login</button>
         </template>
@@ -97,10 +82,12 @@ onUnmounted(() => {
     </template>
 
     <template v-else>
-     <PageStatusMessage
-         title='Unknown Error'
-        message="An unknown error occured loading profile. Refresh page and try again.">
-      </PageStatusMessage>
+        <PageStatusMessage
+      title="Unknown Error!"
+      message="An unknown error occured loading profile. Refresh page and try again."
+      icon="warning"
+      :is-standalone="true"
+       />
     </template>
 
 </template>

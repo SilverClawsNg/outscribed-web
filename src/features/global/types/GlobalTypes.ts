@@ -30,10 +30,19 @@ export interface GetTimelineResponse {
 export interface GetHomeContentsResponse {
   tales: TaleListDto[];
   insights: InsightListDto[];
-  trendingThisWeek: TagDetailDto[];
-  trendingThisMonth: TagDetailDto[];
-  trendingThisYear: TagDetailDto[];
+  trendingThisWeek: TagListDto[];
+  trendingThisMonth: TagListDto[];
+  trendingThisYear: TagListDto[];
 }
+
+export interface TagListDto {
+    tagId: string,
+    name: string,
+    slug: string,
+    insightsCounter: number,
+    talesCounter: number,
+}
+
 
 export interface TagDetailDto {
     tagId: string,
@@ -45,6 +54,8 @@ export interface TagDetailDto {
     talesCounter: number,
     totalCounts: number
 }
+
+
 
 export interface TagDraftDto {
   tagId: string; // Using string to handle backend Ulid representation

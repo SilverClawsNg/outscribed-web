@@ -133,7 +133,7 @@ async function handleFormSubmission() {
 
 <template>
 
-     <div class="form-container">
+  <div class="form-container">
 
     <h2>Update basic details</h2>
 

@@ -1,0 +1,144 @@
+@import "variables.less";
+
+.comments-container {
+    width: 100%;
+    height: auto;
+
+    
+ &__ancestry-container {
+    width: 100%;
+   
+}
+
+ &__ancestry-container-heading {
+        text-transform: capitalize;
+        font-size: 1.2rem;
+        line-height: 1.6rem;
+        position: relative;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    
+  &__pinned {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  
+&__ancestry {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
+
+    &.show {
+        max-height: 99999px;
+        opacity: 1;
+    }
+}
+
+
+&__filter-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+
+    @media @phone {
+        font-size: 0.8rem;
+    }
+
+    @media @phablet {
+        font-size: 0.85rem;
+    }
+
+    @media @largeDevice {
+        font-size: 0.95rem;
+    }
+
+}
+
+    &__show-ancestry {
+
+        &:after {
+            content: "Show Thread";
+        }
+
+        &.active {
+
+            &:after {
+                content: "Hide Thread";
+            }
+        }
+    }
+    
+    &__filter {
+        width: auto;
+        display: flex;
+        column-gap: 0.25rem;
+    }
+
+    
+&__filter-text {
+    text-transform: capitalize;
+    width: auto;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+
+&__show-filter {
+    height: 50px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    column-gap: 0.25rem;
+
+    & .caret {
+        width: 0;
+        height: 0;
+        vertical-align: middle;
+        border-top: 6px solid var(--text-color);
+        border-right: 6px solid transparent;
+        border-left: 6px solid transparent;
+
+        &.active {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+&__filter-options {
+    display: none;
+    flex-grow: 1;
+
+    &.active {
+        display: block;
+    }
+
+    & button {
+        height: 40px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+
+        &.active {
+            display: none;
+        }
+    }
+}
+
+&__top-action {
+    display: flex;
+    align-items: center;
+    height: 30px;
+
+}
+
+
+
+}

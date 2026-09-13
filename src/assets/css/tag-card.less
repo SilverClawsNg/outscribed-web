@@ -1,0 +1,56 @@
+@import "variables.less";
+
+.tag-card {
+  width: 100%;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--border-color);
+
+  &__contents {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  // --- Title & Icon ---
+  &__title {
+    margin: 0;
+  }
+
+  &__name {
+    letter-spacing: -0.01em;
+  }
+
+  &__pre {
+    color: var(--muted-text-color);
+    font-weight: 400;
+    font-size: smaller;
+    margin-right: 1px;
+  }
+  // --- Metrics ---
+  &__metrics {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  &__metric-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted-text-color);
+  
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+  }
+
+  
+}

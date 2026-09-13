@@ -44,7 +44,9 @@ function createComment() {
 </script>
 
 <template>
-  <div class="tale-stats-grid">
+
+  <article>
+
     <dl>
       <dt>Title</dt>
       <dd>{{ tale.title }}</dd>
@@ -99,7 +101,7 @@ function createComment() {
         <a v-else href="#" title="Insights" class="disabled" @click.prevent>
           View Insights
         </a>
-        <span class="divider line"></span>
+        <span class="shared__divider shared__divider--line"></span>
         <button title="Create Insight" @click="modalStore.push('CreateInsight', 'Create Insight', payload)">
           New Insight
         </button>
@@ -116,7 +118,7 @@ function createComment() {
         >
           View Comments
         </button>
-        <span class="divider line"></span>
+        <span class="shared__divider shared__divider--line"></span>
         <button title="Create Comment" @click="createComment">
           New Comment
         </button>
@@ -181,7 +183,9 @@ function createComment() {
             </button>
       </dd>
     </dl>
-  </div>
+
+  </article>
+
 </template>
 
 <style lang="less" scoped>

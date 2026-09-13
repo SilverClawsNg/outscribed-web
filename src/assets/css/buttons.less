@@ -15,6 +15,10 @@
     border: 1px solid transparent;
      min-width: 100px;
 
+     &.with-icon{
+         column-gap: 0.25rem;
+     }
+
 
     @media @smallDevice {
         font-size: 0.85rem;
@@ -27,17 +31,9 @@
     &.primary {
         background-color: inherit;
         border-color: var(--text-color);
-
        
-
-        
-        //border-color: var(--hero-background-color);
-        /*&:hover {
-            box-shadow: var(--hightlight-shadow-color);
-        }*/
         &:hover {
-            /*box-shadow: var(--hightlight-shadow-color);*/
-            box-shadow: @box-shadow;
+            background-color: var(--background-hover-color);
         }
         
     }
@@ -47,7 +43,11 @@
         color: var(--native-background-color);
         &:hover {
             /*box-shadow: var(--hightlight-shadow-color);*/
-            box-shadow: @box-shadow;
+            background-color: var(--alt-background-hover-color);
+        }
+
+        & svg{
+            stroke-width: 2px;
         }
     }
 
@@ -64,15 +64,17 @@
 }
 
 .btn-group {
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+   
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 0.25rem;
+    gap: 1rem 0.25rem;
 
     &.bordered {
+         padding-bottom: 1rem;
+        margin-bottom: 1rem;
         border-bottom: 1px solid var(--border-color);
     }
+
 
 }
 

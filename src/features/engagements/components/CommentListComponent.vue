@@ -55,9 +55,28 @@ onMounted(async () => {
 
 <template>
 
-  <article class="comments-list__brief">
+  <article class="comment-card">
+
+     <header class="comment-card__header">
+
+        <button 
+          type="button" 
+          class="comment-card__author-link at" 
+          @click="modalStore.push('Profile', 'Profile', comment.commentatorId)"
+        >
+          {{ comment.commentatorUsername }}
+        </button>
+        <time class="comment-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
+
+         <span class="shared__divider shared__divider--circle"></span>
+
+           <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
+            {{ ContentTypeDescriptions[comment.contentType] }}
+          </RouterLink>
+
+    </header>
     
-    <section class="comments-list__text">
+    <section class="comment-card__text">
 
       <div 
         ref="commentElement" 
@@ -67,7 +86,7 @@ onMounted(async () => {
       
       <button 
         v-if="hasOverflow && !isExpanded" 
-        class="comments-list__show-text" 
+        class="comment-card__show-text" 
         @click="isExpanded = true"
       >
         <span class="caret-down"></span>
@@ -75,48 +94,35 @@ onMounted(async () => {
       
     </section>
 
-    <section class="comments-list__metadata">
-      <button class="at" @click="modalStore.push('Profile', 'Profile', comment.commentatorId)">
-        {{ comment.commentatorUsername }}
-      </button>
-      
-     <div class="comments-list__other-metadata">
-       <p>
-         {{ toRelativeTime(comment.commentedAt) }}
-       </p>
-          <span class="divider circle"></span>
-       <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
-         {{ ContentTypeDescriptions[comment.contentType] }}
-      </RouterLink>
-    </div>
-      
+     <section class="comment-card__stats">
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.commentsCount) }}</span> Replies</p>
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.upvotesCount) }}</span> Upvotes</p>
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.favoritesCount) }}</span> Saves</p>
     </section>
 
-     <section class="comment-lists__stats">
-      <p><span>{{ formatCounts(comment.engagement.commentsCount) }}</span> Replies</p>
-      <p><span>{{ formatCounts(comment.engagement.upvotesCount) }}</span> Upvotes</p>
-       <p><span>{{ formatCounts(comment.engagement.downvotesCount) }}</span> Downvotes</p>
-      <p><span>{{ formatCounts(comment.engagement.favoritesCount) }}</span> Saves</p>
-      <p><span>{{ formatCounts(comment.engagement.flagsCount) }}</span> Flags</p>
-    </section>
-
-    <section class="comments-list__actions alt">
-      
-      <button @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
-        <SvgIcons name="comment" /> Thread
+   <!-- Actions Footer -->
+    <footer class="comment-card__footer">
+        <button 
+        type="button"
+         class="btn secondary"
+        @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
+        View Thread
       </button>
       <button 
+        class="comment-card__save-btn"
         @click="engage.favorite(comment.engagement)"
-        :title="comment.engagement.isFavorite ? 'Remove From Saves' : 'Add To Favorites'"
-        :disabled="uiMeta.isFavoriteDisabled">
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteText }}
+        :title="comment.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+        :disabled="uiMeta.isFavoriteDisabled"
+      >
+        <SvgIcons name="bookmark" /> 
+        <span>{{ uiMeta.favoriteLongText }}</span>
       </button>
-    </section>
+    </footer>
 
   </article>
  
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/comment-lists.less";
+@import "@/assets/css/comment-card.less";
 </style>

@@ -126,7 +126,7 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
-    <h2>Correct, clarify, or cancel. Each on its own line.</h2>
+    <h2>Correct, clarify, or cancel. Each item on its own line.</h2>
 
     <FormProgress :progress="progressState" />
 

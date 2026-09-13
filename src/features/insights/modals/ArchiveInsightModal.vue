@@ -119,7 +119,7 @@ async function handleFormSubmission() {
 
 <template>
 
-     <div class="form-container">
+    <div class="form-container">
 
     <h2> Lock up insight.</h2>
 

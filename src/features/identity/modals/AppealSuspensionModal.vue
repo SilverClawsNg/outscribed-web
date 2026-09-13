@@ -107,7 +107,7 @@ onMounted(() => {
 
 <template>
   
-     <div class="form-container">
+    <div class="form-container">
 
     <FormProgress :progress="progressState" />
 
@@ -154,6 +154,7 @@ onMounted(() => {
           </button>
         </div>
     </form>
+    
   </div>
       
 </template>

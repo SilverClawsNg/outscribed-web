@@ -33,10 +33,13 @@ onBeforeMount(() => {
 <template>
 
   <template v-if="!taleStore.activeTale">
+
     <PageStatusMessage 
-      title="204: Content Unavailable!" 
-      message="Unable to load current tale details. Refresh page and try again">
-    </PageStatusMessage>
+      title="Tale Is Unavailable!" 
+      message="We were unable to load current tale details. Refresh page and try again"
+      icon="inbox"
+      :is-bordered="true" />
+
   </template>
 
     <template v-else>
@@ -44,7 +47,9 @@ onBeforeMount(() => {
   <article class="content-details">
     
      <header class="content-details__header-container">
+
       <div class="content-details__header">
+
         <h1 class="content-details__title">{{ taleStore.activeTale.title }}</h1>
 
         <div class="content-details__writer">
@@ -82,6 +87,7 @@ onBeforeMount(() => {
               {{ CountryDescriptions[taleStore.activeTale.country] }}            
             </router-link>
           </div>
+
           </template>
 
         </div>
@@ -93,61 +99,80 @@ onBeforeMount(() => {
               </p>
               
             </template>
-            <template v-else >
-                   <p class="content-details__no-content">Summary goes here!</p>
-            </template>
+          
+          <template v-else>
+
+             <PageStatusMessage
+                title="No Summary Added!"
+                message="Add a concise but descriptive summary of the tale."
+                icon="inbox"
+                />
+
+          </template>
       
       </div>
+
     </header>  
 
     <div class="content-details__main">
      
      <template v-if="taleStore.activeTale.photo">
- <figure class="content-details__media">
-        <img 
-        :src="mediaHelper.getUrl(taleStore.activeTale.photo, 'tales', 'full')" 
-        :alt="taleStore.activeTale.photoCaption ?? 'photo caption goes here'"
-         class="content-details__image" />
-        <figcaption class="content-details__caption">
-          {{ taleStore.activeTale.photoCaption }}
-        </figcaption>
-      </figure>
-        </template>
-        <template v-else >
-                   <p class="content-details__no-content">Central image goes here!</p>
-            </template>
+        <figure class="content-details__media">
+          <img 
+          :src="mediaHelper.getUrl(taleStore.activeTale.photo, 'tales', 'full')" 
+          :alt="taleStore.activeTale.photoCaption ?? 'photo caption goes here'"
+          class="content-details__image" />
+          <figcaption class="content-details__caption">
+            {{ taleStore.activeTale.photoCaption }}
+          </figcaption>
+        </figure>
+     </template>
+      <template v-else>
+
+             <PageStatusMessage
+                title="No Image Added!"
+                message="Add an image as a pictorial summary of the tale. Images are optional"
+                icon="inbox"
+                />
+                
+          </template>
 
        <template v-if="taleStore.activeTale.detail">
- <p class="content-details__reading-time">
-          — {{ calculateReadingTime(taleStore.activeTale.detail) }} Minutes Read
- </p>
+          <p class="content-details__reading-time">
+                    — {{ calculateReadingTime(taleStore.activeTale.detail) }} Minutes Read
+          </p>
 
         <div class="shared__rich-text" v-html="taleStore.activeTale.detail"></div>
         </template>
+
          <template v-else>
              <p class="content-details__reading-time">
           — 0 Minutes Read
              </p>
 
-        <p class="content-details__no-content">Detail goes here!</p>
+         <PageStatusMessage
+                title="No Details Added!"
+                message="Add the details of the tale."
+                icon="inbox"
+                />
         </template>
     
        <template v-if="taleStore.activeTale.addendum && taleStore.activeTale.addendumDate">
- <div class="content-details__addendum">
-        <h4 class="content-details__section-title">Addendum - Last Updated {{ toShortDate(taleStore.activeTale.addendumDate) }}</h4>
-        <ol class="content-details__addendum-list">
-          <li v-for="(entry, index) in formatAddendum(taleStore.activeTale.addendum)" :key="index">
-            {{ entry }}
-          </li>
-        </ol>
-      </div>
+          <div class="content-details__addendum">
+            <h4 class="content-details__section-title">Addendum - Last Updated {{ toShortDate(taleStore.activeTale.addendumDate) }}</h4>
+            <ol class="content-details__addendum-list">
+              <li v-for="(entry, index) in formatAddendum(taleStore.activeTale.addendum)" :key="index">
+                {{ entry }}
+              </li>
+            </ol>
+          </div>
         </template>
 
        <template v-if="taleStore.activeTale.realityCheckTitle">
-   <div class="content-details__realitycheck">
-       <h2 class="content-details__realitycheck-heading">Reality Check
-          <span>✓</span>
-        </h2>
+        <div class="content-details__realitycheck">
+            <h2 class="content-details__realitycheck-heading">Reality Check
+                <span>✓</span>
+              </h2>
 
           <h3 class="content-details__realitycheck-title">
            {{ taleStore.activeTale.realityCheckTitle }}
@@ -181,21 +206,30 @@ onBeforeMount(() => {
         </div>
       </div>
         </template>
-          <template v-else >
-                   <p class="content-details__no-content">Reality check goes here!</p>
-            </template>
+        <template v-else>
+           <PageStatusMessage
+                title="No Reality Check Added!"
+                message="Add a reality check to anchor your tale to facts."
+                icon="inbox"
+                />
+        </template>
+        
 
        <template  v-if="taleStore.activeTale.tags && taleStore.activeTale.tags.length > 0">
-  <div class="content-details__tags">
-        <h4>Tagged In: </h4><span class="divider line"></span>
-        <span v-for="tag in taleStore.activeTale.tags" :key="tag.tagId">
-          #<router-link :to="`/tales/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
-        </span>
-      </div>
-        </template>
-        <template v-else >
-                   <p class="content-details__no-content">Tags goes here!</p>
-            </template>
+        <div class="content-details__tags">
+              <h4>Tagged In: </h4><span class="shared__divider shared__divider--line"></span>
+              <span v-for="tag in taleStore.activeTale.tags" :key="tag.tagId">
+                #<router-link :to="`/tales/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
+              </span>
+            </div>
+              </template>
+          <template v-else>
+              <PageStatusMessage
+                title="No Tags Added!"
+                message="Use trending tags to make your tale more visible"
+                icon="inbox"
+                />
+          </template>
     
       </div>
   </article>

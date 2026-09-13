@@ -51,14 +51,12 @@ const contentPath = 'insight'
         <button class="at" @click="modalStore.push('Profile', 'Profile', insight.creatorId)">
           {{ insight.creatorUsername }}
         </button>
-        <span class="divider line"></span>
+        <span class="shared__divider shared__divider--line"></span>
         <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
       </div>
      
     </header>
-       
-
-    
+   
     <!-- Content Body -->
     <div class="content-card__body">
       <!-- Taxonomy Metadata -->
@@ -68,7 +66,7 @@ const contentPath = 'insight'
         </RouterLink>
         
         <template v-if="insight.country">
-          <span class="divider circle"></span>
+          <span class="shared__divider shared__divider--circle"></span>
           <RouterLink :to="`/${contentType}?country=${insight.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[insight.country] }}
           </RouterLink>
@@ -109,6 +107,7 @@ const contentPath = 'insight'
         <span>{{ uiMeta.favoriteLongText }}</span>
       </button>
     </footer>
+    
   </article>
 </template>
 

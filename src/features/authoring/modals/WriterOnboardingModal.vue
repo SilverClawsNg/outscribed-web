@@ -7,8 +7,6 @@ import { CountrySelectItems } from '@/utils/selectItemHelper'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { WriterOnboardingRequest } from '../types/AuthoringTypes'
 import { getValidCountry } from '@/utils/validators'
-import { postAsync } from '@/api/apiPostServices'
-import { APIError } from '@/api/apiTypes'
 import FormProgress from '@/components/FormProgress.vue'
 
 const authoringStore = useAuthoringStore()

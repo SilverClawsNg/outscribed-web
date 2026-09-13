@@ -65,18 +65,8 @@ onUnmounted(() => {
 </script>
 
 <template>
- 
-    <template v-if="!isLoggedIn">
-      <PageStatusMessage 
-        title="401: Unauthorized!" 
-        message="It appears you are not logged in or have been logged out. Login to continue to the timeline">
-        <template #actions>
-          <button class="btn primary" @click="redirectToLogin">Login</button>
-        </template>
-      </PageStatusMessage>
-    </template>
-    
-    <template v-else-if="isLoading">
+     
+    <template v-if="isLoading">
       <div class="loader-container">
         <p class="loader"></p>
       </div>
@@ -89,12 +79,15 @@ onUnmounted(() => {
         <template v-if="loadingError.status === 401" #actions>
           <button class="btn primary" @click="redirectToLogin">Login</button>
         </template>
-        
+          <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
       </PageStatusMessage>
     </template>
 
      <template v-else-if="accountStatus">
-    
     
   <div class="page-status-message-container">
 
@@ -166,10 +159,12 @@ onUnmounted(() => {
     </template>
 
     <template v-else>
-     <PageStatusMessage
-         title='Unknown Error'
-        message="An unknown error occured loading profile. Refresh page and try again.">
-      </PageStatusMessage>
+      <PageStatusMessage
+        title="Unknown Error!"
+        message="An unknown error occured loading profile. Refresh page and try again."
+        icon="warning"
+        :is-standalone="true"
+        />
     </template>
 
 </template>

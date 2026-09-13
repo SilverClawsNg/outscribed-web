@@ -5,7 +5,7 @@ import {postAsync } from '@/api/apiPostServices'
 import {type GetFavoriteIdsResponse } from '@/features/engagements/types/EngagementTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
-import type {GetHomeContentsResponse, TagDetailDto} from '../types/GlobalTypes.ts';
+import type {GetHomeContentsResponse, TagDetailDto, TagListDto} from '../types/GlobalTypes.ts';
 
 import {type TaleListDto, initializeTaleListEngagement} from '@/features/tales/types/TalesTypes.ts'
 import {type InsightListDto, initializeInsightListEngagement} from '@/features/insights/types/InsightsTypes.ts'
@@ -16,9 +16,9 @@ export const useHomeStore = defineStore('homeStore', () => {
     // State
       const tales = ref<TaleListDto[]>([]); 
       const insights = ref<InsightListDto[]>([]); 
-      const trendingThisWeek = ref<TagDetailDto[]>([]); 
-      const trendingThisMonth = ref<TagDetailDto[]>([]);
-      const trendingThisYear = ref<TagDetailDto[]>([]);
+      const trendingThisWeek = ref<TagListDto[]>([]); 
+      const trendingThisMonth = ref<TagListDto[]>([]);
+      const trendingThisYear = ref<TagListDto[]>([]);
 const isLoggedIn = useLoginHint()
       // 🔒 Keep the controller private/local to this store context
   let feedController: AbortController | null = null;
@@ -170,6 +170,50 @@ let hydrateController: AbortController | null = null;
     });
   }
 
+  
+    // 1. Initial Load Path
+  async function loadTag(tagId: string): Promise<{tag: TagDetailDto | null, success: boolean; error: APIError | null }> {
+  
+    try {
+  
+        // Spawn a fresh controller instance for this specific execution pass
+          feedController = new AbortController();
+  
+      // Note: Assuming getAsync is part of your API client layer
+      const outcome = await getAsync<TagDetailDto>(`api/tags/${tagId}`, false, {} as TagDetailDto, feedController.signal);
+  
+      // Consideration 1: Check if any error and immediately return to caller
+      if (outcome.isFailure) {
+        return {tag: null, success: false, error: outcome.error || null };
+      }
+      
+      // Inside profileStore.ts fallback block
+      if (!outcome.value) {
+        
+        // 🎯 Instantiate your exact class blueprint with matching parameters
+        const error = new APIError(
+          404,
+          'Not Found!',
+          'Sorry. Sorry. We could not find the tag you requested. It may have been removed, hidden, or archived.'
+        )
+        
+            return {tag: null, success: false, error: error }
+      }
+  
+      // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
+      return {tag: outcome.value, success: true, error: null };
+  
+    } catch (err: any) {
+      // Fail-safe catch-all wrapper
+      return { 
+        tag: null,
+        success: false, 
+        error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') 
+      };
+    }
+  }
+
+
    function abort() {
     if (feedController) {
       feedController.abort();
@@ -183,7 +227,8 @@ let hydrateController: AbortController | null = null;
     }
   }
 
-      return {tales,insights, trendingThisWeek, trendingThisMonth, trendingThisYear, loadhomecontents, hydratePersonals, abort
+      return {tales,insights, trendingThisWeek, trendingThisMonth, trendingThisYear, 
+        loadhomecontents, hydratePersonals, abort, loadTag
   };
 
 });

@@ -46,9 +46,20 @@ onMounted(async () => {
 
 <template>
 
-  <article class="comments-list__brief">
+  <article class="comment-x-card">
     
-    <section class="comments-list__text">
+    <header class="comment-x-card__meta">
+      <button class="at" @click="modalStore.push('Profile', 'Profile', comment.commentatorId)">
+        {{ comment.commentatorUsername }}
+      </button>
+      
+      <p class="comment-x-card__date">
+        {{ toRelativeTime(props.comment.commentedAt) }}
+      </p>
+
+    </header>
+
+    <section class="comment-x-card__text">
 
       <div 
         ref="commentElement" 
@@ -58,7 +69,7 @@ onMounted(async () => {
       
       <button 
         v-if="hasOverflow && !isExpanded" 
-        class="comments-list__show-text" 
+        class="comment-x-card__show-text" 
         @click="isExpanded = true"
       >
         <span class="caret-down"></span>
@@ -66,25 +77,16 @@ onMounted(async () => {
       
     </section>
 
-    <section class="comments-list__metadata">
-      <button class="at" @click="modalStore.push('Profile', 'Profile', comment.commentatorId)">
-        {{ comment.commentatorUsername }}
+    <footer class="comment-x-card__actions">
+       <button type="button" @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
+        Thread &rarr;
       </button>
-      
-      <p class="comments-list__date">
-        {{ toRelativeTime(props.comment.commentedAt) }}
-      </p>
-
-      <span class="divider circle"></span>
-       <button @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
-        View Thread
-      </button>
-    </section>
+    </footer>
 
   </article>
  
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/comment-lists.less";
+@import "@/assets/css/comment-x-card.less";
 </style>

@@ -264,15 +264,15 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
    <template v-else>
    
-    <article class="comments-list">
+     <article class="comments-container">
 
-    <div class="comments-list__ancestry-container">
+    <div class="comments-container__ancestry-container">
 
-      <h3>
+      <h3 class="comments-container__ancestry-container-heading">
         {{ activeComment.title }}
       </h3>
 
-     <div :class="['comments-list__ancestry', showAncestry ? 'show' : null]">
+     <div :class="['comments-container__ancestry', showAncestry ? 'show' : null]">
 
      <template v-if="activeComment.ancestors && activeComment.ancestors.length > 0">
      
@@ -290,15 +290,15 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
     </div>
 
-      <section class="comments-list__filter-container">
+      <section class="comments-container__filter-container">
 
-        <div class="comments-list__filter">
+        <div class="comments-container__filter">
 
-          <div class="comments-list__filter-text">Sort By</div>
+          <div class="comments-container__filter-text">Sort By</div>
 
-          <div class="comments-list__filter-buttons">
+          <div class="comments-container__filter-buttons">
 
-            <button class="comments-list__show-filter" @click="showFilterDropdown = !showFilterDropdown">
+            <button class="comments-container__show-filter" @click="showFilterDropdown = !showFilterDropdown">
 
               <span> {{ GeneralSortTypeDescriptions[currentSort] }}</span>
 
@@ -306,7 +306,7 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
             </button>
 
-            <div :class="['comments-list__filter-options', { active: showFilterDropdown }]">
+            <div :class="['comments-container__filter-options', { active: showFilterDropdown }]">
 
               <button 
                 @click="applySort('MostRecent')" 
@@ -327,9 +327,9 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
           </div>
         </div>
 
-        <div class="comments-list__top-action">
+        <div class="comments-container__top-action">
           <button 
-            class="show-ancestry btn primary" 
+            class="comments-container__show-ancestry btn primary" 
             :class="{ 'active': showAncestry }" 
             @click="showAncestry = !showAncestry">
           </button>
@@ -338,9 +338,10 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
     <template v-if="!comments || comments.length === 0">
 
-      <PageStatusMessage 
-        title="No Content!"
-      message="No comments was found matching your search filters."
+    <PageStatusMessage 
+        title="No Comment Found!"
+      message="We counld not retrieve any comment matching your search filters."
+      :is-bordered="true"
       >
         <template #actions>
           <button class="btn primary" @click="resetFilters">Reset</button>
@@ -351,7 +352,7 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 
     <template v-else>
 
-      <article v-if="activeComment.pinnedReply" class="comments-list__card pinned">
+      <article v-if="activeComment.pinnedReply" class="comments-container__pinned">
         <Comment :comment="activeComment.pinnedReply" />
       </article>
  
@@ -379,5 +380,5 @@ console.log('--- Vue State Snapshot inside view---', JSON.parse(JSON.stringify(a
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/comment-lists.less";
+@import "@/assets/css/comments-container.less";
 </style>

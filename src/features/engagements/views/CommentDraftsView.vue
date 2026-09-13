@@ -129,16 +129,16 @@ onUnmounted(() => {
         <h1>My Comments</h1>
         <button class="btn primary" @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">Filter</button>
       </div>
-
-      <template v-if="wasCleaned">
-     <div class="shared__content-warning">
-       <span class="icon">⚠️</span>
-      <p>
-      Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">filter</button> link to filter correctly.
-      </p>
-      
-     </div>
+    
+    <template v-if="wasCleaned">
+     <div class=" shared__container">
+          <PageStatusMessage 
+              title="Invalid Filters Removed!" 
+              message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
+              icon="warning" 
+              :is-bordered="true"
+            />
+        </div>
     </template>
 
   <template v-if="commentStore.comments && commentStore.comments.length > 0">

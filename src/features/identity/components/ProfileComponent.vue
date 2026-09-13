@@ -54,7 +54,7 @@ function handleEditContactClick(platform: ContactType) {
     <div class="profile-details__metadata">
       Joined {{ toShortDate(profile.registeredAt) }}
     
-      <span class="divider circle"></span>
+      <span class="shared__divider shared__divider--circle"></span>
       {{ formatCounts(profile.viewsCount) }} Views
     </div>
 

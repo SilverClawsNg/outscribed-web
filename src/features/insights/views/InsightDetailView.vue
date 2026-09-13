@@ -142,9 +142,11 @@ onUnmounted(() => {
 
   <template v-if="isRedirecting">
 
-    <PageStatusMessage 
+      <PageStatusMessage 
       title="Insight ID Not Found!" 
-      :message="redirectMessage">
+      :message="redirectMessage"
+      icon="inbox"
+      :is-standalone="true">
 
       <template #actions>
         <router-link :to="redirectUrl" class="btn primary">
@@ -162,35 +164,52 @@ onUnmounted(() => {
     </template>
 
    <template v-else-if="isUnauthorized">
-    <PageStatusMessage 
-      title="401: Unauthorized!" 
-      message="It appears you are not logged in or your session has expired. Login to view this archived content.">
+
+     <PageStatusMessage 
+      title="Login Required!" 
+      message="It appears you are not logged in or your session has expired. Login to view this archived content."
+       icon="warning"
+      :is-standalone="true">
       <template #actions>
         <button class="btn primary" @click="router.push(`/login?returnUrl=${currentPath}`)">Login</button>
       </template>
     </PageStatusMessage>
+   
   </template>
 
     <template v-else-if="loadingError">
-      <PageStatusMessage 
+
+       <PageStatusMessage 
         :title="loadingError.title" 
-        :message="loadingError.detail">
+        :message="loadingError.detail"
+        icon="broken-chain"
+        :is-standalone="true">
            <template v-if="loadingError.status == 404" #actions>
         <button class="btn primary" @click="router.push(`/insights`)">Find other insights</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
       </PageStatusMessage>
+     
     </template>
 
     <template v-else-if="insightStore.insight">
 
        <template v-if="insightStore.insight.isArchived && !isArchiveRoute">
-        <PageStatusMessage
-            title='404: Archived!'
-            message="Sorry.This insight has been temporarily archived and only available to persons who have previously engaged it through votes, saves, etc.">
+
+         <PageStatusMessage
+            title='Insight Is Archived!'
+            message="Sorry.This insight has been temporarily archived and only available to persons who have previously engaged it through votes, saves, etc."
+            icon="archive"
+            :is-standalone="true">
             <template #actions>
               <button class="btn primary" @click="router.push(`/insight/archives/${insightId}`)">Continue to archives</button>
             </template>
           </PageStatusMessage>
+       
       </template>
 
       <template v-else>
@@ -200,10 +219,11 @@ onUnmounted(() => {
     </template>
 
     <template v-else>
-     <PageStatusMessage
-         title='Unknwon Error'
-        message="An unknown error occured. Refresh page and try again.">
-      </PageStatusMessage>
+        <PageStatusMessage
+         title='Unknown Error'
+        message="An unknown error occured. Refresh page and try again."
+        icon="broken-chain"
+        :is-standalone="true" />
     </template>
 
 </template>

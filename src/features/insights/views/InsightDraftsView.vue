@@ -55,9 +55,6 @@ async function initPage() {
     return
   }
 
-  // 1. Hydrate the Filter Store using the current active route parameters
-  //insightFilterStore.rehydrate(route.query);
-
   // 2. Build the targeted API request endpoint string from those validated details
   // 🛡️ Fix 4: Changed 'filterStore' to your actual variable 'insightFilterStore'
   const cleanApiPath = insightFilterStore.buildApiPath(insightStore.baseRoute);
@@ -102,7 +99,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-
   
   <template v-if="isLoading">
 
@@ -114,34 +110,39 @@ onUnmounted(() => {
 
   <template v-else-if="loadingError">
 
-    <PageStatusMessage 
+     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Drafts'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning" 
+      :is-standalone="true">
       <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
 
    <template v-else>
    
-    <header class="page-header container">
+    <header class="page-header shared__container">
    <h1 class="page-header__title">
       Insight Drafts
     </h1>
           <button type="button" class="btn primary" @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">Filter</button>
   </header>
       
-      <template v-if="wasCleaned">
-     <div class="shared__content-warning">
-       <span class="icon">⚠️</span>
-      <p>
-      Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">filter</button> link to filter correctly.
-      </p>
-      
-     </div>
+       <template v-if="wasCleaned">
+    <PageStatusMessage 
+              title="Invalid Filters Removed!" 
+              message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
+              icon="warning" 
+              :is-standalone="true"
+            />
     </template>
 
   <template v-if="insightStore.insights && insightStore.insights.length > 0">
@@ -165,12 +166,15 @@ onUnmounted(() => {
 
   </template>
 
-  <template v-else>
+   <template v-else>
     <PageStatusMessage
-      title="404: Not Found!"
-      message="No drafts found. Any draft insights created offline or in-progress will show up here.">
+      title="No Drafts Found!"
+      message="No drafts was found for this account. Any draft tales created offline or in-progress will show up here."
+      icon="inbox"
+      :is-standalone="true">
     </PageStatusMessage>
-  </template>
+    </template>
+
   </template>
 
 </template>

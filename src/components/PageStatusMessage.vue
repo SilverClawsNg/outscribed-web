@@ -6,42 +6,40 @@ import SvgIcons from '@/components/SvgIcons.vue'
 defineProps<{
   title?: string
   message?: string
-  isSuccess?: boolean
+  icon?: IconName // Allows passing a custom icon string, falling back to defaults
+  isBordered?: boolean
+  isStandalone?: boolean
 }>()
+
+export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive';
+
 </script>
 
 <template>
-
-  <div class="page-status-message-container">
-
-    <div class="page-status-message">
-
-      <template  v-if="isSuccess === true">
-
-       <SvgIcons name="check" />
-
-      </template>
-
-      <template  v-else>
-
-       <SvgIcons name="broken-chain" />
-
-      </template>
-
-      <h1 v-if="title">{{ title }}</h1>
-      
-      <p v-if="message">{{ message }}</p>
-
-      <div v-if="$slots.actions" class="actions">
-
-        <slot name="actions" />
-        
+ 
+   <div class="page-status-message"
+     :class="[
+       isBordered ? 'page-status-message--bordered' : null,
+       isStandalone ? 'page-status-message--standalone' : null
+     ]">
+      <!-- Icon Holder -->
+      <div class="page-status-message__icon-wrapper">
+        <SvgIcons 
+          :name=" icon || 'broken-chain'" 
+          class="page-status-message__icon" 
+        />
       </div>
 
+      <!-- Text Content Stack -->
+      <div class="page-status-message__body">
+        <h1 v-if="title" class="page-status-message__title">{{ title }}</h1>
+        <p v-if="message" class="page-status-message__text">{{ message }}</p>
+
+        <div v-if="$slots.actions" class="page-status-message__actions">
+          <slot name="actions" />
+        </div>
+      </div>
     </div>
-
-  </div>
-
 </template>
 
 <style lang="less" scoped>

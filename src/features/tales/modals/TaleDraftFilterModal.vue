@@ -87,7 +87,6 @@ function applyFilter() {
                 </select>
             </fieldset>
       </section>
-
       
       <!-- 5. Form Actions Layout Triggers -->
       <div class="filter-buttons">

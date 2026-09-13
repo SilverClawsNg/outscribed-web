@@ -34,7 +34,6 @@ const contentPath = 'tale'
 
   <article class="content-card">
     <!-- Cover Image Header -->
-    
            
      <header class="content-card__media" :class="{ 'no-media': !tale.photo }">
 
@@ -52,7 +51,7 @@ const contentPath = 'tale'
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
         </button>
-        <span class="divider line"></span>
+        <span class="shared__divider shared__divider--line"></span>
         <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
       </div>
     </header>
@@ -66,7 +65,7 @@ const contentPath = 'tale'
         </RouterLink>
         
         <template v-if="tale.country">
-          <span class="divider circle"></span>
+          <span class="shared__divider shared__divider--circle"></span>
           <RouterLink :to="`/${contentType}?country=${tale.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[tale.country] }}
           </RouterLink>

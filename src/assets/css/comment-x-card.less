@@ -1,0 +1,44 @@
+@import "variables.less";
+
+.comment-x-card {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+
+   &__meta {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    column-gap: 0.5rem;
+    color: var(--muted-text-color);
+     margin-bottom:0.75rem;
+  }
+
+  &__date {
+    font-size: 0.85rem;
+  }
+
+  
+  &__text {
+    position: relative;
+    margin-bottom:0.75rem;
+
+    &--system {
+      font-style: italic;
+      color: var(--muted-text-color);
+    }
+
+    .shared__richtext {
+      max-height: 7.8rem;
+      overflow: hidden;
+      transition: max-height 0.8s ease;
+
+      &:not(.truncated) {
+        max-height: 200rem;
+      }
+    }
+  }
+
+}

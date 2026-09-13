@@ -101,8 +101,6 @@ watch(
   { immediate: true }
 )
 
-
-
 // --- SUBMIT FORM TO STORE ---
 async function handleFormSubmission() {
 

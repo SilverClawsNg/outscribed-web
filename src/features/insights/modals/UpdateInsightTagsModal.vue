@@ -199,9 +199,13 @@ currentTag.value = tagId
       </form>
     </template>
     <template v-else>
-  <p class="shared__no-content">
-      You have reached the limit of ten (10) tags per insight. To add a new tag, remove an existing one.
-    </p>
+
+     <PageStatusMessage
+        title="Tags Limit Reached!"
+        message="You have reached the limit of ten (10) tags per insight. To add a new tag, remove an existing one."
+        icon="warning"
+        />
+   
     </template>
   
     <template v-if="insightStore.activeInsight?.tags && insightStore.activeInsight.tags.length > 0">
@@ -235,9 +239,14 @@ currentTag.value = tagId
     </template>
     
      <template v-else>
-  <p class="shared__no-content">
-      You have not added any tag to your insight.
-    </p>
+
+       <PageStatusMessage
+        title="No Tags Found!"
+        message="You have not added any tags to your tale. Any tags added appear here."
+        icon="inbox"
+        :is-bordered="true"
+        />
+
     </template>
 
   </div>

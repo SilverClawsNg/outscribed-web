@@ -72,10 +72,6 @@
 }
 
 
-.shared__error {
-    color: red;
-}
-
 .shared__content-status {
     margin-bottom: 1rem;
     width: auto;
@@ -119,7 +115,6 @@
     justify-content: center;
     width: 100%;
     padding: 0.5rem 0;
-    color: red;
     font-size: 0.9rem;
 }
 
@@ -228,8 +223,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    background: var(--text-color);
-    border-radius: 8px;
+    background-color: var(--light-background-color);
     box-shadow: var(--box-shadow);
     padding: 1rem 0.25rem;
     z-index: 100;
@@ -250,7 +244,6 @@
 }
 
 .shared__popover-text {
-    color: var(--background-color);
     margin-bottom: 0.5rem;
 
     @media @smallDevice {
@@ -264,40 +257,16 @@
     justify-content: center;
     gap: 0.5rem;
 
-    & a,
-    & button {
-        padding: 0.25rem 1rem;
-        font-size: 0.8rem;
-        border-radius: 4px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: 0.2s;
-        flex: 0 0 auto;
-        width: auto;
-
-        &:hover {
-            opacity: 0.95;
-        }
-    }
-
-    & a {
-        border: 1px solid var(--background-color);
-        color: var(--background-color);
-    }
-
-    & button {
-        background-color: var(--background-color);
-    }
 }
 
 .shared__popover-arrow {
     position: absolute;
     top: -10px;
-    left: 10px;
-    //transform: translateX(-50%);
+    left: 50%;
+    transform: translateX(-50%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--text-color);
+    border-bottom: 10px solid var(--light-background-color);
 }
 
 .shared__richtext {
@@ -315,14 +284,7 @@
     & div,
     & p {
         margin-top: 0.5rem;
-        font-size: 1.2rem;
- line-height: 1.6rem;
-
-        @media @smallDevice {
-            font-size: 0.9rem;
-            line-height: 1.3rem;
-        }
-
+     
         &:first-child {
             margin-top: 0;
         }

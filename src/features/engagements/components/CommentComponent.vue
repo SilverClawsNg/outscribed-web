@@ -1,14 +1,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore';
 import { useModalStore } from '@/stores/modalStore';
 import type { CommentListDto } from '../types/EngagementTypes';
-import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
+import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useEngagement } from '@/composables/useEngagement';
-import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
-import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
+import { formatCounts } from '@/utils/stringHelpers'
+import { toRelativeTime } from '@/utils/dateExtensions'
 
 const props = withDefaults(defineProps<{
   comment: CommentListDto;
@@ -17,8 +16,6 @@ const props = withDefaults(defineProps<{
 }>(), {
   isFocus: false, isAncestor: false
 });
-
-const authStore = useAuthStore();
 
 const modalStore = useModalStore();
 const engage = useEngagement()
@@ -83,127 +80,155 @@ function returnAncestor() {
 
 <template>
 
-    <article class="comments-list__card">
+   <article class="comment-inline-card">
 
-  <section v-if="isSystemMessage" class="comments-list__text no">
-    {{ comment.detail }}
-  </section>
+<!-- 1. Header: Author Metadata & Options Menu -->
+    <header class="comment-inline-card__header">
 
-<section class="comments-list__text">
+      <div class="comment-inline-card__meta">
 
-      <div 
-        ref="commentElement" 
-        :class="['shared__richtext', { 'truncated': !isExpanded }]"
-        v-html="props.comment.detail"
-      ></div>
-      
+        <button 
+          type="button" 
+          class="at comment-inline-card__meta-link" 
+          @click="modalStore.push('Profile', 'Profile', comment.commentatorId)"
+        >
+          {{ comment.commentatorUsername }}
+        </button>
+        <time class="comment-inline-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
+      </div>
+
+      <!-- More Actions / Stats Trigger -->
       <button 
-        v-if="hasOverflow && !isExpanded" 
-        class="comments-list__show-text" 
-        @click="isExpanded = true"
+        type="button"
+        class="comment-inline-card__menu-btn" 
+        title="More options"
+        @click="modalStore.push('CommentStats', 'Comment Stats', comment)"
       >
-        <span class="caret-down"></span>
+        <span class="comment-inline-card__menu-dot"></span>
+        <span class="comment-inline-card__menu-dot"></span>
+        <span class="comment-inline-card__menu-dot"></span>
       </button>
-      
+
+    </header>
+
+    <!-- 2. Comment Body Text -->
+    <section class="comment-inline-card__body">
+      <div v-if="isSystemMessage" class="comment-inline-card__text comment-inline-card__text--system">
+        {{ comment.detail }}
+      </div>
+
+      <div v-else class="comment-inline-card__text">
+        <div 
+          ref="commentElement" 
+          :class="['shared__richtext', { 'truncated': !isExpanded }]"
+          v-html="props.comment.detail"
+        ></div>
+
+        <button 
+          v-if="hasOverflow && !isExpanded" 
+          type="button"
+          class="comment-inline-card__expand-btn" 
+          @click="isExpanded = true"
+        >
+          <span class="caret-down"></span>
+        </button>
+      </div>
     </section>
 
-  <section class="comments-list__metadata">
-    <button class="at" @click="modalStore.push('Profile', 'Profile', comment.commentatorId)">
-      {{ comment.commentatorUsername }}
-    </button>
+    <!-- 3. Navigation / Threading Info -->
+    <section class="comment-inline-card__thread">
 
-    <div class="comments-list__other-metadata">
-    <p>
-        {{ toRelativeTime(comment.commentedAt) }}
-    </p>
-      
-    <template v-if="!isFocus">
-  <span class="divider circle"></span>
-  
-  <!-- If it's an ancestor, it acts as a smooth rewind trigger -->
-   
-      <template  v-if="isAncestor" >
-        
-  <button 
-    class="reply-trigger ancestor-rewind" 
-    @click="returnAncestor"
-  >
-    Thread
-  </button>
+      <template  v-if="!isFocus">
 
+        <template v-if="isAncestor">
+          <button 
+            type="button"
+            class="comment-inline-card__thread-link" 
+            @click="returnAncestor"
+          >
+            ← Return to Thread
+          </button>
         </template>
 
-  <!-- Default behavior: open fresh replies deeper down the stack -->
-   
-      <template  v-else>
+        <template v-else>
+
+          <div class="comment-inline-card__reply">
+            <button 
+                type="button"
+                @click="replyComment"
+              >
+                Reply
+              </button>
+              <button 
+                type="button"
+                class="comment-inline-card__thread-link"
+                :disabled="uiMeta.isRepliesDisabled" 
+                @click="viewReplies"
+              >
+              — View  {{ formatCounts(comment.engagement?.commentsCount) }} Replies
+            </button>
+
+          </div>
         
-  <button 
-    :disabled="uiMeta.isRepliesDisabled" 
-    @click="viewReplies"
-  >
-    {{ formatCounts(comment.engagement?.commentsCount) }} Replies
-  </button>
-  
         </template>
-
-</template>
-
-    </div>
-  
-  </section>
-
-  <section class="comments-list__actions">
-    <section class="comments-list__rating-actions">
-      <button 
-        :class="[comment.engagement?.myVote === 'Upvote' ? 'active-upvote-class' : '']" 
-        title="Upvote"
-        :disabled="uiMeta.isVoteDisabled"
-        @click="engage.vote(comment.engagement, 'Upvote')"
-      >
-       <SvgIcons name="uparrow" />
-        <span>{{ formatCounts(comment.engagement?.upvotesCount) }}</span>
-      </button>
-
-      <button 
-        :class="[comment.engagement?.myVote === 'Downvote' ? 'active-downvote-class' : '']" 
-        title="Downvote"
-        :disabled="uiMeta.isVoteDisabled"
-       @click="engage.vote(comment.engagement, 'Downvote')"
-      >
-        <SvgIcons name="downarrow" />
-        <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>
-      </button>
-
-    </section>
-   
-    <section class="comments-list__other-actions">
-       <template  v-if="!isAncestor">
-        
-      <button @click="replyComment">
-         <SvgIcons name='reply' /> <span>Reply</span>
-      </button>
-
       </template>
-      <button 
-        title="Add To Favorites"
-        :disabled="uiMeta.isFavoriteDisabled"
-        @click="engage.favorite(comment.engagement)"
-      >
-        <SvgIcons name='bookmark' />
-        <span>{{ uiMeta.favoriteText }}</span>
-      </button>
+      
+        <template v-else>
 
-      <button class="comments-list__hamburger" @click="modalStore.push('CommentStats', 'Comment Stats', comment)">
-        <div></div><div></div><div></div>
-      </button>
+          <div class="comment-inline-card__reply">
+            <button 
+                type="button"
+                @click="replyComment"
+              >
+                Reply
+              </button>
+           
+          </div>
+        
+        </template>
+      
     </section>
-  </section>
-  
+
+    <!-- 4. Engagement Actions (Upvote, Downvote, Reply, Favorite) -->
+    <footer class="comment-inline-card__actions">
+       <button 
+          type="button"
+          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myVote === 'Upvote' }]" 
+          title="Upvote"
+          :disabled="uiMeta.isVoteDisabled"
+          @click="engage.vote(comment.engagement, 'Upvote')"
+        >
+          <SvgIcons name="upvote" />
+          <span>{{ formatCounts(comment.engagement?.upvotesCount) }}</span>
+        </button>
+
+        <button 
+          type="button"
+          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myVote === 'Downvote' }]" 
+          title="Downvote"
+          :disabled="uiMeta.isVoteDisabled"
+          @click="engage.vote(comment.engagement, 'Downvote')"
+        >
+          <SvgIcons name="downvote" />
+          <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>
+        </button>
+
+       <button 
+          type="button"
+          class="comment-inline-card__action-btn"
+          title="Add To Favorites"
+          :disabled="uiMeta.isFavoriteDisabled"
+          @click="engage.favorite(comment.engagement)"
+        >
+          <SvgIcons name="bookmark" />
+          <span>{{ uiMeta.favoriteLongText }}</span>
+        </button>
+    </footer>
+
     </article>
 
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/comment-lists.less";
-
+@import "@/assets/css/comment-inline-card.less";
 </style>

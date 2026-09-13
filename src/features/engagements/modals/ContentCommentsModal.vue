@@ -253,14 +253,15 @@ onMounted(async () => {
 
    <template v-else>
    
-    <article class="comments-list">
+    <article class="comments-container">
 
-    <div class="comments-list__ancestry-container">
-      <h3>
+    <div class="comments-container__ancestry-container">
+
+      <h3 class="comments-container__ancestry-container-heading">
         {{ content.title }}
       </h3>
 
-      <article v-if="content.pinnedComment" class="comments-list__card pinned">
+      <article v-if="content.pinnedComment" class="comments-container__pinned">
         <Comment :comment="content.pinnedComment" :content="content" :is-focus="false" />
       </article>
 
@@ -269,8 +270,9 @@ onMounted(async () => {
     <template v-if="!comments || comments.length === 0">
 
       <PageStatusMessage 
-        title="No Content!"
-      message="No comments was found matching your search filters."
+        title="No Comment Found!"
+      message="We counld not retrieve any comment matching your search filters."
+      :is-bordered="true"
       >
         <template #actions>
           <button class="btn primary" @click="resetFilters">Reset</button>
@@ -281,15 +283,15 @@ onMounted(async () => {
 
     <template v-else>
 
-      <section class="comments-list__filter-container">
+      <section class="comments-container__filter-container">
 
-        <div class="comments-list__filter">
+        <div class="comments-container__filter">
 
-          <div class="comments-list__filter-text">Sort By</div>
+          <div class="comments-container__filter-text">Sort By</div>
 
-          <div class="comments-list__filter-buttons">
+          <div class="comments-container__filter-buttons">
 
-            <button class="comments-list__show-filter" @click="showFilterDropdown = !showFilterDropdown">
+            <button class="comments-container__show-filter" @click="showFilterDropdown = !showFilterDropdown">
 
               <span> {{ GeneralSortTypeDescriptions[currentSort] }}</span>
 
@@ -297,7 +299,7 @@ onMounted(async () => {
 
             </button>
 
-            <div :class="['comments-list__filter-options', { active: showFilterDropdown }]">
+            <div :class="['comments-container__filter-options', { active: showFilterDropdown }]">
 
               <button 
                 @click="applySort('MostRecent')" 
@@ -318,7 +320,7 @@ onMounted(async () => {
           </div>
         </div>
 
-        <div class="comments-list__top-action">
+        <div class="comments-container__top-action">
           <button class="btn primary" @click="createComment">Write Comment</button>
         </div>
       </section>
@@ -349,6 +351,5 @@ onMounted(async () => {
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/comment-lists.less";
-
+@import "@/assets/css/comments-container.less";
 </style>

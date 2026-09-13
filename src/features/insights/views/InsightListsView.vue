@@ -56,7 +56,7 @@ const apiUrl = computed(() => {
 // --- Calculate Page Title ---
 const pageTitle = computed(() => {
   if (!relationType.value && !creatorUsername.value) {
-    return 'Browse Insights'
+    return 'Discover Insights'
   }
   return creatorUsername.value
     ? `${creatorUsername.value}'s ${relationType.value}`
@@ -157,20 +157,27 @@ onUnmounted(() => {
 
   <template v-else-if="loadingError">
 
-    <PageStatusMessage 
+     <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
         <button class="btn primary" @click="redirectToLogin">Login</button>
       </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
 
   <template v-else>
 
-    <header class="page-header">
-    <h1 v-if="pageTitle" class="page-header__title" :class="{ 'page-header__title--at': creatorUsername }">
+    <header class="page-header shared__container">
+     <h1 class="page-header__title"  :class="{ at: creatorUsername }">
       {{ pageTitle }}
     </h1>
 
@@ -180,21 +187,19 @@ onUnmounted(() => {
     class="btn primary" 
     @click="modalStore.push('InsightListFilter', 'Filter Lists', type)"
   >
-    <SvgIcons name="filter" />
-    <span>Filter</span>
+    Filter
   </button>
 
-</header>
+    </header>
    
-      <template v-if="wasCleaned">
-     <div class="shared__content-warning">
-       <span class="icon">⚠️</span>
-      <p>
-      Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('InsightListFilter', 'Filter Lists')">filter</button> link to filter correctly.
-      </p>
+     <template v-if="wasCleaned">
       
-     </div>
+      <PageStatusMessage 
+              title="Invalid Filters Removed!" 
+              message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
+              icon="warning" 
+              :is-standalone="true"
+            />
     </template>
 
   <template v-if="insightStore.insights && insightStore.insights.length > 0">
@@ -220,12 +225,16 @@ onUnmounted(() => {
 
   </template>
 
-  <template v-else>
+   <template v-else>
     <PageStatusMessage
-      title="No Content!"
-      message="No insights was found matching your search filters.">
+      title="No Insight Found!"
+      message="We did not find any insight matching your search filters."
+      icon="inbox"
+      :is-standalone="true"
+      >
     </PageStatusMessage>
   </template>
+
   </template>
 
 </template>

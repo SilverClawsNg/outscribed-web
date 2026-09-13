@@ -1,0 +1,27 @@
+@import "variables.less";
+
+.writer-stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+
+  &__link {
+    width: 100%;
+    height: auto;
+    padding: 0.75rem 0;
+    border-radius: 4px;
+    flex-direction: column;
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  &__value {
+   font-size: 1.5rem;
+  }
+
+  &__label {
+    font-size: 0.85rem;
+     font-weight: normal;
+  }
+}

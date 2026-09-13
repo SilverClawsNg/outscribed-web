@@ -6,7 +6,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import Comment from '../components/CommentComponent.vue'
 
 import {type CommentListDto,  type SourceContentDto} from '../types/EngagementTypes.ts';
-import SourceContentComponent from '../components/SourceContentComponent.vue';
+import Content from '@/components/Content.vue'
 
 const props = defineProps<{
   payload: unknown // Arrives untouched as the raw string AccountId from your container
@@ -114,12 +114,17 @@ onMounted(async () => {
 
   <template v-else>
 
-    <div class="comment-thread-modal">
-
-      <div class="comment-thread-modal__content">
-
-        <template v-if="source">
-          <SourceContentComponent :source="source" />
+      <template v-if="source">
+             <Content
+            :title="source.title"
+            :slug="source.slug"
+            :creator-id="source.creatorId"
+            :creator-username="source.creatorUsername"
+            :created-at="source.date"
+            :content-type="source.contentType"
+            :summary="source.summary"
+            :is-bordered="true"
+          />
         </template>
 
         <template v-if="ancestors">
@@ -132,16 +137,6 @@ onMounted(async () => {
         <template v-if="focus">
           <Comment :comment="focus"/>
         </template>
-
-      </div>
-
-    </div>
-
-   <template v-if="source">
-   
-    <SourceContentComponent :source="source" />
-
-  </template>
 
   <template v-if="ancestors">
    
@@ -161,7 +156,3 @@ onMounted(async () => {
 </template>
 
 </template>
-
-<style lang="less" scoped>
-@import "@/assets/css/comment-lists.less";
-</style>

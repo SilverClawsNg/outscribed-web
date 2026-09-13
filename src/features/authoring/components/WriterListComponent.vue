@@ -1,24 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
-import { useWriterListStore } from '../stores/WriterListStore';
 import { useEngagement } from '@/composables/useEngagement';
 
-import { formatCounts, truncateText } from '@/utils/stringHelpers'
-import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
+import { toShortDate } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { type WriterListDto } from '../types/AuthoringTypes';
-import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
+import { CountryDescriptions } from '@/utils/descriptors'
+import Content from '@/components/Content.vue'
+import WriterStats from '@/components/WriterStats.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
-// 2. Setup Shared Store Hooks
-const authStore = useAuthStore()
+// Setup Shared Store Hooks
 const modalStore = useModalStore()
 const engage = useEngagement()
-
-const writerStore = useWriterListStore();
 
 // Declare compile-time parameter contract boundaries
 interface Props {
@@ -33,85 +30,93 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 </script>
 
 <template>
- 
-   <article class="writer-lists__card">
-
-<section class="writer-lists__writer-details">
-  <h1 class="writer-lists__writer-details-title">
-         <button title="Creator Profile" class="at" @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)">
-          {{ writer.creator.username }}
+  
+  <article class="writer-card">
+    <!-- Writer Identity & Profile Section -->
+    <header class="writer-card__profile">
+      <h1 class="writer-card__username">
+        <button 
+          type="button" 
+          class="writer-card__profile-btn" 
+          title="Creator Profile" 
+          @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)"
+        >
+          @{{ writer.creator.username }}
         </button>
       </h1>
-        <div class="writer-lists__writer-details-metadata">
-          <span>  <SvgIcons name="clock" /> Onboarded  {{ toShortDate(writer.onboardedAt) }}</span>
-                <span>  <SvgIcons name="globe" />   
-                  <RouterLink :to="`/writers?country=${writer.country}`">
+      <div class="writer-card__meta">
+        <span class="writer-card__meta-item">
+          <SvgIcons name="clock" /> Onboarded {{ toShortDate(writer.onboardedAt) }}
+        </span>
+        <span class="writer-card__meta-item">
+          <SvgIcons name="globe" />   
+          <RouterLink :to="`/writers?country=${writer.country}`" class="writer-card__meta-link">
             {{ CountryDescriptions[writer.country] }}
-          </RouterLink></span>
-
+          </RouterLink>
+        </span>
       </div>
-         <div class="writer-lists__writer-details-actions">
 
-      <button title="Creator Profile" @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)">
-         <SvgIcons name="user" />   Profile
-       </button>
+      <div class="writer-card__actions">
+        <button 
+          type="button" 
+          class="writer-card__action-btn" 
+          title="Creator Profile" 
+          @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)"
+        >
+          <SvgIcons name="user" /> Profile
+        </button>
 
         <button 
-        @click="engage.favorite(writer.creator.engagement)"
-        :title="writer.creator.engagement.isFavorite ? 'Remove From Saves' : 'Add To Favorites'"
-        :disabled="uiMeta.isFavoriteDisabled">
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
-      </button>
-
+          type="button" 
+          class="writer-card__action-btn"
+          :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+          :disabled="uiMeta.isFavoriteDisabled"
+          @click="engage.favorite(writer.creator.engagement)"
+        >
+          <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
+        </button>
       </div>
-       <div class="writer-lists__writer-details-links">
 
-     <RouterLink :to="`/tales?username=${writer.creator.username}`" class="btn secondary" title="Tales">
-        <span class="value">{{ formatCounts(writer.creator.talesCount) }}</span> 
-        <span class="field">Tales</span>
-      </RouterLink>
-      <RouterLink :to="`/insights?username=${writer.creator.username}`" class="btn secondary" title="Insights">
-        <span class="value">{{ formatCounts(writer.creator.insightsCount) }}</span> 
-        <span class="field">Insights</span>
-      </RouterLink>
-      <RouterLink :to="`/comments?username=${writer.creator.username}`" class="btn secondary" title="Comments">
-        <span class="value">{{ formatCounts(writer.creator.commentsCount) }}</span> 
-        <span class="field">Comments</span>
-      </RouterLink>
+       <WriterStats 
+            :username="writer.creator.username"
+            :tales-count="writer.creator.talesCount"
+            :insights-count="writer.creator.insightsCount"
+            :comments-count="writer.creator.commentsCount"
+          />
 
- </div>
+    </header>
 
-</section>
+    <!-- Writer's Latest Featured Content -->
+  
+    <div class="writer-card__latest">
 
- <section class="writer-lists__latest-content-container">
+      <template v-if="writer.latestTale">
 
-  <template v-if="writer.latestTale">
-  <RouterLink class="writer-lists__latest-content" :to="`/tale/${writer.latestTale.slug}`">
-      <h2 class="writer-lists__latest-content-title">
-          {{writer.latestTale.title}}
-      </h2>
-      <p class="writer-lists__latest-content-date">
-        {{ toRelativeTime(writer.latestTale.createdAt) }}
-      </p>
-      <section class="writer-lists__latest-content-summary">
-          <div>
-              {{truncateText(writer.latestTale.summary, 250)}}
-              <span>Continue Reading</span>
-          </div>
-      </section>
-  </RouterLink>
-  </template>
+          <Content 
+            :title="writer.latestTale.title"
+            :slug="writer.latestTale.slug"
+            :creator-id="writer.creator.accountId"
+            :creator-username="writer.creator.username"
+            :created-at="writer.latestTale.createdAt"
+            content-type='tale'
+            :summary="writer.latestTale.summary"
+            :is-alt="false"
+          />
 
-   <template v-else>
-    <p class="shared_no-content">A problem occured while retrieving the writer's latest tale'</p>
-  </template>
+      </template>
 
-</section>
-
+      <template v-else>
+          <PageStatusMessage 
+              title="No Published Tale!" 
+              message="We could not retrieve the latest tale for this writer."
+              icon="broken-chain" 
+            />
+      </template>
+    </div>
   </article>
- 
+
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/writer-lists.less";
+@import "@/assets/css/writer-card.less";
 </style>

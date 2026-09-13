@@ -117,10 +117,10 @@ onMounted(() => {
 
 <template>
 
-  <div class="form-container boxed">
+  <div class="form-container" :class="{ 'boxed': isPage }">
 
     <template v-if="isPage">
-      <h1>Login</h1>
+      <h1 class="form-header">Login</h1>
     </template>
 
     <h2>{{ displayMessage }}</h2>
@@ -176,7 +176,7 @@ onMounted(() => {
        <template v-if="isPage">
           <div class="form-options">
             <RouterLink to="/reset" title="Reset password">Forgotten password?</RouterLink>
-            <span class="divider line"></span>
+            <span class="shared__divider shared__divider--line"></span>
             <RouterLink to="/register" title="Create Account">Create a new account</RouterLink>
         </div>
            
@@ -196,10 +196,12 @@ onMounted(() => {
         </template>
       
     </form>
+
   </div>
+
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/form-container.less";
 @import "@/assets/css/form-input.less";
+@import "@/assets/css/boxed-form.less";
 </style>

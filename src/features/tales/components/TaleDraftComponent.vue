@@ -27,9 +27,6 @@ async function handleModalUpdate(type: string, title: string) {
    modalStore.push(type, title); 
 }
 
-const contentType = 'tales'
-const contentPath = 'tale'
-
 </script>
 
 <template>
@@ -49,15 +46,15 @@ const contentPath = 'tale'
 
         <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
 
-        <span class="divider circle"></span>
+        <span class="shared__divider shared__divider--circle"></span>
 
-        <RouterLink :to="`/${contentType}?category=${tale.category}`" class="content-card__meta-link">
+        <RouterLink :to="`/tales?category=${tale.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[tale.category] }}
         </RouterLink>
         
         <template v-if="tale.country">
-          <span class="divider circle"></span>
-          <RouterLink :to="`/${contentType}?country=${tale.country}`" class="content-card__meta-link">
+          <span class="shared__divider shared__divider--circle"></span>
+          <RouterLink :to="`/tales?country=${tale.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[tale.country] }}
           </RouterLink>
         </template>
@@ -74,7 +71,6 @@ const contentPath = 'tale'
       </p>
 
       </template>
-      
 
     </div>
 
@@ -152,7 +148,7 @@ const contentPath = 'tale'
       </button>
 
        <template v-if="tale.status !== 'Created'">
-      <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', tale.taleId)">
+          <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', tale.taleId)">
             Daily Metrics
           </button>
       </template>

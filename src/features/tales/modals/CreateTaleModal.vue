@@ -144,8 +144,10 @@ onMounted(async () => {
   
   <template v-else-if="!isLoggedIn || !authStore.hasAccessToken">
       <PageStatusMessage 
-        title="401: Unauthorized!" 
+        title="Login Required!" 
         message="It appears you are not logged in or have been logged out. Login or register to continue."
+        icon="warning"
+        :is-bordered="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
@@ -156,8 +158,10 @@ onMounted(async () => {
 
      <template v-else-if="authStore.writerStatus === 'None'">
       <PageStatusMessage 
-        title="401: Unauthorized!" 
+        title="Account Is Unauthorized!" 
         message="Your account is not currently authorized to publish tales. Upgrade now. It is free and easy."
+        icon="warning"
+        :is-bordered="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('WriterOnboarding', 'Writer Onboarding')">Upgrade To Writer</button>
@@ -167,8 +171,10 @@ onMounted(async () => {
    
     <template v-else-if="authStore.writerStatus === 'Suspended'">
       <PageStatusMessage 
-        title="401: Unauthorized!" 
+        title="Account Is Suspended!" 
         message="Your account is currently restricted from submitting tales. Contact support."
+        icon="warning"
+        :is-bordered="true"
       >
         <template #actions>
           <button class="btn secondary" @click="modalStore.push('WriterHelp', 'Writers Help', null, false)">Learn More</button>
@@ -225,14 +231,16 @@ onMounted(async () => {
       
     </template>
 
- <template v-else>
+    <template v-else>
       <PageStatusMessage 
-        title="000: Error!" 
+        title="Unknown Error!" 
         message="An unknown error occured. Refresh page and try again"
+        icon="warning"
+        :is-bordered="true"
       >
-        
       </PageStatusMessage>
     </template>
+
 </template>
 
 <style lang="less" scoped>

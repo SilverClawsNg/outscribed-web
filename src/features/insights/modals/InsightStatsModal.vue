@@ -44,7 +44,8 @@ function createComment() {
 </script>
 
 <template>
-  <div class="insight-stats-grid">
+  
+  <article>
     <dl>
       <dt>Title</dt>
       <dd>{{ insight.title }}</dd>
@@ -95,7 +96,7 @@ function createComment() {
         >
           View Comments
         </button>
-        <span class="divider line"></span>
+        <span class="shared__divider shared__divider--line"></span>
         <button title="Create Comment" @click="createComment">
           New Comment
         </button>
@@ -160,7 +161,7 @@ function createComment() {
             </button>
       </dd>
     </dl>
-  </div>
+  </article>
 </template>
 
 <style lang="less" scoped>

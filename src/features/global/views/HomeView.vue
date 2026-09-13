@@ -102,7 +102,7 @@ onUnmounted(() => {
 
   <template v-else>
 
-    <header class="page-header container">
+    <header class="page-header shared__container">
       <h1>Recent Tales</h1>
       <RouterLink to="/tales" class="btn primary" title="Recent Tales"><span>View All</span></RouterLink>
     </header>
@@ -123,14 +123,15 @@ onUnmounted(() => {
 
     <template v-else>
 
-    <PageStatusMessage 
-      title= 'No content!'
-      message='Sorry. We could not find any tale'>
-    </PageStatusMessage>
+     <PageStatusMessage 
+              title="No Tale Found!" 
+              message="We could not retrieve any recent tale."
+              icon="broken-chain" 
+            />
 
   </template>
 
-   <header class="page-header container">
+   <header class="page-header shared__container">
       <h1>Recent Insights</h1>
       <RouterLink to="/insights" class="btn primary" title="Recent Insights"><span>View All</span></RouterLink>
     </header>
@@ -151,12 +152,12 @@ onUnmounted(() => {
 
     <template v-else>
 
-    <PageStatusMessage 
-      title= 'No content!'
-      message='Sorry. We could not find any insight'>
-    </PageStatusMessage>
-
-  </template>
+        <PageStatusMessage 
+              title="No Insight Found!" 
+              message="We could not retrieve any recent insight."
+              icon="broken-chain" 
+            />
+      </template>
 
    <div class="shared__page-title">
         <h1>Trending This Week</h1>
@@ -178,10 +179,11 @@ onUnmounted(() => {
 
     <template v-else>
 
-    <PageStatusMessage 
-      title= 'No tags!'
-      message='Sorry. We could not find any tags'>
-    </PageStatusMessage>
+        <PageStatusMessage 
+              title="No Tag Found!" 
+              message="We could not retrieve trending tags for this week."
+              icon="broken-chain" 
+            />
 
   </template>
 
@@ -205,10 +207,11 @@ onUnmounted(() => {
 
     <template v-else>
 
-    <PageStatusMessage 
-      title= 'No tags!'
-      message='Sorry. We could not find any tags'>
-    </PageStatusMessage>
+      <PageStatusMessage 
+              title="No Tag Found!" 
+              message="We could not retrieve trending tags for this month."
+              icon="broken-chain" 
+            />
 
   </template>
 
@@ -233,9 +236,10 @@ onUnmounted(() => {
     <template v-else>
 
     <PageStatusMessage 
-      title= 'No tags!'
-      message='Sorry. We could not find any tags'>
-    </PageStatusMessage>
+              title="No Tag Found!" 
+              message="We could not retrieve trending tags for this year."
+              icon="broken-chain" 
+            />
 
   </template>
     

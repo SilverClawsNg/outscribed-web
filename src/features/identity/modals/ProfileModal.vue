@@ -11,8 +11,10 @@ import { useEngagement } from '@/composables/useEngagement';
 import { RouterLink } from 'vue-router'
 import { useUserProfileStore } from '../stores/UserProfileStore'; 
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
+import { useModalStore } from '@/stores/modalStore';
 
 const profileStore = useUserProfileStore();
+const modalStore = useModalStore();
 
 const props = defineProps<{
   payload: unknown // Arrives untouched as the raw string AccountId from your container
@@ -82,25 +84,33 @@ onUnmounted(() => {
         <p class="loader"></p>
       </div>
     </template>
+   
+  <template v-else-if="loadingError">
 
-     <template v-else-if="loadingError">
-      <PageStatusMessage 
-        :title="loadingError.title" 
-        :message="loadingError.detail">
-      </PageStatusMessage>
-    </template>
+     <PageStatusMessage 
+      :title="loadingError.title || 'Error Loading Lists'" 
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
+        <template v-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
+    </PageStatusMessage>
+
+  </template>
 
      <template v-else-if="profileStore.profile">
       
         <div class="profile-details">
 
-             <h1 class="profile-details__title">{{ profileStore.profile.title }}</h1>
+            <h1 class="profile-details__title">{{ profileStore.profile.title }}</h1>
             <h2 class="at profile-details__username">{{ profileStore.profile.username }}</h2>
 
              <div class="profile-details__metadata">
             Joined {{ toShortDate(profileStore.profile.registeredAt) }}
-          
-            <span class="divider circle"></span>
+            <span class="shared__divider shared__divider--circle"></span>
             {{ formatCounts(profileStore.profile.viewsCount) }} Views
             </div>
 
@@ -257,7 +267,5 @@ onUnmounted(() => {
 
 
 <style lang="less" scoped>
-/* You can safely drop your layout timeline.less or unique home rules down here */
 @import "@/assets/css/profile.less";
-
 </style>

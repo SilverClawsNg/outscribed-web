@@ -55,7 +55,7 @@ const apiUrl = computed(() => {
 // --- Calculate Page Title ---
 const pageTitle = computed(() => {
   if (!relationType.value && !creatorUsername.value) {
-    return 'Browse Comments'
+    return 'Discover Comments'
   }
   return creatorUsername.value
     ? `${creatorUsername.value}'s ${relationType.value}`
@@ -167,26 +167,32 @@ onUnmounted(() => {
   </template>
 
    <template v-else>
-   
-      <div class="shared__page-title">
-        <h1>Comments</h1>
-        <template v-if="pageTitle">
-          <p :class="{ at: creatorUsername }">
-            {{ pageTitle }}
-          </p>
-        </template>
-        <button class="btn primary" @click="modalStore.push('CommentListFilter', 'Filter Lists')">Filter</button>
-      </div>
 
-      <template v-if="wasCleaned">
-     <div class="shared__content-warning">
-       <span class="icon">⚠️</span>
-      <p>
-      Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the
-      <button @click="modalStore.push('CommentListFilter', 'Filter Lists')">filter</button> link to filter correctly.
-      </p>
-      
-     </div>
+     <header class="page-header shared__container">
+     <h1 class="page-header__title"  :class="{ at: creatorUsername }">
+      {{ pageTitle }}
+    </h1>
+
+  <!-- Variant 1: Filter Button -->
+  <button 
+    type="button" 
+    class="btn primary" 
+    @click="modalStore.push('CommentListFilter', 'Filter Lists')"
+  >
+    Filter
+  </button>
+
+</header>
+   
+    <template v-if="wasCleaned">
+     <div class=" shared__container">
+          <PageStatusMessage 
+              title="Invalid Filters Removed!" 
+              message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
+              icon="warning" 
+              :is-bordered="true"
+            />
+        </div>
     </template>
 
   <template v-if="commentStore.comments && commentStore.comments.length > 0">
@@ -214,9 +220,9 @@ onUnmounted(() => {
 
   <template v-else>
     <PageStatusMessage
-      title="No Content!"
-      message="No comments was found matching your search filters.">
-    </PageStatusMessage>
+      title="No Comment Found!"
+      message="We could not retrieve any comment matching your search criteria."
+       :is-bordered="true" />
   </template>
   </template>
 

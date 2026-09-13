@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, onBeforeMount, computed } from 'vue'
-
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
 import { useModalStore } from '@/stores/modalStore'
 import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
 import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
 
-const authStore = useAuthStore()
 const modalStore = useModalStore()
 const profileStore = useProfileStore() // 💡 Instantiate Store
 
@@ -96,9 +93,7 @@ async function handleFormSubmission() {
   
   }
   
-
 }
-
 
 onMounted(() => {
   resetProgress()
@@ -185,7 +180,6 @@ onMounted(() => {
     </form>
   </div>
 
-      
 </template>
 
 <style lang="less" scoped>

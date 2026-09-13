@@ -143,8 +143,10 @@ resetProgress()
 
   <template v-if="!isLoggedIn">
       <PageStatusMessage 
-        title="Unauthorized!" 
-        message="It appears you are not logged in or have been logged out. Login/register to continue."
+        title="Login Required!" 
+        message="It appears you are not logged in or have been logged out. Login or register to continue."
+        icon="warning"
+        :is-bordered="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
@@ -157,9 +159,10 @@ resetProgress()
     
   <template v-if="isSuccessful">
         <PageStatusMessage 
-        :is-success=true
         title="Created!" 
         message="Your insight has been created but you have to use your editor to update and launch."
+        icon="check"
+        :is-bordered="true"
       >
         <template #actions>
           <button class="btn primary" @click="redirectToEditor">Editor</button>
