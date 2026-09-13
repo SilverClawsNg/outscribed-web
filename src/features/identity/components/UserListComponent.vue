@@ -53,67 +53,87 @@ onMounted(async () => {
 });
 
 </script>
-
 <template>
-
-<article class="user-lists__card">
-    
-    <section class="user-lists__left-card">
-
-       <figure class="user-lists__image">
-
+  <article class="user-card">
+    <div class="user-card__main">
+      <!-- User Avatar -->
+      <figure class="user-card__avatar">
         <template v-if="user.photo">
-          <img :src="mediaHelper.getUrl(user.photo, 'profiles') || undefined" :alt="user.title" />
+          <img 
+            :src="mediaHelper.getUrl(user.photo, 'profiles') || undefined" 
+            :alt="user.title" 
+            class="user-card__avatar-img"
+          />
         </template>
-
         <template v-else>
-          <SvgIcons name="user" /> 
+          <SvgIcons name="user" class="user-card__avatar-icon" /> 
         </template>
+      </figure>
 
-    </figure>
-      
-    </section>
-
-        <section class="user-lists__details">
-
-          <h1 class="user-lists__title">
-
-            {{ user.title }}
-             <button class="at" @click="modalStore.push('Profile', 'Profile', user.accountId)">
+      <!-- Content Stack -->
+      <div class="user-card__details">
+        <!-- Header Stack: Title left-aligned, Date right-aligned on desktop -->
+        <header class="user-card__header">
+          <h1 class="user-card__title">
+            <span class="user-card__name">{{ user.title }}</span>
+            <button 
+              type="button" 
+              class="user-card__username at" 
+              @click="modalStore.push('Profile', 'Profile', user.accountId)"
+            >
               {{ user.username }}
             </button>
-
           </h1>
-      
-      <div class="user-lists__date">
-       User since {{ toShortDate(user.registeredAt) }}
+
+          <div class="user-card__date">
+            User since {{ toShortDate(user.registeredAt) }}
+          </div>
+        </header>
+
+        <!-- Metric Badges/Stats -->
+        <div class="user-card__stats">
+          <p class="user-card__stat-item">
+            <span class="user-card__stat-value">{{ formatCounts(user.talesCount) }}</span> Tales
+          </p>
+          <p class="user-card__stat-item">
+            <span class="user-card__stat-value">{{ formatCounts(user.engagement.insightsCount) }}</span> Insights
+          </p>
+          <p class="user-card__stat-item">
+            <span class="user-card__stat-value">{{ formatCounts(user.engagement.commentsCount) }}</span> Comments
+          </p>
+          <p class="user-card__stat-item">
+            <span class="user-card__stat-value">{{ formatCounts(user.engagement.favoritesCount) }}</span> Followers
+          </p>
+          <p class="user-card__stat-item">
+            <span class="user-card__stat-value">{{ formatCounts(user.followsCount) }}</span> Follows
+          </p>
+        </div>
+
+        <!-- Action Row -->
+        <footer class="user-card__footer">
+          <button 
+            type="button" 
+            class="btn secondary user-card__action-btn" 
+            @click="modalStore.push('Profile', 'Profile', user.accountId)"
+          >
+            View Profile
+          </button>
+
+          <button 
+            type="button"
+            class="user-card__save-btn"
+            @click="engage.favorite(user.engagement)"
+            :title="user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
+            :disabled="uiMeta.isFavoriteDisabled"
+          >
+            <SvgIcons name="bookmark" class="user-card__save-icon" /> 
+            <span>{{ uiMeta.favoriteLongText }}</span>
+          </button>
+        </footer>
+      </div>
     </div>
-      
-     <section class="user-lists__stats">
-      <p><span>{{ formatCounts(user.talesCount) }}</span> Tales</p>
-      <p><span>{{ formatCounts(user.engagement.insightsCount) }}</span> Insights</p>
-       <p><span>{{ formatCounts(user.engagement.commentsCount) }}</span> Comments</p>
-      <p><span>{{ formatCounts(user.engagement.favoritesCount) }}</span> Followers</p>
-      <p><span>{{ formatCounts(user.followsCount) }}</span> Follows</p>
-    </section>
-
-   <section class="user-lists__favorite">
-     
-      <button 
-        @click="engage.favorite(user.engagement)"
-        :title="user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
-        :disabled="uiMeta.isFavoriteDisabled">
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
-      </button>
-
-    </section>
-
-    </section>
-
   </article>
- 
 </template>
-
 <style lang="less" scoped>
-@import "@/assets/css/user-lists.less";
+@import "@/assets/css/user-card.less";
 </style>

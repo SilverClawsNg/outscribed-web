@@ -1,0 +1,156 @@
+@import "variables.less";
+
+/* ==========================================================================
+   USER CARD (BEM)
+   ========================================================================== */
+
+.user-card {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+
+  &__main {
+    display: flex;
+    width: 100%;
+
+    @media @smallDevice {
+      flex-direction: column;
+      row-gap: 0.75rem;
+    }
+
+    @media @largeDevice {
+      flex-direction: row;
+      justify-content: space-between;
+      column-gap: 1rem;
+    }
+  }
+
+  &__avatar {
+    background-color: var(--loading-background-color);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin: 0;
+
+    @media @smallDevice {
+      height: 50px;
+      width: 50px;
+    }
+
+    @media @largeDevice {
+      height: 60px;
+      width: 60px;
+    }
+
+    &-icon {
+      width: 100%;
+      height: 100%;
+    }
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  &__details {
+    width: 100%;
+
+    @media @largeDevice {
+      flex-grow: 1;
+    }
+  }
+
+  &__header {
+    display: flex;
+    width: 100%;
+
+    @media @smallDevice {
+      flex-direction: column;
+      row-gap: 0.25rem;
+    }
+
+    @media @largeDevice {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  &__name {
+    font-size: 1.2rem;
+  }
+
+  &__username {
+    font-size: 1rem;
+    color: var(--text-color);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+  }
+
+  &__date {
+    font-size: 0.9rem;
+    color: var(--muted-text-color);
+    white-space: nowrap;
+  }
+
+  &__stats {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+  }
+
+  &__stat-item {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+
+  &__stat-value {
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  &__action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__save-btn {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    height: 40px;
+
+  }
+
+  &__save-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
