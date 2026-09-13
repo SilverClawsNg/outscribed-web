@@ -231,8 +231,7 @@ onUnmounted(() => {
       message="We did not find any insight matching your search filters."
       icon="inbox"
       :is-standalone="true"
-      >
-    </PageStatusMessage>
+      />
   </template>
 
   </template>

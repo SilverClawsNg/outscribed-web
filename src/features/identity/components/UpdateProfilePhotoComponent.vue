@@ -207,7 +207,5 @@ function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<s
 
 
 <style lang="less" scoped>
-/* You can safely drop your layout timeline.less or unique home rules down here */
 @import "@/assets/css/photo-preview.less";
-
 </style>

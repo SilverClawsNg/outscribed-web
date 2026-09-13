@@ -33,7 +33,7 @@
             width: 150px;
             height: 150px;
             position: relative;
-            background-color: var(--hero-background-color);
+            background-color: var(--background-color);
             border-radius: 100%;
 
             & img {
@@ -48,7 +48,7 @@
                 z-index: 100;
                 width: 32px;
                 height: 32px;
-                background-color: var(--hero-background-color);
+                background-color: var(--background-color);
                 color: var(--text-color);
                 font-size: 30px;
                 border-radius: 100%;
@@ -72,7 +72,7 @@
             aspect-ratio: 5 / 3;
             height: auto;
             border-radius: 8px;
-            background-color: var(--hero-background-color);
+            background-color: var(--native-background-color);
 
             & img {
                 border-radius: 8px;
@@ -93,7 +93,7 @@
         }
 
         &:hover {
-            box-shadow: @box-shadow;
+             box-shadow: var(--box-shadow);
         }
 
         & .placeholder {
@@ -155,7 +155,7 @@
             column-gap: 1rem;
             font-size: 30px;
             font-weight: 500;
-            background-color: var(--hero-background-color);
+            background-color: var(--background-color);
             border-radius: 4px;
             /*  color: @white-color;
 
@@ -164,7 +164,7 @@
             }*/
 
             &:hover {
-                box-shadow: @box-shadow;
+                box-shadow: var(--box-shadow);
             }
         }
     }
@@ -174,7 +174,6 @@
     .photo-preview-error{
         text-align:center;
          font-style: italic;
-    color: red;
     margin-bottom: 1rem;
     font-size: 0.9rem;
     }

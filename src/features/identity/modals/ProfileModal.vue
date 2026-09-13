@@ -12,6 +12,7 @@ import { RouterLink } from 'vue-router'
 import { useUserProfileStore } from '../stores/UserProfileStore'; 
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore';
+import WriterStats from '@/components/WriterStats.vue'
 
 const profileStore = useUserProfileStore();
 const modalStore = useModalStore();
@@ -116,155 +117,165 @@ onUnmounted(() => {
 
              <template v-if="profileStore.profile.country">
               <p class="profile-details__country">
-              <i>OutScribing from </i>{{ CountryDescriptions[profileStore.profile.country] }}
+                <i class="profile-details__country-label">OutScribing from </i>
+                {{ CountryDescriptions[profileStore.profile.country] }}
               </p>
             </template>
 
              <figure class="profile-details__image">
               <div class="profile-details__image-wrapper">
-   <template v-if="profileStore.profile.photo">
-                <img :src="mediaHelper.getUrl(profileStore.profile.photo, 'profiles')" :alt="profileStore.profile.username" />
-            </template>
-             <template v-else>
-                <SvgIcons name='user' />
-            </template>
-              </div>
-                
-            </figure>
-
-             <div class="profile-details__bio">
-                     <template v-if="profileStore.profile.bio">
-                {{ profileStore.profile.bio }}
+                <template v-if="profileStore.profile.photo">
+                  <img 
+                    :src="mediaHelper.getUrl(profileStore.profile.photo, 'profiles')" 
+                    :alt="profileStore.profile.username" 
+                    class="profile-details__avatar"
+                  />
                 </template>
                 <template v-else>
-                    <p class="shared__no-content">
-              No bio found!
-          </p>
-            </template>
-                    </div>
-             
- <div class="profile-details__actions">
-     <button 
-        @click="engage.favorite(profileStore.profile.user.engagement)"
-        :title="profileStore.profile.user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
-        :disabled="uiMeta.isFavoriteDisabled">
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
-      </button>
-     
-    </div>
+                  <SvgIcons name="user" class="profile-details__avatar-placeholder" />
+                </template>
+              </div>
+            </figure>
 
-      <div class="profile-details__content-links">
-      <RouterLink :to="`/tales?username=${profileStore.profile.username}`" class="btn secondary" title="Tales">
-        <span class="value">{{ formatCounts(profileStore.profile.talesCount) }}</span> 
-        <span class="field">Tales</span>
-      </RouterLink>
-      <RouterLink :to="`/insights?username=${profileStore.profile.username}`" class="btn secondary" title="Insights">
-        <span class="value">{{ formatCounts(profileStore.profile.insightsCount) }}</span> 
-        <span class="field">Insights</span>
-      </RouterLink>
-      <RouterLink :to="`/comments?username=${profileStore.profile.username}`" class="btn secondary" title="Comments">
-        <span class="value">{{ formatCounts(profileStore.profile.commentsCount) }}</span> 
-        <span class="field">Comments</span>
-      </RouterLink>
-    </div>
+               <div class="profile-details__bio">
+                  <template v-if="profileStore.profile.bio">
+                    {{ profileStore.profile.bio }}
+                  </template>
+                </div>
+                          
+              <div class="profile-details__actions">
+                <button 
+                  @click="engage.favorite(profileStore.profile.user.engagement)"
+                  :title="profileStore.profile.user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
+                  :disabled="uiMeta.isFavoriteDisabled"
+                  class="profile-details__action-btn"
+                >
+                  <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
+                </button>
+              </div>
 
-     <div class="profile-details__follow-links">
-      <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="btn primary" title="Following">
-        <span class="value">{{ formatCounts(profileStore.profile.followsCount) }}</span> 
-        <span class="field">Following</span>
-      </RouterLink>
-      <RouterLink :to="`/users/${profileStore.profile.username}/followers`" class="btn primary" title="Followers">
-        <span class="value">{{ formatCounts(profileStore.profile.followersCount) }}</span> 
-        <span class="field">Followers</span>
-      </RouterLink>
-    </div>
+                <WriterStats
+                  :username="profileStore.profile.username"
+                  :tales-count="profileStore.profile.talesCount"
+                  :insights-count="profileStore.profile.insightsCount"
+                  :comments-count="profileStore.profile.commentsCount"
+                  :has-margin="true"
+                />
+
+
+       <div class="profile-details__follow-links">
+        <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="btn primary profile-details__link-btn profile-details__link-btn--horizontal" title="Following">
+          <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.followsCount) }}</span> 
+          <span class="profile-details__link-field">Following</span>
+        </RouterLink>
+        <RouterLink :to="`/users/${profileStore.profile.username}/followers`" class="btn primary profile-details__link-btn profile-details__link-btn--horizontal" title="Followers">
+          <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.followersCount) }}</span> 
+          <span class="profile-details__link-field">Followers</span>
+        </RouterLink>
+      </div>
 
     <div class="profile-details__stats">
-      <h4 class="profile-details__stats-header">
-         <SvgIcons name="upvote" />  Upvotes 
-      </h4>
-      <div class="profile-details__stats-body">
-        <RouterLink :to="`/tales/${profileStore.profile.username}/upvotes`" class="btn primary" title="Tales Upvotes">
-          <span class="value">{{ formatCounts(profileStore.profile.taleUpvotesCount) }}</span> <span class="field">Tales</span>
-        </RouterLink>
-        <RouterLink :to="`/insights/${profileStore.profile.username}/upvotes`" class="btn primary" title="Insights Upvotes">
-          <span class="value">{{ formatCounts(profileStore.profile.insightUpvotesCount) }}</span> <span class="field">Insights</span>
-        </RouterLink>
-        <RouterLink :to="`/comments/${profileStore.profile.username}/upvotes`" class="btn primary" title="Comments">
-          <span class="value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span> <span class="field">Comments</span>
-        </RouterLink>
+        <h4 class="profile-details__stats-header">
+          <SvgIcons name="upvote" /> Upvotes 
+        </h4>
+        <div class="profile-details__stats-body">
+          <RouterLink :to="`/tales/${profileStore.profile.username}/upvotes`" class="btn primary profile-details__link-btn" title="Tales Upvotes">
+            <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.taleUpvotesCount) }}</span> 
+            <span class="profile-details__link-field">Tales</span>
+          </RouterLink>
+          <RouterLink :to="`/insights/${profileStore.profile.username}/upvotes`" class="btn primary profile-details__link-btn" title="Insights Upvotes">
+            <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.insightUpvotesCount) }}</span> 
+            <span class="profile-details__link-field">Insights</span>
+          </RouterLink>
+          <RouterLink :to="`/comments/${profileStore.profile.username}/upvotes`" class="btn primary profile-details__link-btn" title="Comments">
+            <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span> 
+            <span class="profile-details__link-field">Comments</span>
+          </RouterLink>
+        </div>
       </div>
-    </div>
     
-    <div class="profile-details__contacts" aria-label="Social and email contacts">
-      
-      <div class="profile-details__contact-item">
-        <div class="profile-details__contact-item-header">
-          <p class="facebook">
-             <SvgIcons name="facebook" />  Facebook
-          </p>
-         
-        </div>
-        <p v-if="profileStore.facebook" class="profile-details__contact-item-definition">
-          <span>https://facebook.com/</span><a :href="profileStore.facebookLink" target="_blank">{{ profileStore.facebook }}</a>
-        </p>
-        <p v-else class="shared__no-content">Facebook contact not found!</p>
-      </div>
-
-      <div class="profile-details__contact-item">
-        <div class="profile-details__contact-item-header">
-          <p class="twitter">
-            <SvgIcons name="twitter" />  X
-          </p>
-      
-        </div>
-        <p v-if="profileStore.twitter" class="profile-details__contact-item-definition">
-          <span>https://twitter.com/</span><a :href="profileStore.twitterLink" target="_blank">{{ profileStore.twitter }}</a>
-        </p>
-        <p v-else class="shared__no-content">X contact not found!</p>
-      </div>
-
-      <div class="profile-details__contact-item">
-        <div class="profile-details__contact-item-header">
-          <p class="linkedin">
-             <SvgIcons name="linkedin" />  LinkedIn
-          </p>
+     <div class="profile-details__contacts" aria-label="Social and email contacts">
+        <!-- Facebook -->
+         <template v-if="profileStore.facebook">
           
-        </div>
-        <p v-if="profileStore.linkedin" class="profile-details__contact-item-definition">
-          <span>https://linkedin.com/in/</span><a :href="profileStore.linkedinLink" target="_blank">{{ profileStore.linkedin }}</a>
-        </p>
-        <p v-else class="shared__no-content">LinkedIn contact not found!</p>
-      </div>
-
-      <div class="profile-details__contact-item">
-        <div class="profile-details__contact-item-header">
-          <p class="email">
-            <SvgIcons name="email" />  Email Address
+        <div class="profile-details__contact-item">
+          <div class="profile-details__contact-header">
+            <p class="profile-details__contact-title profile-details__contact-title--facebook">
+              <SvgIcons name="facebook" /> Facebook
+            </p>
+          </div>
+          <p class="profile-details__contact-definition">
+            <span>https://facebook.com/</span><a :href="profileStore.facebookLink" target="_blank">{{ profileStore.facebook }}</a>
           </p>
-         
         </div>
-        <p v-if="profileStore.email" class="profile-details__contact-item-definition">
-          <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
-        </p>
-        <p v-else class="shared__no-content">Email contact not found!</p>
-      </div>
 
-    </div>
+         </template>
+
+        <!-- Twitter / X -->
+           <template v-if="profileStore.facebook">
+
+            <div class="profile-details__contact-item">
+              <div class="profile-details__contact-header">
+                <p class="profile-details__contact-title profile-details__contact-title--twitter">
+                  <SvgIcons name="twitter" /> X
+                </p>
+              </div>
+              <p class="profile-details__contact-definition">
+                <span>https://twitter.com/</span><a :href="profileStore.twitterLink" target="_blank">{{ profileStore.twitter }}</a>
+              </p>
+            </div>
+
+         </template>
         
-        </div>
+        <!-- LinkedIn -->
+           <template v-if="profileStore.facebook">
+
+            <div class="profile-details__contact-item">
+              <div class="profile-details__contact-header">
+                <p class="profile-details__contact-title profile-details__contact-title--linkedin">
+                  <SvgIcons name="linkedin" /> LinkedIn
+                </p>
+              </div>
+              <p class="profile-details__contact-definition">
+                <span>https://linkedin.com/in/</span><a :href="profileStore.linkedinLink" target="_blank">{{ profileStore.linkedin }}</a>
+              </p>
+            </div>
+
+         </template>
+
+        <!-- Email -->
+           <template v-if="profileStore.facebook">
+
+            <div class="profile-details__contact-item">
+              <div class="profile-details__contact-header">
+                <p class="profile-details__contact-title profile-details__contact-title--email">
+                  <SvgIcons name="email" /> Email Address
+                </p>
+              </div>
+              <p class="profile-details__contact-definition">
+                <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
+              </p>
+            </div>
+
+         </template>
+      
+      </div>
+    
+    </div>
 
     </template>
 
     <template v-else>
-     <PageStatusMessage
-         title='Unknown Error'
-        message="An unknown error occured loading profileStore.profile. Refresh page and try again.">
-      </PageStatusMessage>
+       <PageStatusMessage
+      title="Unknown Error!"
+      message="An unknown error occured loading  user's profile. Refresh page and try again."
+      icon="inbox"
+      :is-standalone="true"
+      />
+  
     </template>
 
 </template>
-
 
 <style lang="less" scoped>
 @import "@/assets/css/profile.less";

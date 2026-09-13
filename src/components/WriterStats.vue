@@ -6,14 +6,16 @@ interface WriterStatsProps {
   username: string
   talesCount: number
   insightsCount: number
-  commentsCount?: number
+  commentsCount: number
+  hasMargin?: boolean | null
+
 }
 
 defineProps<WriterStatsProps>()
 </script>
 
 <template>
-  <div class="writer-stats">
+  <div class="writer-stats":class="{ 'writer-stats--margined': hasMargin }">
     <RouterLink 
       :to="`/tales?username=${username}`" 
       class="btn secondary writer-stats__link" 

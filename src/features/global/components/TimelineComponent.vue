@@ -33,7 +33,6 @@ const contentTypeClass = computed(() => {
     : 'unknown'
 })
 
-
 </script>
 
 <template>
@@ -56,7 +55,6 @@ const contentTypeClass = computed(() => {
     </section>
   </article>
 </template>
-
 
 <style lang="less" scoped>
 @import "@/assets/css/timeline.less";

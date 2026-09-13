@@ -9,9 +9,11 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import TaleListComponent from '@/features/tales/components/TaleListComponent.vue'
 import InsightListComponent from '@/features/insights/components/InsightListComponent.vue'
 import TagComponent from '../components/TagComponent.vue'
+import { useModalStore } from '@/stores/modalStore'
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
+const modalStore = useModalStore()
 
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
@@ -60,28 +62,39 @@ onUnmounted(() => {
 
 <template>
 
-  <div class="hero-wrapper">
-    <div class="hero">
-      <div class="hero__text">
-        <h3>The Facts, The Fiction, <span>& Everything In-Between</span></h3>
-        <h1>We tell stories from <span class="highlight">alternate realities.</span></h1>
-        <h2>
-          Blending logic & artistic freedom, our writers attempt to re-imagine the past, reframe the present, and sculpt the future.
-        </h2>
+<div class="hero-wrapper">
+  <section class="hero">
+    <div class="hero__text">
+      <h3 class="hero__tagline">
+        The Facts, The Fiction, 
+        <span class="hero__tagline-break">& Everything In-Between</span>
+      </h3>
+      
+      <h1 class="hero__title">
+        We tell stories from <span class="hero__title-highlight">alternate realities.</span>
+      </h1>
+      
+      <h2 class="hero__description">
+        Blending logic & artistic freedom, our writers attempt to re-imagine the past, reframe the present, and sculpt the future.
+      </h2>
 
-        <div class="hero__cta">
-          <RouterLink class="btn primary" to="/faqs">Learn More</RouterLink>
-          <RouterLink class="btn contrast" to="/register">Join Us</RouterLink>
-        </div>
-      </div>
-
-      <div class="hero__image-container">
-        <div class="hero__image">
-          <img src="@/assets/images/hero-background.png" alt="OutScribed Hero Background" />
-        </div>
+      <div class="hero__cta">
+        <RouterLink class="btn primary hero__action" to="/faqs">Learn More</RouterLink>
+        <RouterLink class="btn contrast hero__action" to="/register">Join Us</RouterLink>
       </div>
     </div>
-  </div>
+
+    <div class="hero__image-container">
+      <figure class="hero__image">
+        <img 
+          src="@/assets/images/hero-background.png" 
+          alt="OutScribed Hero Background" 
+          class="hero__img"
+        />
+      </figure>
+    </div>
+  </section>
+</div>
 
    <template v-if="isLoading">
 
@@ -91,13 +104,20 @@ onUnmounted(() => {
 
   </template>
 
-  <template v-else-if="loadingError">
+   <template v-else-if="loadingError">
 
-    <PageStatusMessage 
-      :title="loadingError.title || 'Error Occured!'" 
-      :message="loadingError.detail || 'An unknown error loading homepage contents'">
+     <PageStatusMessage 
+      :title="loadingError.title || 'Error Loading Lists'" 
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
+        <template v-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
-    
+
   </template>
 
   <template v-else>
@@ -127,6 +147,7 @@ onUnmounted(() => {
               title="No Tale Found!" 
               message="We could not retrieve any recent tale."
               icon="broken-chain" 
+              :is-bordered="true"
             />
 
   </template>
@@ -143,7 +164,7 @@ onUnmounted(() => {
             <InsightListComponent 
         v-for="insight in homepageStore.insights" 
         :key="insight.insightId" 
-        :insight="insight" 
+        :insight="insight"
       />
 
         </div>
@@ -156,6 +177,7 @@ onUnmounted(() => {
               title="No Insight Found!" 
               message="We could not retrieve any recent insight."
               icon="broken-chain" 
+              :is-bordered="true"
             />
       </template>
 
@@ -183,6 +205,7 @@ onUnmounted(() => {
               title="No Tag Found!" 
               message="We could not retrieve trending tags for this week."
               icon="broken-chain" 
+              :is-bordered="true"
             />
 
   </template>
@@ -211,6 +234,7 @@ onUnmounted(() => {
               title="No Tag Found!" 
               message="We could not retrieve trending tags for this month."
               icon="broken-chain" 
+              :is-bordered="true"
             />
 
   </template>
@@ -239,6 +263,7 @@ onUnmounted(() => {
               title="No Tag Found!" 
               message="We could not retrieve trending tags for this year."
               icon="broken-chain" 
+              :is-bordered="true"
             />
 
   </template>
