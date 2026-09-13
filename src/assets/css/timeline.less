@@ -1,95 +1,95 @@
 @import "variables.less";
 
+.timeline-card {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  height: auto;
 
-.timeline-details__card {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    width: 100%;
-    height: auto;
-}
-
-.timeline-details__metadata {
+  &__metadata {
     height: auto;
     display: flex;
     margin-bottom: 0.5rem;
 
     @media @smallDevice {
-       flex-direction: column;
-       row-gap: 0.5rem;
+      flex-direction: column;
+      row-gap: 0.5rem;
     }
 
     @media @largeDevice {
-        justify-content: space-between;
+      justify-content: space-between;
     }
-}
+  }
 
-.timeline-details__type {
+  &__date {
+    text-transform: capitalize;
+    color: var(--muted-text-color);
+  }
+
+  &__type {
     text-transform: uppercase;
     font-size: 0.8rem;
     font-weight: 600;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     align-self: flex-start;
-
-    & a {
-        color: @white-color;
-    }
+    transition: opacity 0.2s ease;
 
     &:hover {
-        opacity: 0.5;
+      opacity: 0.5;
     }
 
-    &.account {
-        background-color: #FC9A00;
+    /* Content-Type BEM Modifiers */
+    &--account {
+    background-color: #FFB300; /* vivid amber */
     }
 
-    &.tale {
-        background-color: #6A01D0;
+    &--tale {
+    background-color: #3F51B5; /* deep indigo */
     }
 
-    &.comment {
-        background-color: #FF5D31;
+    &--comment {
+    background-color: #E91E63; /* hot pink/magenta */
     }
 
-    &.insight {
-        background-color: #259745;
+    &--insight {
+    background-color: #4CAF50; /* bright green */
     }
 
-    &.support {
-        background-color: #019898;
+    &--support {
+    background-color: #00BCD4; /* cyan */
     }
 
-    &.writer {
-        background-color: #F96979;
+    &--writer {
+    background-color: #9C27B0; /* purple */
     }
 
-    &.role {
-        background-color: #7FBA00;
+    &--role {
+    background-color: #AD1457; /* orange-red */
     }
-    
-    &.engagement {
-        background-color: #F91A2C;
+
+    &--engagement {
+    background-color: #32ABA1; /* brown */
     }
-}
 
-.timeline-details__date {
-    text-transform: capitalize;
-    color: var(--muted-text-color);
-}
+  }
 
-.timeline-details__text {
+  &__type-link {
+    color: @white-color;
+  }
+
+  &__body {
     font-size: 1.2rem;
     line-height: 1.6rem;
 
-   
+    button,
+    a {
+      font-weight: 600;
 
-    & button,
-    & a {
-        font-weight: 600;
-
-        &:hover {
-            color: var(--hover-color);
-        }
+      &:hover {
+        color: var(--hover-color);
+      }
     }
+  }
 }

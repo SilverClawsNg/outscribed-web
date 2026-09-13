@@ -16,30 +16,36 @@ export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive'
 </script>
 
 <template>
- 
-   <div class="page-status-message"
-     :class="[
-       isBordered ? 'page-status-message--bordered' : null,
-       isStandalone ? 'page-status-message--standalone' : null
-     ]">
-      <!-- Icon Holder -->
-      <div class="page-status-message__icon-wrapper">
-        <SvgIcons 
-          :name=" icon || 'broken-chain'" 
-          class="page-status-message__icon" 
-        />
-      </div>
+ <div 
+  class="page-status-message-container" 
+  :class="{ 'page-status-message-container--standalone': isStandalone }"
+>
+  <div 
+    class="page-status-message"
+    :class="[
+      isBordered ? 'page-status-message--bordered' : null,
+      isStandalone ? 'page-status-message--standalone' : null
+    ]"
+  >
+    <!-- Icon Holder -->
+    <div class="page-status-message__icon-wrapper">
+      <SvgIcons 
+        :name="icon || 'broken-chain'" 
+        class="page-status-message__icon" 
+      />
+    </div>
 
-      <!-- Text Content Stack -->
-      <div class="page-status-message__body">
-        <h1 v-if="title" class="page-status-message__title">{{ title }}</h1>
-        <p v-if="message" class="page-status-message__text">{{ message }}</p>
+    <!-- Text Content Stack -->
+    <div class="page-status-message__body">
+      <h1 v-if="title" class="page-status-message__title">{{ title }}</h1>
+      <p v-if="message" class="page-status-message__text">{{ message }}</p>
 
-        <div v-if="$slots.actions" class="page-status-message__actions">
-          <slot name="actions" />
-        </div>
+      <div v-if="$slots.actions" class="page-status-message__actions">
+        <slot name="actions" />
       </div>
     </div>
+  </div>
+</div>
 </template>
 
 <style lang="less" scoped>

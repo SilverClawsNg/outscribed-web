@@ -1,29 +1,75 @@
 @import "variables.less";
 
+/* Outer Wrapper for Full-Page Layout Control */
+.page-status-message-container {
+  width: 100%;
+
+  &--standalone {
+    min-height: calc(100vh - 200px); // Takes full vertical space accounting for header/footer offset
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+}
+
+/* Base Component */
 .page-status-message {
   width: 100%;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
- 
+
+  // Inline Border Option
   &--bordered {
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
   }
 
+  // Standalone Full-Page Centered Variant
   &--standalone {
-    margin: 1rem auto 0 auto;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     width: @mid-width;
-    height: auto;
     max-width: calc(100% - 20px);
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border-color);
+    margin: 0 auto;
+    padding: 0;
+
+    .page-status-message__icon-wrapper {
+      margin-bottom: 1rem;
+    }
+
+    .page-status-message__icon {
+      width: 80px;
+      height: 80px;
+    }
+
+    .page-status-message__body {
+      width: 100%;
+    }
+
+    .page-status-message__title {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-status-message__text {
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    .page-status-message__actions {
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
   }
 
   &__icon-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
   &__icon {
@@ -31,6 +77,7 @@
     height: 40px;
     stroke: var(--muted-text-color);
     fill: none;
+    transition: width 0.2s ease, height 0.2s ease;
   }
 
   &__body {

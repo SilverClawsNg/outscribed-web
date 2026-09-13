@@ -34,20 +34,22 @@ const contentTypeClass = computed(() => {
 })
 
 </script>
-
 <template>
-  <article class="timeline-details__card">
-    <section class="timeline-details__metadata">
-      <p class="timeline-details__date">— {{ toTimelineDate(timeline.happenedAt) }}</p>
+  <article class="timeline-card">
+    <section class="timeline-card__metadata">
+      <p class="timeline-card__date">— {{ toTimelineDate(timeline.happenedAt) }}</p>
       
-      <h2 :class="['timeline-details__type', contentTypeClass]">
-        <RouterLink :to="`/timeline?content=${timeline.contentType}`">
+      <h2 :class="['timeline-card__type', contentTypeClass ? `timeline-card__type--${contentTypeClass}` : '']">
+        <RouterLink 
+          :to="`/timeline?content=${timeline.contentType}`" 
+          class="timeline-card__type-link"
+        >
           {{ ContentTypeDescriptions[timeline.contentType] || timeline.contentType }}
         </RouterLink>
       </h2>
     </section>
 
-    <section class="timeline-details__text">
+    <section class="timeline-card__body">
       <TimelineActivityDispatcher 
         :timeline="timeline" 
         @open-profile="emitOpenProfile" 
