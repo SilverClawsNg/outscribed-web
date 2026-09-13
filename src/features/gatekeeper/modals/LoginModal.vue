@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modalStore'
 import Login from '../components/LoginComponent.vue'
-
+import { useEngagement } from '@/composables/useEngagement';
 const modalStore = useModalStore()
+const { resumePendingAction } = useEngagement();
 
-function handleLoginSuccess() {
+async function handleLoginSuccess() {
   // 🎯 Simply drop the modal window visibility state frame.
   // The viewport background stays exactly where the user left off!
   modalStore.pop()
+  await resumePendingAction(); // Automatically executes queued vote, save, or flag modal opening
 }
 
 function navigateToReset() {

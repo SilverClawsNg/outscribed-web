@@ -138,10 +138,33 @@ async function executeSilentRefresh(): Promise<{ token: string | null; status: n
     return { token: null, status: 401 }
   }
 }
+
+/**
+   * ⚡ FAST SYNCHRONOUS GUARD
+   * Instantly checks local memory and expiration without triggering background 
+   * network refreshes or async delays.
+   */
+  function checkAuthentication(): boolean {
+    // 1. If local storage hint is missing, user is definitely logged out
+    if (!checkIsLoggedIn()) {
+      return false;
+    }
+
+    // 2. Verify token presence and non-expired state in memory
+    const bufferWindowMs = 5000; // 5-second buffer check
+    const isTokenValid = 
+      !!accessToken.value && 
+      !!expiryDate.value && 
+      (Date.now() + bufferWindowMs < expiryDate.value.getTime());
+
+    return isTokenValid;
+  }
+
   /**
    * 🎯 PREEMPTIVE ACCESS GUARD
    * Evaluates token validity locally using your strict Date checks before network transmission
    */
+
  async function verifyAuthoring(): Promise<boolean> {
   // 1. Check the isolated, synchronous helper authority
   const hasHint = checkIsLoggedIn()
@@ -330,6 +353,7 @@ if(logoutData.flushCache){
     username,
     writerStatus,
     hasAccessToken,
+    checkAuthentication,
     setWriterActive,
     getAccessToken,
     login,
