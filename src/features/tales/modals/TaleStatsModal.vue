@@ -25,22 +25,23 @@ const tale = computed(() => props.payload as TaleDetailDto)
 const uiMeta = computed(() => getEngagementMetadata(tale.value.engagement));
 
 const content: ActiveContentContext = {
-    id: tale.value.taleId,
-    title: tale.value.title,
-    contentType: 'Tale',
-    engagement: tale.value.engagement, // Live reactive proxy reference
-    writeCommentFromInline: false,
-    pinnedComment: null
-  };
+  id: tale.value.taleId,
+  title: tale.value.title,
+  contentType: 'Tale',
+  engagement: tale.value.engagement,
+  evictPreviousModal: false, // Default to false so standard direct views do NOT trigger popPrevious
+  pinnedComment: null
+};
 
 function viewComments() {
-  modalStore.push('ContentComments', 'Comments', content)
+  content.evictPreviousModal = false;
+  modalStore.push('ContentComments', 'Comments', content);
 }
 
 function createComment() {
-  modalStore.push('CreateComment', 'New Comment', content)
+  content.evictPreviousModal = true; // Mark true explicitly so ContentComments drops CreateComment on transition
+  modalStore.push('CreateComment', 'New Comment', content);
 }
-
 </script>
 
 <template>

@@ -50,6 +50,8 @@ onMounted(async () => {
   // Ensure DOM has entirely settled printing the v-html payload
   await nextTick();
 
+  console.log(`from comment component, content's title is ${props.comment.title}`)
+
   if (commentElement.value) {
     const el = commentElement.value;
     
@@ -65,10 +67,12 @@ onMounted(async () => {
 });
 
 function viewReplies() {
+  console.log(`From comment component: view replies, content title is ${props.comment.title}`)
   modalStore.push('CommentReplies', 'Replies', props.comment)
 }
 
 function replyComment() {
+  console.log(`From comment component: reply comment, content title is ${props.comment.title}`)
   modalStore.push('ReplyComment', 'New Reply', props.comment)
 }
 

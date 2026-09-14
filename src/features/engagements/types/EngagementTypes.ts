@@ -309,7 +309,7 @@ export interface ActiveContentContext {
   title: string;
   contentType: ContentType;
   engagement: Engageable;
-  writeCommentFromInline: boolean;
+  evictPreviousModal: boolean;
   pinnedComment: CommentListDto | null;
 }
 

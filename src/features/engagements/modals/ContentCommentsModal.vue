@@ -174,7 +174,7 @@ const pushedProxies = comments.value.slice(response.comments.length);
 }
 
 function createComment() {
-  content.value.writeCommentFromInline = true;
+  content.value.evictPreviousModal = false;
   modalStore.push('CreateComment', 'New Comment', content.value)
 }
 
@@ -214,11 +214,11 @@ async function openAdvancedFilter() {
 onMounted(async () => {
   // 🎯 EXTERNAL FLOW: If NOT inline, ContentComments was pushed on top of CreateComment.
   // Silently drop CreateComment from underneath to keep the modal stack clean.
-  if (!content.value.writeCommentFromInline) {
+  if (content.value.evictPreviousModal) {
     await modalStore.popPrevious();
   } else {
     // 🛡️ Clean reset for safety in case the same context object survives
-    content.value.writeCommentFromInline = false;
+    content.value.evictPreviousModal = false;
   }
 
   await loadData();

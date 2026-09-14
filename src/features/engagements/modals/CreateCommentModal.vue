@@ -108,7 +108,7 @@ async function handleFormSubmission() {
   }
 
   // Handle modal navigation using the freshly constructed content context
-  if (updatedContent.writeCommentFromInline) {
+  if (!updatedContent.evictPreviousModal) {
     // Close modal to reveal updated inline comment list
     modalStore.pop();
   } else {

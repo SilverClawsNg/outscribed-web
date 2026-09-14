@@ -42,15 +42,17 @@ const content: ActiveContentContext = {
     title: tale.value.title,
     contentType: 'Tale',
     engagement: tale.value.engagement, // Live reactive proxy reference
-    writeCommentFromInline: false,
+    evictPreviousModal: false,
     pinnedComment: null
   };
 
 function viewComments() {
+  content.evictPreviousModal = false;
   modalStore.push('ContentComments', 'Comments', content)
 }
 
 function createComment() {
+  content.evictPreviousModal = true;
   modalStore.push('CreateComment', 'New Comment', content)
 }
 

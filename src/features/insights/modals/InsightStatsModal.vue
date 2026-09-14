@@ -29,15 +29,17 @@ const content: ActiveContentContext = {
     title: insight.value.title,
     contentType: 'Insight',
     engagement: insight.value.engagement, // Live reactive proxy reference
-    writeCommentFromInline: false,
+    evictPreviousModal: false,
     pinnedComment: null
   };
 
 function viewComments() {
+  content.evictPreviousModal = false;
   modalStore.push('ContentComments', 'Comments', content)
 }
 
 function createComment() {
+  content.evictPreviousModal = true;
   modalStore.push('CreateComment', 'New Comment', content)
 }
 
