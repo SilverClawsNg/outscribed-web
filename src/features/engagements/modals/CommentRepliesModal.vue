@@ -81,6 +81,7 @@ async function loadData() {
       comment.title = activeComment.value.title;
       comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
     });
+  console.log('--- Vue State Snapshot comment replies view --', JSON.parse(JSON.stringify(comments.value)));
 
     await commentsStore.hydratePersonals(comments.value);
   }
