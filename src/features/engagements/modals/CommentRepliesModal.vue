@@ -12,19 +12,23 @@ import { useModalStore } from '@/stores/modalStore';
 import { type CommentListDto } from '../types/EngagementTypes.ts';
 
 // --- DEFINE FORM DATA ---
-const props = defineProps<{
-  payload: unknown // Arrives as CommentListDto
-}>();
 
-const activeComment = computed(() => props.payload as CommentListDto);
 
 class HashSetOrSet extends Set<string> {}
-
-const baseRoute = computed(() => `api/comments/replies/${activeComment.value.commentId}`);
 
 const commentsStore = useContentCommentsStore();
 const commentFilterStore = useContentCommentsFilterStore();
 const modalStore = useModalStore();
+
+const activeContent = computed(() => commentsStore.activeContent);
+const activeComment = ref<CommentListDto | null>(null);
+
+  const ancestors = computed(() => {
+  if (!activeComment.value) return [];
+  return commentsStore.getAncestorsForComment(activeComment.value.commentId);
+});
+
+const baseRoute = computed(() => `api/comments/replies/${activeComment.value?.commentId}`);
 
 const isLoading = ref(true);
 const loadingError = ref<APIError | null>(null);
@@ -51,7 +55,7 @@ async function loadData() {
   isLoading.value = true;
   loadingError.value = null;
 
-  const response = await commentsStore.loadComments(apiPath);
+  const response = await commentsStore.loadReplies(apiPath);
 
   if (!response.success) {
     loadingError.value = response.error || new APIError(
@@ -67,20 +71,8 @@ async function loadData() {
 
   if (response.comments && response.comments.length !== 0) {
     comments.value = response.comments;
-    activeComment.value.hasLoadedReplies = true;
 
-    // 1. Create a safe, flat parent snapshot to sever circular loops
-    const parentSnapshot = {
-      ...activeComment.value,
-      pinnedReply: null,
-      ancestors: activeComment.value.ancestors || []
-    };
-
-    // 2. Hydrate title and ancestors across fetched items
-    comments.value.forEach(comment => {
-      comment.title = activeComment.value.title;
-      comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
-    });
+   
   console.log('--- Vue State Snapshot comment replies view --', JSON.parse(JSON.stringify(comments.value)));
 
     await commentsStore.hydratePersonals(comments.value);
@@ -98,7 +90,7 @@ async function loadMoreData() {
 
   loadingMoreError.value = null;
 
-  const response = await commentsStore.loadComments(apiPath);
+  const response = await commentsStore.loadReplies(apiPath);
 
   if (!response.success) {
     loadingMoreError.value = response.error || new APIError(
@@ -118,19 +110,9 @@ async function loadMoreData() {
     if (uniqueComments.length > 0) {
       comments.value.push(...uniqueComments);
 
-      const parentSnapshot = {
-        ...activeComment.value,
-        pinnedReply: null,
-        ancestors: activeComment.value.ancestors || []
-      };
-
       // 🎯 Fix index calculation using uniqueComments length instead of total response length
       const pushedProxies = comments.value.slice(-uniqueComments.length);
 
-      pushedProxies.forEach(comment => {
-        comment.title = activeComment.value.title;
-        comment.ancestors = [...parentSnapshot.ancestors, parentSnapshot];
-      });
 
       await commentsStore.hydratePersonals(pushedProxies);
     }
@@ -162,15 +144,17 @@ async function openAdvancedFilter() {
 }
 
 onMounted(async () => {
-  if (activeComment.value.hasReplied) {
-    activeComment.value.hasReplied = false;
-    modalStore.popPrevious();
-  }
 
-  console.log(`activeComment title is ${activeComment.value.title}`)
+// 🎯 Consume transitional context handed off by store
+  const activeCommentFromStore = commentsStore.activeComment;
+  
+  if (activeCommentFromStore) {
+    activeComment.value = activeCommentFromStore;
+  }
 
   await loadData();
 });
+
 </script>
 
 <template>
@@ -194,22 +178,22 @@ onMounted(async () => {
 
   </template>
 
-   <template v-else>
+   <template v-else-if="activeComment && activeContent">
    
      <article class="comments-container">
 
     <div class="comments-container__ancestry-container">
 
       <h3 class="comments-container__ancestry-container-heading">
-        {{ activeComment.title }}
+        {{ activeContent.title }}
       </h3>
 
      <div :class="['comments-container__ancestry', showAncestry ? 'show' : null]">
 
-     <template v-if="activeComment.ancestors && activeComment.ancestors.length > 0">
+     <template v-if="ancestors && ancestors.length > 0">
      
       <Comment 
-            v-for="comment in activeComment.ancestors" 
+            v-for="comment in ancestors" 
             :is-ancestor="true"
             :key="comment.commentId" 
             :comment="comment" />
@@ -297,7 +281,7 @@ onMounted(async () => {
         @retry="loadMoreData">
         
         <Comment 
-          v-for="comment in (activeComment.pinnedReply ? comments.filter(c => c.commentId !== activeComment.pinnedReply?.commentId) : comments)" 
+          v-for="comment in (activeComment.pinnedReply ? comments.filter(c => c.commentId !== activeComment?.pinnedReply?.commentId) : comments)" 
           :key="comment.commentId" 
           :comment="comment" 
         />

@@ -65,6 +65,36 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
   return completionPromise
 }
 
+/**
+ * Replaces the current top modal with a new modal type in-place.
+ */
+function replace(
+  type: string, 
+  title: string, 
+  payload: any = null, 
+  onSuccessCallback?: () => Promise<void> | void
+): Promise<boolean> {
+  if (modalStack.value.length === 0) {
+    return push(type, title, payload, false, onSuccessCallback);
+  }
+
+  const newModal: ModalInstance = {
+    id: crypto.randomUUID(),
+    type,
+    title,
+    payload,
+    isEntering: true,
+    isLeaving: false,
+    resolve: () => {},
+    onSuccessCallback
+  };
+
+  // Swap out top modal (Index 0)
+  modalStack.value[0] = newModal;
+
+  return Promise.resolve(true);
+}
+
   /**
    * Triggers the topmost exit animation frame
    */
@@ -131,6 +161,15 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
     remove(previousModal)
   }
 
+  /** Checks if the view directly beneath the CURRENT TOP modal matches target type */
+function isPreviousModal(modalType: string): boolean {
+  if (stackDepth.value < 2) return false;
+  
+  // Index 1 is the item directly beneath the current active top modal (Index 0)
+  return modalStack.value[1]?.type === modalType;
+}
+
+
   function popAncestors(commentId: string): void {
     console.log(`inside pop ancestors ${commentId}`)
 
@@ -193,6 +232,7 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
     isOpen,
     isContainerOpen,
     stackDepth,
+    replace,
     push,
     pop,
     cancel,
@@ -200,6 +240,7 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
     popPrevious,
     popAncestors,
     isActiveComment,
+    isPreviousModal,
     remove
   }
 })

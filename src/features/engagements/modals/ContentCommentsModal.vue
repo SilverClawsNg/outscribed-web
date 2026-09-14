@@ -15,17 +15,11 @@ import {type CommentListDto,
     type ActiveContentContext
     } from '../types/EngagementTypes.ts';
 
-
-const props = defineProps<{
-  payload: unknown // Arrives untouched as the raw string AccountId from your container
-}>()
-
-const content = computed(() => props.payload as ActiveContentContext)
-
-
-const baseRoute = computed(() => `api/comments/content/${content.value.id}`)
-
 const commentsStore = useContentCommentsStore();
+const activeContent = computed(() => commentsStore.activeContent);
+
+const baseRoute = computed(() => `api/comments/content/${activeContent.value?.id}`)
+
 const commentFilterStore = useContentCommentsFilterStore();
 
 class HashSetOrSet extends Set<string> {}
@@ -83,16 +77,9 @@ const apiPath = commentFilterStore.buildApiPath(baseRoute.value);
 
       
 // 2. Extract only the newly appended proxies from the target stream
-const pushedProxies = comments.value.slice(-response.comments.length);
+//const pushedProxies = comments.value.slice(-response.comments.length);
 
 // 3. Populate the extensions efficiently
-pushedProxies.forEach(comment => {
-  comment.title = content.value.title;
-  
-  // 🎯 Every child gets the exact same historical path without reference sharing bugs
-  console.log(`Comment's title is ${comment.title}`)
-
-});
 
    
     await commentsStore.hydratePersonals(comments.value)
@@ -121,7 +108,7 @@ const apiPath = commentFilterStore.buildApiPath(baseRoute.value, pointer.value, 
     loadingMoreError.value = null;
 
   // 3. Fetch from store
-  const response = await commentsStore.loadComments(apiPath)
+  const response = await commentsStore.loadComments(apiPath, true)
 
   if (!response.success) {
     if (response.error) {
@@ -159,11 +146,7 @@ const pushedProxies = comments.value.slice(response.comments.length);
  // 3. 🚀 Hydrate the proxies! Now Vue intercepts every mutation and updates the UI instantly.
 
 
-     pushedProxies.forEach(comment => {
-           comment.title = content.value.title;
-           comment.ancestors = []
-
-    });
+    
 
     
              await commentsStore.hydratePersonals(pushedProxies)
@@ -174,8 +157,7 @@ const pushedProxies = comments.value.slice(response.comments.length);
 }
 
 function createComment() {
-  content.value.evictPreviousModal = false;
-  modalStore.push('CreateComment', 'New Comment', content.value)
+  modalStore.push('CreateComment', 'New Comment')
 }
 
 
@@ -210,20 +192,10 @@ async function openAdvancedFilter() {
   }
 }
 
-
 onMounted(async () => {
-  // 🎯 EXTERNAL FLOW: If NOT inline, ContentComments was pushed on top of CreateComment.
-  // Silently drop CreateComment from underneath to keep the modal stack clean.
-  if (content.value.evictPreviousModal) {
-    await modalStore.popPrevious();
-  } else {
-    // 🛡️ Clean reset for safety in case the same context object survives
-    content.value.evictPreviousModal = false;
-  }
-
+  // Clean & simple: Zero modal stack manipulation required!
   await loadData();
 });
-
 
 </script>
 
@@ -248,18 +220,18 @@ onMounted(async () => {
 
   </template>
 
-   <template v-else>
+   <template v-else-if="activeContent">
    
     <article class="comments-container">
 
     <div class="comments-container__ancestry-container">
 
       <h3 class="comments-container__ancestry-container-heading">
-        {{ content.title }}
+        {{ activeContent.title }}
       </h3>
 
-      <article v-if="content.pinnedComment" class="comments-container__pinned">
-        <Comment :comment="content.pinnedComment" :content="content" :is-focus="false" />
+      <article v-if="activeContent.pinnedComment" class="comments-container__pinned">
+        <Comment :comment="activeContent.pinnedComment" :content="activeContent" :is-focus="false" />
       </article>
 
     </div>
@@ -330,7 +302,7 @@ onMounted(async () => {
         @retry="loadMoreData">
         
         <Comment 
-          v-for="comment in (content.pinnedComment ? comments.filter(c => c.commentId !== content.pinnedComment?.commentId) : comments)" 
+          v-for="comment in (activeContent.pinnedComment ? comments.filter(c => c.commentId !== activeContent?.pinnedComment?.commentId) : comments)" 
          :key="comment.commentId" 
         :comment="comment"
         />
@@ -341,6 +313,15 @@ onMounted(async () => {
 
   </article>
 
+  </template>
+
+   <template v-else>
+    <PageStatusMessage
+      title="Unknown Error!"
+      message="Unknown error occured while loading comments. Refresh page and try again."
+      icon="warning"
+      :is-standalone="true"
+      />
   </template>
 
 </template>

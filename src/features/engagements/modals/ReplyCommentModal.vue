@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, computed, watch } from 'vue';
 import { useDraftCommentsStore } from '../stores/DraftCommentsStore';
-import { useContentCommentsFilterStore } from '../stores/ContentCommentsFilterStore'; 
+import { useContentCommentsStore } from '../stores/ContentCommentsStore';
 
 import { useModalStore } from '@/stores/modalStore';
-import type { CommentListDto } from '../types/EngagementTypes';
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useFormProgress } from '@/composables/useFormProgress'
 import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integrated safely
 import RichTextEditor from '@/components/RichTextEditor.vue'
@@ -14,28 +13,13 @@ import { useLoginHint } from '@/utils/authHelper'
 
 // 📥 Modal context payload passed on activation
 
-// --- DEFINE FORM DATA ---
-const props = defineProps<{
-  payload: unknown // Arrives untouched as the raw string AccountId from your container
-}>()
-
-const comment = computed(() => props.payload as CommentListDto)
-
 const formData = ref({
    detail: ''
 })
 
-
 const commentsStore = useDraftCommentsStore();
-const commentFilterStore = useContentCommentsFilterStore();
-
+const contentStore = useContentCommentsStore();
 const modalStore = useModalStore();
-const router = useRouter()
-const route = useRoute()
-
-
-// --- DEFINE PAGE FUNCTIONS ---
-const currentPath = encodeURIComponent(route.fullPath)
 
 // --- UI TRANSACTION STATES ---
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
@@ -91,17 +75,17 @@ watch(
 )
 
 async function handleFormSubmission() {
+
   formSubmitted.value = true;
   if (!isFormValid.value) return;
 
   startLoading();
 
-  const { success, error, updatedComment } = await commentsStore.replyComment(
-    formData.value.detail, 
-    comment.value
+  const { success, error} = await commentsStore.replyComment(
+    formData.value.detail
   );
 
-  if (!success || !updatedComment) {
+  if (!success) {
     if (error) {
       setError(error);
     } else {
@@ -110,12 +94,7 @@ async function handleFormSubmission() {
     return;
   }
 
-  // Pass the returned, updated comment instance explicitly to the next modal
-  if (!updatedComment.hasLoadedReplies) {
-    modalStore.push('CommentReplies', 'Replies', updatedComment);
-  } else {
-    modalStore.pop();
-  }
+  modalStore.pop();
 }
 
 </script>

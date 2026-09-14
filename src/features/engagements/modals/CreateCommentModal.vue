@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, onBeforeMount } from 'vue';
 import { useDraftCommentsStore } from '../stores/DraftCommentsStore';
-import { useContentCommentsFilterStore } from '../stores/ContentCommentsFilterStore'; 
+import { useContentCommentsStore } from '../stores/ContentCommentsStore';
 
 import { useModalStore } from '@/stores/modalStore';
 import type { ActiveContentContext } from '../types/EngagementTypes';
-import { useRouter, useRoute } from 'vue-router'
-import { APIError } from '@/api/apiTypes'
 import { useFormProgress } from '@/composables/useFormProgress'
 import PageStatusMessage from '@/components/PageStatusMessage.vue' 
 import RichTextEditor from '@/components/RichTextEditor.vue'
@@ -25,14 +23,8 @@ const formData = ref({
 })
 
 const commentsStore = useDraftCommentsStore();
-const commentFilterStore = useContentCommentsFilterStore();
-
+const contentStore = useContentCommentsStore();
 const modalStore = useModalStore();
-const router = useRouter()
-const route = useRoute()
-
-// --- DEFINE PAGE FUNCTIONS ---
-const currentPath = encodeURIComponent(route.fullPath)
 
 // --- UI TRANSACTION STATES ---
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
@@ -93,12 +85,11 @@ async function handleFormSubmission() {
 
   startLoading();
 
-  const { success, error, updatedContent } = await commentsStore.createComment(
-    formData.value.detail!, 
-    content.value
+  const { success, error} = await commentsStore.createComment(
+    formData.value.detail!
   );
 
-  if (!success || !updatedContent) {
+  if (!success) {
     if (error) {
       setError(error);
     } else {
@@ -107,14 +98,14 @@ async function handleFormSubmission() {
     return;
   }
 
-  // Handle modal navigation using the freshly constructed content context
-  if (!updatedContent.evictPreviousModal) {
-    // Close modal to reveal updated inline comment list
-    modalStore.pop();
-  } else {
-    // Pass the fresh content instance down into the Comments view modal
-    modalStore.push('ContentComments', 'Comments', updatedContent);
-  }
+  if (modalStore.isPreviousModal('ContentComments')) {
+      // Flow A: Opened from comments list -> Pop back to existing list
+      modalStore.pop();
+    } else {
+      // Flow B: Opened from Content/Stats page -> Replace self with ContentComments view
+      modalStore.replace('ContentComments', 'Comments');
+    }
+
 }
 
 </script>

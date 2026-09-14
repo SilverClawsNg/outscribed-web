@@ -9,9 +9,12 @@ import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
 import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement';
+import { useContentCommentsStore } from '@/features/engagements/stores/ContentCommentsStore.ts';
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
+  const contentStore = useContentCommentsStore();
+
 const engage = useEngagement()
 
 // Transform state properties reactively on demand
@@ -29,18 +32,17 @@ const content: ActiveContentContext = {
     title: insight.value.title,
     contentType: 'Insight',
     engagement: insight.value.engagement, // Live reactive proxy reference
-    evictPreviousModal: false,
     pinnedComment: null
   };
 
 function viewComments() {
-  content.evictPreviousModal = false;
-  modalStore.push('ContentComments', 'Comments', content)
+  contentStore.setActiveContent(content);
+  modalStore.push('ContentComments', 'Comments')
 }
 
 function createComment() {
-  content.evictPreviousModal = true;
-  modalStore.push('CreateComment', 'New Comment', content)
+  contentStore.setActiveContent(content);
+  modalStore.push('CreateComment', 'New Comment')
 }
 
 </script>

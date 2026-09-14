@@ -5,6 +5,7 @@ import { postAsync } from '@/api/apiPostServices';
 import { APIError } from '@/api/apiTypes.ts';
 import { useDraftCommentsFilterStore } from './DraftCommentsFilterStore.ts';
 import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
+import { useContentCommentsStore } from '../stores/ContentCommentsStore.ts';
 
 import type { 
   CommentListDto, GetContentCommentsResponse, CreateCommentRequest, CommentCreatedResponse,
@@ -21,6 +22,7 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
   const activeComment = ref<CommentListDto | null>(null);
   const authStore = useAuthStore();
   const filterStore = useDraftCommentsFilterStore();
+  const contentStore = useContentCommentsStore();
 
   // Loading and Tracking flags
   const isFetchingMore = ref<boolean>(false);
@@ -202,52 +204,65 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
       isFetchingMore.value = false;
     }
   }
-  
-  async function createComment(
-  detail: string, 
-  content: ActiveContentContext
-): Promise<{ success: boolean; error: APIError | null; updatedContent: ActiveContentContext | null }> {
+  /* ==========================================================================
+   CREATE COMMENT
+   ========================================================================== */
+
+async function createComment(
+  detail: string
+): Promise<{ success: boolean; error: APIError | null }> {
+
+  // 🎯 Fetch active target content directly from the central store context
+  const activeContent = contentStore.activeContent;
+
+  if (!activeContent) {
+    return {
+      success: false,
+      error: new APIError(400, 'Context Missing', 'No active content selected in store.')
+    };
+  }
+
   try {
     const payload: CreateCommentRequest = {
-      contentid: content.id,
-      contentType: content.contentType,
+      contentid: activeContent.id,
+      contentType: activeContent.contentType,
       detail: detail
     };
 
     const outcome = await postAsync<CommentCreatedResponse>('/api/commenting/create', payload, true);
-    
+
     if (outcome.isFailure || !outcome.value) {
-      return { 
-        success: false, 
-        error: outcome.error || new APIError(500, 'Blank Response', 'Request may have succeeded but server response blank. Refresh page before retrying'),
-        updatedContent: null 
+      return {
+        success: false,
+        error: outcome.error || new APIError(500, 'Blank Response', 'Request may have succeeded but server response blank. Refresh page before retrying.')
       };
-    } 
+    }
 
-    // 1. Build the fresh top-level comment record
-    const newComment: CommentListDto = initializeCommentListEngagement({
-      commentId: outcome.value.commentId,
-      commentedAt: outcome.value.createdAt,
-      detail: outcome.value.detail,
-      commentatorUsername: authStore.username,
-      commentatorId: authStore.userId,
-      contentType: payload.contentType,
-      status: 'Active',
-      contentId: payload.contentid,
-      parentId: null,
-      hasEngagement: false,
-      addendum: null,
-      replies: [],
-      title: null,
-      ancestors: [],
-      pinnedReply: null,
-    }, true);
+    // 🎯 Construct lean top-level CommentListDto matching simplified contract
+    const newComment: CommentListDto = initializeCommentListEngagement(
+      {
+        commentId: outcome.value.commentId,
+        contentId: activeContent.id,
+        contentType: activeContent.contentType,
+        parentId: null,
+        commentedAt: outcome.value.createdAt,
+        lastUpdatedAt: outcome.value.createdAt,
+        status: 'Active',
+        detail: outcome.value.detail,
+        addendum: null,
+        commentatorId: authStore.userId,
+        commentatorUsername: authStore.username,
+        hasEngagement: false,
+        pinnedReply: null,
+        hasReplied: false,
+        hasLoadedReplies: false
+      },
+      true
+    );
 
-    // 2. Mutate the existing content reference in-place to preserve memory references across feeds
-    content.pinnedComment = newComment;
-
-    if (content.engagement) {
-      Object.assign(content.engagement, {
+    // Mutate parent content engagement counters directly in store context
+    if (activeContent.engagement) {
+      Object.assign(activeContent.engagement, {
         commentsCount: outcome.value.commentsCount,
         upvotesCount: outcome.value.upvotesCount,
         downvotesCount: outcome.value.downvotesCount,
@@ -258,98 +273,104 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
       });
     }
 
-    // 3. Add to local cache feeds
-    comments.value.unshift(newComment);
+    // 🎯 Register comment and update activeContent.pinnedComment within Centralized Store
+    contentStore.addCreatedComment(newComment, false);
+
+    // Save local draft fallback
     localStorage.setItem(`comment:draft:new:${newComment.commentId}`, JSON.stringify(newComment));
 
-    // 4. Return the exact same mutated instance back to the caller
-    return { success: true, error: null, updatedContent: content };
+    return { success: true, error: null };
 
   } catch (err: any) {
-    return { 
-      success: false, 
-      error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.'),
-      updatedContent: null 
+    return {
+      success: false,
+      error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.')
     };
   }
 }
-    
-   async function replyComment(
-  detail: string, 
-  activeComment: CommentListDto
-): Promise<{ success: boolean; error: APIError | null; updatedComment: CommentListDto | null }> {
+
+/* ==========================================================================
+   REPLY COMMENT METHOD 
+   ========================================================================== */
+
+async function replyComment(detail: string)
+: Promise<{ success: boolean; error: APIError | null }> {
+
+  const activeContent = contentStore.activeContent;
+ const parentComment = contentStore.activeCommentToReply;
+
+  if (!activeContent || !parentComment) {
+    return {
+      success: false,
+      error: new APIError(400, 'Context Missing', 'Active content or active parent comment is not set in store.')
+    };
+  }
+
   try {
     const payload: ReplyCommentRequest = {
-      contentid: activeComment.contentId,
-      contentType: activeComment.contentType,
-      parentId: activeComment.commentId,
+      contentid: activeContent.id,
+      contentType: activeContent.contentType,
+      parentId: parentComment.commentId,
       detail: detail
     };
 
     const outcome = await postAsync<CommentCreatedResponse>('/api/commenting/reply', payload, true);
-    
+
     if (outcome.isFailure || !outcome.value) {
-      return { 
-        success: false, 
-        error: outcome.error || new APIError(500, 'Blank Response', 'Server response blank.'),
-        updatedComment: null 
+      return {
+        success: false,
+        error: outcome.error || new APIError(500, 'Blank Response', 'Server response blank.')
       };
     }
 
-    // 1. Create a safe parent snapshot to break circular references inside ancestors array
-    const parentSnapshot = {
-      ...activeComment,
-      pinnedReply: null,
-      ancestors: activeComment.ancestors || []
-    };
+    // Construct new CommentListDto using context properties
+    const newReply: CommentListDto = initializeCommentListEngagement(
+      {
+        commentId: outcome.value.commentId,
+        contentId: parentComment.contentId,
+        contentType: parentComment.contentType,
+        parentId: parentComment.commentId,
+        commentedAt: outcome.value.createdAt,
+        lastUpdatedAt: outcome.value.createdAt,
+        status: 'Active',
+        detail: outcome.value.detail,
+        addendum: null,
+        commentatorId: authStore.userId,
+        commentatorUsername: authStore.username,
+        hasEngagement: false,
+        pinnedReply: null,
+        hasReplied: false,
+        hasLoadedReplies: false,
+        lastLoadedAt: null
+      },
+      true
+    );
 
-    // 2. Construct the fresh child reply
-    const newReply: CommentListDto = initializeCommentListEngagement({
-      commentId: outcome.value.commentId,
-      commentedAt: outcome.value.createdAt,
-      detail: outcome.value.detail,
-      commentatorUsername: authStore.username,
-      commentatorId: authStore.userId,
-      status: 'Active',
-      addendum: null,
-      hasEngagement: false,
-      contentId: activeComment.contentId,
-      contentType: activeComment.contentType,
-      parentId: activeComment.commentId,
-      title: activeComment.title,
-      ancestors: [...(activeComment.ancestors || []), parentSnapshot],
-      pinnedReply: null
-    }, true);
+    // Register reply and mutate parent in-place within Centralized Store
+    contentStore.addCreatedComment(newReply, true);
 
-    // 3. Mutate the active parent comment in-place
-    activeComment.pinnedReply = newReply;
-    activeComment.hasReplied = true;
+    // Persist local draft fallback
+    localStorage.setItem(`comment:draft:reply:${newReply.commentId}`, JSON.stringify(newReply));
 
-    if (activeComment.engagement) {
-      Object.assign(activeComment.engagement, {
+    // Mutate parent content engagement counters directly in store context
+    if (parentComment.engagement) {
+      Object.assign(parentComment.engagement, {
         commentsCount: outcome.value.commentsCount,
         upvotesCount: outcome.value.upvotesCount,
         downvotesCount: outcome.value.downvotesCount,
-        flagsCount: outcome.value.flagsCount,
-        favoritesCount: outcome.value.favoritesCount
+        favoritesCount: outcome.value.favoritesCount,
+        flagsCount: outcome.value.flagsCount
       });
     }
 
-    comments.value.unshift(newReply);
-    localStorage.setItem(`comment:draft:new:${newReply.commentId}`, JSON.stringify(newReply));
-
-    // 4. Return the mutated instance reference back to the caller
-    return { 
-      success: true, 
-      error: null, 
-      updatedComment: activeComment 
+    return {
+      success: true,
+      error: null
     };
-
   } catch (err: any) {
-    return { 
-      success: false, 
-      error: err?.error || new APIError(500, 'Internal Client Error', err.message),
-      updatedComment: null 
+    return {
+      success: false,
+      error: err?.error || new APIError(500, 'Internal Client Error', err.message)
     };
   }
 }

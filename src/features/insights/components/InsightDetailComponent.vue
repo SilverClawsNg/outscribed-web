@@ -8,6 +8,7 @@ import { useInsightDetailStore } from '../stores/InsightDetailStore';
 import { useEngagement } from '@/composables/useEngagement';
 import LatestCommentComponent from '@/features/engagements/components/LatestCommentComponent.vue'
 import { useRouter } from 'vue-router';
+import { useContentCommentsStore } from '@/features/engagements/stores/ContentCommentsStore.ts';
 
 import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
@@ -26,6 +27,7 @@ const engage = useEngagement()
 const router = useRouter();
 
 const insightStore = useInsightDetailStore();
+  const contentStore = useContentCommentsStore();
 
 
 // 🔒 Safely unwrap the guaranteed store object cleanly
@@ -42,18 +44,17 @@ const content: ActiveContentContext = {
     title: insight.value.title,
     contentType: 'Insight',
     engagement: insight.value.engagement, // Live reactive proxy reference
-    evictPreviousModal: false,
     pinnedComment: null
   };
 
 function viewComments() {
-  content.evictPreviousModal = false;
-  modalStore.push('ContentComments', 'Comments', content)
+  contentStore.setActiveContent(content);
+  modalStore.push('ContentComments', 'Comments')
 }
 
 function createComment() {
-  content.evictPreviousModal = true;
-  modalStore.push('CreateComment', 'New Comment', content)
+  contentStore.setActiveContent(content);
+  modalStore.push('CreateComment', 'New Comment')
 }
 
 </script>

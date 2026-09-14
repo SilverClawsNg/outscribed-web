@@ -183,17 +183,21 @@ export interface CommentListDto {
   engagement: Engageable;
 
   // Frontend Reactive Extensions
-  title: string | null;
   pinnedReply: CommentListDto | null;
-  ancestors: CommentListDto[];
-  hasReplied: boolean | false
-hasLoadedReplies: boolean;
+  hasReplied: boolean;
+  expiresAt?: number | null; // UTC timestamp for top-level comments TTL
+
+  // 🎯 Pagination State for Child Replies
+  hasNext?: boolean;
+  pointer?: string | null;
+  anchor?: string | null;
 }
 
 export interface GetContentCommentsResponse {
   comments: CommentListDto[];
   hasNext: boolean;
   anchor: string | null;
+  expiresAt: number | null;
   pointer: string | null; 
 }
 
@@ -217,7 +221,7 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
     // 🧱 1. Explicitly pick top-level domain fields
     commentId: rawComment.commentId,
     contentId: rawComment.contentId,
-    contentType: rawComment.contentType ?? 'Comment',
+    contentType: rawComment.contentType,
     parentId: rawComment.parentId ?? null,
     commentedAt: rawComment.commentedAt,
     lastUpdatedAt: rawComment.commentedAt ?? null,
@@ -228,10 +232,7 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
     commentatorId: rawComment.commentatorId ?? null,
     commentatorUsername: rawComment.commentatorUsername ?? null,
     pinnedReply: rawComment.pinnedReply ?? null,
-    ancestors: rawComment.ancestors ?? null,
-    title: rawComment.title ?? null,
     hasReplied: false,
-    hasLoadedReplies: false,
     // 🛡️ Guarantee the nested engagement layer exists
     engagement: {
     contentId: rawComment.commentId || '',
@@ -309,8 +310,13 @@ export interface ActiveContentContext {
   title: string;
   contentType: ContentType;
   engagement: Engageable;
-  evictPreviousModal: boolean;
   pinnedComment: CommentListDto | null;
+  expiresAt?: number | null; // UTC timestamp for top-level comments TTL
+
+  // 🎯 Pagination State for Child Replies
+  hasNext?: boolean;
+  pointer?: string | null;
+  anchor?: string | null;
 }
 
 export interface CreateCommentRequest {

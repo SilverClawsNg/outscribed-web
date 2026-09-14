@@ -8,6 +8,7 @@ import SvgIcons from '@/components/SvgIcons.vue'
 import { useEngagement } from '@/composables/useEngagement';
 import { formatCounts } from '@/utils/stringHelpers'
 import { toRelativeTime } from '@/utils/dateExtensions'
+import { useContentCommentsStore } from '../stores/ContentCommentsStore';
 
 const props = withDefaults(defineProps<{
   comment: CommentListDto;
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<{
 
 const modalStore = useModalStore();
 const engage = useEngagement()
+const contentStore = useContentCommentsStore();
 
   // 2. Reactive Component States
 const isExpanded = ref<boolean>(false);
@@ -50,8 +52,6 @@ onMounted(async () => {
   // Ensure DOM has entirely settled printing the v-html payload
   await nextTick();
 
-  console.log(`from comment component, content's title is ${props.comment.title}`)
-
   if (commentElement.value) {
     const el = commentElement.value;
     
@@ -67,13 +67,13 @@ onMounted(async () => {
 });
 
 function viewReplies() {
-  console.log(`From comment component: view replies, content title is ${props.comment.title}`)
-  modalStore.push('CommentReplies', 'Replies', props.comment)
+  contentStore.setActiveComment(props.comment);
+  modalStore.push('CommentReplies', 'Replies')
 }
 
 function replyComment() {
-  console.log(`From comment component: reply comment, content title is ${props.comment.title}`)
-  modalStore.push('ReplyComment', 'New Reply', props.comment)
+   contentStore.setActiveCommentToReply(props.comment);
+  modalStore.push('ReplyComment', 'New Reply')
 }
 
 function returnAncestor() {

@@ -9,10 +9,12 @@ import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
 import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement';
+import { useContentCommentsStore } from '@/features/engagements/stores/ContentCommentsStore.ts';
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
 const engage = useEngagement()
+  const contentStore = useContentCommentsStore();
 
 const props = defineProps<{
   payload: unknown // Accept as unknown for maximum flexibility
@@ -29,18 +31,17 @@ const content: ActiveContentContext = {
   title: tale.value.title,
   contentType: 'Tale',
   engagement: tale.value.engagement,
-  evictPreviousModal: false, // Default to false so standard direct views do NOT trigger popPrevious
   pinnedComment: null
 };
 
 function viewComments() {
-  content.evictPreviousModal = false;
-  modalStore.push('ContentComments', 'Comments', content);
+  contentStore.setActiveContent(content);
+  modalStore.push('ContentComments', 'Comments');
 }
 
 function createComment() {
-  content.evictPreviousModal = true; // Mark true explicitly so ContentComments drops CreateComment on transition
-  modalStore.push('CreateComment', 'New Comment', content);
+  contentStore.setActiveContent(content);
+  modalStore.push('CreateComment', 'New Comment');
 }
 </script>
 

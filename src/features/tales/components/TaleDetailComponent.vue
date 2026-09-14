@@ -7,6 +7,7 @@ import SvgIcons from '@/components/SvgIcons.vue'
 import { useTaleDetailStore } from '../stores/TaleDetailStore';
 import { useEngagement } from '@/composables/useEngagement';
 import LatestCommentComponent from '@/features/engagements/components/LatestCommentComponent.vue'
+import { useContentCommentsStore } from '@/features/engagements/stores/ContentCommentsStore.ts';
 
 import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
@@ -23,6 +24,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
 const engage = useEngagement()
+  const contentStore = useContentCommentsStore();
 
 const taleStore = useTaleDetailStore();
 
@@ -42,18 +44,17 @@ const content: ActiveContentContext = {
     title: tale.value.title,
     contentType: 'Tale',
     engagement: tale.value.engagement, // Live reactive proxy reference
-    evictPreviousModal: false,
     pinnedComment: null
   };
 
 function viewComments() {
-  content.evictPreviousModal = false;
-  modalStore.push('ContentComments', 'Comments', content)
+  contentStore.setActiveContent(content);
+  modalStore.push('ContentComments', 'Comments')
 }
 
 function createComment() {
-  content.evictPreviousModal = true;
-  modalStore.push('CreateComment', 'New Comment', content)
+  contentStore.setActiveContent(content);
+  modalStore.push('CreateComment', 'New Comment')
 }
 
 </script>
