@@ -5,7 +5,7 @@
   width: 100%;
   border-bottom: 2px solid var(--border-color);
   margin-bottom: 2rem;
-  background-color: #00AEFF;
+  background-color: #00A0EB;
     color: @white-color;
 
   @media @smallDevice {
@@ -51,7 +51,7 @@
 
   &__tagline {
     margin-bottom: 1rem;
-
+font-weight: 600;
     @media @smallDevice {
       font-size: 1rem;
       text-align: center;
@@ -78,13 +78,13 @@
       text-align: center;
       font-size: 2.5rem;
       line-height: 2.8rem;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     @media @largeDevice {
       font-size: 2.5rem;
       line-height: 2.8rem;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     &-highlight {
@@ -94,7 +94,7 @@
 
   &__description {
     margin-bottom: 1rem;
-
+font-weight: 600;
     @media @smallDevice {
       text-align: center;
     }
@@ -125,7 +125,8 @@
     }
 
     &.contrast {
-      // Styling hooks for contrast state
+       background-color: #00A0EB;
+      border-color: @white-color;
     }
   }
 

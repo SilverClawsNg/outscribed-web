@@ -160,11 +160,11 @@
             top: 0;
             z-index: 2003;
             //border-bottom: 1px solid var(--border-color);
-             background-color: #00AEFF;
+             background-color: #00A0EB;
             /*background-color: @header-background-color;*/
 
-            & button svg.stroked path {
-                stroke: var(--text-color);
+            & button svg path {
+                stroke: @white-color;
             }
 
             & .inner-modal-header {
@@ -182,16 +182,21 @@
                 display: flex;
                 align-items: center;
                 height: 100%;
-                color: var(--text-color);
+                color: @white-color;
                 text-transform: capitalize;
                 border-bottom: 2px solid transparent;
+
+                  & svg {
+                       stroke: @white-color;
+                     stroke-width: 1px;
+                    }
 
                 & span {
                     margin-left: 5px;
                 }
 
                 &:hover {
-                    border-bottom-color: var(--border-color);
+                    border-bottom-color: @white-color;
                 }
             }
 
@@ -205,11 +210,11 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    color: var(--text-color);
+                    color: @white-color;
                     border-bottom: 3px solid transparent;
-                    /*   & svg.stroked {
+                      & svg.stroked {
                         stroke: @white-color;
-                    }*/
+                    }
 
                     &.maximize, &.minimize {
                         @media @smallDevice {
@@ -218,7 +223,7 @@
                     }
 
                     &:hover {
-                        border-bottom-color: var(--border-color);
+                        border-bottom-color: @white-color;
                     }
                 }
             }

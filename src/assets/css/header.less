@@ -11,7 +11,7 @@ header.main-header {
     z-index: 1000;
     background-color: var(--background-color);
     box-shadow: var(--header-box-shadow);
-    background-color: #00AEFF;
+    background-color: #00A0EB;
     color: @white-color;
 }
 
@@ -86,7 +86,7 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
-   background-color: #00AEFF;
+   background-color: #00A0EB;
     color: @white-color;
 
     @media @smallDevice {
@@ -171,6 +171,10 @@ header.main-header {
     & button {
 
         &.spin{
+
+            @media @smallDevice{
+                 color:  @white-color;
+            }
           
 
              @media @largeDevice {
@@ -181,7 +185,7 @@ header.main-header {
         color: var(--native-background-color);
             padding: 0.25rem 0.5rem;
             background-color:@white-color;
-    color:  #00AEFF;
+    color:  #00A0EB;
     }
         }
 
@@ -230,7 +234,7 @@ header.main-header {
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
     border-top: 1px solid var(--border-color);
  background: var(--background-color);
- background-color: #00AEFF;
+ background-color: #00A0EB;
     color: @white-color;
     @media @smallDevice {
         max-height: 0;
