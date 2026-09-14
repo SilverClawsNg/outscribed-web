@@ -1,13 +1,11 @@
 import {ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { useContentCommentsFilterStore } from './ContentCommentsFilterStore.ts'
 import { APIError } from '@/api/apiTypes.ts'
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import type{ActiveContentContext, CommentListDto, GetContentCommentsResponse, 
     GetEngagementIdsResponse, LoadingCommentsResponse} from '../types/EngagementTypes.ts';
 import {initializeCommentListEngagement} from '../types/EngagementTypes.ts';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
 import { useLoginHint } from '@/utils/authHelper'
 
 export const useContentCommentsStore = defineStore('contentComments', () => {
@@ -19,26 +17,11 @@ export const useContentCommentsStore = defineStore('contentComments', () => {
 
  // State
   const activeContent = ref<ActiveContentContext | null>(null);
-
-  // 🎯 Transitional handoff reference for opening reply threads
   const activeComment = ref<CommentListDto | null>(null);
-
-  // 🎯 Creation target reference
   const activeCommentToReply = ref<CommentListDto | null>(null);
-
   const commentsMap = ref<Map<string, CommentListDto>>(new Map());
 
-  const CACHE_TTL_MS = 5 * 60 * 1000; // 5 Minutes
-
 // --- GETTERS & HELPERS ---
-
-
-/** 🎯 Freshness Guard: Checks if target was loaded and is within TTL */
-  function isFresh(target?: { expiresAt?: number | null } | null): boolean {
-    console.log(`Expires at ${target?.expiresAt}`);
-    if (!target?.expiresAt) return false;
-    return Date.now() - target.expiresAt < CACHE_TTL_MS;
-  }
 
 /* ==========================================================================
    ULID-SORTED COMMENT GETTERS (CONTENT COMMENTS STORE)
@@ -81,7 +64,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
     );
   });
 
-
   /** Helper to compute top-to-bottom lineage for ANY comment ID */
   function getAncestorsForComment(commentId: string): CommentListDto[] {
     const ancestors: CommentListDto[] = [];
@@ -98,7 +80,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
     }
     return ancestors;
   }
-
 
   // --- ACTIONS ---
 
@@ -139,16 +120,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
       return response;
     }
 
-    // 🎯 CACHE HIT (Initial Page Only)
-    if (!isLoadMore && isFresh(target)) {
-      response.success = true;
-      response.comments = topLevelComments.value;
-      response.hasNext = target.hasNext ?? false;
-      response.pointer = target.pointer ?? null;
-      response.anchor = target.anchor ?? null;
-      return response;
-    }
-
     try {
       if (feedController) feedController.abort();
       feedController = new AbortController();
@@ -176,7 +147,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
       target.hasNext = outcome.value.hasNext;
       target.pointer = outcome.value.pointer;
       target.anchor = outcome.value.anchor;
-      target.expiresAt = outcome.value.expiresAt;
 
       // Return full updated slice to caller
       response.success = true;
@@ -215,15 +185,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
       return response;
     }
 
-    // 🎯 CACHE HIT (Initial Page Only)
-    if (!isLoadMore && isFresh(target)) {
-      response.success = true;
-      response.comments = activeCommentReplies.value;
-      response.hasNext = target.hasNext ?? false;
-      response.pointer = target.pointer ?? null;
-      response.anchor = target.anchor ?? null;
-      return response;
-    }
 
     try {
       if (feedController) feedController.abort();
@@ -251,7 +212,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
       target.hasNext = outcome.value.hasNext;
       target.pointer = outcome.value.pointer;
       target.anchor = outcome.value.anchor;
-      target.expiresAt = outcome.value.expiresAt;
 
       response.success = true;
       response.comments = activeCommentReplies.value;
@@ -277,196 +237,6 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
       activeComment.value.hasReplied = true;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/** Fetch Top-Level Comments */
-  async function fetchContentComments(apiPath: string, forceRefresh = false): Promise<boolean> {
-
-    if (!activeContent.value) return false;
-
-    // Use single helper to check both loaded state and freshness
-    if (!forceRefresh && isFresh(activeContent.value)) {
-      return true;
-    }
-
-    try {
-      const outcome = await getAsync<GetContentCommentsResponse>(apiPath, false);
-
-      if (outcome.isSuccess && outcome.value?.comments) {
-
-        outcome.value.comments.forEach((raw) => {
-          const comment = initializeCommentListEngagement(raw);
-          commentsMap.value.set(comment.commentId, comment);
-        });
-
-        // 🎯 Sets both loaded state & freshness timestamp simultaneously
-        activeContent.value.expiresAt = Date.now();
-        return true;
-      }
-    } catch (err) {
-      console.error('[ContentCommentsStore] Error fetching top-level comments:', err);
-    }
-    return false;
-  }
-
-  /** Fetch Child Replies */
-  async function fetchCommentReplies(targetComment: CommentListDto, apiPath: string, forceRefresh = false): Promise<boolean> {
-    if (!forceRefresh && isFresh(targetComment)) {
-      return true;
-    }
-
-    try {
-      const outcome = await getAsync<GetContentCommentsResponse>(apiPath, false);
-      if (outcome.isSuccess && outcome.value?.comments) {
-        outcome.value.comments.forEach((raw) => {
-          const reply = initializeCommentListEngagement(raw);
-          commentsMap.value.set(reply.commentId, reply);
-        });
-
-        // 🎯 Sets both loaded state & freshness timestamp simultaneously
-        targetComment.expiresAt = Date.now();
-        return true;
-      }
-    } catch (err) {
-      console.error('[ContentCommentsStore] Error fetching replies:', err);
-    }
-    return false;
-  }
-
-  // --- Core Actions ---
-
-  /**
-   * 1. LoadComments (Initial setup for a Tale or Insight comment list)
-   */
-
-  async function loadCommentsx(apiPathWithFilters: string) : Promise<LoadingCommentsResponse>{
-  
-      // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingCommentsResponse = {
-          success: false,
-          comments: [],
-          hasNext: false,
-          pointer: null,
-          anchor: null,
-          error: null
-        };
-        
-    try {
-
-      feedController = new AbortController();
-
-      const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, false, {} as GetContentCommentsResponse, 
-        feedController.signal);
-
-     if (outcome.isFailure) {
-      response.error = outcome.error || null
-        return response;
-      }
-       
-      if (outcome.value && outcome.value.comments) {
-        response.hasNext = outcome.value.hasNext;
-        response.pointer = outcome.value.pointer;
-        response.anchor = outcome.value.anchor;
-
-        // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      response.comments = outcome.value.comments.map((item: any) => initializeCommentListEngagement(item));
-
-      console.log('--- Vue State Snapshot inside loading contents store ---', JSON.parse(JSON.stringify(response.comments)));
-
-      } 
-      response.success = true
-    // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-    return response;
-
-    } catch (err: any) {
-    // Fail-safe catch-all wrapper
-    response.error = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception')
-    return response;
-  }
-  }
-  /**
-   * 2. LoadMoreComments (Infinite scroll continuation pipeline)
-   */
-  async function loadMoreCommentsx(apiPathWithFilters: string) : Promise<LoadingCommentsResponse> {
-
-      // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingCommentsResponse = {
-          success: false,
-          comments: [],
-          hasNext: false,
-          pointer: null,
-          anchor: null,
-          error: null
-        };
-        
-    try {
-
-  // Spawn a fresh controller instance for this specific execution pass
-        feedController = new AbortController();
-               
-        const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, false, {} as GetContentCommentsResponse,
-            feedController.signal
-        )
-
-          if (outcome.isFailure) {
-      response.error = outcome.error || null
-        return response;
-      }
-
-        
-    // Consideration 2: Reconcile updates if data was retrieved
-        if (outcome.value && outcome.value.comments) {
-          // Reconcile updates against incoming block (handles slower message brokers)
-          
-          // Commit clean data to store state
-          response.hasNext = outcome.value.hasNext;
-          response.pointer = outcome.value.pointer;
-
-            // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      response.comments = outcome.value.comments.map((item: any) => initializeCommentListEngagement(item));
-
-
-        } else{ // stop infinite scrolling by setting has next to false
-           response.hasNext = false
-           response.pointer ='-1'
-        }
-
-         response.success = true
-    // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-    return response;
-
-    } catch (err: any) {
-    // Fail-safe catch-all wrapper
-    response.error = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception')
-    return response;
-  } 
-  }
-
-
   /**
    * 4. HydratePersonals (The "Private Truth" authentication state loop with backoff resilience)
    */
@@ -590,15 +360,12 @@ function getRepliesForComment(parentId: string): CommentListDto[] {
     setActiveCommentToReply,
     setActiveContent,
     setActiveComment,
-    fetchContentComments,
-    fetchCommentReplies,
     addCreatedComment,
     getRepliesForComment,
     getAncestorsForComment,
     hydratePersonals,
     loadComments,
     loadReplies,
-    //loadMoreComments,
     abort
 
   };

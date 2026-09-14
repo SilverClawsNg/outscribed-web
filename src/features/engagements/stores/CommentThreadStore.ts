@@ -18,7 +18,6 @@ export const useCommentThreadStore = defineStore('CommentThread', () => {
    * 3. LoadThread (Used when clicking external notification paths outside content page context)
    */
   async function loadThread(apiPath: string): Promise<LoadingCommentThreadResponse> {
-
    
       // 2. Initialize the default response layout envelope right at the entrance gate
         const response: LoadingCommentThreadResponse = {
@@ -28,7 +27,6 @@ export const useCommentThreadStore = defineStore('CommentThread', () => {
           focus: null,
           error: null
         };
-        
 
     try {
 

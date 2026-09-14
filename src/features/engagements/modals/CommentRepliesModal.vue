@@ -113,7 +113,6 @@ async function loadMoreData() {
       // 🎯 Fix index calculation using uniqueComments length instead of total response length
       const pushedProxies = comments.value.slice(-uniqueComments.length);
 
-
       await commentsStore.hydratePersonals(pushedProxies);
     }
   }

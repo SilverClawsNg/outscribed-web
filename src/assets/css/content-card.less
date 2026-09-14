@@ -18,8 +18,9 @@
     border-radius: 4px;
 
     &.no-media{
-      background-color: transparent;
-      border: 1px solid var(--border-color);
+      //background-color: #00AEFF;
+    //color: @white-color;
+      //border: 1px solid var(--border-color);
       height: 60px;
     }
   }
@@ -52,9 +53,14 @@
 
   }
 
+  &__author-badge.stand-alone{
+     background-color: #00AEFF;
+    color: @white-color;
+  }
 
   &__author-badge:not(.stand-alone) {
      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 174, 255, 0.85);
      color: @white-color;
 
     & span.divider.line {

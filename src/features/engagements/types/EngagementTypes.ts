@@ -185,7 +185,6 @@ export interface CommentListDto {
   // Frontend Reactive Extensions
   pinnedReply: CommentListDto | null;
   hasReplied: boolean;
-  expiresAt?: number | null; // UTC timestamp for top-level comments TTL
 
   // 🎯 Pagination State for Child Replies
   hasNext?: boolean;
@@ -201,7 +200,6 @@ export interface GetContentCommentsResponse {
   comments: CommentListDto[];
   hasNext: boolean;
   anchor: string | null;
-  expiresAt: number | null;
   pointer: string | null; 
 }
 
@@ -320,7 +318,6 @@ export interface ActiveContentContext {
   contentType: ContentType;
   engagement: Engageable;
   pinnedComment: CommentListDto | null;
-  expiresAt?: number | null; // UTC timestamp for top-level comments TTL
 
   // 🎯 Pagination State for Child Replies
   hasNext?: boolean;

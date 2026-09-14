@@ -75,17 +75,8 @@ const apiPath = commentFilterStore.buildApiPath(baseRoute.value);
 
       comments.value = response.comments
 
-      
-// 2. Extract only the newly appended proxies from the target stream
-//const pushedProxies = comments.value.slice(-response.comments.length);
-
-// 3. Populate the extensions efficiently
-
-   
     await commentsStore.hydratePersonals(comments.value)
 
-      // Always activate the engagement buttons to lift loading skeletons/spinners
-    //commentsStore.activateEngagementButtons(comments.value)
       }
 
 
@@ -142,13 +133,6 @@ comments.value.push(...uniqueComments);
 
 // 2. 🎯 Slice out the exact reactive PROXIES that Vue just created at the end of the array
 const pushedProxies = comments.value.slice(response.comments.length);
-
- // 3. 🚀 Hydrate the proxies! Now Vue intercepts every mutation and updates the UI instantly.
-
-
-    
-
-    
              await commentsStore.hydratePersonals(pushedProxies)
     }
     
@@ -160,14 +144,12 @@ function createComment() {
   modalStore.push('CreateComment', 'New Comment')
 }
 
-
 async function resetFilters() {
  
    commentFilterStore.reset();
 
   await loadData()
 }
-
   
 async function applySort(type: GeneralSortType) {
   currentSort.value = type;

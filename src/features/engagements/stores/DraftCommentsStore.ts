@@ -376,6 +376,7 @@ async function replyComment(detail: string)
 }
 
   async function updateCommentDetails(payload: UpdateDetailRequest) {
+    
     try {
       const outcome = await postAsync<{ detail: string }>('/api/comments/detail', payload, true);
       
