@@ -191,6 +191,10 @@ export interface CommentListDto {
   hasNext?: boolean;
   pointer?: string | null;
   anchor?: string | null;
+
+  // For thread
+  ancestors: CommentListDto[] | null,
+  title: string | null
 }
 
 export interface GetContentCommentsResponse {
@@ -233,10 +237,15 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
     commentatorUsername: rawComment.commentatorUsername ?? null,
     pinnedReply: rawComment.pinnedReply ?? null,
     hasReplied: false,
+    ancestors: [],
+    title: null,
     // 🛡️ Guarantee the nested engagement layer exists
     engagement: {
     contentId: rawComment.commentId || '',
     contentType: 'Comment',
+
+    
+
       
       
       // 📊 Phase 1 Defaults (Overwritten during lazy-loaded metrics sync)
