@@ -11,7 +11,7 @@ header.main-header {
     z-index: 1000;
     background-color: var(--background-color);
     //box-shadow: var(--header-box-shadow);
-    background-color: #00A0EB;
+    background-color: @link-color;
     color: @white-color;
 }
 
@@ -86,7 +86,7 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
-   background-color: #00A0EB;
+   background-color: @link-color;
     color: @white-color;
 
     @media @smallDevice {
@@ -120,6 +120,10 @@ header.main-header {
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    
+    & button:hover{
+        color:@black-color;
+    }
 }
 
 .main-header__top-navigation-left {
@@ -138,15 +142,11 @@ header.main-header {
     & svg {
         width: 28px;
         height: 28px;
-            stroke-width: 2px;
-
-        &.stroked {
-            & path {
-                stroke:  @white-color;
-                
-            }
-        }
+        stroke-width: 2px;
     }
+
+
+
 }
 
 .main-header__top-navigation-center {
@@ -173,20 +173,25 @@ header.main-header {
         &.spin{
 
             @media @smallDevice{
-                 color:  @white-color;
+              color:  @white-color;
             }
           
-
              @media @largeDevice {
-         border: 1px solid @white-color;
-            display: flex;
-            column-gap: 0.25rem;
-             background-color: var(--text-color);
-        color: var(--native-background-color);
-            padding: 0.25rem 0.5rem;
-            background-color:@white-color;
-    color:  #00A0EB;
-    }
+                border: 1px solid @white-color;
+                display: flex;
+                column-gap: 0.25rem;
+                padding: 0.25rem 0.5rem;
+                background-color:@white-color;
+                color:  @link-color
+            }
+
+            &:hover{
+                @media @largeDevice {
+                border: 1px solid @link-alt-color;
+                background-color: @link-alt-color;
+                color: @white-color;
+                }
+            }
         }
 
         &:not(.spin){
@@ -197,10 +202,8 @@ header.main-header {
         }
 
          & svg {
-               
-                //stroke: @white-color;
-          stroke-width: 2px;
-            }
+            stroke-width: 2px;
+        }
  
         @media @smallDevice {
             border: none;
@@ -215,8 +218,6 @@ header.main-header {
            & svg {
                 width: 28px;
                 height: 28px;
-            
-
             }
 
             &:hover {
@@ -233,8 +234,8 @@ header.main-header {
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
     //border-top: 1px solid @white-color;
- background: var(--background-color);
- background-color: #00A0EB;
+    background: var(--background-color);
+     background-color: @link-color;
     color: @white-color;
     @media @smallDevice {
         max-height: 0;
@@ -244,6 +245,8 @@ header.main-header {
     @media @largeDevice {
         height: 50px;
     }
+
+
 }
 
 .login-required-instruction {
@@ -309,15 +312,16 @@ header.main-header {
             align-items: center;
             font-weight: 500;
             font-size: 1.1rem;
-color: @white-color;
+            color: @white-color;
             &.router-link-exact-active,
             &.active {
                 @media @smallDevice {
-                    border-right-color: @white-color;;
+                    border-left-color: @white-color;
+                    font-size: 1.4rem;
                 }
 
                 @media @largeDevice {
-                    border-bottom-color: @white-color;;
+                    border-bottom-color: @white-color;
                 }
             }
 
@@ -327,9 +331,9 @@ color: @white-color;
             }
 
             @media @smallDevice {
-                height: 60px;
+                height: 40px;
                 width: auto;
-                border-right: 5px solid transparent;
+                border-left: 5px solid transparent;
             }
         }
     }

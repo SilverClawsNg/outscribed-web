@@ -435,6 +435,7 @@ function createComment() {
             title="No Comments Found!" 
             message="There are currently no comments attached to this tale."
             icon="inbox" 
+            :is-bordered="true"
           />
           </template>
       </div>

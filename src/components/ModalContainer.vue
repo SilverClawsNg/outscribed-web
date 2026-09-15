@@ -216,7 +216,7 @@ async function onAnimationEnd(windowItem: any) {
             <div class="inner-modal-header">
               
               <button class="close" @click="modalStore.closeAll()">
-                <SvgIcons name="back-arrow" />
+                &larr;
                 <span>{{ windowItem.title }}</span>
               </button>
 
@@ -228,13 +228,18 @@ async function onAnimationEnd(windowItem: any) {
                   <SvgIcons :name="isExpandModal ? 'maximize' : 'minimize'" />
                 </button>
 
-                <button class="close" @click="modalStore.cancel()">X</button>
+                <button class="close" @click="modalStore.cancel()">
+                  X
+                </button>
+
               </div>
 
             </div>
+
           </div>
 
           <div class="modal-body">
+
             <div class="inner-modal-body">
               
               <component 
@@ -244,10 +249,13 @@ async function onAnimationEnd(windowItem: any) {
               />
 
               <p class="buffer"></p>
+
             </div>
+
           </div>
 
         </div>
+
       </template>
 
     </div>
@@ -255,6 +263,5 @@ async function onAnimationEnd(windowItem: any) {
 </template>
 
 <style lang="less" scoped>
-/* Scoped less styling configurations mapping directly onto your standard layout keys */
 @import "../assets/css/modal.less";
 </style>
