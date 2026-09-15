@@ -339,15 +339,15 @@ export interface ReplyCommentRequest {
 }
 
 export interface UpdateCommentRequest {
-    contentid: string;
-    contentType: ContentType; 
+   contentid: string | null;
+contentType: ContentType | null; 
     detail: string;
     commentId: string;
 }
 
 export interface UpdateAddendumRequest {
-contentid: string;
-contentType: ContentType; 
+contentid: string | null;
+contentType: ContentType | null; 
 addendum: string | null;
 commentId: string;
 }

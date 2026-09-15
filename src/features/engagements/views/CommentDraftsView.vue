@@ -132,9 +132,17 @@ onUnmounted(() => {
    <template v-else>
    
       <div class="shared__page-title">
-        <h1>My Comments</h1>
-        <button class="btn primary" @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">Filter</button>
+       
       </div>
+
+      <header class="page-header shared__container">
+        <h1>My Comments</h1>
+         <button 
+         type="button" 
+         class="btn primary" @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">
+         Filter
+        </button>
+    </header>
     
     <template v-if="wasCleaned">
      <div class=" shared__container">
@@ -142,7 +150,7 @@ onUnmounted(() => {
               title="Invalid Filters Removed!" 
               message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
               icon="warning" 
-              :is-bordered="true"
+              :is-standalone="true"
             />
         </div>
     </template>

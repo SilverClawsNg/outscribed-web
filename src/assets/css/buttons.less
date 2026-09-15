@@ -13,7 +13,7 @@
     text-transform: capitalize;
     color: var(--text-color);
     border: 1px solid transparent;
-     min-width: 100px;
+    
 
      &.with-icon{
          column-gap: 0.25rem;
@@ -44,8 +44,7 @@
         background-color:  #00A0EB;
         color: @white-color;
         &:hover {
-            /*box-shadow: var(--hightlight-shadow-color);*/
-            background-color: var(--alt-background-hover-color);
+            background-color: @link-alt-color;
         }
 
         & svg{
@@ -77,6 +76,9 @@
         border-bottom: 1px solid var(--border-color);
     }
 
+    & .btn{
+         min-width: 100px;
+    }
 
 }
 

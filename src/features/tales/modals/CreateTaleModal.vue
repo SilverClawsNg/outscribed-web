@@ -147,7 +147,7 @@ onMounted(async () => {
         title="Login Required!" 
         message="It appears you are not logged in or have been logged out. Login or register to continue."
         icon="warning"
-        :is-bordered="true"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
@@ -161,7 +161,7 @@ onMounted(async () => {
         title="Account Is Unauthorized!" 
         message="Your account is not currently authorized to publish tales. Upgrade now. It is free and easy."
         icon="warning"
-        :is-bordered="true"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('WriterOnboarding', 'Writer Onboarding')">Upgrade To Writer</button>
@@ -174,7 +174,7 @@ onMounted(async () => {
         title="Account Is Suspended!" 
         message="Your account is currently restricted from submitting tales. Contact support."
         icon="warning"
-        :is-bordered="true"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn secondary" @click="modalStore.push('WriterHelp', 'Writers Help', null, false)">Learn More</button>
@@ -236,7 +236,7 @@ onMounted(async () => {
         title="Unknown Error!" 
         message="An unknown error occured. Refresh page and try again"
         icon="warning"
-        :is-bordered="true"
+        :is-standalone="true"
       >
       </PageStatusMessage>
     </template>

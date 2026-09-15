@@ -17,16 +17,22 @@
     align-items: center;
     position: relative;
     width: 100%;
-    padding: 0.5rem 0;
+    //padding: 1rem 0;
     margin-bottom: 0.5rem;
     background-color: inherit;
     border: none;
-    border-bottom: 1px solid var(--border-color);
+    border: 1px solid var(--border-color);
+    min-height: 4rem;
+    padding-left:0.25rem;
 
     &.with-ticks {
       flex-direction: column;
       align-items: flex-start;
       row-gap: 0.5rem;
+    }
+
+    &.no-borders{
+      border:unset;
     }
 
     &.password-box {
@@ -86,6 +92,7 @@
     appearance: none !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
+    
 
     &:disabled {
       color: var(--muted-text-color);
@@ -243,13 +250,16 @@
 
   button.btn {
     &.primary,
-    &.contrast {
+    &.contrast,
+    &.secondary {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       z-index: 1;
-      border-radius:4px;
+      border-radius:unset;
+      height: 4rem;
+      text-transform:uppercase;
 
       &.active {
         opacity: 0.6;

@@ -2,33 +2,37 @@
 
 // --- IMPORTS ---
 import { ref, onBeforeMount, watch, computed } from 'vue'
-import { useInsightDraftStore } from '../stores/InsightDraftStore'
+import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
+import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
-import type { ConfirmRequest } from '../types/InsightsTypes'
+import type { UpdateCommentRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
 
 // --- INITIALIZE STORES ---
-const insightStore = useInsightDraftStore()
+const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
 
-// --- INITIALIZE FORM DATA FROM STORE ---
-const formData = ref<ConfirmRequest>({
-   insightId: '',
-  confirm: false
+// --- DEFINE FORM DATA ---
+const formData = ref<UpdateCommentRequest>({
+   commentId: '',
+   detail: '',
+   contentid: '',
+   contentType: null
+   
 })
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
-  if (!insightStore.activeInsight) {
+  if (!draftStore.activeComment) {
     // 1. Lock down the form immediately to block accidental click updates
     lockSubmission.value = true
     
     // 2. Pass a friendly, descriptive error straight down to your message layout
     setError({
       title: "Content Unavailable",
-      detail: "Unable to load current insight details. Refresh page and try again",
+      detail: "Unable to load current tale details. Refresh page and try again",
       status: 204 // Standard missing resource code
     })
     
@@ -36,16 +40,16 @@ onBeforeMount(() => {
   }
 
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.insightId = insightStore.activeInsight.insightId
-   resetProgress()
+  formData.value.commentId = draftStore.activeComment.commentId
+  formData.value.detail = draftStore.activeComment.detail ?? ''
+  resetProgress()
 
 })
 
 // --- UI TRANSACTION STATES ---
+const lockSubmission = ref(false)
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 
-// --- RUN VALIDATION ---
-const lockSubmission = ref(false)
 
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
@@ -53,9 +57,12 @@ const formSubmitted = ref(false)
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
+const detailText = formData.value.detail || '';
+
   return {
-    confirm: !formData.value.confirm 
-      ? 'You must confirm action' 
+  
+    detail: detailText === '' || detailText.length < 10 || detailText.length > 65535  || detailText === '<p></p>'
+      ? 'Detail must be between 10 and 65535 characters'
       : ''
   }
 })
@@ -86,7 +93,6 @@ watch(
   { immediate: true }
 )
 
-
 async function handleFormSubmission() {
 
   // 1. Tell the ecosystem the user has initiated an action
@@ -97,12 +103,15 @@ async function handleFormSubmission() {
 
   startLoading()
 
- const { success, error } = await insightStore.archiveInsight(formData.value!)
+const { success, error } = await draftStore.updateCommentDetails(formData.value!)
 
   if(!success){
 
     if(error){
-      setError(error)
+      if(error.title = 'Blank Response'){
+        lockSubmission.value = true
+      }
+    setError(error)
     } else{
           setWarning('An unknown error occured. Refresh page and try again')
     }
@@ -114,48 +123,40 @@ async function handleFormSubmission() {
   }
   
 }
-
 </script>
 
 <template>
 
-    <div class="form-container">
+     <div class="form-container">
 
-    <h2> Lock up insight.</h2>
+   <FormProgress :progress="progressState" />
 
-    <FormProgress :progress="progressState" />
+    <form>
 
-    <form @submit.prevent="handleFormSubmission" autocomplete="off">
-
-        <fieldset class="no-borders" :disabled="progressState.type === 'Loading' || lockSubmission">
-         <div class="ticks">
-            <input 
-                  v-model="formData.confirm" 
-                  type="checkbox" 
-                  id="Confirm"
-                />
-              <label For="Confirm">Tick to confirm action </label>
-          </div>
-        </fieldset>
-     
-   <span v-if="formSubmitted && validationErrors.confirm" class="validation-message">
-        {{ validationErrors.confirm }}
+      <RichTextEditor 
+              id="editor"
+              v-model="formData.detail" 
+            />
+          
+           <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
+        {{ validationErrors.detail }}
       </span>
-
-   <div class="button-holder">
+        <div class="button-holder">
           <button 
-            type="submit" 
+            type="button" 
             class="btn primary" 
-              :disabled="progressState.type === 'Loading' || lockSubmission"
+            @click="handleFormSubmission"
+            :disabled="progressState.type === 'Loading' || lockSubmission"
           >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Archive' }}
+            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
           </button>
         </div>
     </form>
+    
   </div>
 
 </template>
 
 <style scoped>
-@import "@/assets/css/form-input.less";
+@import "@/assets/css/form-container-editor.less";
 </style>

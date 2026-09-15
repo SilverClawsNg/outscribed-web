@@ -5,6 +5,7 @@
   width: 100%;
   //border-bottom: 2px solid var(--border-color);
   margin-bottom: 2rem;
+  margin-top: -1px;
   background-color: #00A0EB;
     color: @white-color;
 
@@ -87,9 +88,6 @@ font-weight: 600;
       font-weight: 700;
     }
 
-    &-highlight {
-      // Styling hook for title emphasis
-    }
   }
 
   &__description {
@@ -122,11 +120,20 @@ font-weight: 600;
 
     &.primary {
       background-color: var(--background-color);
+
+        &:hover{
+        background-color: var(--background-hover-color);
+      }
     }
 
     &.contrast {
        background-color: #00A0EB;
       border-color: @white-color;
+
+      &:hover{
+        background-color: @link-alt-color;
+         border-color: @link-alt-color;
+      }
     }
   }
 

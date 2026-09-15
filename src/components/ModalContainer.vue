@@ -77,6 +77,11 @@ import AskQuestionModal from '@/features/support/modals/AskQuestionModal.vue'
 import ProblemDefinitionModal from '@/features/support/modals/ProblemDefinitionModal.vue'
 import TaleDisclaimerModal from '@/features/tales/modals/TaleDisclaimerModal.vue'
 
+import DeleteCommentModal from '@/features/engagements/modals/DeleteCommentModal.vue'
+import ArchiveCommentModal from '@/features/engagements/modals/ArchiveCommentModal.vue'
+import UpdateCommentModal from '@/features/engagements/modals/UpdateCommentModal.vue'
+import UpdateCommentAddendumModal from '@/features/engagements/modals/UpdateCommentAddendumModal.vue'
+
 import WriterFilterModal from '@/features/authoring/modals/WriterFilterModal.vue'
 
 const modalStore = useModalStore()
@@ -150,7 +155,11 @@ SnapshotListModal: SnapshotListModal,
 WriterFilter: WriterFilterModal,
 ArchiveProfile: ArchiveProfileModal,
 UnarchiveProfile: UnarchiveProfileModal,
-AppealSuspension: AppealSuspensionModal
+AppealSuspension: AppealSuspensionModal,
+DeleteComment: DeleteCommentModal,
+ArchiveComment: ArchiveCommentModal,
+UpdateComment: UpdateCommentModal,
+UpdateCommentAddendum: UpdateCommentAddendumModal
 }
 
 // Helper getter to deliver the raw payload directly without flattening

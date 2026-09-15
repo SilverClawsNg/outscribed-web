@@ -2,26 +2,29 @@
 
 // --- IMPORTS ---
 import { ref, onBeforeMount, watch, computed } from 'vue'
-import { useInsightDraftStore } from '../stores/InsightDraftStore'
+import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
 import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
-import type { ConfirmRequest } from '../types/InsightsTypes'
+import type { UpdateAddendumRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
 
 // --- INITIALIZE STORES ---
-const insightStore = useInsightDraftStore()
+const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
 
-// --- INITIALIZE FORM DATA FROM STORE ---
-const formData = ref<ConfirmRequest>({
-   insightId: '',
-  confirm: false
+// --- DEFINE FORM DATA ---
+const formData = ref<UpdateAddendumRequest>({
+   commentId: '',
+   addendum: '',
+   contentid: '',
+   contentType: null
+   
 })
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
-  if (!insightStore.activeInsight) {
+  if (!draftStore.activeComment) {
     // 1. Lock down the form immediately to block accidental click updates
     lockSubmission.value = true
     
@@ -36,8 +39,9 @@ onBeforeMount(() => {
   }
 
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.insightId = insightStore.activeInsight.insightId
-   resetProgress()
+  formData.value.commentId = draftStore.activeComment.commentId
+  formData.value.addendum = draftStore.activeComment.addendum ?? ''
+  resetProgress()
 
 })
 
@@ -53,12 +57,16 @@ const formSubmitted = ref(false)
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
+const addendumText = formData.value.addendum || '';
+
   return {
-    confirm: !formData.value.confirm 
-      ? 'You must confirm action' 
+  
+    addendum: addendumText === '' || addendumText.length < 3 || addendumText.length > 1024
+      ? 'Addendum must be between 3 and 1024 characters'
       : ''
   }
 })
+
 
 // 3. Form is valid if all computed error fields are empty strings
 const isFormValid = computed(() => {
@@ -89,7 +97,7 @@ watch(
 
 async function handleFormSubmission() {
 
-  // 1. Tell the ecosystem the user has initiated an action
+ // 1. Tell the ecosystem the user has initiated an action
   formSubmitted.value = true
 
   // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
@@ -97,12 +105,12 @@ async function handleFormSubmission() {
 
   startLoading()
 
- const { success, error } = await insightStore.archiveInsight(formData.value!)
+ const { success, error } = await draftStore.updateCommentAddendum(formData.value!)
 
   if(!success){
 
     if(error){
-      setError(error)
+    setError(error)
     } else{
           setWarning('An unknown error occured. Refresh page and try again')
     }
@@ -119,27 +127,24 @@ async function handleFormSubmission() {
 
 <template>
 
-    <div class="form-container">
+     <div class="form-container">
 
-    <h2> Lock up insight.</h2>
+    <h2>Correct, clarify, or cancel. Each item on its own line.</h2>
 
     <FormProgress :progress="progressState" />
 
     <form @submit.prevent="handleFormSubmission" autocomplete="off">
 
-        <fieldset class="no-borders" :disabled="progressState.type === 'Loading' || lockSubmission">
-         <div class="ticks">
-            <input 
-                  v-model="formData.confirm" 
-                  type="checkbox" 
-                  id="Confirm"
-                />
-              <label For="Confirm">Tick to confirm action </label>
-          </div>
+         <fieldset :disabled="progressState.type === 'Loading' || lockSubmission">
+          <textarea 
+            v-model="formData.addendum" 
+            id="Addendum" 
+            class="form-field" 
+            placeholder="Addendum" 
+          ></textarea>
         </fieldset>
-     
-   <span v-if="formSubmitted && validationErrors.confirm" class="validation-message">
-        {{ validationErrors.confirm }}
+                 <span v-if="formSubmitted && validationErrors.addendum" class="validation-message">
+        {{ validationErrors.addendum }}
       </span>
 
    <div class="button-holder">
@@ -148,7 +153,7 @@ async function handleFormSubmission() {
             class="btn primary" 
               :disabled="progressState.type === 'Loading' || lockSubmission"
           >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Archive' }}
+            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
           </button>
         </div>
     </form>

@@ -235,13 +235,13 @@ async function handleFormSubmission() {
     <form @submit.prevent="handleFormSubmission" autocomplete="off">
 
          <fieldset :disabled="progressState.type === 'Loading' || lockSubmission">
-          <textarea 
+          <input 
             v-model="formData.caption" 
-            type="text" 
             id="Caption" 
+            type="text"
             class="form-field" 
             placeholder="Photo caption" 
-          ></textarea>
+          >
         </fieldset>
                <span v-if="formSubmitted && validationErrors.caption" class="validation-message">
         {{ validationErrors.caption }}

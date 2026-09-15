@@ -2,26 +2,26 @@
 
 // --- IMPORTS ---
 import { ref, onBeforeMount, watch, computed } from 'vue'
-import { useInsightDraftStore } from '../stores/InsightDraftStore'
+import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
 import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
-import type { ConfirmRequest } from '../types/InsightsTypes'
+import type { ConfirmRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
 
 // --- INITIALIZE STORES ---
-const insightStore = useInsightDraftStore()
+const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
 
 // --- INITIALIZE FORM DATA FROM STORE ---
 const formData = ref<ConfirmRequest>({
-   insightId: '',
+   commentId: '',
   confirm: false
 })
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
-  if (!insightStore.activeInsight) {
+  if (!draftStore.activeComment) {
     // 1. Lock down the form immediately to block accidental click updates
     lockSubmission.value = true
     
@@ -36,8 +36,8 @@ onBeforeMount(() => {
   }
 
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.insightId = insightStore.activeInsight.insightId
-   resetProgress()
+  formData.value.commentId = draftStore.activeComment.commentId
+  resetProgress()
 
 })
 
@@ -89,7 +89,7 @@ watch(
 
 async function handleFormSubmission() {
 
-  // 1. Tell the ecosystem the user has initiated an action
+ // 1. Tell the ecosystem the user has initiated an action
   formSubmitted.value = true
 
   // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
@@ -97,12 +97,12 @@ async function handleFormSubmission() {
 
   startLoading()
 
- const { success, error } = await insightStore.archiveInsight(formData.value!)
+ const { success, error } = await draftStore.deleteComment(formData.value!)
 
   if(!success){
 
     if(error){
-      setError(error)
+    setError(error)
     } else{
           setWarning('An unknown error occured. Refresh page and try again')
     }
@@ -119,15 +119,15 @@ async function handleFormSubmission() {
 
 <template>
 
-    <div class="form-container">
+     <div class="form-container">
 
-    <h2> Lock up insight.</h2>
+    <h2>Put out this comment. FOREVER.</h2>
 
-    <FormProgress :progress="progressState" />
+   <FormProgress :progress="progressState" />
 
     <form @submit.prevent="handleFormSubmission" autocomplete="off">
 
-        <fieldset class="no-borders" :disabled="progressState.type === 'Loading' || lockSubmission">
+     <fieldset class="no-borders" :disabled="progressState.type === 'Loading' || lockSubmission">
          <div class="ticks">
             <input 
                   v-model="formData.confirm" 
@@ -138,7 +138,7 @@ async function handleFormSubmission() {
           </div>
         </fieldset>
      
-   <span v-if="formSubmitted && validationErrors.confirm" class="validation-message">
+    <span v-if="formSubmitted && validationErrors.confirm" class="validation-message">
         {{ validationErrors.confirm }}
       </span>
 
@@ -148,7 +148,7 @@ async function handleFormSubmission() {
             class="btn primary" 
               :disabled="progressState.type === 'Loading' || lockSubmission"
           >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Archive' }}
+            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Delete' }}
           </button>
         </div>
     </form>

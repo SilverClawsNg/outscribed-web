@@ -10,6 +10,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue';
 import { APIError } from '@/api/apiTypes';
 import { useModalStore } from '@/stores/modalStore'
 import { toShortDate } from '@/utils/dateExtensions'
+import { useRouter, useRoute } from 'vue-router'
 
 const props = defineProps<{
   payload: unknown // Arrives untouched as the raw string AccountId from your container
@@ -21,6 +22,14 @@ const snapshotStore = useSnapshotStore();
 const snapshotFilterStore = useSnapshotFilterStore();
 
 const modalStore = useModalStore();
+const router = useRouter()
+const route = useRoute()
+const currentPath = encodeURIComponent(route.fullPath)
+
+// --- DEFINE PAGE FUNCTIONS ---
+function redirectToLogin() {
+  router.push(`/login?returnUrl=${currentPath}`)
+}
 
 // --- Component Reactive State ---
 const isLoading = ref(true)
@@ -97,9 +106,19 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
 
  <template v-else-if="loadingError">
 
-   <PageStatusMessage 
+  <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'">
+      :message="loadingError.detail || 'An unexpected error occurred.'"
+      icon="warning"
+      :is-standalone="true">
+        <template v-if="loadingError.status == 401" #actions>
+        <button class="btn primary" @click="redirectToLogin">Login</button>
+      </template>
+        <template v-else-if="loadingError.definition" #actions>
+           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+            More Details
+          </button>
+        </template>
     </PageStatusMessage>
 
   </template>
@@ -107,8 +126,10 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
   <template v-else-if="!snapshotStore.snapshots || snapshotStore.snapshots.length === 0">
 
     <PageStatusMessage 
-    title="No Content!"
-    message="Sorry. No metrics was found for this content">
+    title="No Metrics Found!"
+    message="It appears no metrics exists for this comment"
+    icon="inbox"
+    :is-standalone="true">
      
     </PageStatusMessage>
 

@@ -232,7 +232,7 @@ header.main-header {
     z-index: 998;
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
-    border-top: 1px solid var(--border-color);
+    //border-top: 1px solid @white-color;
  background: var(--background-color);
  background-color: #00A0EB;
     color: @white-color;
@@ -309,15 +309,15 @@ header.main-header {
             align-items: center;
             font-weight: 500;
             font-size: 1.1rem;
-
+color: @white-color;
             &.router-link-exact-active,
             &.active {
                 @media @smallDevice {
-                    border-right-color: var(--text-color);
+                    border-right-color: @white-color;;
                 }
 
                 @media @largeDevice {
-                    border-bottom-color: var(--text-color);
+                    border-bottom-color: @white-color;;
                 }
             }
 

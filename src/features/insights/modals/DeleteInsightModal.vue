@@ -127,7 +127,7 @@ async function handleFormSubmission() {
 
     <form @submit.prevent="handleFormSubmission" autocomplete="off">
 
-     <fieldset :disabled="progressState.type === 'Loading' || lockSubmission">
+     <fieldset class="no-borders" :disabled="progressState.type === 'Loading' || lockSubmission">
          <div class="ticks">
             <input 
                   v-model="formData.confirm" 

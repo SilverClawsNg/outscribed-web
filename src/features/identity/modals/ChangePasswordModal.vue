@@ -166,7 +166,7 @@ onMounted(() => {
         {{ validationErrors.newPassword }}
       </span>
 
-         <fieldset :disabled="progressState.type === 'Loading'">
+         <fieldset class="no-borders" :disabled="progressState.type === 'Loading'">
       <div class="ticks">
 
   <input 

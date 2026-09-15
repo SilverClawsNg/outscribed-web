@@ -103,6 +103,7 @@ onBeforeMount(() => {
                 title="No Summary Added!"
                 message="Add a concise but descriptive summary of the tale."
                 icon="inbox"
+                :is-bordered="true"
                 />
 
           </template>
@@ -129,6 +130,7 @@ onBeforeMount(() => {
                 title="No Image Added!"
                 message="Add an image as a pictorial summary of the insight. Images are optional"
                 icon="inbox"
+                :is-bordered="true"
                 />
                 
           </template>
@@ -148,6 +150,7 @@ onBeforeMount(() => {
                 title="No Details Added!"
                 message="Add the details of the insight."
                 icon="inbox"
+                :is-bordered="true"
                 />
         </template>
     
@@ -176,6 +179,7 @@ onBeforeMount(() => {
                 title="No Tags Added!"
                 message="Use trending tags to make your tale more visible"
                 icon="inbox"
+                :is-bordered="true"
                 />
             </template>
 

@@ -7,6 +7,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { TagRequest, UntagRequest } from '../types/InsightsTypes'
 import { useModalStore } from '@/stores/modalStore'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // --- INITIALIZE STORES ---
 const insightStore = useInsightDraftStore()
@@ -240,12 +241,13 @@ currentTag.value = tagId
     
      <template v-else>
 
-       <PageStatusMessage
+     <PageStatusMessage
         title="No Tags Found!"
-        message="You have not added any tags to your tale. Any tags added appear here."
+        message="Tag your tale to its relevant issues"
         icon="inbox"
-        :is-bordered="true"
+        :is-standalone="true"
         />
+
 
     </template>
 

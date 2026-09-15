@@ -2,26 +2,26 @@
 
 // --- IMPORTS ---
 import { ref, onBeforeMount, watch, computed } from 'vue'
-import { useInsightDraftStore } from '../stores/InsightDraftStore'
+import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
 import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
-import type { ConfirmRequest } from '../types/InsightsTypes'
+import type { ConfirmRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
 
 // --- INITIALIZE STORES ---
-const insightStore = useInsightDraftStore()
+const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
 
 // --- INITIALIZE FORM DATA FROM STORE ---
 const formData = ref<ConfirmRequest>({
-   insightId: '',
+   commentId: '',
   confirm: false
 })
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
-  if (!insightStore.activeInsight) {
+  if (!draftStore.activeComment) {
     // 1. Lock down the form immediately to block accidental click updates
     lockSubmission.value = true
     
@@ -36,7 +36,7 @@ onBeforeMount(() => {
   }
 
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.insightId = insightStore.activeInsight.insightId
+  formData.value.commentId = draftStore.activeComment.commentId
    resetProgress()
 
 })
@@ -97,7 +97,7 @@ async function handleFormSubmission() {
 
   startLoading()
 
- const { success, error } = await insightStore.archiveInsight(formData.value!)
+ const { success, error } = await draftStore.archiveComment(formData.value!)
 
   if(!success){
 
@@ -121,7 +121,7 @@ async function handleFormSubmission() {
 
     <div class="form-container">
 
-    <h2> Lock up insight.</h2>
+    <h2> Lock up comment forever. FOREVER.</h2>
 
     <FormProgress :progress="progressState" />
 
@@ -138,7 +138,7 @@ async function handleFormSubmission() {
           </div>
         </fieldset>
      
-   <span v-if="formSubmitted && validationErrors.confirm" class="validation-message">
+      <span v-if="formSubmitted && validationErrors.confirm" class="validation-message">
         {{ validationErrors.confirm }}
       </span>
 

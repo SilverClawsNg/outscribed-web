@@ -146,7 +146,7 @@ resetProgress()
         title="Login Required!" 
         message="It appears you are not logged in or have been logged out. Login or register to continue."
         icon="warning"
-        :is-bordered="true"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
@@ -162,7 +162,7 @@ resetProgress()
         title="Created!" 
         message="Your insight has been created but you have to use your editor to update and launch."
         icon="check"
-        :is-bordered="true"
+        :is-standalone="true"
       >
         <template #actions>
           <button class="btn primary" @click="redirectToEditor">Editor</button>

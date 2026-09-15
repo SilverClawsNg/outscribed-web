@@ -59,7 +59,7 @@ async function handleModalUpdate(type: string, title: string) {
 
 <template>
       
-  <article class="comments-list__card">
+  <article class="comment-card">
 
     <div class="shared__content-status">
 
@@ -69,16 +69,19 @@ async function handleModalUpdate(type: string, title: string) {
       </span>
     </div>
 
-    <section class="comments-list__metadata">
-        {{ toRelativeTime(comment.commentedAt) }}
-      <span class="shared__divider shared__divider--circle"></span>
-       <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
-         {{ ContentTypeDescriptions[comment.contentType] }}
-      </RouterLink>
+    <header class="comment-card__header">
 
-    </section>
+        <time class="comment-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
 
-    <section class="comments-list__text">
+         <span class="shared__divider shared__divider--circle"></span>
+
+           <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
+            {{ ContentTypeDescriptions[comment.contentType] }}
+          </RouterLink>
+
+    </header>
+
+    <section class="comment-card__text">
 
       <div 
         ref="commentElement" 
@@ -88,7 +91,7 @@ async function handleModalUpdate(type: string, title: string) {
       
       <button 
         v-if="hasOverflow && !isExpanded" 
-        class="comments-list__show-text" 
+        class="comment-card__show-text" 
         @click="isExpanded = true"
       >
         <span class="caret-down"></span>
@@ -96,12 +99,12 @@ async function handleModalUpdate(type: string, title: string) {
       
     </section>
 
-     <section class="comment-lists__stats">
-      <p><span>{{ formatCounts(comment.engagement.commentsCount) }}</span> Replies</p>
-      <p><span>{{ formatCounts(comment.engagement.upvotesCount) }}</span> Upvotes</p>
-       <p><span>{{ formatCounts(comment.engagement.downvotesCount) }}</span> Downvotes</p>
-      <p><span>{{ formatCounts(comment.engagement.favoritesCount) }}</span> Saves</p>
-      <p><span>{{ formatCounts(comment.engagement.flagsCount) }}</span> Flags</p>
+     <section class="comment-card__stats">
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.commentsCount) }}</span> Replies</p>
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.upvotesCount) }}</span> Upvotes</p>
+       <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.downvotesCount) }}</span> Downvotes</p>
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.favoritesCount) }}</span> Saves</p>
+      <p class="comment-card__stat"><span>{{ formatCounts(comment.engagement.flagsCount) }}</span> Flags</p>
       
     </section>
 
@@ -120,15 +123,11 @@ async function handleModalUpdate(type: string, title: string) {
               Archive
             </button>
         </template>
-         <template v-if="comment.status === 'ActiveToArchivedByCreator' || comment.status === 'CertifiedToArchivedByCreator'">
-            <button class="btn secondary" @click="handleModalUpdate('UnarchiveComment', 'Unarchive Comment')">
-              Unarchive
-            </button>
-        </template>
+       
           </template>
 
           <template v-else>
-            <button class="btn primary" @click="handleModalUpdate('UpdateCommentDetail', 'Update Comment Detail')">
+            <button class="btn primary" @click="handleModalUpdate('UpdateComment', 'Update Comment')">
               Update
             </button>
           <button class="btn secondary" @click="handleModalUpdate('DeleteComment', 'Delete Comment')">
