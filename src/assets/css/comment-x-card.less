@@ -41,4 +41,33 @@
     }
   }
 
+  
+  &__expand-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3rem;
+    background: linear-gradient(to bottom, transparent, var(--background-color));
+    border: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+
+    .caret-down {
+      width: 0;
+      height: 0;
+      border-left: 0.35rem solid transparent;
+      border-right: 0.35rem solid transparent;
+      border-top: 0.35rem solid var(--text-color);
+    }
+
+    &:hover .caret-down {
+      border-top-color: var(--hover-color);
+    }
+  }
+
+
 }

@@ -86,7 +86,7 @@ onMounted(async () => {
       
       <button 
         v-if="hasOverflow && !isExpanded" 
-        class="comment-card__show-text" 
+        class="comment-card__expand-btn" 
         @click="isExpanded = true"
       >
         <span class="caret-down"></span>

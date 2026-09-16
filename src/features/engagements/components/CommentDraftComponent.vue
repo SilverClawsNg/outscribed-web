@@ -91,7 +91,7 @@ async function handleModalUpdate(type: string, title: string) {
       
       <button 
         v-if="hasOverflow && !isExpanded" 
-        class="comment-card__show-text" 
+        class="comment-card__expand-btn" 
         @click="isExpanded = true"
       >
         <span class="caret-down"></span>
