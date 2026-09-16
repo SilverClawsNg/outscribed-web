@@ -113,7 +113,7 @@ function handleSubmit() {
     <div class="button-holder">
       <button 
         type="submit" 
-        class="btn contrast" 
+        class="btn secondary" 
         :disabled="isLoading || !captchaToken"
       >
         {{ isLoading ? 'Submitting...' : 'Continue' }}

@@ -97,7 +97,6 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   CopyLink: 'Copy Link'
 } as const;
 
-
   export const AccountStatusDescriptions: Record<AccountStatus, string> = {
   Active: 'Active',
   HiddenByModeration: 'Hidden',
@@ -108,6 +107,8 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
 
   export const CategoryDescriptions: Record<Category, string> = {
   Tributuary: 'Tributuary',
+  Reflections: 'Reflections',
+  DoomsDay: 'Dooms day',
   PoliticsGovernance: 'Politics & Government',
   SportsGaming: 'Sports & Gaming',
   ScienceTechnology: 'Science & Technology',

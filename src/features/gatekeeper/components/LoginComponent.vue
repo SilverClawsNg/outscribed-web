@@ -117,7 +117,7 @@ onMounted(() => {
 
 <template>
 
-  <div class="form-container" :class="{ 'boxed': isPage }">
+  <div class="form-container">
 
     <template v-if="isPage">
       <h1 class="form-header">Login</h1>
@@ -166,7 +166,7 @@ onMounted(() => {
       <div class="button-holder">
           <button 
             type="submit" 
-            class="btn contrast" 
+            class="btn secondary" 
             :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Complete' }}
@@ -190,7 +190,13 @@ onMounted(() => {
             >
                 Forgotten password?
             </button>
-           
+            <span class="shared__divider shared__divider--line"></span>
+             <button 
+                type="button" 
+                @click="emit('createAccount')"
+            >
+                Create New Account
+            </button>
         </div>
         
         </template>
@@ -203,5 +209,4 @@ onMounted(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/form-input.less";
-@import "@/assets/css/boxed-form.less";
 </style>

@@ -11,7 +11,7 @@ defineProps<{
   isStandalone?: boolean
 }>()
 
-export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive';
+export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive' | 'fail' | 'shield';
 
 </script>
 

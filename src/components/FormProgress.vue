@@ -47,8 +47,8 @@ const emit = defineEmits<{
       <p class="error">{{ progress.message ?? 'An unexpected error occurred.' }}</p>
       
       <div class="error-actions"  v-if="progress.error?.definition">
-        <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', progress.error)"  >
-          More Details
+        <button @click="modalStore.push('ProblemDefinition', 'Problem Detail', progress.error)"  >
+          [See More Details]
         </button>
       </div>
     </div>
@@ -56,7 +56,7 @@ const emit = defineEmits<{
     <div v-else-if="progress.type === 'Login'" class="form-message-contents unauthorized">
       <h3><span class="form-message-icon">⚠️</span> 401: Login Required</h3>
       <p class="error">Login is required to continue.</p>
-      <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
+      <button @click="modalStore.push('LoginUser', 'Login')">[Continue to Login]</button>
     </div>
 
 </template>

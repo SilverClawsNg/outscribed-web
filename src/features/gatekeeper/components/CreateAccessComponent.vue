@@ -131,7 +131,7 @@ function handleSubmit() {
     <div class="button-holder">
       <button 
       type="submit" 
-      class="btn contrast" 
+      class="btn secondary" 
       :disabled="isLoading || isUsernameError">
         {{ isLoading && !isUsernameError ? 'Submitting...' : 'Complete' }}
       </button>

@@ -213,6 +213,7 @@ async function onAnimationEnd(windowItem: any) {
         >
           
           <div class="modal-header">
+            
             <div class="inner-modal-header">
               
               <button class="close" @click="modalStore.closeAll()">

@@ -15,12 +15,19 @@ async function handleLoginSuccess() {
 function navigateToReset() {
   modalStore.push('ResetPassword', 'Reset Password') 
 }
+
+function navigateToRegister() {
+  modalStore.push('RegisterUser', 'Create Account') 
+}
+
 </script>
 
 <template>
      <Login
         :is-page="false" 
+        message="Login is required to perform action"
         @success="handleLoginSuccess" 
         @forgot-password="navigateToReset"
+        @create-account="navigateToRegister"
       />
 </template>

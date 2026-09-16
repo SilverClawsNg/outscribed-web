@@ -133,6 +133,8 @@ export type LimitedContentType =
 // 1. Core domain enumeration 
 export type Category =
  'Tributuary'
+  | 'Reflections'
+  | 'DoomsDay'
   | 'PoliticsGovernance'
   | 'SportsGaming'
   | 'ScienceTechnology'

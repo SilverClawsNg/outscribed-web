@@ -106,7 +106,7 @@ function handleSubmit() {
     <div class="button-holder">
       <button 
         type="submit" 
-        class="btn contrast" 
+        class="btn secondary" 
         :disabled="isLoading"
       >
         {{ isLoading ? 'Submitting...' : 'Continue' }}

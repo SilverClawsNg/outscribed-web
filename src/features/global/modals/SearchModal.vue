@@ -43,17 +43,7 @@ function executeSearch() {
   
     <form @submit.prevent="executeSearch">
 
-      <fieldset>
-          <input 
-            v-model="keyword" 
-            type="search" 
-            id="Keyword" 
-            class="form-field" 
-            placeholder="-- enter keyword --" 
-          />
-        </fieldset>
-
-        <div class="ticks">
+    <div class="ticks">
       <p v-for="target in searchTargets" 
         :key="target.value" 
         :class="{ 'is-active': contentType === target.value }">
@@ -66,8 +56,17 @@ function executeSearch() {
       />
      <label :For=target.value>{{ target.label }} </label>
     </p>
-      
-      </div>
+  </div>
+
+      <fieldset>
+          <input 
+            v-model="keyword" 
+            type="search" 
+            id="Keyword" 
+            class="form-field" 
+            placeholder="-- enter keyword --" 
+          />
+        </fieldset>
 
    <div class="button-holder">
           <button 

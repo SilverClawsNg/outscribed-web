@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, onMounted  } from 'vue'
 import { APIError } from '@/api/apiTypes.ts'
 import type { SendTokenResponse } from '@/features/gatekeeper/types/GatewayTypes.ts'
 import { postAsync } from '@/api/apiPostServices'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // Composables & Shared UI
 import { useFormProgress } from '@/composables/useFormProgress.ts'
@@ -34,29 +35,36 @@ const { progressState, startLoading, setSuccess, setWarning, setError, resetProg
 // State Persistence across Step Transitions
 const verificationId = ref<string | null>(null)
 const savedEmailAddress = ref('')
-const captchaToken = ref<string | null>(null)
 const countdownTimer = ref(0)
 const canResendToken = ref(false)
 
-let timerInterval: number | null = null
-
-const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
 
 // --- CAPTCHA GATE HANDLERS ---
+const captchaToken = ref<string | null>(null)
+const captchaState = ref<string>('')
+const captchaErrorMessage = ref<string>('')
+
 function handleCaptchaSuccess(token: string) {
   captchaToken.value = token
-  setSuccess('Security check completed. You may now continue.')
+  captchaState.value = 'VERIFIED'
 }
 
 function handleCaptchaError() {
   captchaToken.value = null
-  setError(new APIError(0, 'Security Error', 'Error occurred while verifying captcha. Please refresh page and try again.'))
+  captchaState.value = 'FAILED'
+  setError(new APIError(0, 'Security Error', 'Error occurred while verifying captcha. Please refresh and try again.'))
 }
 
-function handleCaptchaExpired() {
+
+function resetCaptcha() {
   captchaToken.value = null
-  setWarning('Security token expired. Please complete the captcha again.')
+  captchaState.value = 'READY'
 }
+
+
+let timerInterval: number | null = null
+
+const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
 
 /**
  * --- STEP 1A: Initial Email Submission (Uses saved captchaToken) ---
@@ -82,8 +90,16 @@ async function onEmailSubmitted(email: string) {
 
   if (outcome.isFailure) {
     isFormLoading.value = false
-    captchaToken.value = null // Invalidate token on failure to force fresh verification on retry
+
+ // 🎯 DO NOT nullify token on standard form validation errors!
+    // ONLY invalidate if backend explicitly reports a CAPTCHA verification failure:
+    if (outcome.error?.title === 'Captcha Error') {
+      captchaToken.value = null
+      captchaState.value = 'FAILED'
+      captchaErrorMessage.value = 'Captcha validation failed on server. Please re-verify.'
+    }else{
     setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred. Refresh page and try again.'))
+    }
     return
   }
 
@@ -211,34 +227,67 @@ function handleResendRequest() {
   activeStep.value = 1
 }
 
+
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval)
 })
 </script>
 
 <template>
-  <div class="form-container" :class="{ 'boxed': isPage }">
-    <template v-if="isPage">
-      <h1>Reset Password</h1>
-    </template>
 
+  <div class="form-container">
+
+    <!-- STEP 0: CAPTCHA GATE SCREEN -->
+     <template  v-if="!captchaToken">
+      
+       <template v-if="captchaState === 'FAILED'">
+
+         <PageStatusMessage 
+              title="Verification Failed!" 
+              message={{ captchaErrorMessage }}
+              icon="shield" 
+              :is-standalone="true"
+               >
+                <template #actions>
+                <button type="button" class="btn btn-secondary" @click="resetCaptcha">
+                  Try Again
+                </button>
+              </template>
+        </PageStatusMessage>
+      
+       </template>
+
+      <template v-else>
+      
+          <PageStatusMessage 
+              title="Checking Security!" 
+              message="Performing a quick security check before continuing..."
+              icon="shield" 
+              :is-standalone="true"
+            />
+
+              <TurnstileWidget 
+              :site-key="siteKey" 
+              @success="handleCaptchaSuccess"
+              @error="handleCaptchaError"
+            />
+
+      </template>
+
+     </template>
+
+     <template  v-else >
+      
+    <template v-if="isPage">
+      <h1 class="form-header">Reset Password</h1>
+    </template>
+    
     <h2>Follow these steps to reset your password</h2>
 
     <FormProgress :progress="progressState" :is-boxed="true" />
 
-    <!-- STEP 0: CAPTCHA GATE SCREEN -->
-    <div v-if="!captchaToken" class="captcha-gate">
-      <p class="captcha-gate__instruction">Complete the security check below to proceed:</p>
-      <TurnstileWidget 
-        :site-key="siteKey" 
-        @success="handleCaptchaSuccess"
-        @error="handleCaptchaError"
-        @expired="handleCaptchaExpired"
-      />
-    </div>
-
     <!-- MAIN RESET ACCORDION (UNLOCKED AFTER CAPTCHA VERIFICATION) -->
-    <article v-else class="multi-form">
+    <article class="multi-form">
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 1 }"></span>
@@ -271,7 +320,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 2 }"></span>
-          <h3>Verify Email Address</h3>
+          <h3>Enter Verification Token</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 2 }">
           <VerifyTokenStep 
@@ -288,7 +337,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 3 }"></span>
-          <h3>Complete Reset</h3>
+          <h3>Enter New Password</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 3 }">
           <CompleteResetStep 
@@ -301,10 +350,11 @@ onUnmounted(() => {
         </div>
       </section>
     </article>
+    </template>
+
   </div>
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/boxed-form.less";
 @import "@/assets/css/multi-form.less";
 </style>

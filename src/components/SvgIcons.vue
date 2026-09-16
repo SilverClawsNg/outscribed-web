@@ -4,7 +4,7 @@ defineProps<{
   name: 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain' | 'padlock' | 'bookmark' | 'upvote'
   | 'downvote' | 'share' | 'facebook' | 'twitter' | 'linkedin' | 'email' | 'placeholder' | 'back-arrow'  | 'globe' | 'tag'
   | 'clock' | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow' | 'downarrow' | 'inbox'
-  | 'warning'
+  | 'warning' | 'shield' | 'fail'
   size?: number
 }>()
 </script>
@@ -428,4 +428,30 @@ v-else-if="name === 'downarrow'"
   <path d="M1 21h22L12 2 1 21zm12-3h-2v2h2v-2zm0-8h-2v6h2V10z"/>
 </svg>
 
+<svg 
+  v-else-if="name === 'shield'" 
+      :width="size || 16" 
+      :height="size || 16" 
+      viewBox="0 0 24 24"
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="1" 
+      v-bind="$attrs">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M12 8v4"/>
+        <path d="M12 16h.01"/>
+      </svg>
+<svg 
+  v-else-if="name === 'fail'" 
+      :width="size || 16" 
+      :height="size || 16" 
+      viewBox="0 0 24 24"
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="1" 
+      v-bind="$attrs">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
 </template>

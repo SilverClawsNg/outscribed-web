@@ -3,13 +3,22 @@
 // --- Form Container Base ---
 .form-container {
   width: 100%;
-  box-sizing: border-box;
+  max-width: 450px;
+  margin: 0 auto;
 
-    h2 {
+   h1.form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.5rem
+   }
+
+     & > h2 {
         text-align: center;
         margin-bottom: 1rem;
         font-style: italic;
     }
+
+    & form{ width: 100%}
 
   // --- Fieldsets & Control Enclosures ---
   fieldset {
@@ -281,18 +290,6 @@
     column-gap: 0.25rem;
     margin: 1rem 0;
 
-    a,
-    button {
-      font-size: 0.85rem;
-      color: var(--text-color);
-      background: none;
-      border: none;
-      cursor: pointer;
-
-      &:hover {
-        color: var(--hover-color);
-      }
-    }
   }
 }
 
