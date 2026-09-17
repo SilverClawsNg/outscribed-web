@@ -141,7 +141,6 @@ onMounted(async () => {
   <template v-if=isInitializing>
      <div class="loader" role="status" aria-label="Resolving account">
         <p class="loader__dot"></p>
-        <span class="sr-only">Resolving account...</span>
     </div>
   </template>
   

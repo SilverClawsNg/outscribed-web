@@ -83,7 +83,6 @@ onUnmounted(() => {
      <template v-if="isLoading">
      <div class="loader" role="status" aria-label="Loading profile">
   <p class="loader__dot"></p>
-  <span class="sr-only">Loading Profile...</span>
 </div>
     </template>
    

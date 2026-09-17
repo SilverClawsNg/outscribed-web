@@ -164,7 +164,6 @@ onUnmounted(() => {
 
    <div class="loader" role="status" aria-label="Loading users">
   <p class="loader__dot"></p>
-  <span class="sr-only">Loading Users...</span>
 </div>
 
   </template>

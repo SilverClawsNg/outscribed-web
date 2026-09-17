@@ -152,7 +152,6 @@ onUnmounted(() => {
   <template v-else-if="isLoading">
     <div class="loader" role="status" aria-label="Loading tale">
   <p class="loader__dot"></p>
-  <span class="sr-only">Loading Tale...</span>
 </div>
   </template>
 

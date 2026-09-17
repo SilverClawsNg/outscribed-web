@@ -99,7 +99,6 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
 
   <div class="loader" role="status" aria-label="Loading Snapshots">
     <p class="loader__dot"></p>
-    <span class="sr-only">Loading Snapshots...</span>
   </div>
 
   </template>

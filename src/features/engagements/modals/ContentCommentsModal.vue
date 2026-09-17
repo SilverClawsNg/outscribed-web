@@ -187,7 +187,6 @@ onMounted(async () => {
 
    <div class="loader" role="status" aria-label="Loading comments">
   <p class="loader__dot"></p>
-  <span class="sr-only">Loading Comments...</span>
 </div>
 
   </template>

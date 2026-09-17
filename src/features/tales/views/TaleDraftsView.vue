@@ -122,7 +122,6 @@ onUnmounted(() => {
   <template v-if=isInitializing>
      <div class="loader" role="status" aria-label="Loading tales">
   <p class="loader__dot"></p>
-  <span class="sr-only">Loading Tales...</span>
 </div>
   </template>
   
@@ -159,7 +158,6 @@ onUnmounted(() => {
 
     <div class="loader" role="status" aria-label="Loading tales">
       <p class="loader__dot"></p>
-      <span class="sr-only">Loading Tales...</span>
     </div>
 
   </template>
