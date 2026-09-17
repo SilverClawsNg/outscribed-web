@@ -175,19 +175,19 @@ header.main-header {
             }
           
              @media @largeDevice {
-                border: 1px solid #00A0EB;
+                border: 1px solid @link-alt-color;
                 display: flex;
                 column-gap: 0.25rem;
                 padding: 0.25rem 0.5rem;
-                background-color:#00A0EB;
+                background-color:@link-alt-color;
                 color:  @white-color
             }
 
             &:hover{
                 @media @largeDevice {
-                border: 1px solid #006FA4;
-                background-color: #006FA4;
-                color: @white-color;
+                border: 1px solid @white-color;
+                background-color: @white-color;
+                color: @link-color;
                 }
             }
         }
@@ -312,7 +312,7 @@ header.main-header {
             font-weight: 600;
 
             &:hover{
-                color: #00A0EB
+                color: @link-alt-color
             }
 
              @media @largeDevice {
@@ -330,12 +330,12 @@ header.main-header {
             &.router-link-exact-active,
             &.active {
                 @media @smallDevice {
-                    border-right-color: #00A0EB;
+                    border-right-color:@white-color;
                    
                 }
 
                 @media @largeDevice {
-                    border-bottom-color: #00A0EB;
+                    border-bottom-color: @white-color;
                    
                 }
             }
@@ -365,7 +365,7 @@ header.main-header {
     &:hover {
 
         & div {
-            background-color: var(--hover-color);
+            background-color: @link-alt-color;
         }
     }
 }
