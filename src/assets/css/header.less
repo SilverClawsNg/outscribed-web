@@ -122,7 +122,7 @@ header.main-header {
     height: 100%;
     
     & button:hover{
-        color:#00A0EB;
+        color: @link-alt-color;
     }
 }
 
@@ -175,19 +175,18 @@ header.main-header {
             }
           
              @media @largeDevice {
-                border: 1px solid @link-alt-color;
+                border: 2px solid @white-color;
                 display: flex;
                 column-gap: 0.25rem;
                 padding: 0.25rem 0.5rem;
-                background-color:@link-alt-color;
+                background-color:transparent;
                 color:  @white-color
             }
 
             &:hover{
                 @media @largeDevice {
-                border: 1px solid @white-color;
-                background-color: @white-color;
-                color: @link-color;
+                background-color: @link-alt-color;
+                border-color:@link-alt-color;
                 }
             }
         }
@@ -266,10 +265,6 @@ header.main-header {
         font-weight: normal;
         text-decoration: underline;
         height: auto;
-
-        &:hover {
-            text-decoration: none;
-        }
     }
 }
 
@@ -310,10 +305,6 @@ header.main-header {
             align-items: center;
             color: @white-color;
             font-weight: 600;
-
-            &:hover{
-                color: @link-alt-color
-            }
 
              @media @largeDevice {
                 height: 100%;

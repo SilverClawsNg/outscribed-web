@@ -52,7 +52,8 @@
 
   &__tagline {
     margin-bottom: 1rem;
-font-weight: 600;
+    font-weight: 600;
+
     @media @smallDevice {
       font-size: 1rem;
       text-align: center;
@@ -120,20 +121,21 @@ font-weight: 600;
 
     &.btn.btn--primary {
       background-color: var(--background-color);
-
+      border-width: 2px;  
+      
         &:hover{
         background-color: var(--background-hover-color);
       }
     }
 
     &.btn.btn--contrast {
-       background-color: @link-alt-color;
-      border-color: transparent;
+       background-color: transparent;
+      border-color: @white-color;
+      border-width: 2px;
 
       &:hover{
-        background-color: @white-color;
-         border-color: transparent;
-         color:@link-color;
+        background-color: @link-alt-color;
+        border-color: @link-alt-color;
       }
     }
   }
