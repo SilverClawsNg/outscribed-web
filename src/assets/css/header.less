@@ -11,7 +11,7 @@ header.main-header {
     z-index: 1000;
     background-color: var(--background-color);
     //box-shadow: var(--header-box-shadow);
-    background-color: @link-color;
+    background-color: @header-background-color;
     color: @white-color;
 }
 
@@ -86,7 +86,7 @@ header.main-header {
     background: var(--background-color);
     position: relative;
     z-index: 999;
-   background-color: @link-color;
+    background-color:  @header-background-color;
     color: @white-color;
 
     @media @smallDevice {
@@ -122,7 +122,7 @@ header.main-header {
     height: 100%;
     
     & button:hover{
-        color:@black-color;
+        color:#00A0EB;
     }
 }
 
@@ -144,8 +144,6 @@ header.main-header {
         height: 28px;
         stroke-width: 2px;
     }
-
-
 
 }
 
@@ -177,18 +175,19 @@ header.main-header {
             }
           
              @media @largeDevice {
-                border: 1px solid @white-color;
+                border: 1px solid #00A0EB;
                 display: flex;
                 column-gap: 0.25rem;
                 padding: 0.25rem 0.5rem;
-                background-color:@white-color;
-                color:  @link-color
+                background-color:#00A0EB;
+                color:  @white-color;
+                font-weight: 700;
             }
 
             &:hover{
                 @media @largeDevice {
-                border: 1px solid @link-alt-color;
-                background-color: @link-alt-color;
+                border: 1px solid #006FA4;
+                background-color: #006FA4;
                 color: @white-color;
                 }
             }
@@ -233,9 +232,8 @@ header.main-header {
     z-index: 998;
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
-    //border-top: 1px solid @white-color;
     background: var(--background-color);
-     background-color: @link-color;
+    background-color:  @header-background-color;
     color: @white-color;
     @media @smallDevice {
         max-height: 0;
@@ -313,6 +311,10 @@ header.main-header {
             color: @white-color;
             font-weight: 600;
 
+            &:hover{
+                color: #00A0EB;
+            }
+
              @media @largeDevice {
                 height: 100%;
                 border-bottom: 3px solid transparent;
@@ -328,12 +330,12 @@ header.main-header {
             &.router-link-exact-active,
             &.active {
                 @media @smallDevice {
-                    border-right-color: @white-color;
+                    border-right-color:  @header-background-color;
                    
                 }
 
                 @media @largeDevice {
-                    border-bottom-color: @white-color;
+                    border-bottom-color:  @header-background-color;
                    
                 }
             }
@@ -363,7 +365,7 @@ header.main-header {
     &:hover {
 
         & div {
-            background-color: var(--hover-color);
+            background-color: #00A0EB;
         }
     }
 }

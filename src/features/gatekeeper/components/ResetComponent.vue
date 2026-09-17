@@ -260,8 +260,8 @@ onUnmounted(() => {
       <template v-else>
       
           <PageStatusMessage 
-              title="Checking Security!" 
-              message="Performing a quick security check before continuing..."
+              title="Performing security verification!" 
+              message="This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot."
               icon="shield" 
               :is-standalone="true"
             />

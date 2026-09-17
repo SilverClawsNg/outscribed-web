@@ -6,8 +6,8 @@
   //border-bottom: 2px solid var(--border-color);
   margin-bottom: 2rem;
   margin-top: -1px;
-  background-color: #00A0EB;
-    color: @white-color;
+  background-color:  @header-background-color;
+  color: @white-color;
 
   @media @smallDevice {
     padding-top: 2rem;
@@ -92,7 +92,7 @@ font-weight: 600;
 
   &__description {
     margin-bottom: 1rem;
-font-weight: 600;
+    font-weight: 600;
     @media @smallDevice {
       text-align: center;
     }
@@ -120,7 +120,7 @@ font-weight: 600;
 
     &.btn.btn--primary {
       background-color: var(--background-color);
-
+border-color: var(--background-color);
         &:hover{
         background-color: var(--background-hover-color);
       }
@@ -128,11 +128,12 @@ font-weight: 600;
 
     &.btn.btn--contrast {
        background-color: #00A0EB;
-      border-color: @white-color;
+       border-color: #00A0EB;
+       font-weight: 700;
 
       &:hover{
-        background-color: @link-alt-color;
-         border-color: @link-alt-color;
+        background-color: #006FA4;
+         border-color: #006FA4;
       }
     }
   }
