@@ -79,10 +79,10 @@ onMounted(async () => {
       icon="warning"
       :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
-        <button class="btn primary" @click="redirectToLogin">Login</button>
+        <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>

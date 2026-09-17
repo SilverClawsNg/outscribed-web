@@ -118,8 +118,8 @@ async function handleFormSubmission() {
       title="Login Required!" 
       message="It appears you are not logged in or have been logged out. Login/register to continue.">
       <template #actions>
-        <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
-         <button class="btn primary" @click="modalStore.push('RegisterUser', 'Register')">Register</button>
+        <button class="btn btn--primary"  @click="modalStore.push('LoginUser', 'Login')">Login</button>
+         <button class="btn btn--primary"  @click="modalStore.push('RegisterUser', 'Register')">Register</button>
       </template>
     </PageStatusMessage>
 
@@ -145,7 +145,7 @@ async function handleFormSubmission() {
         <div class="button-holder">
           <button 
             type="button" 
-            class="btn primary" 
+            class="btn btn--primary"  
             @click="handleFormSubmission"
             :disabled="progressState.type === 'Loading'"
           >

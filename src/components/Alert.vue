@@ -46,7 +46,7 @@ async function handleActionClick() {
           <button 
             v-if="alert.onActionClick" 
             type="button"
-            class="btn primary alert__action-btn" 
+            class="btn btn--primary alert__action-btn" 
             :disabled="isExecutingAction"
             @click="handleActionClick"
           >

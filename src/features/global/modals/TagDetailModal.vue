@@ -59,10 +59,12 @@ onMounted(async () => {
  
  <template v-if="isLoading">
 
-   <div class="shared__page-title">
-    <h1>Loading Tags... </h1>
-      <p class="shared__loader"></p>
+      <div class="loader" role="status" aria-label="Loading tag">
+        <p class="loader__dot"></p>
+        <span class="sr-only">Loading Tag...</span>
+        
     </div>
+    
 
   </template>
 

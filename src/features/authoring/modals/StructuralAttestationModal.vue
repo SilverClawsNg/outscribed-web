@@ -62,7 +62,7 @@ community debate rather than incite hate speech, extreme violence, or harassment
 </ol>
 
 <div class="writer-onboarding__actions">
-    <button class="btn primary" @click="handleAcknowledgeAndClose">
+    <button class="btn btn--primary"  @click="handleAcknowledgeAndClose">
         Continue
     </button>
 </div>

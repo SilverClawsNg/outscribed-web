@@ -100,7 +100,7 @@ function createComment() {
         >
           View Comments
         </button>
-        <span class="shared__divider shared__divider--line"></span>
+        <span class="divider divider--line"></span>
         <button title="Create Comment" @click="createComment">
           New Comment
         </button>

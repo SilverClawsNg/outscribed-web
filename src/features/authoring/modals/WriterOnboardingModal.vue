@@ -153,7 +153,7 @@ async function handleFinalOnboardingSubmit() {
 
     <div class="action-footer">
       <button 
-        class="btn primary" 
+        class="btn btn--primary"  
         :disabled="!authoringStore.isFullyCertified || progressState.type === 'Loading'"
         @click="handleFinalOnboardingSubmit"
       >

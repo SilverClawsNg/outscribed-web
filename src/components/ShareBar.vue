@@ -157,13 +157,13 @@ const handleDesktopShareClick = (platformType: string) => {
         :href="link.url"
         target="_blank"
         rel="noopener noreferrer"
-        :class="['btn primary', link.cssClass]"
+        :class="['btn btn--primary', link.cssClass]"
         @click="handleDesktopShareClick(link.type)"
       >
         {{ link.name }}
       </a>
 
-      <button class="btn secondary" @click="handleCopyLink">
+      <button class="btn btn--secondary"  @click="handleCopyLink">
         {{ linkCopied ? 'Copied!' : 'Copy Link' }}
       </button>
     </div>

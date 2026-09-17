@@ -34,14 +34,14 @@ async function handleModalUpdate(type: string, title: string) {
       
   <article class="content-card">
 
-    <div class="shared__content-status">
-
-      <span class="status-title">Status</span>
-
-       <span :class=InsightStatusClass[insight.status]>
-         {{ InsightStatusDescriptions[insight.status] }}
+    <div class="content-status">
+      <span class="content-status__label">Status</span>
+      <span 
+        class="content-status__value" 
+        :class="`content-status__value--${insight.status}`"
+      >
+       {{ InsightStatusDescriptions[insight.status] }}
       </span>
-
     </div>
 
     <div class="content-card__body">
@@ -50,14 +50,14 @@ async function handleModalUpdate(type: string, title: string) {
 
          <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
 
-        <span class="shared__divider shared__divider--circle"></span>
+        <span class="divider divider--circle"></span>
 
         <RouterLink :to="`/insights?category=${insight.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[insight.category] }}
         </RouterLink>
         
         <template v-if="insight.country">
-          <span class="shared__divider shared__divider--circle"></span>
+          <span class="divider divider--circle"></span>
           <RouterLink :to="`/insights?country=${insight.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[insight.country] }}
           </RouterLink>
@@ -85,58 +85,58 @@ async function handleModalUpdate(type: string, title: string) {
         <template v-if="insight.status !== 'HiddenByAdmin' && insight.status !== 'HiddenByModeration'">
           
           <template v-if="insight.hasEngagement">
-            <button class="btn primary" @click="handleModalUpdate('UpdateInsightAddendum', 'Addendum')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsightAddendum', 'Addendum')">
               Addendum
             </button>
           </template>
           
           <template v-else>
-            <button class="btn primary" @click="handleModalUpdate('UpdateInsight', 'Update Insight Basic')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsight', 'Update Insight Basic')">
               Basic
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateInsightSummary', 'Update Insight Summary')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsightSummary', 'Update Insight Summary')">
               Summary
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateInsightCountry', 'Update Insight Country')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsightCountry', 'Update Insight Country')">
               Country
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateInsightPhoto', 'Update Insight Photo')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsightPhoto', 'Update Insight Photo')">
               Photo
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateInsightDetail', 'Update Insight Detail')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsightDetail', 'Update Insight Detail')">
               Detail
             </button>
           </template>
 
-          <button class="btn primary" @click="handleModalUpdate('UpdateInsightTags', 'Update Insight Tags')">
+          <button class="btn btn--primary"  @click="handleModalUpdate('UpdateInsightTags', 'Update Insight Tags')">
             Tags
           </button>
         </template>
 
         <template v-if="insight.status === 'Created'">
-          <button class="btn secondary" @click="handleModalUpdate('LaunchInsight', 'Publish Insight')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('LaunchInsight', 'Publish Insight')">
             Publish
           </button>
-          <button class="btn secondary" @click="handleModalUpdate('DeleteInsight', 'Delete Insight')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('DeleteInsight', 'Delete Insight')">
             Delete
           </button>
         </template>
 
         <template v-else>
           <template v-if="insight.status === 'LaunchedByCreator' || insight.status === 'CertifiedByAdmin'">
-            <button class="btn secondary" @click="handleModalUpdate('ArchiveInsight', 'Archive Insight')">
+            <button class="btn btn--secondary"  @click="handleModalUpdate('ArchiveInsight', 'Archive Insight')">
               Archive
             </button>
           </template>
 
           <template v-if="insight.status === 'LaunchedToArchivedByCreator' || insight.status === 'CertifiedToArchivedByCreator'">
-            <button class="btn secondary" @click="handleModalUpdate('UnarchiveInsight', 'Unarchive Insight')">
+            <button class="btn btn--secondary"  @click="handleModalUpdate('UnarchiveInsight', 'Unarchive Insight')">
               Unarchive
             </button>
           </template>
 
           <template v-if="insight.status !== 'HiddenByAdmin' && insight.status !== 'HiddenByModeration'">
-            <router-link :to="`/insight/${insight.slug}`" class="btn secondary">
+            <router-link :to="`/insight/${insight.slug}`" class="btn btn--secondary" >
               Go To Page
             </router-link>
           </template>
@@ -145,14 +145,14 @@ async function handleModalUpdate(type: string, title: string) {
 
       </template>
 
-          <button class="btn secondary" @click="handleModalUpdate('InsightPreview', 'Preview Insight')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('InsightPreview', 'Preview Insight')">
             Preview
           </button>
-            <router-link :to="`/tale/${insight.taleId}`" class="btn secondary">
+            <router-link :to="`/tale/${insight.taleId}`" class="btn btn--secondary" >
               View Tale
             </router-link>
                <template v-if="insight.status !== 'Created'">
-          <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', insight.insightId)">
+          <button class="btn btn--secondary"  @click="modalStore.push('SnapshotListModal', 'Daily Metrics', insight.insightId)">
             Daily Metrics
           </button>
       </template>

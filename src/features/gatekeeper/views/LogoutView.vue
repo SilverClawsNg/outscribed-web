@@ -84,10 +84,11 @@ onBeforeMount(() => {
         </div>
 </fieldset>
 
+
         <div class="button-holder">
           <button 
             type="submit" 
-            class="btn contrast" 
+            class="btn btn--secondary" 
             :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Logout' }}

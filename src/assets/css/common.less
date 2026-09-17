@@ -20,12 +20,16 @@ body.modal-open {
     overflow: hidden;
 }
 
+
+/* ==========================================================================
+   Main
+   ========================================================================== */
+
 .main-layout-wrapper {
     overflow-x: hidden;
     position: relative;
     width: 100%;
 }
-
 
 main {
     width: 100%;
@@ -62,6 +66,11 @@ main {
     }
 }
 
+/* ==========================================================================
+   Form
+   ========================================================================== */
+
+
 .form-page {
     height: auto;
     min-height: 100lvh;
@@ -80,6 +89,11 @@ main {
         justify-content: center;
     }
 }
+
+/* ==========================================================================
+   Logo
+   ========================================================================== */
+
 
 h1.logo {
     z-index: 1000;
@@ -108,6 +122,62 @@ h1.logo {
     }
 }
 
+
+/* ==========================================================================
+   Page Header & Container
+   ========================================================================== */
+
+header.page-header {
+    
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    margin: 1.5rem auto;
+    border-bottom: 1px solid var(--border-color);
+
+    & h1 {
+        width: auto;
+        font-weight: 500;
+         font-size: clamp(0.9rem, 3vw + 1rem, 1.2rem);
+        line-height: clamp(1.1rem, 3vw + 1rem, 1.4rem);
+    }
+
+}
+
+
+.container {
+    margin: 0 auto;
+    position: relative;
+    width: @mid-width;
+    height: auto;
+    max-width: calc(100% - 20px);
+    padding: 1rem 0;
+
+    &.min{
+        width: @min-width;
+    }
+
+      &__header {
+        text-transform: capitalize;
+        text-align:center;
+        padding: 1.5rem 0;
+        line-height: 1;
+        font-weight: 500;
+         font-size: clamp(1.2rem, 3vw + 1rem, 1.4rem);
+        line-height: clamp(1.4rem, 3vw + 1rem, 1.6rem);
+    }
+
+}
+
+
+/* ==========================================================================
+   Username Prefix
+   ========================================================================== */
+
+
 .at {
 
     &:before {
@@ -123,12 +193,122 @@ h1.logo {
     }
 }
 
+
+/* ==========================================================================
+   Loading Gif
+   ========================================================================== */
+// Block: Content Status Badge
+.content-status {
+    margin-bottom: 1rem;
+    width: auto;
+    display: flex;
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: @white-color;
+
+  // Element: Fixed label on the left
+  &__label {
+    width: auto;
+    padding: 2px 4px;
+    border-radius: 6px 0 0 6px;
+    background-color: #5D5D5D;
+  }
+
+  // Element: Status value on the right
+  &__value {
+    width: auto;
+    padding: 2px 4px;
+    border-radius: 0 6px 6px 0;
+
+    // Modifiers for status states
+    &--warning {
+      background-color: #DB654F;
+    }
+
+    &--info {
+      background-color: #4BC51D;
+    }
+
+    &--danger {
+      background-color: #D90E83;
+    }
+  }
+}
+
+
+/* ==========================================================================
+   Loading Gif
+   ========================================================================== */
+
+// Block: loader
+.loader {
+    width: 100%;
+    height: auto;
+    min-height: calc(100lvh - 100px);
+    z-index: 998;
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
+    padding: 2rem;
+
+  // Element: the dot graphic
+  &__dot {
+       width: 12px;
+    height: 12px;
+    margin: 0 auto;
+    border-radius: 100%;
+    background-color: yellow;
+    box-shadow: 18px 0 green, -18px 0 red;
+    position: relative;
+    animation: flash 0.5s ease-out infinite alternate;
+  }
+
+}
+
+.loaded {
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background-color: yellow;
+    box-shadow: 18px 0 green, -18px 0 red; // or 24px
+    position: relative;
+}
+
+.end-of-file {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+@keyframes flash {
+    0% {
+        background-color: yellow;
+        box-shadow: 18px 0 green, -18px 0 red;
+    }
+
+    50% {
+        background-color: green;
+        box-shadow: 18px 0 red, -18px 0 yellow;
+    }
+
+    100% {
+        background-color: red;
+        box-shadow: 18px 0 green, -18px 0 yellow;
+    }
+}
+
 /* ==========================================================================
    Shared Visual Dividers
    ========================================================================== */
 
 // Base shared divider class
-.shared__divider {
+.divider {
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
@@ -167,40 +347,103 @@ h1.logo {
   }
 }
 
-.progress-container {
+/* ==========================================================================
+   Site Icon
+   ========================================================================== */
+
+.site-icon {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    padding: 0.25rem;
+    border-radius: 0 21px 21px 0;
+    background-color: var(--background-color);
+    z-index: 9999;
+    box-shadow: var(--box-shadow);
+    border: 2px solid @link-color;
+    border-left: none;
     display: flex;
+    align-items: center;
     justify-content: center;
-}
 
-.progress-bar {
-    width: 100.8px;
-    height: 16.8px;
-    background: linear-gradient(#FE0000 0 0) left/0% 100% no-repeat #F1F1F1;
-    animation: progress-jgv380 2s infinite linear;
-}
+    & img {
 
-@keyframes progress-jgv380 {
-    100% {
-        background-size: 100% 100%;
-    }
-}
+        @media @smallDevice {
+            width: 28px;
+            height: 28px;
+        }
 
-
-svg {
-
-    &.tiktok {
-        & path {
-            fill: @black-color;
+        @media @largeDevice {
+            width: 30px;
+            height: 30px;
         }
     }
+}
 
-    &.whatsapp {
-        fill: #25D366;
-    }
+/* ==========================================================================
+   POP Down
+   ========================================================================== */
 
-    &.instagram {
-        fill: #E4405F;
+// Keyframe animation specific to the popdown block
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+// Block
+.popdown {
+  position: absolute;
+  top: calc(100% + 12px); /* Space above the button */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  background-color: var(--light-background-color);
+  box-shadow: var(--box-shadow);
+  padding: 1rem 0.25rem;
+  z-index: 100;
+  text-align: center;
+  animation: popIn 0.2s ease-out;
+
+  // Element: Arrow
+  &__arrow {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--light-background-color);
+  }
+
+  // Element: Text
+  &__text {
+    margin-bottom: 0.5rem;
+
+    @media @smallDevice {
+      font-size: 0.9rem;
+      line-height: 1.2rem;
     }
+  }
+
+  // Element: Actions container
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+/* ==========================================================================
+  SVG
+   ========================================================================== */
+
+svg {
 
     &.stroked {
 
@@ -211,18 +454,6 @@ svg {
             stroke-linejoin: round;
             stroke-width: 1px;
         }
-
-        &.error {
-            & path, & circle, & rect, & line, & polyline, & polygon {
-                stroke: red;
-            }
-        }
-
-        &.success {
-            & path, & circle, & rect, & line, & polyline, & polygon {
-                stroke: green;
-            }
-        }
     }
 
     &.filled {
@@ -232,216 +463,5 @@ svg {
             fill: var(--text-color);
             stroke-width: 2px;
         }
-
-        &.linkedin {
-            & path, & circle, & rect, & line, & polyline, & polygon {
-                fill: #0077B5;
-            }
-        }
-
-        &.facebook {
-            & path, & circle, & rect, & line, & polyline, & polygon {
-                fill: #1877F2;
-            }
-        }
-
-        &.twitter {
-            & path, & circle, & rect, & line, & polyline, & polygon {
-                fill: var(--text-color);
-            }
-        }
-
-
-        &.email {
-            & path, & circle, & rect, & line, & polyline, & polygon {
-                fill: #EF4444;
-            }
-        }
-    }
-}
-
-
-.no-image {
-    width: 250px;
-    height: 250px;
-    background-color: #FAFAFA;
-    position: relative;
-
-    &.small {
-        border-radius: 8px;
-    }
-
-    &.large {
-        border-radius: 8px;
-    }
-
-    & span{
-        position: absolute;
-        bottom: 10px;
-        text-align:center;
-        text-transform: uppercase;
-        font-size: smaller;
-    }
-
-    & svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100px;
-        height: 100px;
-
-        & stroke,
-        & circle {
-            color: var(--text-color);
-        }
-    }
-}
-
-
-.end-of-file {
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 10px 0;
-    color: red;
-    font-size: 0.9rem;
-
-    & .error-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: red;
-        font-size: 0.9rem;
-
-        & p {
-            margin-bottom: 10px;
-        }
-    }
-}
-
-.loader-container {
-    width: 100%;
-    height: auto;
-    min-height: calc(100lvh - 100px);
-    z-index: 998;
-    display: flex;
-    justify-content: center;
-    align-items:flex-start;
-    padding-top: 50px;
-}
-
-.loader {
-    width: 12px;
-    height: 12px;
-    margin: 0 auto;
-    border-radius: 100%;
-    background-color: yellow;
-    box-shadow: 12px 0 green, -12px 0 red;
-    position: relative;
-    animation: flash 0.5s ease-out infinite alternate;
-}
-
-@keyframes flash {
-    0% {
-        background-color: yellow;
-        box-shadow: 12px 0 green, -12px 0 red;
-    }
-
-    50% {
-        background-color: red;
-        box-shadow: 12px 0 yellow, -12px 0 green;
-    }
-
-    100% {
-        background-color: green;
-        box-shadow: 12px 0 red, -12px 0 yellow;
-    }
-}
-
-.loader-large {
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
-    background-color: yellow;
-    box-shadow: 24px 0 green, -24px 0 red;
-    position: relative;
-    animation: flash-large 0.5s ease-out infinite alternate;
-    margin: 30px auto;
-}
-@keyframes flash-large {
-    0% {
-        background-color: yellow;
-        box-shadow: 24px 0 green, -24px 0 red;
-    }
-
-    50% {
-        background-color: red;
-        box-shadow: 24px 0 yellow, -24px 0 green;
-    }
-
-    100% {
-        background-color: green;
-        box-shadow: 24px 0 red, -24px 0 yellow;
-    }
-}
-
-.loaded {
-    width: 12px;
-    height: 12px;
-    border-radius: 100%;
-    background-color: yellow;
-    box-shadow: 24px 0 green, -24px 0 red;
-    position: relative;
-}
-
-header.page-header {
-    
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.5rem 0;
-    margin: 1.5rem auto;
-    border-bottom: 1px solid var(--border-color);
-
-    & h1 {
-        width: auto;
-        font-weight: 500;
-         font-size: clamp(0.9rem, 3vw + 1rem, 1.2rem);
-        line-height: clamp(1.1rem, 3vw + 1rem, 1.4rem);
-    }
-
-}
-
-.modal-content-box {
-   /* background: #1a1a1a;*/
-    background-color: var(--background-color);
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border: 1px solid var(--border-color);
-    text-align: center;
-    max-width: @min-width;
-}
-
-/* Spinner for the modal */
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(255,255,255,0.1);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
     }
 }

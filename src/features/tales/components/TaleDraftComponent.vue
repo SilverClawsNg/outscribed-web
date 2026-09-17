@@ -33,10 +33,13 @@ async function handleModalUpdate(type: string, title: string) {
 
 <article class="content-card">
 
-    <div class="shared__content-status">
-      <span class="status-title">Status</span>
-       <span :class=TaleStatusClass[tale.status]>
-         {{ TaleStatusDescriptions[tale.status] }}
+   <div class="content-status">
+      <span class="content-status__label">Status</span>
+      <span 
+        class="content-status__value" 
+        :class="`content-status__value--${tale.status}`"
+      >
+       {{ TaleStatusDescriptions[tale.status] }}
       </span>
     </div>
 
@@ -46,14 +49,14 @@ async function handleModalUpdate(type: string, title: string) {
 
         <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
 
-        <span class="shared__divider shared__divider--circle"></span>
+        <span class="divider divider--circle"></span>
 
         <RouterLink :to="`/tales?category=${tale.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[tale.category] }}
         </RouterLink>
         
         <template v-if="tale.country">
-          <span class="shared__divider shared__divider--circle"></span>
+          <span class="divider divider--circle"></span>
           <RouterLink :to="`/tales?country=${tale.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[tale.country] }}
           </RouterLink>
@@ -81,61 +84,61 @@ async function handleModalUpdate(type: string, title: string) {
         <template v-if="tale.status !== 'HiddenByAdmin' && tale.status !== 'HiddenByModeration'">
           
           <template v-if="tale.hasEngagement">
-            <button class="btn primary" @click="handleModalUpdate('UpdateTaleAddendum', 'Addendum')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleAddendum', 'Addendum')">
               Addendum
             </button>
           </template>
           
           <template v-else>
-            <button class="btn primary" @click="handleModalUpdate('UpdateTale', 'Update Tale Basic')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTale', 'Update Tale Basic')">
               Basic
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateTaleSummary', 'Update Tale Summary')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleSummary', 'Update Tale Summary')">
               Summary
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateTaleCountry', 'Update Tale Country')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleCountry', 'Update Tale Country')">
               Country
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateTalePhoto', 'Update Tale Photo')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTalePhoto', 'Update Tale Photo')">
               Photo
             </button>
-            <button class="btn primary" @click="handleModalUpdate('UpdateTaleDetail', 'Update Tale Detail')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleDetail', 'Update Tale Detail')">
               Detail
             </button>
           </template>
 
-          <button class="btn primary" @click="handleModalUpdate('UpdateTaleRealityCheck', 'Update Reality Check')">
+          <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleRealityCheck', 'Update Reality Check')">
             Reality Check
           </button>
-          <button class="btn primary" @click="handleModalUpdate('UpdateTaleTags', 'Update Tags')">
+          <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleTags', 'Update Tags')">
             Tags
           </button>
         </template>
 
         <template v-if="tale.status === 'Created'">
-          <button class="btn secondary" @click="handleModalUpdate('LaunchTale', 'Publish Tale')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('LaunchTale', 'Publish Tale')">
             Publish
           </button>
-          <button class="btn secondary" @click="handleModalUpdate('DeleteTale', 'Delete Tale')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('DeleteTale', 'Delete Tale')">
             Delete
           </button>
         </template>
 
         <template v-else>
           <template v-if="tale.status === 'LaunchedByCreator' || tale.status === 'CertifiedByAdmin'">
-            <button class="btn secondary" @click="handleModalUpdate('ArchiveTale', 'Archive Tale')">
+            <button class="btn btn--secondary"  @click="handleModalUpdate('ArchiveTale', 'Archive Tale')">
               Archive
             </button>
           </template>
 
           <template v-if="tale.status === 'LaunchedToArchivedByCreator' || tale.status === 'CertifiedToArchivedByCreator'">
-            <button class="btn secondary" @click="handleModalUpdate('UnarchiveTale', 'Unarchive Tale')">
+            <button class="btn btn--secondary"  @click="handleModalUpdate('UnarchiveTale', 'Unarchive Tale')">
               Unarchive
             </button>
           </template>
 
           <template v-if="tale.status !== 'HiddenByAdmin' && tale.status !== 'HiddenByModeration'">
-            <router-link :to="`/tale/${tale.slug}`" class="btn secondary">
+            <router-link :to="`/tale/${tale.slug}`" class="btn btn--secondary" >
               Go To Page
             </router-link>
           </template>
@@ -143,12 +146,12 @@ async function handleModalUpdate(type: string, title: string) {
 
       </template>
 
-      <button class="btn secondary" @click="handleModalUpdate('TalePreview', 'Preview Tale')">
+      <button class="btn btn--secondary"  @click="handleModalUpdate('TalePreview', 'Preview Tale')">
         Preview
       </button>
 
        <template v-if="tale.status !== 'Created'">
-          <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', tale.taleId)">
+          <button class="btn btn--secondary"  @click="modalStore.push('SnapshotListModal', 'Daily Metrics', tale.taleId)">
             Daily Metrics
           </button>
       </template>

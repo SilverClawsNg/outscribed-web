@@ -113,7 +113,7 @@ onMounted(async () => {
         <footer class="user-card__footer">
           <button 
             type="button" 
-            class="btn secondary user-card__action-btn" 
+            class="btn btn--secondary user-card__action-btn" 
             @click="modalStore.push('Profile', 'Profile', user.accountId)"
           >
             View Profile

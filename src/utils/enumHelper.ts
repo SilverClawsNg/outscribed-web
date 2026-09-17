@@ -160,10 +160,15 @@ export type AccountStatus =
 
 // 🎯 Content Type Semantics
 export type ContactType = 
-  'Email' 
   | 'Facebook' 
   | 'Twitter' 
-  | 'LinkedIn'
+  | 'LinkedIn' 
+  | 'Instagram' 
+  | 'TikTok' 
+  | 'WhatsApp' 
+  | 'Telephone' 
+  | 'Website' 
+  | 'Email'
   | 'CopyLink'
 
 // src/enums/Country.ts

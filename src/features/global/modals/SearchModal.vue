@@ -71,7 +71,7 @@ function executeSearch() {
    <div class="button-holder">
           <button 
             type="submit" 
-            class="btn primary" 
+            class="btn btn--primary"  
               :disabled="isLoading"
             :class="{ active:isLoading }"
           >

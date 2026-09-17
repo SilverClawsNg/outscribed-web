@@ -166,7 +166,7 @@ onMounted(() => {
       <div class="button-holder">
           <button 
             type="submit" 
-            class="btn secondary" 
+            class="btn btn--secondary"  
             :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Complete' }}
@@ -176,7 +176,7 @@ onMounted(() => {
        <template v-if="isPage">
           <div class="form-options">
             <RouterLink to="/reset" title="Reset password">Forgotten password?</RouterLink>
-            <span class="shared__divider shared__divider--line"></span>
+            <span class="divider divider--line"></span>
             <RouterLink to="/register" title="Create Account">Create a new account</RouterLink>
         </div>
            
@@ -190,7 +190,7 @@ onMounted(() => {
             >
                 Forgotten password?
             </button>
-            <span class="shared__divider shared__divider--line"></span>
+            <span class="divider divider--line"></span>
              <button 
                 type="button" 
                 @click="emit('createAccount')"

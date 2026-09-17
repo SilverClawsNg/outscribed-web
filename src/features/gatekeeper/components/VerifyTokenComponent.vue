@@ -66,7 +66,7 @@ function handleKeyDown(e: KeyboardEvent, index: number) {
     </div>
 
     <div class="button-holder">
-      <button type="submit" class="btn secondary" :disabled="isLoading">
+      <button type="submit" class="btn btn--secondary"  :disabled="isLoading">
         {{ isLoading ? 'Submitting...' : 'Continue' }}
       </button>
 

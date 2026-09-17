@@ -139,7 +139,10 @@ onMounted(async () => {
 <template>
 
   <template v-if=isInitializing>
-      <p class="shared__loader"></p>
+     <div class="loader" role="status" aria-label="Resolving account">
+        <p class="loader__dot"></p>
+        <span class="sr-only">Resolving account...</span>
+    </div>
   </template>
   
   <template v-else-if="!isLoggedIn || !authStore.hasAccessToken">
@@ -150,8 +153,8 @@ onMounted(async () => {
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
-          <button class="btn secondary" @click="modalStore.push('RegisterUser', 'Register')">Register</button>
+          <button class="btn btn--primary"  @click="modalStore.push('LoginUser', 'Login')">Login</button>
+          <button class="btn btn--secondary"  @click="modalStore.push('RegisterUser', 'Register')">Register</button>
         </template>
       </PageStatusMessage>
     </template>
@@ -164,7 +167,7 @@ onMounted(async () => {
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="modalStore.push('WriterOnboarding', 'Writer Onboarding')">Upgrade To Writer</button>
+          <button class="btn btn--primary"  @click="modalStore.push('WriterOnboarding', 'Writer Onboarding')">Upgrade To Writer</button>
         </template>
       </PageStatusMessage>
     </template>
@@ -177,7 +180,7 @@ onMounted(async () => {
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn secondary" @click="modalStore.push('WriterHelp', 'Writers Help', null, false)">Learn More</button>
+          <button class="btn btn--secondary"  @click="modalStore.push('WriterHelp', 'Writers Help', null, false)">Learn More</button>
         </template>
       </PageStatusMessage>
     </template>
@@ -220,7 +223,7 @@ onMounted(async () => {
         <div class="button-holder">
           <button 
             type="submit" 
-            class="btn primary" 
+            class="btn btn--primary"  
             :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Create Draft' }}

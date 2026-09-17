@@ -160,9 +160,10 @@ onMounted(async () => {
  
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+   <div class="loader" role="status" aria-label="Loading comments">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Comments...</span>
+</div>
 
   </template>
 
@@ -244,7 +245,7 @@ onMounted(async () => {
 
         <div class="comments-container__top-action">
           <button 
-            class="comments-container__show-ancestry btn primary" 
+            class="comments-container__show-ancestry btn btn--primary" 
             :class="{ 'active': showAncestry }" 
             @click="showAncestry = !showAncestry">
           </button>
@@ -260,7 +261,7 @@ onMounted(async () => {
       icon="inbox"
       >
         <template #actions>
-          <button class="btn primary" @click="resetFilters">Reset</button>
+          <button class="btn btn--primary"  @click="resetFilters">Reset</button>
         </template>
       </PageStatusMessage>
 

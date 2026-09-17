@@ -61,7 +61,7 @@ function createComment() {
 
 <template>
 
-  <article class="content-details shared__container">
+  <article class="content-details container">
 
     <!-- Header Section -->
     <header class="content-details__header-container">
@@ -165,7 +165,7 @@ function createComment() {
       </template>
 
       <!-- Safe Rich Text Content -->
-      <div class="shared__rich-text" v-html="sanitizeHtml(tale.detail)"></div>
+      <div class="rich-text" v-html="sanitizeHtml(tale.detail)"></div>
 
       <!-- Addendum Section -->
         <template v-if="tale.addendum && tale.addendumDate">
@@ -196,19 +196,34 @@ function createComment() {
           </p>
 
           <div class="content-details__realitycheck-actions">
-            <button type="button" class="btn secondary" @click="showExternalLink = !showExternalLink">
+            <button type="button" class="btn btn--secondary"  @click="showExternalLink = !showExternalLink">
               Visit Source
             </button>
           </div>
 
-          <div v-if="showExternalLink" class="shared__popover">
-            <div class="shared__popover-arrow"></div>
-            <p class="shared__popover-text">You will be redirected to {{ tale.realityCheckUrl }}</p>
-            <div class="shared__popover-actions">
-              <a :href="tale.realityCheckUrl" target="_blank" rel="noopener" class="btn primary" @click="showExternalLink = false">Yes</a>
-              <button type="button" class="btn secondary" @click="showExternalLink = false">No</button>
+          <div v-if="showExternalLink" class="popdown">
+            <div class="popdown__arrow"></div>
+            <p class="popdown__text">You will be redirected to {{ tale.realityCheckUrl }}</p>
+            <div class="popdown__actions">
+              <a 
+                :href="tale.realityCheckUrl" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="btn btn--primary" 
+                @click="showExternalLink = false"
+              >
+                Yes
+              </a>
+              <button 
+                type="button" 
+                class="btn btn--secondary" 
+                @click="showExternalLink = false"
+              >
+                No
+              </button>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -217,7 +232,7 @@ function createComment() {
        <template v-if="tale.tags && tale.tags.length > 0">
         <div class="content-details__tags">
             <h4 class="content-details__tag-title">Tagged In</h4>
-            <span class="shared__divider shared__divider--line"></span>
+            <span class="divider divider--line"></span>
             <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
               #<RouterLink :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</RouterLink>
             </span>
@@ -242,7 +257,7 @@ function createComment() {
           <div class="content-details__vote-actions">
             <button 
               type="button"
-              class="btn primary" 
+              class="btn btn--primary"  
               :disabled="uiMeta.isVoteDisabled || tale.isArchived"
               @click="engage.vote(tale.engagement, 'Upvote')"
             >
@@ -253,7 +268,7 @@ function createComment() {
 
             <button 
               type="button"
-              class="btn secondary" 
+              class="btn btn--secondary"  
               :disabled="uiMeta.isVoteDisabled || tale.isArchived"
               @click="engage.vote(tale.engagement, 'Downvote')"
             >
@@ -361,11 +376,11 @@ function createComment() {
         <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
           :to="`/insights?taleId=${tale.taleId}`" 
-          class="btn primary"
+          class="btn btn--primary" 
         >
           View {{ formatCounts(tale.engagement.insightsCount) }}
         </RouterLink>
-        <button v-else type="button" class="btn primary" disabled>
+        <button v-else type="button" class="btn btn--primary"  disabled>
           View {{ tale.engagement.insightsCount }}
         </button>
       </header>
@@ -402,7 +417,7 @@ function createComment() {
         </p>
         <button 
           type="button" 
-          class="btn secondary with-icon"
+          class="btn btn--secondary btn--has-icon"
           @click="modalStore.push('CreateInsight', 'Create Insight', { taleId: tale.taleId, category: tale.category })"
         >
           <SvgIcons name="edit" /> Write an insight
@@ -414,7 +429,7 @@ function createComment() {
         <h1>Recent Comments</h1>
         <button 
           type="button"
-          class="btn primary" 
+          class="btn btn--primary"  
           :disabled="tale.engagement.commentsCount === 0"
           @click="viewComments"
         >
@@ -446,7 +461,7 @@ function createComment() {
         </p>
         <button 
           type="button" 
-          class="btn secondary with-icon"
+          class="btn btn--secondary btn--has-icon"
           :disabled="tale.isArchived"
           @click="createComment"
         >

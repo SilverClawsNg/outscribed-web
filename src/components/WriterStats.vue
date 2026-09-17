@@ -18,7 +18,7 @@ defineProps<WriterStatsProps>()
   <div class="writer-stats":class="{ 'writer-stats--margined': hasMargin }">
     <RouterLink 
       :to="`/tales?username=${username}`" 
-      class="btn secondary writer-stats__link" 
+      class="btn btn--secondary writer-stats__link" 
       title="Tales"
     >
       <span class="writer-stats__value">{{ formatCounts(talesCount) }}</span> 
@@ -27,7 +27,7 @@ defineProps<WriterStatsProps>()
 
     <RouterLink 
       :to="`/insights?username=${username}`" 
-      class="btn secondary writer-stats__link" 
+      class="btn btn--secondary writer-stats__link" 
       title="Insights"
     >
       <span class="writer-stats__value">{{ formatCounts(insightsCount) }}</span> 
@@ -36,7 +36,7 @@ defineProps<WriterStatsProps>()
 
     <RouterLink 
       :to="`/comments?username=${username}`" 
-      class="btn secondary writer-stats__link" 
+      class="btn btn--secondary writer-stats__link" 
       title="Comments"
     >
       <span class="writer-stats__value">{{ formatCounts(commentsCount || 0) }}</span> 

@@ -79,8 +79,8 @@ onUnmounted(() => {
       </h2>
 
       <div class="hero__cta">
-        <RouterLink class="btn primary hero__action" to="/faqs">Learn More</RouterLink>
-        <RouterLink class="btn contrast hero__action" to="/register">Join Us</RouterLink>
+        <RouterLink class="btn btn--primary hero__action" to="/faqs">Learn More</RouterLink>
+        <RouterLink class="btn btn--contrast hero__action" to="/register">Join Us</RouterLink>
       </div>
     </div>
 
@@ -98,9 +98,10 @@ onUnmounted(() => {
 
    <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+    <div class="loader" role="status" aria-label="Loading homepage">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Homepage...</span>
+</div>
 
   </template>
 
@@ -112,7 +113,7 @@ onUnmounted(() => {
       icon="warning"
       :is-standalone="true">
         <template v-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -122,14 +123,14 @@ onUnmounted(() => {
 
   <template v-else>
 
-    <header class="page-header shared__container">
+    <header class="page-header container">
       <h1>Recent Tales</h1>
-      <RouterLink to="/tales" class="btn primary" title="Recent Tales"><span>View All</span></RouterLink>
+      <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
     </header>
     
        <template v-if="homepageStore.tales && homepageStore.tales.length > 0">
 
-         <div class="shared__container">
+         <div class="container">
 
             <TaleListComponent 
         v-for="tale in homepageStore.tales" 
@@ -152,14 +153,14 @@ onUnmounted(() => {
 
   </template>
 
-   <header class="page-header shared__container">
+   <header class="page-header container">
       <h1>Recent Insights</h1>
-      <RouterLink to="/insights" class="btn primary" title="Recent Insights"><span>View All</span></RouterLink>
+      <RouterLink to="/insights" class="btn btn--primary"  title="Recent Insights"><span>View All</span></RouterLink>
     </header>
     
        <template v-if="homepageStore.insights && homepageStore.insights.length > 0">
 
-         <div class="shared__container">
+         <div class="container">
 
             <InsightListComponent 
         v-for="insight in homepageStore.insights" 
@@ -181,13 +182,13 @@ onUnmounted(() => {
             />
       </template>
 
-   <div class="shared__page-title">
-        <h1>Trending This Week</h1>
+   <div class="container">
+        <h1 class="container__header">Trending This Week</h1>
       </div>
 
        <template v-if="homepageStore.trendingThisWeek && homepageStore.trendingThisWeek.length > 0">
 
-         <div class="shared__container">
+         <div class="container">
 
             <TagComponent 
         v-for="tag in homepageStore.trendingThisWeek" 
@@ -210,13 +211,13 @@ onUnmounted(() => {
 
   </template>
 
-  <div class="shared__page-title">
-        <h1>Trending This Month</h1>
+  <div class="container">
+        <h1 class="container__header">Trending This Month</h1>
       </div>
 
        <template v-if="homepageStore.trendingThisMonth && homepageStore.trendingThisMonth.length > 0">
 
-         <div class="shared__container">
+         <div class="container">
 
             <TagComponent 
         v-for="tag in homepageStore.trendingThisMonth" 
@@ -239,13 +240,13 @@ onUnmounted(() => {
 
   </template>
 
-  <div class="shared__page-title">
-        <h1>Trending This Year</h1>
+  <div class="container">
+        <h1 class="container__header">Trending This Year</h1>
       </div>
 
        <template v-if="homepageStore.trendingThisYear && homepageStore.trendingThisYear.length > 0">
 
-         <div class="shared__container">
+         <div class="container">
 
             <TagComponent 
         v-for="tag in homepageStore.trendingThisYear" 

@@ -103,7 +103,7 @@ function createComment() {
         <a v-else href="#" title="Insights" class="disabled" @click.prevent>
           View Insights
         </a>
-        <span class="shared__divider shared__divider--line"></span>
+        <span class="divider divider--line"></span>
         <button title="Create Insight" @click="modalStore.push('CreateInsight', 'Create Insight', payload)">
           New Insight
         </button>
@@ -120,7 +120,7 @@ function createComment() {
         >
           View Comments
         </button>
-        <span class="shared__divider shared__divider--line"></span>
+        <span class="divider divider--line"></span>
         <button title="Create Comment" @click="createComment">
           New Comment
         </button>

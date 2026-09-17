@@ -61,11 +61,13 @@ async function handleModalUpdate(type: string, title: string) {
       
   <article class="comment-card">
 
-    <div class="shared__content-status">
-
-      <span class="status-title">Status</span>
-       <span :class=CommentStatusClass[comment.status]>
-         {{ CommentStatusDescriptions[comment.status] }}
+    <div class="content-status">
+      <span class="content-status__label">Status</span>
+      <span 
+        class="content-status__value" 
+        :class="`content-status__value--${comment.status}`"
+      >
+        {{ CommentStatusDescriptions[comment.status] }}
       </span>
     </div>
 
@@ -73,7 +75,7 @@ async function handleModalUpdate(type: string, title: string) {
 
         <time class="comment-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
 
-         <span class="shared__divider shared__divider--circle"></span>
+         <span class="divider divider--circle"></span>
 
            <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
             {{ ContentTypeDescriptions[comment.contentType] }}
@@ -85,7 +87,7 @@ async function handleModalUpdate(type: string, title: string) {
 
       <div 
         ref="commentElement" 
-        :class="['shared__richtext', { 'truncated': !isExpanded }]"
+        :class="['rich-text', { 'truncated': !isExpanded }]"
         v-html="props.comment.detail"
       ></div>
       
@@ -115,11 +117,11 @@ async function handleModalUpdate(type: string, title: string) {
         <template v-if="comment.status !== 'HiddenByAdmin' && comment.status !== 'HiddenByModeration'">
           
           <template v-if="comment.hasEngagement">
-            <button class="btn primary" @click="handleModalUpdate('UpdateCommentAddendum', 'Addendum')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateCommentAddendum', 'Addendum')">
               Addendum
             </button>
               <template v-if="comment.status === 'Active' || comment.status === 'CertifiedByAdmin'">
-          <button class="btn secondary" @click="handleModalUpdate('ArchiveComment', 'Archive Comment')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('ArchiveComment', 'Archive Comment')">
               Archive
             </button>
         </template>
@@ -127,10 +129,10 @@ async function handleModalUpdate(type: string, title: string) {
           </template>
 
           <template v-else>
-            <button class="btn primary" @click="handleModalUpdate('UpdateComment', 'Update Comment')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateComment', 'Update Comment')">
               Update
             </button>
-          <button class="btn secondary" @click="handleModalUpdate('DeleteComment', 'Delete Comment')">
+          <button class="btn btn--secondary"  @click="handleModalUpdate('DeleteComment', 'Delete Comment')">
             Delete
           </button>
           </template>
@@ -139,11 +141,11 @@ async function handleModalUpdate(type: string, title: string) {
 
       </template>
 
-      <button class="btn secondary" @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
+      <button class="btn btn--secondary"  @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
         Thread
       </button>
 
-        <button class="btn secondary" @click="modalStore.push('SnapshotListModal', 'Daily Metrics', comment.commentId)">
+        <button class="btn btn--secondary"  @click="modalStore.push('SnapshotListModal', 'Daily Metrics', comment.commentId)">
             Daily Metrics
           </button>
 
@@ -155,4 +157,5 @@ async function handleModalUpdate(type: string, title: string) {
 
 <style lang="less" scoped>
 @import "@/assets/css/comment-card.less";
+@import "@/assets/css/rich-text.less";
 </style>

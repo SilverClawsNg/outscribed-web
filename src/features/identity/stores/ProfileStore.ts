@@ -21,15 +21,33 @@ export const useProfileStore = defineStore('profile', () => {
   let feedController: AbortController | null = null;
 
   
-// --- 👥 SOCIAL CONTACT LOOKUPS ---
+// --- 👥 SOCIAL & CONTACT LOOKUPS ---
 const facebook = computed(() => profile.value?.contacts?.find(c => c.type === 'Facebook')?.title || null)
-const facebookLink = computed(() => `https://facebook.com/${facebook.value || ''}`)
+const facebookLink = computed(() => facebook.value ? `https://facebook.com/${facebook.value}` : null)
 
 const twitter = computed(() => profile.value?.contacts?.find(c => c.type === 'Twitter')?.title || null)
-const twitterLink = computed(() => `https://twitter.com/${twitter.value || ''}`)
+const twitterLink = computed(() => twitter.value ? `https://x.com/${twitter.value}` : null)
 
 const linkedin = computed(() => profile.value?.contacts?.find(c => c.type === 'LinkedIn')?.title || null)
-const linkedinLink = computed(() => `https://linkedin.com/in/${linkedin.value || ''}`)
+const linkedinLink = computed(() => linkedin.value ? `https://linkedin.com/in/${linkedin.value}` : null)
+
+const instagram = computed(() => profile.value?.contacts?.find(c => c.type === 'Instagram')?.title || null)
+const instagramLink = computed(() => instagram.value ? `https://instagram.com/${instagram.value}` : null)
+
+const tiktok = computed(() => profile.value?.contacts?.find(c => c.type === 'TikTok')?.title || null)
+const tiktokLink = computed(() => tiktok.value ? `https://tiktok.com/@${tiktok.value.replace(/^@/, '')}` : null)
+
+const whatsapp = computed(() => profile.value?.contacts?.find(c => c.type === 'WhatsApp')?.title || null)
+const whatsappLink = computed(() => whatsapp.value ? `https://wa.me/${whatsapp.value.replace(/[^0-9]/g, '')}` : null)
+
+const telephone = computed(() => profile.value?.contacts?.find(c => c.type === 'Telephone')?.title || null)
+const telephoneLink = computed(() => telephone.value ? `tel:${telephone.value}` : null)
+
+const website = computed(() => profile.value?.contacts?.find(c => c.type === 'Website')?.title || null)
+const websiteLink = computed(() => {
+  if (!website.value) return null
+  return website.value.startsWith('http') ? website.value : `https://${website.value}`
+})
 
 const email = computed(() => profile.value?.contacts?.find(c => c.type === 'Email')?.title || null)
 
@@ -268,8 +286,14 @@ const statusClass = computed(() => {
   }
 })
 
+
+
 // 🎯 THE STRATEGY ACTIVE TRACKER: Context lives directly in the domain layer
   const activeContactType = ref<ContactType | null>(null)
+
+  function clearActiveContext() {
+    activeContactType.value = null
+  }
 
   /**
    * 🔍 DERIVED STATE: Computes the precise working DTO based on the active type token
@@ -284,10 +308,6 @@ const statusClass = computed(() => {
    */
   function setActiveContact(type: ContactType) {
     activeContactType.value = type
-  }
-
-  function clearActiveContext() {
-    activeContactType.value = null
   }
 
    function abort() {
@@ -308,6 +328,16 @@ const statusClass = computed(() => {
     facebookLink,
     twitterLink,
     linkedinLink,
+    instagram,
+    instagramLink,
+    tiktok,
+    tiktokLink,
+    website,
+    websiteLink,
+    telephone,
+    telephoneLink,
+    whatsapp,
+    whatsappLink,
     
     statusClass,
     uploadError,

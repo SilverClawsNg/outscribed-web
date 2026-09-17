@@ -156,8 +156,8 @@ function applyFilter() {
 
       <!-- 5. Form Actions Layout Triggers -->
       <div class="filter-buttons">
-        <button type="button" @click="resetFilters" class="btn primary">Reset</button>
-        <button type="submit" class="btn secondary">Filter</button>
+        <button type="button" @click="resetFilters" class="btn btn--primary" >Reset</button>
+        <button type="submit" class="btn btn--secondary" >Filter</button>
       </div>
 
     </form>

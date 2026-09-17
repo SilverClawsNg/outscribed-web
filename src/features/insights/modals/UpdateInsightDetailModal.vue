@@ -142,7 +142,7 @@ const { success, error } = await insightStore.updateInsightDetails(formData.valu
         <div class="button-holder">
           <button 
             type="button" 
-            class="btn primary" 
+            class="btn btn--primary"  
             @click="handleFormSubmission"
             :disabled="progressState.type === 'Loading' || lockSubmission"
           >

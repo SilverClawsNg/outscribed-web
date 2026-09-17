@@ -94,9 +94,10 @@ onMounted(async () => {
  
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+   <div class="loader" role="status" aria-label="Loading thread">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Thread...</span>
+</div>
 
   </template>
 

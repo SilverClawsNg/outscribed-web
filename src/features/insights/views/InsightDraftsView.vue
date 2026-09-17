@@ -102,9 +102,10 @@ onUnmounted(() => {
   
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+   <div class="loader" role="status" aria-label="Loading insights">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Insights...</span>
+</div>
 
   </template>
 
@@ -116,10 +117,10 @@ onUnmounted(() => {
       icon="warning" 
       :is-standalone="true">
       <template v-if="loadingError.status == 401" #actions>
-        <button class="btn primary" @click="redirectToLogin">Login</button>
+        <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -129,20 +130,25 @@ onUnmounted(() => {
 
    <template v-else>
    
-    <header class="page-header shared__container">
+    <header class="page-header container">
    <h1 class="page-header__title">
       Insight Drafts
     </h1>
-          <button type="button" class="btn primary" @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">Filter</button>
+          <button type="button" class="btn btn--primary"  @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">Filter</button>
   </header>
       
        <template v-if="wasCleaned">
+         
+        <div class="container">
+       
     <PageStatusMessage 
               title="Invalid Filters Removed!" 
               message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
               icon="warning" 
-              :is-standalone="true"
+              :is-bordered="true"
             />
+     </div>
+    
     </template>
 
   <template v-if="insightStore.insights && insightStore.insights.length > 0">
@@ -154,7 +160,7 @@ onUnmounted(() => {
         @load-more="insightStore.loadMoreInsights"
         @retry="insightStore.loadMoreInsights">
 
-        <div class="shared__container">
+        <div class="container">
 
        <InsightDraftComponent 
         v-for="insight in insightStore.insights" 

@@ -141,7 +141,7 @@ const { success, error } = await taleStore.updateTaleDetails(formData.value!)
         <div class="button-holder">
           <button 
             type="button" 
-            class="btn primary" 
+            class="btn btn--primary"  
             @click="handleFormSubmission"
             :disabled="progressState.type === 'Loading' || lockSubmission"
           >

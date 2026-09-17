@@ -120,7 +120,10 @@ onUnmounted(() => {
 <template>
 
   <template v-if=isInitializing>
-      <p class="shared__loader"></p>
+     <div class="loader" role="status" aria-label="Loading tales">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Tales...</span>
+</div>
   </template>
   
   <template v-else-if="!isLoggedIn || !authStore.hasAccessToken">
@@ -132,7 +135,7 @@ onUnmounted(() => {
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
+          <button class="btn btn--primary"  @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
         </template>
 
       </PageStatusMessage>
@@ -147,15 +150,16 @@ onUnmounted(() => {
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
+          <button class="btn btn--primary"  @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
         </template>
       </PageStatusMessage>
   </template>
    
   <template v-else-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
+    <div class="loader" role="status" aria-label="Loading tales">
+      <p class="loader__dot"></p>
+      <span class="sr-only">Loading Tales...</span>
     </div>
 
   </template>
@@ -168,10 +172,10 @@ onUnmounted(() => {
       icon="broken-chain"
       :is-standalone="true">
       <template v-if="loadingError.status == 401" #actions>
-        <button class="btn primary" @click="redirectToLogin">Login</button>
+        <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -181,21 +185,24 @@ onUnmounted(() => {
 
    <template v-else>
    
-    <header class="page-header shared__container">
+    <header class="page-header container">
     <h1 class="page-header__title">
         Tale Drafts
       </h1>
-      <button type="button" class="btn primary" @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>
+      <button type="button" class="btn btn--primary"  @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>
     </header>
 
     <template v-if="wasCleaned">
 
-      <PageStatusMessage 
+        <div class="container">
+        <PageStatusMessage 
               title="Invalid Filters Removed!" 
               message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
               icon="warning" 
-              :is-standalone="true"
+              :is-bordered="true"
             />
+     </div>
+   
 
     </template>
 
@@ -208,7 +215,7 @@ onUnmounted(() => {
         @load-more="taleStore.loadMoreTales"
         @retry="taleStore.loadMoreTales">
 
-        <div class="shared__container">
+        <div class="container">
 
        <TaleDraftComponent 
         v-for="tale in taleStore.tales" 

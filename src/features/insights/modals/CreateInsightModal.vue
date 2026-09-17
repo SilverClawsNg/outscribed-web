@@ -149,8 +149,8 @@ resetProgress()
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="modalStore.push('LoginUser', 'Login')">Login</button>
-          <button class="btn secondary" @click="modalStore.push('RegisterUser', 'Register')">Register</button>
+          <button class="btn btn--primary"  @click="modalStore.push('LoginUser', 'Login')">Login</button>
+          <button class="btn btn--secondary"  @click="modalStore.push('RegisterUser', 'Register')">Register</button>
         </template>
       </PageStatusMessage>
     </template>
@@ -165,8 +165,8 @@ resetProgress()
         :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="redirectToEditor">Editor</button>
-          <button class="btn secondary" @click="modalStore.pop">Close</button>
+          <button class="btn btn--primary"  @click="redirectToEditor">Editor</button>
+          <button class="btn btn--secondary"  @click="modalStore.pop">Close</button>
         </template>
       </PageStatusMessage>
   </template>
@@ -209,7 +209,7 @@ resetProgress()
         <div class="button-holder">
           <button 
             type="submit" 
-            class="btn primary" 
+            class="btn btn--primary"  
             :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Create Draft' }}

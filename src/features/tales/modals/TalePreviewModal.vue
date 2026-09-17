@@ -145,7 +145,7 @@ onBeforeMount(() => {
                     — {{ calculateReadingTime(taleStore.activeTale.detail) }} Minutes Read
           </p>
 
-        <div class="shared__rich-text" v-html="taleStore.activeTale.detail"></div>
+        <div class="rich-text" v-html="taleStore.activeTale.detail"></div>
         </template>
 
          <template v-else>
@@ -189,24 +189,34 @@ onBeforeMount(() => {
           </p>
 
             <div class="content-details__realitycheck-actions">
-            <button type="button" class="btn secondary" @click="showExternalLink = !showExternalLink">
+            <button type="button" class="btn btn--secondary"  @click="showExternalLink = !showExternalLink">
               Visit Source
             </button>
           </div>
-
-          <div v-if="showExternalLink" class="shared__popover">
-            <div class="shared__popover-arrow"></div>
-            <p class="shared__popover-text">You would be redirected to {{ taleStore.activeTale.realityCheckUrl }}</p>
-            <div class="shared__popover-actions">
+         
+          <div v-if="showExternalLink" class="popdown">
+            <div class="popdown__arrow"></div>
+            <p class="popdown__text">You will be redirected to {{ taleStore.activeTale.realityCheckUrl }}</p>
+            <div class="popdown__actions">
               <a 
-                :href="taleStore.activeTale.realityCheckUrl ?? '#'" 
+                :href="taleStore.activeTale.realityCheckUrl ?? '#'"
                 target="_blank" 
-                @click="showExternalLink = false">
+                rel="noopener noreferrer" 
+                class="btn btn--primary" 
+                @click="showExternalLink = false"
+              >
                 Yes
               </a>
-              <button class="btn-cancel" @click="showExternalLink = false">No</button>
+              <button 
+                type="button" 
+                class="btn btn--secondary" 
+                @click="showExternalLink = false"
+              >
+                No
+              </button>
             </div>
           </div>
+
         </div>
       </div>
         </template>
@@ -218,11 +228,10 @@ onBeforeMount(() => {
                 :is-bordered="true"
                 />
         </template>
-        
 
        <template  v-if="taleStore.activeTale.tags && taleStore.activeTale.tags.length > 0">
         <div class="content-details__tags">
-              <h4>Tagged In: </h4><span class="shared__divider shared__divider--line"></span>
+              <h4>Tagged In: </h4><span class="divider divider--line"></span>
               <span v-for="tag in taleStore.activeTale.tags" :key="tag.tagId">
                 #<router-link :to="`/tales/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
               </span>

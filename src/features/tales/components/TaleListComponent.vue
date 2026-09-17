@@ -51,7 +51,7 @@ const contentPath = 'tale'
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
         </button>
-        <span class="shared__divider shared__divider--line"></span>
+        <span class="divider divider--line"></span>
         <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
       </div>
     </header>
@@ -65,7 +65,7 @@ const contentPath = 'tale'
         </RouterLink>
         
         <template v-if="tale.country">
-          <span class="shared__divider shared__divider--circle"></span>
+          <span class="divider divider--circle"></span>
           <RouterLink :to="`/${contentType}?country=${tale.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[tale.country] }}
           </RouterLink>
@@ -97,7 +97,7 @@ const contentPath = 'tale'
 
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn secondary" :to="`/${contentPath}/${tale.slug}`">View Tale</RouterLink>
+      <RouterLink class="btn btn--secondary"  :to="`/${contentPath}/${tale.slug}`">View Tale</RouterLink>
       
       <button 
         class="content-card__save-btn"

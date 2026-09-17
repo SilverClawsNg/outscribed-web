@@ -29,7 +29,7 @@ const emit = defineEmits<{
 <template v-if="progress.type !== 'Idle'">
 
     <div v-if="progress.type === 'Loading'" class="form-loader">
-      <p class="loader"></p>
+      <p class="shared__loader"></p>
     </div>
 
     <div v-else-if="progress.type === 'Success'" class="form-message-contents success" :class="{ boxed: isBoxed }">

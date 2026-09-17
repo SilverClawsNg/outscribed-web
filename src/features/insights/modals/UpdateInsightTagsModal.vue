@@ -190,7 +190,7 @@ currentTag.value = tagId
   <div class="button-holder">
           <button 
             type="submit" 
-            class="btn primary" 
+            class="btn btn--primary"  
             :disabled="progressState.type === 'Loading' || lockSubmission"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Add' }}
@@ -228,7 +228,7 @@ currentTag.value = tagId
     
           <button 
             type="button"
-            class="btn primary"
+            class="btn btn--primary" 
                :disabled="progressState.type === 'Loading' || lockSubmission"
             :class="{active: !isAdd && currentTag == tag.tagId && (progressState.type === 'Loading' || lockSubmission )}"
             @click="handleUntagSubmission(tag.tagId, tag.name)"

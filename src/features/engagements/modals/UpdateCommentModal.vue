@@ -144,7 +144,7 @@ const { success, error } = await draftStore.updateCommentDetails(formData.value!
         <div class="button-holder">
           <button 
             type="button" 
-            class="btn primary" 
+            class="btn btn--primary"  
             @click="handleFormSubmission"
             :disabled="progressState.type === 'Loading' || lockSubmission"
           >

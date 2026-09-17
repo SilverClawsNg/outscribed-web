@@ -81,9 +81,10 @@ onUnmounted(() => {
 <template>
 
      <template v-if="isLoading">
-      <div class="loader-container">
-        <p class="loader"></p>
-      </div>
+     <div class="loader" role="status" aria-label="Loading profile">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Profile...</span>
+</div>
     </template>
    
   <template v-else-if="loadingError">
@@ -94,7 +95,7 @@ onUnmounted(() => {
       icon="warning"
       :is-standalone="true">
         <template v-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -111,7 +112,7 @@ onUnmounted(() => {
 
              <div class="profile-details__metadata">
             Joined {{ toShortDate(profileStore.profile.registeredAt) }}
-            <span class="shared__divider shared__divider--circle"></span>
+            <span class="divider divider--circle"></span>
             {{ formatCounts(profileStore.profile.viewsCount) }} Views
             </div>
 
@@ -164,11 +165,11 @@ onUnmounted(() => {
 
 
        <div class="profile-details__follow-links">
-        <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="btn primary profile-details__link-btn profile-details__link-btn--horizontal" title="Following">
+        <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--horizontal" title="Following">
           <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.followsCount) }}</span> 
           <span class="profile-details__link-field">Following</span>
         </RouterLink>
-        <RouterLink :to="`/users/${profileStore.profile.username}/followers`" class="btn primary profile-details__link-btn profile-details__link-btn--horizontal" title="Followers">
+        <RouterLink :to="`/users/${profileStore.profile.username}/followers`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--horizontal" title="Followers">
           <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.followersCount) }}</span> 
           <span class="profile-details__link-field">Followers</span>
         </RouterLink>
@@ -179,15 +180,15 @@ onUnmounted(() => {
           <SvgIcons name="upvote" /> Upvotes 
         </h4>
         <div class="profile-details__stats-body">
-          <RouterLink :to="`/tales/${profileStore.profile.username}/upvotes`" class="btn primary profile-details__link-btn" title="Tales Upvotes">
+          <RouterLink :to="`/tales/${profileStore.profile.username}/upvotes`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Upvotes">
             <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.taleUpvotesCount) }}</span> 
             <span class="profile-details__link-field">Tales</span>
           </RouterLink>
-          <RouterLink :to="`/insights/${profileStore.profile.username}/upvotes`" class="btn primary profile-details__link-btn" title="Insights Upvotes">
+          <RouterLink :to="`/insights/${profileStore.profile.username}/upvotes`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Upvotes">
             <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.insightUpvotesCount) }}</span> 
             <span class="profile-details__link-field">Insights</span>
           </RouterLink>
-          <RouterLink :to="`/comments/${profileStore.profile.username}/upvotes`" class="btn primary profile-details__link-btn" title="Comments">
+          <RouterLink :to="`/comments/${profileStore.profile.username}/upvotes`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Comments">
             <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span> 
             <span class="profile-details__link-field">Comments</span>
           </RouterLink>
@@ -195,71 +196,104 @@ onUnmounted(() => {
       </div>
     
      <div class="profile-details__contacts" aria-label="Social and email contacts">
-        <!-- Facebook -->
-         <template v-if="profileStore.facebook">
-          
-        <div class="profile-details__contact-item">
-          <div class="profile-details__contact-header">
-            <p class="profile-details__contact-title profile-details__contact-title--facebook">
-              <SvgIcons name="facebook" /> Facebook
-            </p>
-          </div>
-          <p class="profile-details__contact-definition">
-            <span>https://facebook.com/</span><a :href="profileStore.facebookLink" target="_blank">{{ profileStore.facebook }}</a>
-          </p>
-        </div>
+  <!-- Facebook -->
+  <div v-if="profileStore.facebook" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--facebook">
+        <SvgIcons name="facebook" /> Facebook
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <span>https://facebook.com/</span>
+      <a href="profileStore.facebookLink" target="_blank" rel="noopener noreferrer">
+        {{ profileStore.facebook }}
+      </a>
+    </p>
+  </div>
 
-         </template>
+  <!-- Twitter / X -->
+  <div v-if="profileStore.twitter" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--twitter">
+        <SvgIcons name="twitter" /> X
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <span>https://x.com/</span>
+      <a href="profileStore.twitterLink" target="_blank" rel="noopener noreferrer">
+        {{ profileStore.twitter }}
+      </a>
+    </p>
+  </div>
 
-        <!-- Twitter / X -->
-           <template v-if="profileStore.facebook">
+  <!-- LinkedIn -->
+  <div v-if="profileStore.linkedin" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--linkedin">
+        <SvgIcons name="linkedin" /> LinkedIn
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <span>https://linkedin.com/in/</span>
+      <a href="profileStore.linkedinLink" target="_blank" rel="noopener noreferrer">
+        {{ profileStore.linkedin }}
+      </a>
+    </p>
+  </div>
 
-            <div class="profile-details__contact-item">
-              <div class="profile-details__contact-header">
-                <p class="profile-details__contact-title profile-details__contact-title--twitter">
-                  <SvgIcons name="twitter" /> X
-                </p>
-              </div>
-              <p class="profile-details__contact-definition">
-                <span>https://twitter.com/</span><a :href="profileStore.twitterLink" target="_blank">{{ profileStore.twitter }}</a>
-              </p>
-            </div>
+  <!-- Instagram -->
+  <div v-if="profileStore.instagram" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--instagram">
+        <SvgIcons name="instagram" /> Instagram
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <span>https://instagram.com/</span>
+      <a href="profileStore.instagramLink" target="_blank" rel="noopener noreferrer">
+        {{ profileStore.instagram }}
+      </a>
+    </p>
+  </div>
 
-         </template>
-        
-        <!-- LinkedIn -->
-           <template v-if="profileStore.facebook">
+  <!-- Email -->
+  <div v-if="profileStore.email" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--email">
+        <SvgIcons name="email" /> Email Address
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
+    </p>
+  </div>
 
-            <div class="profile-details__contact-item">
-              <div class="profile-details__contact-header">
-                <p class="profile-details__contact-title profile-details__contact-title--linkedin">
-                  <SvgIcons name="linkedin" /> LinkedIn
-                </p>
-              </div>
-              <p class="profile-details__contact-definition">
-                <span>https://linkedin.com/in/</span><a :href="profileStore.linkedinLink" target="_blank">{{ profileStore.linkedin }}</a>
-              </p>
-            </div>
+  <!-- Phone -->
+  <div v-if="profileStore.telephone" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--phone">
+        <SvgIcons name="phone" /> Phone
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <a :href="`tel:${profileStore.telephone}`">{{ profileStore.telephone }}</a>
+    </p>
+  </div>
 
-         </template>
-
-        <!-- Email -->
-           <template v-if="profileStore.facebook">
-
-            <div class="profile-details__contact-item">
-              <div class="profile-details__contact-header">
-                <p class="profile-details__contact-title profile-details__contact-title--email">
-                  <SvgIcons name="email" /> Email Address
-                </p>
-              </div>
-              <p class="profile-details__contact-definition">
-                <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
-              </p>
-            </div>
-
-         </template>
-      
-      </div>
+  <!-- Website -->
+  <div v-if="profileStore.website" class="profile-details__contact-item">
+    <div class="profile-details__contact-header">
+      <p class="profile-details__contact-title profile-details__contact-title--website">
+        <SvgIcons name="website" /> Website
+      </p>
+    </div>
+    <p class="profile-details__contact-definition">
+      <a :href="profileStore.website" target="_blank" rel="noopener noreferrer">
+        {{ profileStore.website }}
+      </a>
+    </p>
+  </div>
+</div>
     
     </div>
 

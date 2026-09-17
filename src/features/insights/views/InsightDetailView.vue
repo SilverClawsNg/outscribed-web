@@ -149,7 +149,7 @@ onUnmounted(() => {
       :is-standalone="true">
 
       <template #actions>
-        <router-link :to="redirectUrl" class="btn primary">
+        <router-link :to="redirectUrl" class="btn btn--primary" >
           Redirect Now
         </router-link>
       </template>
@@ -158,9 +158,10 @@ onUnmounted(() => {
   </template>
 
   <template v-else-if="isLoading">
-      <div class="loader-container">
-        <p class="loader"></p>
-      </div>
+    <div class="loader" role="status" aria-label="Loading insight">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Insight...</span>
+</div>
     </template>
 
    <template v-else-if="isUnauthorized">
@@ -171,7 +172,7 @@ onUnmounted(() => {
        icon="warning"
       :is-standalone="true">
       <template #actions>
-        <button class="btn primary" @click="router.push(`/login?returnUrl=${currentPath}`)">Login</button>
+        <button class="btn btn--primary"  @click="router.push(`/login?returnUrl=${currentPath}`)">Login</button>
       </template>
     </PageStatusMessage>
    
@@ -185,10 +186,10 @@ onUnmounted(() => {
         icon="broken-chain"
         :is-standalone="true">
            <template v-if="loadingError.status == 404" #actions>
-        <button class="btn primary" @click="router.push(`/insights`)">Find other insights</button>
+        <button class="btn btn--primary"  @click="router.push(`/insights`)">Find other insights</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -206,7 +207,7 @@ onUnmounted(() => {
             icon="archive"
             :is-standalone="true">
             <template #actions>
-              <button class="btn primary" @click="router.push(`/insight/archives/${insightId}`)">Continue to archives</button>
+              <button class="btn btn--primary"  @click="router.push(`/insight/archives/${insightId}`)">Continue to archives</button>
             </template>
           </PageStatusMessage>
        

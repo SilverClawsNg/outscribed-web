@@ -61,22 +61,25 @@ onUnmounted(() => {
 
     <div ref="sentinelRef" id="scroll-sentinel" style="height: 1px;"></div>
 
-    <section class="shared__end-of-file">
+    <section class="end-of-file">
 
-   <PageStatusMessage v-if="error"
-      :title="error.title || 'Error Loading Drafts'" 
-      :message="error.detail || 'An unexpected error occurred.'">
-      <template #actions>
-         <button type="button" class="btn primary" @click="emit('retry')">
-          Retry
-        </button>
-      </template>
-    </PageStatusMessage>
+    <PageStatusMessage v-if="error"
+        :title="error.title || 'Loading Error!'" 
+        :message="error.detail || 'An unexpected error occured while loading contents'"
+        icon="warning"
+        :is-bordered="true">
+        <template #actions>
+          <button type="button" class="btn btn--primary"  @click="emit('retry')">
+            Retry
+          </button>
+        </template>
+      </PageStatusMessage>
 
-      <p v-else-if="hasNext" class="shared__loader"></p>
+      <p v-else-if="hasNext" class="loader__dot"></p>
 
-      <p v-else class="shared__loaded"></p>
+      <p v-else class="loaded"></p>
 
     </section>
 
 </template>
+

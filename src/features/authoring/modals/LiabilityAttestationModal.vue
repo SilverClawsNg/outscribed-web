@@ -53,7 +53,7 @@ deliberately misleads readers about facts (beyond the artistic framing of the Ta
 </ol>
 
 <div class="writer-onboarding__actions">
-    <button class="btn primary" @click="handleAcknowledgeAndClose">
+    <button class="btn btn--primary"  @click="handleAcknowledgeAndClose">
         Continue
     </button>
 </div>

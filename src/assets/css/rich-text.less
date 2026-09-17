@@ -1,22 +1,19 @@
 @import "variables.less";
 
-:deep(.shared__rich-text) {
-    margin-bottom: 1rem;
-    
-    /* 1. Skip paragraphs that are empty or only contain a <br> */
-    & p:not(:empty):first-of-type::first-letter,
-    & div:not(:empty):first-of-type::first-letter {
-        font-size: 1.5rem; /* Bold and Large */
-        line-height: 1.8rem; /* Keeps the text flow tight */
-        padding: 0 3px;
-        font-family: 'Serif', Georgia, Times; /* Fiction looks best in Serif */
-        font-weight: 600;
-    }
-    /* 2. Specialized fix for Quill's <p><br></p> structure */
-    & p:has(br):first-child::first-letter {
-        all: unset; /* Don't apply drop cap to a line break */
-    }
+:deep(.rich-text) {
 
+    *{
+        font-family: @font-family;
+        height: auto;
+        word-wrap: break-word;
+        width: 100%;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-size: @base-font-size;
+        line-height: @base-line-height;
+    }
+   
     & h1, h2, h3, h4, h5, h6 {
         font-weight: 600;
         text-transform: uppercase;
@@ -28,9 +25,10 @@
 
     & div,
     & p {
-        margin-top: 1rem;
- font-size: 1.2rem;
- line-height: 1.6rem;
+        margin-top: 0.25rem;
+        //font-size: 1.2rem;
+        //line-height: 1.6rem;
+
         &:first-child {
             margin-top: 0;
         }

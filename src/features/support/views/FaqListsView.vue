@@ -15,12 +15,12 @@ const modalStore = useModalStore()
 
 <template>
 
-   <header class="page-header shared__container">
+   <header class="page-header container">
      <h1>FAQs</h1>
       <!-- Variant 1: Filter Button -->
       <button 
         type="button" 
-        class="btn primary" 
+        class="btn btn--primary"  
         @click="modalStore.push('AskQuestion', 'Ask a Question')"
       >
       Ask a Question
@@ -29,7 +29,7 @@ const modalStore = useModalStore()
  
   <template v-if="faqData.length > 0">
 
-       <div class="shared__container">
+       <div class="container">
 
       <FaqListComponent 
          v-for="faq in faqData" 

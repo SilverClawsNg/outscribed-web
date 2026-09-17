@@ -21,18 +21,36 @@ const profile = ref<GetUserProfileResponse | null>(null)
  let hydrateController: AbortController | null = null;
     let recordController: AbortController | null = null;
 
-  // --- 👥 SOCIAL CONTACT LOOKUPS ---
-  const facebook = computed(() => profile.value?.contacts?.find(c => c.type === 'Facebook')?.title || null)
-  const facebookLink = computed(() => `https://facebook.com/${facebook.value || ''}`)
-  
-  const twitter = computed(() => profile.value?.contacts?.find(c => c.type === 'Twitter')?.title || null)
-  const twitterLink = computed(() => `https://twitter.com/${twitter.value || ''}`)
-  
-  const linkedin = computed(() => profile.value?.contacts?.find(c => c.type === 'LinkedIn')?.title || null)
-  const linkedinLink = computed(() => `https://linkedin.com/in/${linkedin.value || ''}`)
-  
-  const email = computed(() => profile.value?.contacts?.find(c => c.type === 'Email')?.title || null)
-  
+// --- 👥 SOCIAL & CONTACT LOOKUPS ---
+const facebook = computed(() => profile.value?.contacts?.find(c => c.type === 'Facebook')?.title || null)
+const facebookLink = computed(() => facebook.value ? `https://facebook.com/${facebook.value}` : null)
+
+const twitter = computed(() => profile.value?.contacts?.find(c => c.type === 'Twitter')?.title || null)
+const twitterLink = computed(() => twitter.value ? `https://x.com/${twitter.value}` : null)
+
+const linkedin = computed(() => profile.value?.contacts?.find(c => c.type === 'LinkedIn')?.title || null)
+const linkedinLink = computed(() => linkedin.value ? `https://linkedin.com/in/${linkedin.value}` : null)
+
+const instagram = computed(() => profile.value?.contacts?.find(c => c.type === 'Instagram')?.title || null)
+const instagramLink = computed(() => instagram.value ? `https://instagram.com/${instagram.value}` : null)
+
+const tiktok = computed(() => profile.value?.contacts?.find(c => c.type === 'TikTok')?.title || null)
+const tiktokLink = computed(() => tiktok.value ? `https://tiktok.com/@${tiktok.value.replace(/^@/, '')}` : null)
+
+const whatsapp = computed(() => profile.value?.contacts?.find(c => c.type === 'WhatsApp')?.title || null)
+const whatsappLink = computed(() => whatsapp.value ? `https://wa.me/${whatsapp.value.replace(/[^0-9]/g, '')}` : null)
+
+const telephone = computed(() => profile.value?.contacts?.find(c => c.type === 'Telephone')?.title || null)
+const telephoneLink = computed(() => telephone.value ? `tel:${telephone.value}` : null)
+
+const website = computed(() => profile.value?.contacts?.find(c => c.type === 'Website')?.title || null)
+const websiteLink = computed(() => {
+  if (!website.value) return null
+  return website.value.startsWith('http') ? website.value : `https://${website.value}`
+})
+
+const email = computed(() => profile.value?.contacts?.find(c => c.type === 'Email')?.title || null)
+
 
   // 1. Fetch, Increment Metrics, and Hydrate Relationships
   async function loadProfile(accountId: string) {
@@ -219,13 +237,23 @@ async function recordView() {
 
   return {
     profile,
-     facebook,
+    facebook,
     twitter,
     linkedin,
     email,
     facebookLink,
     twitterLink,
     linkedinLink,
+    instagram,
+    instagramLink,
+    tiktok,
+    tiktokLink,
+    website,
+    websiteLink,
+    telephone,
+    telephoneLink,
+    whatsapp,
+    whatsappLink,
     recordView,
     hydratePersonals,
     loadProfile,

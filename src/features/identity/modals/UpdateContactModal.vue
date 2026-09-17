@@ -4,6 +4,7 @@ import { useModalStore } from '@/stores/modalStore'
 import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
 import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
+import { type AccountStatus, type ContactType } from '@/utils/enumHelper.ts'
 
 const modalStore = useModalStore()
 const profileStore = useProfileStore() // 💡 Instantiate Store
@@ -16,6 +17,76 @@ watch(() => profileStore.activeContactDto, (dto) => {
   formTitle.value = dto?.title ?? ''
 }, { immediate: true })
 
+
+interface ContactConfig {
+  prefix?: string
+  placeholder: string
+  inputType: 'text' | 'url' | 'tel'
+}
+
+type ValidShareableContactType = Exclude<ContactType, 'CopyLink'>
+
+// Explicitly mapping every non-null ContactType enum value
+const CONTACT_CONFIGS: Record<ValidShareableContactType, ContactConfig> = {
+  Facebook: {
+    prefix: 'https://www.facebook.com/',
+    placeholder: 'Handle',
+    inputType: 'text'
+  },
+  LinkedIn: {
+    prefix: 'https://www.linkedin.com/in/',
+    placeholder: 'Handle',
+    inputType: 'text'
+  },
+  Twitter: {
+    prefix: 'https://www.x.com/',
+    placeholder: 'Handle',
+    inputType: 'text'
+  },
+  Instagram: {
+    prefix: 'https://www.instagram.com/',
+    placeholder: 'Handle',
+    inputType: 'text'
+  },
+  TikTok: {
+    prefix: 'https://www.tiktok.com/@',
+    placeholder: 'Username',
+    inputType: 'text'
+  },
+  WhatsApp: {
+    prefix: 'https://wa.me/',
+    placeholder: 'Phone number with country code',
+    inputType: 'tel'
+  },
+  Telephone: {
+    placeholder: 'Phone number (e.g. +1 555-0199)',
+    inputType: 'tel'
+  },
+  Website: {
+    placeholder: 'https://yourwebsite.com',
+    inputType: 'url'
+  },
+  Email: {
+    placeholder: 'Email address',
+    inputType: 'text'
+  }
+}
+
+const DEFAULT_CONFIG: ContactConfig = {
+  placeholder: 'Select a contact type',
+  inputType: 'text'
+}
+// 🎯 Safely handles null or 'CopyLink' by falling back to DEFAULT_CONFIG
+const currentContactConfig = computed<ContactConfig>(() => {
+  const activeType = profileStore.activeContactType
+
+  // If activeType is null, 'CopyLink', or unmapped, return default config safely
+  if (!activeType || activeType === 'CopyLink' || !(activeType in CONTACT_CONFIGS)) {
+    return DEFAULT_CONFIG
+  }
+
+  return CONTACT_CONFIGS[activeType as ValidShareableContactType]
+})
 
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 
@@ -108,76 +179,49 @@ onMounted(() => {
 
     <FormProgress :progress="progressState" />
 
-    <form @submit.prevent="handleFormSubmission">
+   <form @submit.prevent="handleFormSubmission">
+  <!-- Active Contact Type Title -->
+  <fieldset :disabled="true">
+    <input 
+      :value="profileStore.activeContactType" 
+      type="text" 
+      id="ContactType" 
+      class="form-field" 
+      placeholder="Type" 
+    />
+  </fieldset>
 
- <fieldset :disabled="true">
-          <input 
-           :value="profileStore.activeContactType"
-            type="text" 
-            id="Title" 
-            class="form-field" 
-            placeholder="Title" 
-          />
-        </fieldset>
+  <!-- Dynamic Social/Contact Input Fieldset -->
+  <fieldset class="social">
+    <!-- Prefix URL / Country Code Label (if applicable) -->
+    <span v-if="currentContactConfig.prefix">
+      {{ currentContactConfig.prefix }}
+    </span>
 
-                <fieldset v-if="profileStore.activeContactType === 'Facebook'" class="social">
-                      <span>https://www.facebook.com/</span>
-                       <input 
-                          v-model="formTitle" 
-                          type="text" 
-                          id="Title" 
-                          class="form-field" 
-                          placeholder="Handle" 
-                        />
+    <input 
+      v-model="formTitle" 
+      :type="currentContactConfig.inputType" 
+      id="Title" 
+      class="form-field" 
+      :placeholder="currentContactConfig.placeholder" 
+    />
+  </fieldset>
 
-                  </fieldset>
-                    <fieldset v-else-if="profileStore.activeContactType === 'LinkedIn'" class="social">
-                       <span>https://www.linkedin.com/in/</span>
-                       <input 
-                          v-model="formTitle" 
-                          type="text" 
-                          id="Title" 
-                          class="form-field" 
-                          placeholder="Handle" 
-                        />
+  <span v-if="formSubmitted && validationErrors.title" class="validation-message">
+    {{ validationErrors.title }}
+  </span>
 
-                  </fieldset>
-                     <fieldset v-else-if="profileStore.activeContactType === 'Twitter'" class="social">
-                       <span>https://www.x.com/</span>
-                       <input 
-                          v-model="formTitle" 
-                          type="text" 
-                          id="Title" 
-                          class="form-field" 
-                          placeholder="Handle" 
-                        />
+  <div class="button-holder">
+    <button 
+      type="submit" 
+      class="btn btn--primary"  
+      :disabled="progressState.type === 'Loading'"
+    >
+      {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
+    </button>
+  </div>
+</form>
 
-                  </fieldset>
-                     <fieldset v-else class="social">
-                       <input 
-                          v-model="formTitle" 
-                          type="text" 
-                          id="Title" 
-                          class="form-field" 
-                          placeholder="Title" 
-                        />
-
-                  </fieldset>
-
-                     <span v-if="formSubmitted && validationErrors.title" class="validation-message">
-        {{ validationErrors.title }}
-      </span>
-
-        <div class="button-holder">
-          <button 
-            type="submit" 
-            class="btn primary" 
-            :disabled="progressState.type === 'Loading'"
-          >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
-          </button>
-        </div>
-    </form>
   </div>
 
 </template>

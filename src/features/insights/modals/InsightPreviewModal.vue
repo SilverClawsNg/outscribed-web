@@ -140,7 +140,7 @@ onBeforeMount(() => {
           — {{ calculateReadingTime(insightStore.activeInsight.detail) }} Minutes Read
  </p>
 
-        <div class="shared__rich-text" v-html="insightStore.activeInsight.detail"></div>
+        <div class="rich-text" v-html="insightStore.activeInsight.detail"></div>
         </template>
          <template v-else>
              <p class="content-details__reading-time">
@@ -168,7 +168,7 @@ onBeforeMount(() => {
        <template  v-if="insightStore.activeInsight.tags && insightStore.activeInsight.tags.length > 0">
   <div class="content-details__tags">
        <h4 class="content-details__tag-title">Tagged In</h4>
-        <span class="shared__divider shared__divider--line"></span>
+        <span class="divider divider--line"></span>
         <span v-for="tag in insightStore.activeInsight.tags" :key="tag.tagId"  class="content-details__tag-item">
           #<router-link :to="`/insights/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
         </span>

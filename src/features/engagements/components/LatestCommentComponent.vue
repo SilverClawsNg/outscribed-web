@@ -63,7 +63,7 @@ onMounted(async () => {
 
       <div 
         ref="commentElement" 
-        :class="['shared__richtext', { 'truncated': !isExpanded }]"
+        :class="['rich-text', { 'truncated': !isExpanded }]"
         v-html="props.comment.detail"
       ></div>
       
@@ -89,4 +89,5 @@ onMounted(async () => {
 
 <style lang="less" scoped>
 @import "@/assets/css/comment-x-card.less";
+@import "@/assets/css/rich-text.less";
 </style>

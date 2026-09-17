@@ -61,7 +61,7 @@ function createComment() {
 
 <template>
 
-  <article class="content-details shared__container">
+  <article class="content-details container">
 
     <header class="content-details__header-container">
 
@@ -150,6 +150,7 @@ function createComment() {
       </p>
 
       <template v-if="insight.isArchived">
+
          <PageStatusMessage 
             title="Insight is archived!" 
             message="This insight has been archived by the author and is no longer publicly visible. We are showing you this archived version as a reference for discussions. Certain features such as voting, saving, and commenting have been disabled."
@@ -159,7 +160,7 @@ function createComment() {
       </template>
 
       <!-- Renders safe HTML details -->
-      <div class="shared__rich-text" v-html="sanitizeHtml(insight.detail)"></div>
+      <div class="rich-text" v-html="sanitizeHtml(insight.detail)"></div>
 
       <template v-if="insight.addendum && insight.addendumDate">
       <div  class="content-details__addendum">
@@ -176,7 +177,7 @@ function createComment() {
        <template  v-if="insight.tags && insight.tags.length > 0">
           <div class="content-details__tags">
             <h4 class="content-details__tag-title">Tagged In</h4>
-            <span class="shared__divider shared__divider--line"></span>
+            <span class="divider divider--line"></span>
           <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
               #<router-link :to="`/insights?tag=${tag.slug}`">{{ tag.name }}</router-link>
             </span>
@@ -190,7 +191,7 @@ function createComment() {
 
             <div class="content-details__vote-actions">
             <button 
-              class="btn primary" 
+              class="btn btn--primary"  
               :disabled="uiMeta.isVoteDisabled || insight.isArchived"
               @click="engage.vote(insight.engagement, 'Upvote')"
             >
@@ -200,7 +201,7 @@ function createComment() {
             </button>
 
             <button 
-              class="btn secondary" 
+              class="btn btn--secondary"  
               :disabled="uiMeta.isVoteDisabled || insight.isArchived"
               @click="engage.vote(insight.engagement, 'Downvote')"
             >
@@ -308,7 +309,7 @@ function createComment() {
            <button 
            type="button"
               @click="router.push(`/tale/${insight.source.slug}`)" 
-              class="btn primary">
+              class="btn btn--primary" >
               View Tale
       </button>
        
@@ -330,12 +331,12 @@ function createComment() {
         <button 
         type="button"
           v-if="insight.engagement.commentsCount > 0" 
-          class="btn primary" 
+          class="btn btn--primary"  
           @click="viewComments"
         >
           View {{ formatCounts(insight.engagement.commentsCount) }}
         </button>
-        <button v-else class="btn primary" disabled>
+        <button v-else class="btn btn--primary"  disabled>
           View {{ insight.engagement.commentsCount }}
         </button>
       </header>
@@ -365,7 +366,7 @@ function createComment() {
         <button 
         type="button" 
          :disabled="insight.isArchived"
-         class="btn secondary with-icon"
+         class="btn btn--secondary btn--has-icon"
         title="Create Comment" 
         @click="createComment">
           <span class="icon-edit"></span> Write a comment

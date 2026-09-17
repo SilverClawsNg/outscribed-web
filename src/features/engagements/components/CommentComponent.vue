@@ -124,7 +124,7 @@ function returnAncestor() {
       <div v-else class="comment-inline-card__text">
         <div 
           ref="commentElement" 
-          :class="['shared__richtext', { 'truncated': !isExpanded }]"
+          :class="['rich-text', { 'truncated': !isExpanded }]"
           v-html="props.comment.detail"
         ></div>
 
@@ -235,4 +235,5 @@ function returnAncestor() {
 
 <style lang="less" scoped>
 @import "@/assets/css/comment-inline-card.less";
+@import "@/assets/css/rich-text.less";
 </style>

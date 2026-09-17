@@ -185,9 +185,10 @@ onMounted(async () => {
  
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+   <div class="loader" role="status" aria-label="Loading comments">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Comments...</span>
+</div>
 
   </template>
 
@@ -226,7 +227,7 @@ onMounted(async () => {
       :is-standalone="true"
       >
         <template #actions>
-          <button class="btn primary" @click="resetFilters">Reset</button>
+          <button class="btn btn--primary"  @click="resetFilters">Reset</button>
         </template>
       </PageStatusMessage>
 
@@ -272,7 +273,7 @@ onMounted(async () => {
         </div>
 
         <div class="comments-container__top-action">
-          <button class="btn primary" @click="createComment">Write Comment</button>
+          <button class="btn btn--primary"  @click="createComment">Write Comment</button>
         </div>
       </section>
  

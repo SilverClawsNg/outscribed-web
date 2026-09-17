@@ -97,10 +97,10 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
 
  <template v-if="isLoading">
 
-   <div class="shared__page-title">
-    <h1>Loading Snapshots... </h1>
-      <p class="shared__loader"></p>
-    </div>
+  <div class="loader" role="status" aria-label="Loading Snapshots">
+    <p class="loader__dot"></p>
+    <span class="sr-only">Loading Snapshots...</span>
+  </div>
 
   </template>
 
@@ -112,10 +112,10 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
       icon="warning"
       :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
-        <button class="btn primary" @click="redirectToLogin">Login</button>
+        <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>

@@ -107,9 +107,10 @@ onUnmounted(() => {
   
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+   <div class="loader" role="status" aria-label="Loading writers">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Writers...</span>
+</div>
 
   </template>
 
@@ -121,10 +122,10 @@ onUnmounted(() => {
       icon="warning"
       :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
-        <button class="btn primary" @click="redirectToLogin">Login</button>
+        <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -134,23 +135,25 @@ onUnmounted(() => {
 
    <template v-else>
 
-     <header class="page-header shared__container">
+     <header class="page-header container">
       <h1 class="page-header__title">
           Browse Writers
         </h1>
     <button 
         type="button" 
-        class="btn primary" @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
+        class="btn btn--primary"  @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
     </header>
      
     <template v-if="wasCleaned">
 
-      <PageStatusMessage 
+     <div class="container">
+       <PageStatusMessage 
               title="Invalid Filters Removed!" 
               message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
               icon="warning" 
               :is-bordered="true"
             />
+     </div>
 
     </template>
 
@@ -164,7 +167,7 @@ onUnmounted(() => {
         @retry="writerStore.loadMoreWriters">
 
         
-  <div class="shared__container min">
+  <div class="container min">
 
       <WriterListComponent 
         v-for="writer in writerStore.writers" 

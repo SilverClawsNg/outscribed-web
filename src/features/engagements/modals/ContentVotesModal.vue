@@ -64,9 +64,10 @@ onUnmounted(() => {
  
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+  <div class="loader" role="status" aria-label="Loading votes">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Votes...</span>
+</div>
 
   </template>
 

@@ -94,7 +94,12 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   Facebook: 'Facebook',
   Twitter: 'Twitter',
   LinkedIn: 'LinkedIn',
-  CopyLink: 'Copy Link'
+  CopyLink: 'Copy Link',
+  Instagram: 'Instagram',
+  TikTok: 'TikTok',
+  WhatsApp: 'Whatsapp',
+  Website: 'Website',
+  Telephone: 'Phone Number'
 } as const;
 
   export const AccountStatusDescriptions: Record<AccountStatus, string> = {

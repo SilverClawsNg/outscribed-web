@@ -162,9 +162,10 @@ onUnmounted(() => {
   
   <template v-if="isLoading">
 
-    <div class="loader-container">
-      <p class="loader"></p>
-    </div>
+   <div class="loader" role="status" aria-label="Loading users">
+  <p class="loader__dot"></p>
+  <span class="sr-only">Loading Users...</span>
+</div>
 
   </template>
 
@@ -176,10 +177,10 @@ onUnmounted(() => {
        icon="warning"
       :is-standalone="true">
         <template v-if="loadingError.status == 401" #actions>
-        <button class="btn primary" @click="redirectToLogin">Login</button>
+        <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
       </template>
         <template v-else-if="loadingError.definition" #actions>
-           <button class="btn primary" @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
+           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
             More Details
           </button>
         </template>
@@ -189,11 +190,11 @@ onUnmounted(() => {
 
    <template v-else>
    
-       <header class="page-header shared__container">
+       <header class="page-header container">
           <h1 class="page-header__title"  :class="{ at: creatorUsername }">
                {{ pageTitle }}
             </h1>
-        <button class="btn primary" @click="modalStore.push('UserListFilter', 'Filter Lists')">Filter</button>
+        <button class="btn btn--primary"  @click="modalStore.push('UserListFilter', 'Filter Lists')">Filter</button>
        </header>
 
        <template v-if="wasCleaned">
@@ -215,7 +216,7 @@ onUnmounted(() => {
         @retry="userStore.loadMoreUsers">
 
         
-  <div class="shared__container">
+  <div class="container">
 
       <UserListComponent 
         v-for="user in userStore.users" 

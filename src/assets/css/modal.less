@@ -163,10 +163,7 @@
              background-color: #00A0EB;
             /*background-color: @header-background-color;*/
 
-            & button svg path {
-                stroke: @white-color;
-            }
-
+           
             & .inner-modal-header {
                 display: flex;
                 align-items: center;
@@ -211,8 +208,11 @@
                     color: @white-color;
                     border-bottom: 3px solid transparent;
                     
-                      & svg.stroked {
+                      & svg {
                         stroke: @white-color;
+                        stroke-width: 2px;
+                        width: 20px;
+                        height: 20px;
                     }
 
                     &.maximize, &.minimize {

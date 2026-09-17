@@ -35,7 +35,7 @@ const showAnswer = ref(false)
       class="faq-card__content"
       :class="{ 'faq-card__content--show': showAnswer }"
     >
-      <div class="faq-card__body shared__rich-text" v-html="sanitizeHtml(faq.answer)"></div>
+      <div class="faq-card__body rich-text" v-html="sanitizeHtml(faq.answer)"></div>
     </div>
   </article>
 </template>

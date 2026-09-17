@@ -68,7 +68,7 @@ onMounted(async () => {
         </button>
         <time class="comment-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
 
-         <span class="shared__divider shared__divider--circle"></span>
+         <span class="divider divider--circle"></span>
 
            <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
             {{ ContentTypeDescriptions[comment.contentType] }}
@@ -80,7 +80,7 @@ onMounted(async () => {
 
       <div 
         ref="commentElement" 
-        :class="['shared__richtext', { 'truncated': !isExpanded }]"
+        :class="['rich-text', { 'truncated': !isExpanded }]"
         v-html="props.comment.detail"
       ></div>
       
@@ -104,7 +104,7 @@ onMounted(async () => {
     <footer class="comment-card__footer">
         <button 
         type="button"
-         class="btn secondary"
+         class="btn btn--secondary" 
         @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
         View Thread
       </button>
