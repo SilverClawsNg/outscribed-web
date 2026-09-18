@@ -65,7 +65,7 @@ async function handleModalUpdate(type: string, title: string) {
       <span class="content-status__label">Status</span>
       <span 
         class="content-status__value" 
-        :class="`content-status__value--${comment.status}`"
+        :class="`content-status__value--${CommentStatusClass[comment.status]}`"
       >
         {{ CommentStatusDescriptions[comment.status] }}
       </span>

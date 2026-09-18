@@ -38,7 +38,7 @@ async function handleModalUpdate(type: string, title: string) {
       <span class="content-status__label">Status</span>
       <span 
         class="content-status__value" 
-        :class="`content-status__value--${insight.status}`"
+        :class="`content-status__value--${InsightStatusClass[insight.status]}`"
       >
        {{ InsightStatusDescriptions[insight.status] }}
       </span>
