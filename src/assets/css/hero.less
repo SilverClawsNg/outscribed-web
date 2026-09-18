@@ -11,8 +11,7 @@
 
 .hero {
   width: @mid-width;
-  max-width: calc(100% - 20px);
-  margin: 0 auto;
+ 
   height: auto;
 
    @media @smallDevice {
@@ -56,8 +55,9 @@
       @media @smallDevice {
         width: 100%;
         height: auto; /* pin image to the right */
-        padding: 2rem 0;
-       
+        padding: 3rem 0;
+        max-width: calc(100% - 20px);
+  margin: 0 auto;
     }
 
       @media @largeDevice {
