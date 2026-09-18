@@ -88,7 +88,7 @@ onUnmounted(() => {
 
      <figure class="hero__image">
         <img 
-          src="@/assets/images/hero-background.png" 
+          src="@/assets/images/hero-realities.png" 
           alt="OutScribed Hero Background" 
           class="hero__img"
         />
