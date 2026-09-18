@@ -66,6 +66,18 @@ onUnmounted(() => {
 
   <section class="hero">
 
+     <figure class="hero__image">
+      <hr />
+        <img 
+          src="@/assets/images/icon.png" 
+          alt="OutScribed Hero Background" 
+          class="hero__img"
+          width="100px"
+          height="100px"
+        />
+         <hr />
+      </figure>
+
     <div class="hero__text">
       <h3 class="hero__tagline">
         The Facts, The Fiction, 
@@ -85,14 +97,6 @@ onUnmounted(() => {
         <RouterLink class="btn btn--contrast hero__action" to="/register">Join Us</RouterLink>
       </div>
     </div>
-
-     <figure class="hero__image">
-        <img 
-          src="@/assets/images/hero-realities.png" 
-          alt="OutScribed Hero Background" 
-          class="hero__img"
-        />
-      </figure>
 
   </section>
 

@@ -12,119 +12,40 @@
 .hero {
 
   height: auto;
-
-   @media @phone {
-     display: flex;
-     flex-direction: column;
-     width: 100%;
-    }
-
-      @media @phablet {
-     display: flex;
-     flex-direction: column;
-     width: @min-width;
-     margin: 0 auto;
-    }
-
-      @media @tablet {
-      position: relative;
+ padding: 2rem 0;
+   position: relative;
       width: @mid-width;
        margin: 0 auto;
-    }
-
-      @media @largeDevice {
-        
-      position: relative;
-      width: @mid-width;
-       margin: 0 auto;
-    }
+  
 
   &__image {
-      @media @phone {
-        width: 100%;
-        height: auto; /* pin image to the right */
-        & img{
-        width: 100%;
-          height: auto;
-        }
-    }
+     width:@min-width;
+        display: flex;
+        align-items:center;
+        justify-content:center;
+        height: auto;
+        margin: 0 auto 1.5rem auto;
 
-     @media @phablet {
-        width: 100%;
-        height: auto; /* pin image to the right */
-        & img{
-        width: 100%;
-          height: auto;
+        & hr{
+          flex-grow: 1;
+          height: 1px;
+          background-color:@white-color;
         }
-    }
- 
-       @media @tablet {
-        position: relative; /* or absolute inset-block 0; right: 0 */
-        width: 600px;
-        max-width: 100%;
-        margin-left: auto; /* pin image to the right */
-        min-height: 400px;
+       
+    
         & img{
-        width: 100%;
+        width: 5rem;
           height: auto;
-          min-height: 400px;
-          object-fit: cover;
+          padding: 0 1rem;
         }
-    }
-       @media @largeDevice {
-        position: relative; /* or absolute inset-block 0; right: 0 */
-        width: 369px;
-        max-width: 100%;
-        margin-left: auto; /* pin image to the right */
-        min-height: 400px;
-        & img{
-        width: 100%;
-          height: auto;
-          min-height: 400px;
-          object-fit: cover;
-        }
-    }
   }
 
   &__text {
 
-      @media @phone {
-        width: 100%;
+        width: @min-width;
         height: auto; /* pin image to the right */
-        padding: 3rem 0;
         max-width: calc(100% - 20px);
         margin: 0 auto;
-    }
-
-    @media @phablet {
-        width: 100%;
-        height: auto; /* pin image to the right */
-        padding: 3rem 0;
-        max-width: calc(100% - 20px);
-        margin: 0 auto;
-    }
-
-      @media @tablet {
-        position: absolute;
-        z-index: 1;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%); /* or top: 0; bottom: 0; + flex */
-        width: @min-width; 
-        max-width: calc(100% - 1rem);
-        z-index: 2;
-    }
-
-     @media @largeDevice {
-        position: absolute;
-        z-index: 1;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%); /* or top: 0; bottom: 0; + flex */
-        width: @min-width; 
-        max-width: calc(100% - 1rem);
-        z-index: 2;
-    }
    
  
   }
@@ -135,25 +56,8 @@
     font-weight: 600;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
       text-transform: uppercase;
-
-    @media @phone {
-      font-size: 1rem;
+ font-size: 1rem;
       text-align: center;
-    }
-
-       @media @phablet {
-      font-size: 1rem;
-      text-align: center;
-    }
-
-    @media @tablet {
-      font-size: 0.8rem;
-    }
-
-      @media @largeDevice {
-      font-size: 0.8rem;
-    }
-
     &-break {
       @media @phone {
         display: block;
@@ -161,6 +65,7 @@
         @media @phablet {
         display: block;
       }
+     
     }
   }
 
@@ -168,46 +73,17 @@
     font-weight: normal;
     margin-bottom: 1rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-
-    @media @phone {
-      text-align: center;
+   text-align: center;
       font-size: 2.2rem;
       line-height: 2.5rem;
       font-weight: 700;
-    }
-
-     @media @phablet {
-      text-align: center;
-      font-size: 2.2rem;
-      line-height: 2.5rem;
-      font-weight: 700;
-    }
-
-       @media @tablet {
-      font-size: 2.5rem;
-      line-height: 2.8rem;
-      font-weight: 700;
-    }
-
-    @media @largeDevice {
-      font-size: 2.5rem;
-      line-height: 2.8rem;
-      font-weight: 700;
-    }
   }
 
   &__description {
     margin-bottom: 1.5rem;
     font-weight: 600;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-
-    @media @phone {
-      text-align: center;
-    }
-
-      @media @phablet {
-      text-align: center;
-    }
+text-align: center;
   }
 
   &__cta {
@@ -215,14 +91,7 @@
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
-
-    @media @phone {
-      text-align: center;
-    }
-
-      @media @phablet {
-      text-align: center;
-    }
+ text-align: center;
   }
 
   &__action {
