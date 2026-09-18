@@ -5,7 +5,7 @@
   height: auto;
   margin-top: -1px;
   margin-bottom: 2rem;
-  padding: 2rem 0 3rem 0;
+  padding: 2rem 0;
   background-color: @header-background-color;
   color: @white-color;
 }
@@ -90,14 +90,9 @@
     flex-wrap: wrap; // Allows buttons to wrap cleanly when space runs out
   }
   &__action {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+   
     flex: 1 1 auto; // Allows buttons to grow and fill available space evenly
-    min-width: 200px; // Guarantees enough horizontal space so text won't wrap inside the button
-    padding: 0.75rem 1.25rem;
-    font-weight: 600;
-    text-align: center;
+    min-width: 160px; // Guarantees enough horizontal space so text won't wrap inside the button
     white-space: nowrap; // Prevents the text string itself from breaking onto multiple lines
     transition: background-color 0.3s ease;
    
