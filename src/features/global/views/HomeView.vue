@@ -63,22 +63,21 @@ onUnmounted(() => {
 <template>
 
 <div class="hero-wrapper">
-
   <section class="hero">
+    
+    <header class="hero__brand">
+      <span class="hero__divider"></span>
+      <img 
+        src="@/assets/images/icon.png" 
+        alt="OutScribed Logo" 
+        class="hero__logo"
+        width="100"
+        height="100"
+      />
+      <span class="hero__divider"></span>
+    </header>
 
-     <figure class="hero__image">
-      <hr />
-        <img 
-          src="@/assets/images/icon.png" 
-          alt="OutScribed Hero Background" 
-          class="hero__img"
-          width="100px"
-          height="100px"
-        />
-         <hr />
-      </figure>
-
-    <div class="hero__text">
+    <div class="hero__content">
       <h3 class="hero__tagline">
         The Facts, The Fiction, 
         <span class="hero__tagline-break">& Everything In-Between</span>
@@ -93,13 +92,16 @@ onUnmounted(() => {
       </h2>
 
       <div class="hero__cta">
-        <RouterLink class="btn btn--primary hero__action" to="/faqs">Learn More</RouterLink>
-        <RouterLink class="btn btn--contrast hero__action" to="/register">Join Us</RouterLink>
+        <RouterLink class="btn btn--primary hero__action" to="/faqs">
+          More About OutScribed
+        </RouterLink>
+        <RouterLink class="btn btn--contrast hero__action" to="/register">
+          Become An OutScriber
+        </RouterLink>
       </div>
     </div>
 
   </section>
-
 </div>
 
    <template v-if="isLoading">
@@ -149,12 +151,15 @@ onUnmounted(() => {
 
     <template v-else>
 
+        <div class="container">
+
      <PageStatusMessage 
               title="No Tale Found!" 
-              message="We could not retrieve any recent tale."
-              icon="broken-chain" 
+              message="We did not find any recent tale."
+              icon="inbox" 
               :is-bordered="true"
             />
+        </div>
 
   </template>
 
@@ -179,12 +184,16 @@ onUnmounted(() => {
 
     <template v-else>
 
+       <div class="container">
+
         <PageStatusMessage 
               title="No Insight Found!" 
-              message="We could not retrieve any recent insight."
-              icon="broken-chain" 
+              message="We did not find any recent insight."
+              icon="inbox" 
               :is-bordered="true"
             />
+        </div>
+
       </template>
 
    <div class="container">
@@ -207,12 +216,16 @@ onUnmounted(() => {
 
     <template v-else>
 
+       <div class="container">
+
         <PageStatusMessage 
               title="No Tag Found!" 
-              message="We could not retrieve trending tags for this week."
-              icon="broken-chain" 
+              message="We did not find any trending tags for this week."
+              icon="inbox" 
               :is-bordered="true"
             />
+        </div>
+
 
   </template>
 
@@ -236,12 +249,16 @@ onUnmounted(() => {
 
     <template v-else>
 
+       <div class="container">
+
       <PageStatusMessage 
               title="No Tag Found!" 
-              message="We could not retrieve trending tags for this month."
-              icon="broken-chain" 
+              message="We did not find any trending tags for this month."
+              icon="inbox" 
               :is-bordered="true"
             />
+
+        </div>
 
   </template>
 
@@ -265,12 +282,16 @@ onUnmounted(() => {
 
     <template v-else>
 
+       <div class="container">
+
     <PageStatusMessage 
               title="No Tag Found!" 
-              message="We could not retrieve trending tags for this year."
-              icon="broken-chain" 
+              message="We did not find any trending tags for this year."
+              icon="inbox" 
               :is-bordered="true"
             />
+
+        </div>
 
   </template>
     

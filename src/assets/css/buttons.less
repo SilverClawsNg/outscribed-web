@@ -53,18 +53,17 @@
     }
 
     &--contrast {
-        background-color: var(--text-color);
-        color: var(--background-color);
-        border-color: var(--text-color);
+       background-color: @link-color;
+        border-color: transparent;
+        color:@white-color;
 
         &:hover {
-            background-color: var(--hover-color);
+            background-color: @link-alt-color;
         }
     }
 }
 
 .btn-group {
-   
     display: flex;
     flex-wrap: wrap;
     gap: 1rem 0.25rem;

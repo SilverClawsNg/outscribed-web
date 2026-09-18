@@ -3,119 +3,94 @@
 .hero-wrapper {
   width: 100%;
   height: auto;
-  margin-bottom: 2rem;
   margin-top: -1px;
+  margin-bottom: 2rem;
+  padding: 2rem 0 3rem 0;
   background-color: @header-background-color;
   color: @white-color;
 }
 
 .hero {
-  height: auto;
-  padding: 2rem 0;
   position: relative;
   width: @min-width;
+  max-width: calc(100% - 20px);
+  height: auto;
   margin: 0 auto;
-  max-width:calc(100% - 20px);
 
-  &__image {
-     width:100%;
-     display: flex;
-     align-items:center;
-     justify-content:center;
-     height: auto;
-     margin: 0 auto 1.5rem auto;
-
-        & hr{
-          flex-grow: 1;
-          height: 1px;
-          background-color:@white-color;
-        }
-       
-    
-        & img{
-        width: 5rem;
-          height: auto;
-          padding: 0 1rem;
-        }
+  // Element: Logo and line divider header
+  &__brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1.5rem;
   }
 
-  &__text {
+  &__divider {
+    flex-grow: 1;
+    height: 1px;
+    background-color: @white-color;
+    border: none;
+  }
 
-        width: @min-width;
-        height: auto; /* pin image to the right */
-        max-width: calc(100% - 20px);
-        margin: 0 auto;
-   
+  &__logo {
+    width: 5rem;
+    height: auto;
+    padding: 0 1rem;
+  }
+
+  // Element: Main text wrapper
+  &__content {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+   &__title,
+   &__tagline,
+   &__description {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    //text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
  
-  }
-
-
   &__tagline {
-    margin-bottom: 1rem;
+    font-size: 1rem;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      text-transform: uppercase;
- font-size: 1rem;
-      text-align: center;
+    text-transform: uppercase;
+
     &-break {
-      @media @phone {
+      @media @phone, @phablet {
         display: block;
       }
-        @media @phablet {
-        display: block;
-      }
-     
     }
   }
 
   &__title {
-    font-weight: normal;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-   text-align: center;
-      font-size: 2.2rem;
-      line-height: 2.5rem;
-      font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 2.5rem;
   }
 
   &__description {
-    margin-bottom: 1.5rem;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-text-align: center;
   }
 
   &__cta {
-    width: 100%;
     display: flex;
-    align-items: center;
+    width: 100%;
     column-gap: 0.5rem;
- text-align: center;
   }
 
   &__action {
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
     width: 50%;
-
-    &.btn.btn--primary {
+   
+    &.btn--primary {
       background-color: @white-color;
       border-color: transparent;  
 
       &:hover {
         background-color: var(--background-hover-color);
-      }
-    }
-
-    &.btn.btn--contrast {
-      background-color: @link-color;
-      border-color: transparent;
-
-      &:hover {
-        background-color: @link-alt-color;
       }
     }
   }
