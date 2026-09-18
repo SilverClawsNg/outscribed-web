@@ -2,7 +2,7 @@
 
 .hero-wrapper {
   width: 100%;
- 
+  height: auto;
   margin-bottom: 2rem;
   margin-top: -1px;
   background-color: @header-background-color;
@@ -10,82 +10,71 @@
 }
 
 .hero {
+  width: @mid-width;
+  max-width: calc(100% - 20px);
   margin: 0 auto;
-  width: 100%;
-  
-  
-  position: relative;
-  z-index: 1;
+  height: auto;
 
-  // Background image bound directly to .hero
-  background-image: url('@/assets/images/hero-realistic.png');
-  background-repeat: no-repeat;
-
-  @media @phone {
-    width: 100%; 
-    min-height: 350px;
-    max-height: 520px; // Cap maximum height (400px image + padding)
-    padding: 2.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    // Positioned at the right center of .hero
-   background-position: center bottom;
-    background-size: 100% auto; 
-  }
-
-  @media @phablet{
+   @media @smallDevice {
+     display: flex;
+     flex-direction: column;
      width: 100%;
-     // Positioned at the bottom center of .hero
-    background-position: center bottom;
-    background-size: 100% auto; 
-  }
+    }
 
-   @media @tablet {
-    width: @mid-width; // 750px centered
-    min-height: 350px;
-    max-height: 520px; // Cap maximum height (400px image + padding)
-    padding: 2.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    // Positioned at the right center of .hero
-    background-position: right 1rem;
-    background-size: auto 100%;
-  }
+      @media @largeDevice {
+      position: relative;
+    }
 
 
-  @media @largeDevice {
-    width: @mid-width; // 750px centered
-    min-height: 350px;
-    max-height: 520px; // Cap maximum height (400px image + padding)
-    padding: 2.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    // Positioned at the right center of .hero
-    background-position: right 1rem;
-    background-size: auto 100%;
+  &__image {
+      @media @smallDevice {
+        width: 100%;
+        height: auto; /* pin image to the right */
+        & img{
+        width: 100%;
+          height: auto;
+        }
+    }
+ 
+       @media @largeDevice {
+        position: relative; /* or absolute inset-block 0; right: 0 */
+        width: 600px;
+        max-width: 100%;
+        margin-left: auto; /* pin image to the right */
+        min-height: 400px;
+        & img{
+        width: 100%;
+          height: auto;
+          min-height: 400px;
+          object-fit: cover;
+        }
+    }
   }
 
   &__text {
-    position: relative;
-    z-index: 2;
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
 
-    @media @smallDevice {
-      height: auto;
-      width: 100%;
+      @media @smallDevice {
+        width: 100%;
+        height: auto; /* pin image to the right */
+        padding: 2rem 0;
+       
     }
 
-    @media @largeDevice {
-      width: @min-width; // 450px or your defined text boundary within @mid-width
+      @media @largeDevice {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%); /* or top: 0; bottom: 0; + flex */
+        width: @min-width; 
+        max-width: calc(100% - 1rem);
+        padding: 1.5rem;
+        z-index: 2;
     }
+   
+ 
   }
+
 
   &__tagline {
     margin-bottom: 1rem;
