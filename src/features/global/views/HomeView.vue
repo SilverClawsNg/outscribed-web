@@ -61,7 +61,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-
 <div class="hero-wrapper">
   <section class="hero">
     <div class="hero__text">
@@ -83,19 +82,8 @@ onUnmounted(() => {
         <RouterLink class="btn btn--contrast hero__action" to="/register">Join Us</RouterLink>
       </div>
     </div>
-
-    <div class="hero__image-container">
-      <figure class="hero__image">
-        <img 
-          src="@/assets/images/hero-background.png" 
-          alt="OutScribed Hero Background" 
-          class="hero__img"
-        />
-      </figure>
-    </div>
   </section>
 </div>
-
    <template v-if="isLoading">
 
     <div class="loader" role="status" aria-label="Loading homepage">
