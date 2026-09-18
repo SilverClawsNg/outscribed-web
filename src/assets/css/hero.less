@@ -10,21 +10,20 @@
 }
 
 .hero {
-
   height: auto;
- padding: 2rem 0;
-   position: relative;
-      width: @mid-width;
-       margin: 0 auto;
-  
+  padding: 2rem 0;
+  position: relative;
+  width: @min-width;
+  margin: 0 auto;
+  max-width:calc(100% - 20px);
 
   &__image {
-     width:@min-width;
-        display: flex;
-        align-items:center;
-        justify-content:center;
-        height: auto;
-        margin: 0 auto 1.5rem auto;
+     width:100%;
+     display: flex;
+     align-items:center;
+     justify-content:center;
+     height: auto;
+     margin: 0 auto 1.5rem auto;
 
         & hr{
           flex-grow: 1;
