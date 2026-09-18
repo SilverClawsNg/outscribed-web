@@ -57,7 +57,7 @@ function handleCaptchaSuccess(token: string) {
 function handleCaptchaError() {
   captchaToken.value = null
   captchaState.value = 'FAILED'
-  setError(new APIError(0, 'Security Error', 'Error occurred while verifying captcha. Please refresh and try again.'))
+  captchaErrorMessage.value = 'Error occurred while verifying captcha. Ensure you are connected to the Internet, refresh page and try again.'
 }
 
 
@@ -254,12 +254,12 @@ onUnmounted(() => {
 
          <PageStatusMessage 
               title="Verification Failed!" 
-              message={{ captchaErrorMessage }}
+              :message='captchaErrorMessage'
               icon="shield" 
               :is-standalone="true"
                >
                 <template #actions>
-                <button type="button" class="btn btn-secondary" @click="resetCaptcha">
+                <button type="button" class="btn btn--secondary" @click="resetCaptcha">
                   Try Again
                 </button>
               </template>

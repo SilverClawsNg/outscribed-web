@@ -40,15 +40,17 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="form-container boxed">
-    <h1>Logout</h1>
+
+  <div class="form-container">
+
+    <h1  class="form-header">Logout</h1>
     <h2>Confirm your logout preferences</h2>
 
     <FormProgress :progress="progressState" />
 
     <form @submit.prevent="handleLogoutSubmission" autocomplete="off">
 
-      <fieldset class="expanded" :disabled="progressState.type === 'Loading'">
+      <fieldset class="no-borders" :disabled="progressState.type === 'Loading'">
         <div class="ticks">
           <input 
             type="checkbox" 
@@ -66,7 +68,7 @@ onBeforeMount(() => {
         </div>
 </fieldset>
 
-      <fieldset :disabled="progressState.type === 'Loading'">
+      <fieldset  class="no-borders" :disabled="progressState.type === 'Loading'">
         <div class="ticks">
           <input 
             type="checkbox" 
@@ -82,8 +84,7 @@ onBeforeMount(() => {
           </label>
 
         </div>
-</fieldset>
-
+      </fieldset>
 
         <div class="button-holder">
           <button 
@@ -101,5 +102,4 @@ onBeforeMount(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/form-input.less";
-@import "@/assets/css/boxed-form.less";
 </style>

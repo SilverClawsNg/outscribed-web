@@ -43,7 +43,9 @@ function executeSearch() {
   
     <form @submit.prevent="executeSearch">
 
-    <div class="ticks">
+      <fieldset class="no-borders">
+
+         <div class="ticks">
       <p v-for="target in searchTargets" 
         :key="target.value" 
         :class="{ 'is-active': contentType === target.value }">
@@ -57,6 +59,8 @@ function executeSearch() {
      <label :For=target.value>{{ target.label }} </label>
     </p>
   </div>
+
+      </fieldset>
 
       <fieldset>
           <input 

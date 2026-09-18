@@ -40,6 +40,7 @@ header.main-header {
 
         @media @smallDevice {
             height: auto;
+            height: calc(100lvh - 80px);
         }
 
         @media @largeDevice {
@@ -171,19 +172,18 @@ header.main-header {
         &.spin{
 
               background-color:@link-color;
-                            border-color: transparent;
-                            color:@white-color;
- padding: 0.25rem 0.5rem;
+              border-color: transparent;
+              color:@white-color;
+              padding: 0.25rem 0.5rem;
+
              @media @largeDevice {
                 display: flex;
                 column-gap: 0.25rem;
-               
-              
+             
             }
 
             &:hover{
-                               background-color: @link-color;
-
+                background-color: @link-color;
             }
         }
 
@@ -265,11 +265,22 @@ header.main-header {
 }
 
 .main-header__menu {
-    width: @mid-width;
-    max-width: calc(100% - 20px);
+    
+    
     height: 100%;
     position: relative;
     margin: 0 auto;
+
+     @media @smallDevice {
+           width: 100%;
+           padding: 0 30px;
+        }
+
+        @media @largeDevice {
+           width: @mid-width;
+           max-width: calc(100% - 20px);
+        }
+
 
     & nav {
         display: flex;
