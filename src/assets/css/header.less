@@ -170,23 +170,20 @@ header.main-header {
 
         &.spin{
 
-            @media @smallDevice{
-              color:  @white-color;
-            }
-          
+              background-color:@link-color;
+                            border-color: transparent;
+                            color:@white-color;
+ padding: 0.25rem 0.5rem;
              @media @largeDevice {
-                border-color: transparent;
                 display: flex;
                 column-gap: 0.25rem;
-                padding: 0.25rem 0.5rem;
-                background-color:@link-color;
-                color:  @white-color
+               
+              
             }
 
             &:hover{
-                @media @largeDevice {
-                background-color: @link-color;
-                }
+                               background-color: @link-color;
+
             }
         }
 
