@@ -7,7 +7,10 @@
   margin-bottom: 2rem;
   padding: 2rem 0;
   background-color: @header-background-color;
-  color: @white-color;
+  background-color: var(--background-color);
+  background-color: var(--light-background-color);
+  border-bottom: 1px solid var(--border-color);
+  //color: @white-color;
 }
 
 .hero {
@@ -29,7 +32,8 @@
   &__divider {
     flex-grow: 1;
     height: 1px;
-    background-color: @white-color;
+    //background-color: @link-color;
+    //background-color: var(--border-color);
     border: none;
   }
 
@@ -57,7 +61,7 @@
   &__tagline {
     font-size: 1rem;
     font-weight: 600;
-    text-transform: uppercase;
+    text-transform: capitalize;
 
     &-break {
       @media @phone, @phablet {
@@ -68,8 +72,10 @@
 
   &__title {
     font-size: 2.2rem;
-    font-weight: 700;
+    font-weight: 900;
     line-height: 2.5rem;
+    text-transform: uppercase;
+    color: @link-color;
 
     &-highlight{
       display:block;
@@ -97,12 +103,8 @@
     transition: background-color 0.3s ease;
    
     &.btn--primary {
-      background-color: @white-color;
-      border-color: transparent;  
-
-      &:hover {
-        background-color: var(--background-hover-color);
-      }
+      //background-color: @white-color;
+      //border-color: transparent;  
     }
   }
 }

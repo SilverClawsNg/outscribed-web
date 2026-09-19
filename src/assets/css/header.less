@@ -9,10 +9,11 @@ header.main-header {
     top: 0;
     left: 0;
     z-index: 1000;
-    background-color: var(--background-color);
-    //box-shadow: var(--header-box-shadow);
+    
+    box-shadow: var(--header-box-shadow);
     background-color: @header-background-color;
-    color: @white-color;
+    background-color: var(--background-color);
+    //color: @white-color;
 }
 
 .main-header__wrapper {
@@ -84,11 +85,13 @@ header.main-header {
 
 .main-header__top-navigation-container {
     width: 100%;
-    background: var(--background-color);
+    
     position: relative;
     z-index: 999;
     background-color: @header-background-color;
-    color: @white-color;
+    background: var(--background-color);
+    
+    //color: @white-color;
 
     @media @smallDevice {
         height: 80px;
@@ -143,7 +146,7 @@ header.main-header {
     & svg {
         width: 28px;
         height: 28px;
-        stroke-width: 2px;
+        //stroke-width: 2px;
     }
 
 }
@@ -195,7 +198,7 @@ header.main-header {
         }
 
          & svg {
-            stroke-width: 2px;
+            //stroke-width: 2px;
         }
  
         @media @smallDevice {
@@ -227,9 +230,10 @@ header.main-header {
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
     //border-top: 1px solid @white-color;
-    background: var(--background-color);
+    border-top: 1px solid var(--border-color);
     background-color: @header-background-color;
-    color: @white-color;
+    background: var(--background-color);
+    //color: @white-color;
     @media @smallDevice {
         max-height: 0;
         overflow: hidden;
@@ -310,7 +314,7 @@ header.main-header {
             transition: color 0.3s;
             display: flex;
             align-items: center;
-            color: @white-color;
+            //color: @white-color;
             font-weight: 600;
 
              @media @largeDevice {
@@ -355,8 +359,9 @@ header.main-header {
     & div {
         width: 100%;
         height: 2px;
-        background-color:  var(--text-color);
+        height: 1px;
         background-color:  @white-color;
+        background-color:  var(--text-color);
         transition: 0.4s;
     }
 
