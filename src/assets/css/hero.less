@@ -54,7 +54,7 @@
    &__description {
     margin-bottom: 1.5rem;
     text-align: center;
-    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
+    
   }
 
  
@@ -62,6 +62,7 @@
     font-size: 1rem;
     font-weight: 600;
     text-transform: capitalize;
+    color:var(--muted-text-color);
 
     &-break {
       @media @phone, @phablet {
@@ -76,10 +77,9 @@
     line-height: 2.5rem;
     text-transform: uppercase;
     color: @link-color;
-
+    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
     &-highlight{
       display:block;
-      font-size: 2.4rem;
       font-size: clamp(2rem, 2.5vw + 1rem, 2.4rem);
     }
   }
@@ -105,7 +105,7 @@
     transition: background-color 0.3s ease;
    
     &.btn--primary {
-      //background-color: @white-color;
+      background-color: @white-color;
       //border-color: transparent;  
     }
   }

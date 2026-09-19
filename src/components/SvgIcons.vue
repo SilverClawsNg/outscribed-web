@@ -5,7 +5,7 @@ export type IconName =
   | 'linkedin' | 'email' | 'placeholder' | 'back-arrow' | 'globe' | 'tag' | 'clock'
   | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow'
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
-  | 'whatsapp' | 'phone' | 'website'
+  | 'whatsapp' | 'phone' | 'website' | 'filter'
 
 const props = defineProps<{
   name: IconName
@@ -18,6 +18,8 @@ interface IconConfig {
   fill?: string
   stroke?: string
   strokeWidth?: number
+  strokeLinecap?: string
+  strokeLinejoin?: string
   width?: string
   height?: string
   style?: string
@@ -306,6 +308,17 @@ const icons: Record<IconName, IconConfig> = {
     paths: [
       { type: 'polyline', points: '22 12 16 12 14 15 10 15 8 12 2 12' },
       { d: 'M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z' }
+    ]
+  },
+   filter: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    paths: [
+      { type: 'polyline', points: "22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" }
     ]
   },
   warning: {
