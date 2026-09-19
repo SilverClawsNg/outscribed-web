@@ -54,7 +54,7 @@
    &__description {
     margin-bottom: 1.5rem;
     text-align: center;
-    //text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
   }
 
  
@@ -71,7 +71,7 @@
   }
 
   &__title {
-    font-size: clamp(1.8rem, 2.5vw + 1rem, 2.2rem);
+    font-size: clamp(1.8rem, 2.5vw + 1rem, 2.3rem);
     font-weight: 900;
     line-height: 2.5rem;
     text-transform: uppercase;
@@ -80,11 +80,13 @@
     &-highlight{
       display:block;
       font-size: 2.4rem;
+      font-size: clamp(2rem, 2.5vw + 1rem, 2.4rem);
     }
   }
 
   &__description {
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 1.1rem;
   }
 
   &__cta {
