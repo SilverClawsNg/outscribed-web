@@ -10,6 +10,7 @@ import WriterListComponent from '../components/WriterListComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
+import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
 const writerStore = useWriterListStore();
@@ -176,6 +177,15 @@ onUnmounted(() => {
   </div>
 
        </InfiniteScroller>
+
+        <button 
+          type="button" 
+          class="filter-trigger" 
+          aria-label="Filter content"
+           @click="modalStore.push('WriterFilter', 'Filter Writers')"
+        >
+         <SvgIcons name="filter" />
+        </button>
 
   </template>
 

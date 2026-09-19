@@ -12,6 +12,7 @@ import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { useLoginHint } from '@/utils/authHelper'
 import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore();
@@ -187,7 +188,8 @@ onUnmounted(() => {
     <h1 class="page-header__title">
         Tale Drafts
       </h1>
-      <button type="button" class="btn btn--primary"  @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>
+      <button type="button" class="btn btn--primary"  
+      @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>
     </header>
 
     <template v-if="wasCleaned">
@@ -223,6 +225,15 @@ onUnmounted(() => {
       </div>
 
        </InfiniteScroller>
+
+          <button 
+          type="button" 
+          class="filter-trigger" 
+          aria-label="Filter content"
+           @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')"
+        >
+         <SvgIcons name="filter" />
+        </button>
 
     </template>
 

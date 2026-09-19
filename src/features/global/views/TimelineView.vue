@@ -10,6 +10,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import TimelineComponent from '../components/TimelineComponent.vue' // 🎯 Reusable Component Import
+import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
 const timelineStore = useTimelineStore();

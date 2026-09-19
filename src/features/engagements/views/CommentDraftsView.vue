@@ -10,6 +10,7 @@ import CommentDraftComponent from '../components/CommentDraftComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
+import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
 const commentStore = useDraftCommentsStore();
@@ -169,6 +170,15 @@ onUnmounted(() => {
   </div>
     
        </InfiniteScroller>
+
+          <button 
+          type="button" 
+          class="filter-trigger" 
+          aria-label="Filter content"
+           @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')"
+        >
+         <SvgIcons name="filter" />
+        </button>
 
   </template>
 

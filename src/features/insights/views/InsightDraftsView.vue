@@ -11,6 +11,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { useLoginHint } from '@/utils/authHelper'
+import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
 const insightStore = useInsightDraftStore();
@@ -133,7 +134,8 @@ onUnmounted(() => {
    <h1 class="page-header__title">
       Insight Drafts
     </h1>
-          <button type="button" class="btn btn--primary"  @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">Filter</button>
+          <button type="button" class="btn btn--primary"  
+          @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">Filter</button>
   </header>
       
        <template v-if="wasCleaned">
@@ -168,6 +170,15 @@ onUnmounted(() => {
   </div>
     
        </InfiniteScroller>
+
+        <button 
+          type="button" 
+          class="filter-trigger" 
+          aria-label="Filter content"
+           @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')"
+        >
+         <SvgIcons name="filter" />
+        </button>
 
   </template>
 

@@ -11,6 +11,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
+import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES & ROUTER ---
 const insightStore = useInsightListStore();
@@ -225,6 +226,15 @@ onUnmounted(() => {
   </div>
 
        </InfiniteScroller>
+
+          <button 
+          type="button" 
+          class="filter-trigger" 
+          aria-label="Filter content"
+          @click="modalStore.push('InsightListFilter', 'Filter Lists', type)"
+        >
+         <SvgIcons name="filter" />
+        </button>
 
   </template>
 
