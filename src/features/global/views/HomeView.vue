@@ -10,6 +10,7 @@ import TaleListComponent from '@/features/tales/components/TaleListComponent.vue
 import InsightListComponent from '@/features/insights/components/InsightListComponent.vue'
 import TagComponent from '../components/TagComponent.vue'
 import { useModalStore } from '@/stores/modalStore'
+import CategoryComponent from '../components/CategoryComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -200,15 +201,15 @@ onUnmounted(() => {
         <h1 class="container__header">Trending This Week</h1>
       </div>
 
-       <template v-if="homepageStore.trendingThisWeek && homepageStore.trendingThisWeek.length > 0">
+       <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
 
          <div class="container">
 
             <TagComponent 
-        v-for="tag in homepageStore.trendingThisWeek" 
-        :key="tag.tagId" 
-        :tag="tag" 
-      />
+              v-for="tag in homepageStore.tags" 
+              :key="tag.tagId" 
+              :tag="tag" 
+            />
 
         </div>
     
@@ -220,7 +221,7 @@ onUnmounted(() => {
 
         <PageStatusMessage 
               title="No Tag Found!" 
-              message="We did not find any trending tags for this week."
+              message="We did not find any trending tags."
               icon="inbox" 
               :is-bordered="true"
             />
@@ -230,70 +231,17 @@ onUnmounted(() => {
   </template>
 
   <div class="container">
-        <h1 class="container__header">Trending This Month</h1>
+        <h1 class="container__header">Categories Leaderboard</h1>
       </div>
-
-       <template v-if="homepageStore.trendingThisMonth && homepageStore.trendingThisMonth.length > 0">
 
          <div class="container">
 
-            <TagComponent 
-        v-for="tag in homepageStore.trendingThisMonth" 
-        :key="tag.tagId" 
-        :tag="tag" 
-      />
-
-        </div>
-    
-  </template>
-
-    <template v-else>
-
-       <div class="container">
-
-      <PageStatusMessage 
-              title="No Tag Found!" 
-              message="We did not find any trending tags for this month."
-              icon="inbox" 
-              :is-bordered="true"
+            <CategoryComponent 
+              v-for="category in homepageStore.categories" 
+              :category="category" 
             />
 
         </div>
-
-  </template>
-
-  <div class="container">
-        <h1 class="container__header">Trending This Year</h1>
-      </div>
-
-       <template v-if="homepageStore.trendingThisYear && homepageStore.trendingThisYear.length > 0">
-
-         <div class="container">
-
-            <TagComponent 
-        v-for="tag in homepageStore.trendingThisYear" 
-        :key="tag.tagId" 
-        :tag="tag" 
-      />
-
-        </div>
-    
-  </template>
-
-    <template v-else>
-
-       <div class="container">
-
-    <PageStatusMessage 
-              title="No Tag Found!" 
-              message="We did not find any trending tags for this year."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-
-        </div>
-
-  </template>
     
   </template>
 

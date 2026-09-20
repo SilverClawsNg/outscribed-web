@@ -129,8 +129,6 @@ function handleEditContactClick(platform: ContactType) {
   modalStore.push('UpdateContact', 'Update Contact')
 }
 
-
-
 </script>
 
 <template>

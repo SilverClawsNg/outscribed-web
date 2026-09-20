@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import SvgIcons from '@/components/SvgIcons.vue'
 
 import { formatCounts } from '@/utils/stringHelpers'
 import { type TagListDto } from '../types/GlobalTypes';
@@ -43,7 +42,7 @@ const props = defineProps<Props>()
           <span class="tag-card__metric-label">Tales</span>
         </RouterLink>
 
-        <span class="tag-card__divider" aria-hidden="true"></span>
+          <span class="divider divider--line"></span>
 
         <RouterLink 
           :to="`/insights?tag=${tag.slug}`" 

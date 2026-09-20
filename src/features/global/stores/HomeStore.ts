@@ -5,7 +5,7 @@ import {postAsync } from '@/api/apiPostServices'
 import {type GetFavoriteIdsResponse } from '@/features/engagements/types/EngagementTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
-import type {GetHomeContentsResponse, TagDetailDto, TagListDto} from '../types/GlobalTypes.ts';
+import type {CategoryMetricsDto, GetHomeContentsResponse, TagDetailDto, TagListDto} from '../types/GlobalTypes.ts';
 
 import {type TaleListDto, initializeTaleListEngagement} from '@/features/tales/types/TalesTypes.ts'
 import {type InsightListDto, initializeInsightListEngagement} from '@/features/insights/types/InsightsTypes.ts'
@@ -16,13 +16,12 @@ export const useHomeStore = defineStore('homeStore', () => {
     // State
       const tales = ref<TaleListDto[]>([]); 
       const insights = ref<InsightListDto[]>([]); 
-      const trendingThisWeek = ref<TagListDto[]>([]); 
-      const trendingThisMonth = ref<TagListDto[]>([]);
-      const trendingThisYear = ref<TagListDto[]>([]);
-const isLoggedIn = useLoginHint()
+      const tags = ref<TagListDto[]>([]); 
+      const categories = ref<CategoryMetricsDto[]>([]); 
+      const isLoggedIn = useLoginHint()
       // 🔒 Keep the controller private/local to this store context
-  let feedController: AbortController | null = null;
-let hydrateController: AbortController | null = null;
+      let feedController: AbortController | null = null;
+      let hydrateController: AbortController | null = null;
     // 1. Initial Load Path
     async function loadhomecontents(): Promise<{ success: boolean; error: any | null }> {
     
@@ -46,9 +45,8 @@ let hydrateController: AbortController | null = null;
         // Ensure data mappings are assigned cleanly to reactive state trackers
         tales.value = outcome.value.tales || [];
         insights.value = outcome.value.insights || [];
-        trendingThisWeek.value = outcome.value.trendingThisWeek || [];
-        trendingThisMonth.value = outcome.value.trendingThisMonth || [];
-        trendingThisYear.value = outcome.value.trendingThisYear || [];
+        tags.value = outcome.value.tags || [];
+        categories.value = outcome.value.categories || [];
 
         // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
         if(tales.value) tales.value = outcome.value.tales.map((item: any) => initializeTaleListEngagement(item));
@@ -227,7 +225,7 @@ let hydrateController: AbortController | null = null;
     }
   }
 
-      return {tales,insights, trendingThisWeek, trendingThisMonth, trendingThisYear, 
+      return {tales,insights, tags, categories,
         loadhomecontents, hydratePersonals, abort, loadTag
   };
 

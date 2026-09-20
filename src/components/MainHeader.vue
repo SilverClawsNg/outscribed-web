@@ -76,7 +76,7 @@ const ToggleUserMenu = () => {
           <div class="main-header__top-navigation-center">
 
             <h1 class="logo">
-             <SvgIcons name="logo" />
+              <RouterLink to="/" title="Home" @click="CloseMenu"><SvgIcons name="logo" /></RouterLink>
             </h1>
 
           </div>

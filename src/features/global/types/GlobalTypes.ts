@@ -1,4 +1,4 @@
-import type { ContentType, ActivityType } from '@/utils/enumHelper' // 🎯 Import your clean semantics
+import type { ContentType, ActivityType, Category } from '@/utils/enumHelper' // 🎯 Import your clean semantics
 import { type TaleListDto } from '@/features/tales/types/TalesTypes' // 🎯 Import your clean semantics
 import { type InsightListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
 
@@ -30,9 +30,8 @@ export interface GetTimelineResponse {
 export interface GetHomeContentsResponse {
   tales: TaleListDto[];
   insights: InsightListDto[];
-  trendingThisWeek: TagListDto[];
-  trendingThisMonth: TagListDto[];
-  trendingThisYear: TagListDto[];
+  tags: TagListDto[];
+  categories: CategoryMetricsDto[];
 }
 
 export interface TagListDto {
@@ -43,6 +42,11 @@ export interface TagListDto {
     talesCounter: number,
 }
 
+export interface CategoryMetricsDto {
+    category: Category,
+    insightsCounter: number,
+    talesCounter: number,
+}
 
 export interface TagDetailDto {
     tagId: string,
@@ -54,8 +58,6 @@ export interface TagDetailDto {
     talesCounter: number,
     totalCounts: number
 }
-
-
 
 export interface TagDraftDto {
   tagId: string; // Using string to handle backend Ulid representation

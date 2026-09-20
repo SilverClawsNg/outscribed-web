@@ -1,0 +1,58 @@
+@import "variables.less";
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+
+  &__title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__summary {
+    margin: 0 0 1.25rem 0;
+    line-height: 1.5;
+    color: var(--muted-text-color);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+   
+  }
+
+ // --- Metrics ---
+  &__metrics {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  &__metric-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted-text-color);
+  
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+  }
+
+}

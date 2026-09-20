@@ -130,6 +130,59 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   Miscellaneous : 'Miscellaneous'
 } as const;
 
+export const CategorySummaries: Record<Category, string> = {
+  Tributuary:
+    'Imaginative homage to people, legacies, and turning points—tribute in tale form, not a factual obituary. Honors what was in order to ask what still could be built.',
+
+  Reflections:
+    'Lived experience rewritten as story: letters to a younger self, hard lessons, and second chances. Private hindsight turned into public insight others can use.',
+
+  DoomsDay:
+    'Stress-tests for civilization—collapse scenarios that sharpen what we must protect or redesign. Warnings in service of prevention and better systems, not panic for its own sake.',
+
+  PoliticsGovernance:
+    'Power and policy retold so we can reimagine governance, civic tools, and how public decisions get made. Critique aimed at systems and incentives, not spectacle alone.',
+
+  SportsGaming:
+    'Competition reimagined—new rules, formats, fairness, and cultures of play on the field and on the screen. A lab for how games might work better.',
+
+  ScienceTechnology:
+    'Labs, code, and machines as places to prototype futures. Speculative takes on AI, space, and tools we might build—and the choices that should guide them.',
+
+  Education:
+    'Learning redesigned: classrooms, credentials, access, and intellectual growth when the old pathways fail. Tales and insights that ask how we could teach and learn differently.',
+
+  BusinessEconomy:
+    'Markets and work rebuilt on the page—alternate incentives, ownership, and enterprise. Economic imagination aimed at models that could actually be tried.',
+
+  ArtsEntertainment:
+    'Culture under new light—how stories, music, film, and fame might be made, shared, and valued differently. Creative industries as sites of experiment.',
+
+  MedicineHealthcare:
+    'Care rethought: breakthroughs, blind spots, and systems between people and help. Narratives that pressure-test how healing and health infrastructure could improve.',
+
+  LawOrder:
+    'Justice systems reimagined—rights, procedure, accountability, and repair. Legal speculation that asks what fairness could look like in practice.',
+
+  SocietalNormsValues:
+    'The silent rules of belonging, rewritten. Ethical and cultural experiments that explore how we might live together with different defaults.',
+
+  HistoryCulture:
+    'Memory and heritage with the locks off—reframed pasts that illuminate better presents. What-ifs tied to the record, aimed at understanding and renewal.',
+
+  EnvironmentClimate:
+    'Ecology as design problem and moral stake. Stories that confront damage while sketching stewardship, adaptation, and how we inhabit the planet differently.',
+
+  ReligionSpirituality:
+    'Faith, doubt, and meaning as living practice. Explorations of how communities might hold the sacred—and the questions—with more honesty and depth.',
+
+  FamilyRelationships:
+    'Kin and chosen family as the first institutions we invent. Bonds, care, and conflict explored in search of healthier ways to belong to one another.',
+
+  Miscellaneous:
+    'Hybrid and hard-to-label experiments that still follow the OutScribed form—odd angles where new ideas often start.',
+} as const;
+
 export const ContentTypeDescriptions: Record<ContentType, string> = {
   Account: 'Account',
   Tale: 'Tales',
