@@ -105,12 +105,12 @@ async function handleFormSubmission() {
 
     <PageStatusMessage 
       title="Login Required!" 
-      message="It appears you are not logged in or have been logged out. Login/register to continue."
+      message="Not yet an OutScriber? Its easy and free. If your session expired, sign back in to submit your response."
       icon="warning"
       :is-standalone="true">
       <template #actions>
         <button class="btn btn--primary"  @click="modalStore.push('LoginUser', 'Login')">Login</button>
-         <button class="btn btn--primary"  @click="modalStore.push('RegisterUser', 'Register')">Register</button>
+         <button class="btn btn--primary"  @click="modalStore.push('RegisterUser', 'Register')">Become An OutScriber</button>
       </template>
     </PageStatusMessage>
 
