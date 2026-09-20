@@ -32,8 +32,12 @@
   &__metrics {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    column-gap: 0.75rem;
     font-size: 0.95rem;
+    
+    @media @phone{
+      column-gap: 0.15rem;
+    }
   }
 
   &__metric-link {
@@ -42,9 +46,6 @@
     column-gap: 0.25rem;
     color: var(--muted-text-color);
 
-    @media @phone{
-      column-gap: 0;
-    }
   
   }
 

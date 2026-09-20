@@ -12,6 +12,7 @@ const modalStore = useModalStore()
 // Declare compile-time parameter contract boundaries
 interface Props {
   category: CategoryMetricsDto
+  index: number
 }
 
 const props = defineProps<Props>()
@@ -19,8 +20,33 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <div class="category-card">
-    <h3 class="category-card__title">{{ CategoryDescriptions[category.category] }}</h3>
+  <div 
+    class="category-card"
+    :class="{
+      'category-card--gold': index === 0,
+      'category-card--silver': index === 1,
+      'category-card--bronze': index === 2
+    }"
+  >
+
+
+    <h3 class="category-card__title">
+      
+  <!-- Rank Indicator -->
+      <!-- #1: Top border handles the gold visual accent -->
+      <span v-if="index === 0" class="category-card__badge category-card__badge--gold" title="Rank 1">1</span>
+
+      <!-- #2: Silver Badge -->
+      <span v-else-if="index === 1" class="category-card__badge category-card__badge--silver">2</span>
+
+      <!-- #3: Bronze Badge -->
+      <span v-else-if="index === 2" class="category-card__badge category-card__badge--bronze">3</span>
+
+      <!-- #4+: Standard Rank Prefix -->
+      <span v-else class="category-card__badge category-card__badge--number">{{ index + 1 }}</span>
+
+    {{ CategoryDescriptions[category.category] }}
+  </h3>
     <p class="category-card__summary">{{ CategorySummaries[category.category] }}</p>
     
     <div 

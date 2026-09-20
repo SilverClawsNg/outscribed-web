@@ -8,11 +8,53 @@
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 1.5rem;
 
+
+  // Metallic badges for ranks 2 and 3
+  &__badge {
+    font-size: 0.95rem;
+    font-weight: 900;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+        color: var(--background-color);
+
+    &--gold {
+      background-color: @gold-color;
+    }
+
+     &--silver {
+      background-color: @silver-color;
+    }
+
+    &--bronze {
+      background-color: @bronze-color;
+    }
+
+    &--number{
+        background-color: var(--text-color);
+    }
+  }
+
   &__title {
    margin-bottom: 1rem;
     font-size: 1.25rem;
     font-weight: 600;
+    display: flex;
+    align-items:center;
+    column-gap: 0.25rem;
   }
+
+  
+  // Rank badge container
+  &__rank {
+    padding: 0.25rem 0.5rem;
+  }
+
 
   &__summary {
     color: var(--muted-text-color);
@@ -32,6 +74,10 @@
     align-items: center;
     gap: 0.75rem;
     font-size: 0.95rem;
+     
+    @media @phone{
+      column-gap: 0.15rem;
+    }
   }
 
   &__metric-link {
@@ -40,10 +86,6 @@
     column-gap: 0.25rem;
     color: var(--muted-text-color);
 
-    @media @phone{
-      column-gap: 0;
-    }
-  
   }
 
   &__metric-value {

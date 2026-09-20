@@ -204,9 +204,11 @@ onUnmounted(() => {
 
          <div class="container">
 
-            <CategoryComponent 
-              v-for="category in homepageStore.categories" 
+           <CategoryComponent 
+              v-for="(category, index) in homepageStore.categories" 
+              :key="category.category"
               :category="category" 
+              :index="index"
             />
 
         </div>
