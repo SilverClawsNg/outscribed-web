@@ -113,7 +113,7 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   export const CategoryDescriptions: Record<Category, string> = {
   Tributuary: 'Tributuary',
   Reflections: 'Reflections',
-  DoomsDay: 'Dooms day',
+  DoomsDay: 'Dooms Day',
   PoliticsGovernance: 'Politics & Government',
   SportsGaming: 'Sports & Gaming',
   ScienceTechnology: 'Science & Technology',

@@ -16,6 +16,23 @@ import { useLoginHint } from '@/utils/authHelper'
 const isInitializing = ref(true)
 const isLoggedIn = useLoginHint()
 
+// 1. Mark payload as optional with a '?'
+const props = defineProps<{
+  payload?: unknown;
+}>();
+
+// 2. Safely parse the category string from payload if available
+const initialCategory = computed<string | null>(() => {
+  if (!props.payload) return null;
+
+  // Case A: Payload passed directly as a string e.g. "Education"
+  if (typeof props.payload === 'string') {
+    return props.payload;
+  }
+
+  return '-1';
+});
+
 // Local working state bound strictly to your official contract schema
 // Initialized with a placeholder string value for form dropdown validation
 
@@ -49,6 +66,12 @@ const titleText = formData.value.title || '';
       ? 'Please select a category.' 
       : ''
   }
+})
+
+onBeforeMount(() => {
+  // Assign the string value directly, not a Ref<string>
+  formData.value.category = (initialCategory.value ?? '-1') as any;
+  resetProgress();
 })
 
 // 3. Form is valid if all computed error fields are empty strings

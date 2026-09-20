@@ -6,6 +6,8 @@ import { type CategoryMetricsDto } from '../types/GlobalTypes';
 import { useModalStore } from '@/stores/modalStore'
 import { CategoryDescriptions, CategorySummaries } from '@/utils/descriptors'
 
+const modalStore = useModalStore()
+
 
 // Declare compile-time parameter contract boundaries
 interface Props {
@@ -35,6 +37,7 @@ const props = defineProps<Props>()
         </RouterLink>
 
       <span class="divider divider--line"></span>
+
        <RouterLink 
           :to="`/insights?category=${category.category}`" 
           class="category-card__metric-link" 
@@ -43,7 +46,18 @@ const props = defineProps<Props>()
           <span class="category-card__metric-value">{{ formatCounts(category.insightsCounter) }}</span>
           <span class="category-card__metric-label">Insights</span>
         </RouterLink>
-     
+
+        <span class="divider divider--line"></span>
+
+        <!-- Writer Call to Action -->
+          <button 
+            type="button"
+            class="btn btn--secondary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', category.category)"
+          >
+            Write Tale
+          </button>
+
     </div>
   </div>
 </template>

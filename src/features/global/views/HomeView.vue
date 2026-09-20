@@ -197,6 +197,21 @@ onUnmounted(() => {
 
       </template>
 
+      
+  <div class="container">
+        <h1 class="container__header">Categories Leaderboard</h1>
+      </div>
+
+         <div class="container">
+
+            <CategoryComponent 
+              v-for="category in homepageStore.categories" 
+              :category="category" 
+            />
+
+        </div>
+    
+
    <div class="container">
         <h1 class="container__header">Trending This Week</h1>
       </div>
@@ -230,19 +245,6 @@ onUnmounted(() => {
 
   </template>
 
-  <div class="container">
-        <h1 class="container__header">Categories Leaderboard</h1>
-      </div>
-
-         <div class="container">
-
-            <CategoryComponent 
-              v-for="category in homepageStore.categories" 
-              :category="category" 
-            />
-
-        </div>
-    
   </template>
 
 </template>
