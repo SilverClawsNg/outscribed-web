@@ -71,7 +71,7 @@ onUnmounted(() => {
 
    <template v-else-if="loadingError">
 
-     <PageStatusMessage 
+      <PageStatusMessage 
       :title="loadingError.title || 'Error Loading Lists'" 
       :message="loadingError.detail || 'An unexpected error occurred.'"
       icon="warning"
@@ -111,6 +111,8 @@ onUnmounted(() => {
         </div>
     
   </template>
+
+  
 
     <template v-else>
 

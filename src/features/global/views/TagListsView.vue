@@ -136,10 +136,13 @@ onUnmounted(() => {
 
   <template v-else>
    <div class="container">
-     <PageStatusMessage
-      title="No Tag Found!"
-      message="Sorry. No tags were found matching your filter requirements.">
-    </PageStatusMessage>
+      <PageStatusMessage 
+               title="No Tag Found!"
+      message="Sorry. No tags were found matching your filter requirements."
+              icon="inbox" 
+              :is-bordered="true"
+            />
+  
    </div>
   </template>
   </template>

@@ -61,7 +61,7 @@ onUnmounted(() => {
 
     <div ref="sentinelRef" id="scroll-sentinel" style="height: 1px;"></div>
 
-    <section class="end-of-file">
+    <section class="container">
 
     <PageStatusMessage v-if="error"
         :title="error.title || 'Loading Error!'" 

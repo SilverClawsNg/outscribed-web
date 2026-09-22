@@ -173,8 +173,10 @@ onUnmounted(() => {
   <template v-else>
     <PageStatusMessage
       title="No timeline found!"
-      message="Sorry. No timelines were found matching your filter requirements.">
-    </PageStatusMessage>
+      message="Sorry. No timelines were found matching your filter requirements."
+        icon="inbox" 
+              :is-bordered="true"
+            />
   </template>
   </template>
 
