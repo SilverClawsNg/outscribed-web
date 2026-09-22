@@ -179,10 +179,13 @@ header.main-header {
               color:@white-color;
               padding: 0.25rem 0.5rem;
 
+             @media @phone {
+                border-radius: 100%;
+            }
+
              @media @largeDevice {
                 display: flex;
                 column-gap: 0.25rem;
-             
             }
 
             &:hover{
