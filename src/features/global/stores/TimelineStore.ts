@@ -88,7 +88,7 @@ export const useTimelineStore = defineStore('timeline', () => {
             // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
 
-            const nextPageUrl = filterStore.buildApiPath('api/global/timeline', pointer.value, anchor.value)
+            const nextPageUrl = filterStore.buildApiPath(baseRoute, pointer.value, anchor.value)
             const outcome = await getAsync<GetTimelineResponse>(nextPageUrl, true, {} as GetTimelineResponse, feedController.signal)
     
         if (outcome.isFailure) {

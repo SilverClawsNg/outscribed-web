@@ -106,11 +106,10 @@ onUnmounted(() => {
 
   <template v-else>
    
-        <header class="page-header container">
-          <h1 class="page-header__title">
-              Tags
-            </h1>
-       </header>
+       <div class="container">
+        <h1 class="container__header">Trending Tags</h1>
+      </div>
+
        
   <template v-if="tagStore.tags && tagStore.tags.length > 0">
 
