@@ -59,7 +59,7 @@ const props = defineProps<Props>()
       <!-- Metrics Navigation Links -->
       <div class="country-card__metrics">
         <RouterLink 
-          :to="`/tales?country=${country}`" 
+          :to="`/tales?country=${country.country}`" 
           class="country-card__metric-link" 
           title="Filter Tales"
         >
@@ -70,7 +70,7 @@ const props = defineProps<Props>()
           <span class="divider divider--line"></span>
 
         <RouterLink 
-          :to="`/insights?country=${country}`" 
+          :to="`/insights?country=${country.country}`" 
           class="country-card__metric-link" 
           title="Filter Insights"
         >
