@@ -68,7 +68,7 @@ onUnmounted(() => {
   <section class="hero">
     
     <header class="hero__brand">
-      <span class="hero__divider"></span>
+     
       <img 
         src="@/assets/images/icon.png" 
         alt="OutScribed Logo" 
@@ -76,7 +76,7 @@ onUnmounted(() => {
         width="100"
         height="100"
       />
-      <span class="hero__divider"></span>
+
     </header>
 
     <div class="hero__content">
@@ -156,8 +156,8 @@ onUnmounted(() => {
         <div class="container">
 
      <PageStatusMessage 
-              title="No Tale Found!" 
-              message="We did not find any recent tale."
+              title="Error Getting Tales!" 
+              message="We encountered an error while retreiving recent tales."
               icon="inbox" 
               :is-bordered="true"
             />
@@ -189,19 +189,20 @@ onUnmounted(() => {
        <div class="container">
 
         <PageStatusMessage 
-              title="No Insight Found!" 
-              message="We did not find any recent insight."
+              title="Error Getting Insights!" 
+              message="We encountered an error while retreiving recent insights."
               icon="inbox" 
               :is-bordered="true"
             />
         </div>
 
       </template>
-
       
   <div class="container">
         <h1 class="container__header">Categories Leaderboard</h1>
       </div>
+
+       <template v-if="homepageStore.categories && homepageStore.categories.length > 0">
 
          <div class="container">
 
@@ -213,6 +214,23 @@ onUnmounted(() => {
             />
 
         </div>
+
+    
+  </template>
+
+    <template v-else>
+
+         <div class="container">
+
+        <PageStatusMessage 
+              title="Error Getting Categories!" 
+              message="We encountered an error while retreiving categories leaderboard."
+              icon="inbox" 
+              :is-bordered="true"
+            />
+        </div>
+
+      </template>
 
    <div class="container">
         <h1 class="container__header">Trending Recently</h1>
@@ -232,24 +250,25 @@ onUnmounted(() => {
     
   </template>
 
-    <template v-else>
+   <template v-else>
 
-       <div class="container">
+         <div class="container">
 
         <PageStatusMessage 
-              title="No Tag Found!" 
-              message="We did not find any trending tags."
+              title="Error Getting Tags!" 
+              message="We encountered an error while retreiving trending tags."
               icon="inbox" 
               :is-bordered="true"
             />
         </div>
 
-
-  </template>
-
+      </template>
+  
    <div class="container">
         <h1 class="container__header">Country Leaderboard</h1>
       </div>
+
+         <template v-if="homepageStore.countries && homepageStore.countries.length > 0">
 
         <div class="container">
 
@@ -260,11 +279,35 @@ onUnmounted(() => {
               :index="index"
             />
 
+          <div class="container__footer">
+             <span class="container__divider"></span>
+            <RouterLink class="container__text" to="/country/metrics" title="Countries">See All Countries</RouterLink>
+             <span class="container__divider"></span>
+          </div>
+
+        </div>
+    
+  </template>
+
+    <template v-else>
+
+         <div class="container">
+
+        <PageStatusMessage 
+              title="Error Getting Countries!" 
+              message="We encountered an error while retreiving countries leaderboard."
+              icon="inbox" 
+              :is-bordered="true"
+            />
         </div>
 
+      </template>
+      
    <div class="container">
         <h1 class="container__header">Writer Leaderboard</h1>
       </div>
+
+         <template v-if="homepageStore.prolificWriters && homepageStore.prolificWriters.length > 0">
 
         <div class="container">
 
@@ -278,10 +321,30 @@ onUnmounted(() => {
 
         </div>
 
+    
+  </template>
+
+   <template v-else>
+
+         <div class="container">
+
+        <PageStatusMessage 
+              title="Error Getting Top Writers!" 
+              message="We encountered an error while retreiving writers leaderboard."
+              icon="inbox" 
+              :is-bordered="true"
+            />
+        </div>
+
+      </template>
+      
    <div class="container">
         <h1 class="container__header">And Introducing...</h1>
       </div>
 
+         <template v-if="homepageStore.newWriters && homepageStore.newWriters.length > 0">
+
+        
         <div class="container">
 
          <!-- New Writers (Unranked - index omitted) -->
@@ -294,6 +357,23 @@ onUnmounted(() => {
 
         </div>
 
+    
+  </template>
+
+   <template v-else>
+
+         <div class="container">
+
+        <PageStatusMessage 
+              title="Error Getting New Writers!" 
+              message="We encountered an error while retreiving new writers."
+              icon="inbox" 
+              :is-bordered="true"
+            />
+        </div>
+
+      </template>
+      
   </template>
 
 </template>

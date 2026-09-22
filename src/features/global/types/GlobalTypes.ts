@@ -75,6 +75,14 @@ export interface TagDetailDto {
     totalCounts: number
 }
 
+
+// Helper type for response
+export interface GetCountriesResponse {
+  countries: CountryMetricsDto[];
+  lastUpdatedAt: string;
+}
+
+
 export interface TagDraftDto {
   tagId: string; // Using string to handle backend Ulid representation
   name: string;

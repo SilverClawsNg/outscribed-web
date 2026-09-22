@@ -162,6 +162,11 @@ const router = createRouter({
           name: 'AccountResolution',
           component: () => import('@/features/identity/views/AccountResolutionView.vue'),
           meta: { requiresAuth: true, authContext: 'account_resolution' }
+        },
+        {
+          path: 'country/metrics', // Renders at outscribed.com/country/metrics
+          name: 'CountryMetrics',
+          component: () => import('@/features/global/views/CountryMetricsView.vue')
         }
       ]
     },
