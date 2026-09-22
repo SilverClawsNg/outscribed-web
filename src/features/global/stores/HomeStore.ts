@@ -5,11 +5,14 @@ import {postAsync } from '@/api/apiPostServices'
 import {type GetFavoriteIdsResponse } from '@/features/engagements/types/EngagementTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
-import type {CategoryMetricsDto, GetHomeContentsResponse, TagDetailDto, TagListDto} from '../types/GlobalTypes.ts';
+import type {CategoryMetricsDto, GetHomeContentsResponse, TagDetailDto, TagListDto,
+  CountryMetricsDto, WriterStatsDto
+} from '../types/GlobalTypes.ts';
 
 import {type TaleListDto, initializeTaleListEngagement} from '@/features/tales/types/TalesTypes.ts'
 import {type InsightListDto, initializeInsightListEngagement} from '@/features/insights/types/InsightsTypes.ts'
 import { useLoginHint } from '@/utils/authHelper'
+import {initializeAccountEngagement } from '@/features/identity/types/IdentityTypes.ts'
 
 export const useHomeStore = defineStore('homeStore', () => {
 
@@ -18,10 +21,15 @@ export const useHomeStore = defineStore('homeStore', () => {
       const insights = ref<InsightListDto[]>([]); 
       const tags = ref<TagListDto[]>([]); 
       const categories = ref<CategoryMetricsDto[]>([]); 
+      const countries = ref<CountryMetricsDto[]>([]); 
+      const prolificWriters = ref<WriterStatsDto[]>([]); 
+      const newWriters = ref<WriterStatsDto[]>([]); 
+
       const isLoggedIn = useLoginHint()
       // 🔒 Keep the controller private/local to this store context
       let feedController: AbortController | null = null;
       let hydrateController: AbortController | null = null;
+
     // 1. Initial Load Path
     async function loadhomecontents(): Promise<{ success: boolean; error: any | null }> {
     
@@ -47,15 +55,25 @@ export const useHomeStore = defineStore('homeStore', () => {
         insights.value = outcome.value.insights || [];
         tags.value = outcome.value.tags || [];
         categories.value = outcome.value.categories || [];
+        countries.value = outcome.value.countries || [];
+        prolificWriters.value = outcome.value.prolificWriters || [];
+        newWriters.value = outcome.value.newWriters || [];
 
-        // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-        if(tales.value) tales.value = outcome.value.tales.map((item: any) => initializeTaleListEngagement(item));
-             
-        // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-        if(insights.value) insights.value = outcome.value.insights.map((item: any) => initializeInsightListEngagement(item));
+        // Map Tales & Insights
+        tales.value = (outcome.value.tales || []).map((item: any) => initializeTaleListEngagement(item));
+        insights.value = (outcome.value.insights || []).map((item: any) => initializeInsightListEngagement(item));
+        
+        // Map Prolific Writers (Preserve WriterStatsDto wrapper & initialize nested creator)
+          prolificWriters.value = (outcome.value.prolificWriters || []).map((writerStats: WriterStatsDto) => ({
+            ...writerStats,
+            creator: initializeAccountEngagement(writerStats.creator)
+          }));
 
-        // 🚀 Fire-and-Forget Hydration: Notice we do NOT pass outcome.value anymore!
-        //hydratePersonals();
+          // Map New Writers (Preserve WriterStatsDto wrapper & initialize nested creator)
+          newWriters.value = (outcome.value.newWriters || []).map((writerStats: WriterStatsDto) => ({
+            ...writerStats,
+            creator: initializeAccountEngagement(writerStats.creator)
+          }));
       }
 
         // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
@@ -81,7 +99,8 @@ export const useHomeStore = defineStore('homeStore', () => {
     // 🛡️ Fix 1: Access the value inside the storage boundary cleanly without wrapper pollution
 
     // 🛡️ Fix 2: Check active store lengths directly rather than transient parameters
-    if (!isLoggedIn.value || (tales.value.length === 0 && insights.value.length === 0)) {
+    if (!isLoggedIn.value || (tales.value.length === 0 && insights.value.length === 0 
+      && prolificWriters.value.length === 0  && newWriters.value.length === 0)) {
       activateEngagementButtons();
       console.log('[HydratePersonals]: Anonymous user session or empty state feed. Bypassing personalization.');
       return;
@@ -91,7 +110,9 @@ export const useHomeStore = defineStore('homeStore', () => {
    // Map IDs safely straight out of our active tracked collection variables
     const allIds = [
       ...tales.value.map(t => t.taleId),
-      ...insights.value.map(i => i.insightId)
+      ...insights.value.map(i => i.insightId),
+      ...prolificWriters.value.map(i => i.creator.accountId),
+      ...newWriters.value.map(i => i.creator.accountId)
     ];
 
     for (let i = 0; i <= maxRetries; i++) {
@@ -117,6 +138,14 @@ export const useHomeStore = defineStore('homeStore', () => {
 
             insights.value.forEach((insight) => {
               insight.engagement.isFavorite = favSet.has(insight.insightId);
+            });
+
+              prolificWriters.value.forEach((writer) => {
+              writer.creator.engagement.isFavorite = favSet.has(writer.creator.accountId);
+            });
+            
+              newWriters.value.forEach((writer) => {
+              writer.creator.engagement.isFavorite = favSet.has(writer.creator.accountId);
             });
           }
 
@@ -165,6 +194,12 @@ export const useHomeStore = defineStore('homeStore', () => {
     });
     insights.value.forEach((insight) => {
       insight.engagement.isEngagementLoaded = true;
+    });
+     prolificWriters.value.forEach((writer) => {
+      writer.creator.engagement.isEngagementLoaded = true;
+    });
+      newWriters.value.forEach((writer) => {
+      writer.creator.engagement.isEngagementLoaded = true;
     });
   }
 
@@ -225,7 +260,7 @@ export const useHomeStore = defineStore('homeStore', () => {
     }
   }
 
-      return {tales,insights, tags, categories,
+      return {tales,insights, tags, categories, countries, prolificWriters, newWriters,
         loadhomecontents, hydratePersonals, abort, loadTag
   };
 

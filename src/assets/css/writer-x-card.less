@@ -1,0 +1,97 @@
+@import "variables.less";
+
+.writer-card {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  // Exact 30px x 30px Badge Component
+  &__badge {
+    font-size: 0.95rem;
+    font-weight: 900;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--background-color);
+
+    // #1 Gold Background
+     &--gold {
+      background-color: @gold-color;
+    }
+
+     &--silver {
+      background-color: @silver-color;
+    }
+
+    &--bronze {
+      background-color: @bronze-color;
+    }
+
+    &--number{
+        background-color: var(--text-color);
+    }
+
+    // New Writers (Unnumbered, Transparent, Neutral Theme Border)
+    &--new {
+      background-color: transparent;
+      border: 1px solid var(--text-color);
+    }
+  }
+
+  &__meta{
+    display: flex;
+    align-items:center;
+    column-gap: 0.25rem;
+  }
+  
+  // --- Metrics ---
+  &__metrics {
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+    font-size: 0.95rem;
+    
+    @media @phone{
+      column-gap: 0.15rem;
+    }
+  }
+
+  &__metric-link {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    color: var(--muted-text-color);
+
+  
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+  }
+}

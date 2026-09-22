@@ -11,6 +11,8 @@ import InsightListComponent from '@/features/insights/components/InsightListComp
 import TagComponent from '../components/TagComponent.vue'
 import { useModalStore } from '@/stores/modalStore'
 import CategoryComponent from '../components/CategoryComponent.vue';
+import CountryComponent from '../components/CountryComponent.vue';
+import WriterComponent from '../components/WriterComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -52,7 +54,6 @@ async function initPage() {
 onMounted(async () => {
   await initPage();
 })
-
 
 // inside your HomeView.vue
 onUnmounted(() => {
@@ -174,10 +175,10 @@ onUnmounted(() => {
          <div class="container">
 
             <InsightListComponent 
-        v-for="insight in homepageStore.insights" 
-        :key="insight.insightId" 
-        :insight="insight"
-      />
+              v-for="insight in homepageStore.insights" 
+              :key="insight.insightId" 
+              :insight="insight"
+            />
 
         </div>
     
@@ -212,10 +213,9 @@ onUnmounted(() => {
             />
 
         </div>
-    
 
    <div class="container">
-        <h1 class="container__header">Trending This Week</h1>
+        <h1 class="container__header">Trending Recently</h1>
       </div>
 
        <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
@@ -246,6 +246,53 @@ onUnmounted(() => {
 
 
   </template>
+
+   <div class="container">
+        <h1 class="container__header">Country Leaderboard</h1>
+      </div>
+
+        <div class="container">
+
+           <CountryComponent 
+              v-for="(country, index) in homepageStore.countries" 
+              :key="country.country"
+              :country="country" 
+              :index="index"
+            />
+
+        </div>
+
+   <div class="container">
+        <h1 class="container__header">Writer Leaderboard</h1>
+      </div>
+
+        <div class="container">
+
+         <template v-for="(writer, index) in homepageStore.prolificWriters" :key="writer?.creator?.accountId || index">
+          <WriterComponent 
+            v-if="writer?.creator"
+            :writer="writer" 
+            :index="index"
+          />
+        </template>
+
+        </div>
+
+   <div class="container">
+        <h1 class="container__header">And Introducing...</h1>
+      </div>
+
+        <div class="container">
+
+         <!-- New Writers (Unranked - index omitted) -->
+        <template v-for="writer in homepageStore.newWriters" :key="writer?.creator?.accountId">
+          <WriterComponent 
+            v-if="writer?.creator"
+            :writer="writer" 
+          />
+        </template>
+
+        </div>
 
   </template>
 

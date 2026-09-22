@@ -112,21 +112,23 @@ export interface GetUserProfileResponse {
 
 }
 
+
 export function initializeAccountEngagement(rawAccount: any): CreatorDto {
+  if (!rawAccount) return rawAccount;
+
+  // If passed a WriterStatsDto container, extract the nested creator
+  const targetCreator = rawAccount.creator ? rawAccount.creator : rawAccount;
 
   return {
-    // 1. Spread out the primitive core values from the network line safely
-    ...rawAccount,
-    
-    // 2. Explicitly map your rich nested engagement graph
+    ...targetCreator,
     engagement: {
-      contentId: rawAccount.accountId,
+      contentId: targetCreator.accountId || targetCreator.writerId || targetCreator.id,
       contentType: 'Account',
-      commentsCount: rawAccount.commentsCount || 0,
-      isFavorite: false,
+      commentsCount: targetCreator.commentsCount || 0,
+      isFavorite: targetCreator.isFavorite || false,
       isEngagementLoaded: false,
       
-      // ⚡ Pre-initialize the reactive UI state immediately on arrival
+      // Pre-initialize reactive state
       uiState: reactive(createDefaultUiState())
     }
   };
