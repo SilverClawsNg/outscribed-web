@@ -132,7 +132,7 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
 
 export const CategorySummaries: Record<Category, string> = {
   Tributuary:
-    'Creative stories honoring great people, past choices, and big moments. Instead of just looking back at history, these stories ask: what cool things can we build next?',
+    'Tributes that serve as a celebration of character and impact, a reflective keepsake, and a way to honor someone\'s legacy while they are still here to share in it.',
 
   Reflections:
     'Real life lessons turned into great stories. Advice to our younger selves, second chances, and hard truths that help everyone grow.',

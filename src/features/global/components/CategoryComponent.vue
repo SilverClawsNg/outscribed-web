@@ -81,7 +81,7 @@ const props = defineProps<Props>()
             class="btn btn--secondary" 
             @click="modalStore.push('CreateTale', 'Create Tale', category.category)"
           >
-            Write Tale
+            OutScribe
           </button>
 
     </div>

@@ -88,7 +88,7 @@ const ToggleUserMenu = () => {
             </button>
 
             <button class="btn spin" @click="modalStore.push('CreateTale', 'Create Tale')">
-              <SvgIcons name="edit" :size="20" /> <span>Spin-A-Tale</span>
+              <SvgIcons name="edit" :size="20" /> <span>OutScribe</span>
             </button>
 
           </div>
