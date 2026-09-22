@@ -132,57 +132,56 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
 
 export const CategorySummaries: Record<Category, string> = {
   Tributuary:
-    'Imaginative homage to people, legacies, and turning points—tribute in tale form, not a factual obituary. Honors what was in order to ask what still could be built.',
+    'Creative stories honoring great people, past choices, and big moments. Instead of just looking back at history, these stories ask: what cool things can we build next?',
 
   Reflections:
-    'Lived experience rewritten as story: letters to a younger self, hard lessons, and second chances. Private hindsight turned into public insight others can use.',
+    'Real life lessons turned into great stories. Advice to our younger selves, second chances, and hard truths that help everyone grow.',
 
   DoomsDay:
-    'Stress-tests for civilization—collapse scenarios that sharpen what we must protect or redesign. Warnings in service of prevention and better systems, not panic for its own sake.',
+    'Stories about what happens when things fall apart—not to scare us, but to help us build safer, stronger, and smarter systems for the future.',
 
   PoliticsGovernance:
-    'Power and policy retold so we can reimagine governance, civic tools, and how public decisions get made. Critique aimed at systems and incentives, not spectacle alone.',
+    'A new look at power, rules, and leaders. Creative ways to fix broken systems, help communities, and make public decisions better for everyone.',
 
   SportsGaming:
-    'Competition reimagined—new rules, formats, fairness, and cultures of play on the field and on the screen. A lab for how games might work better.',
+    'Sports and video games with new rules, better teamwork, and fairer play. A playground for how sports and gaming could be more fun and fair.',
 
   ScienceTechnology:
-    'Labs, code, and machines as places to prototype futures. Speculative takes on AI, space, and tools we might build—and the choices that should guide them.',
+    'Cool ideas for future tech, AI, space travel, and inventions. Big "what-if" stories about the tools we make and how to use them wisely.',
 
   Education:
-    'Learning redesigned: classrooms, credentials, access, and intellectual growth when the old pathways fail. Tales and insights that ask how we could teach and learn differently.',
+    'New ways to learn, teach, and go to school. Creative ideas for classrooms and skills when old learning styles just do not work anymore.',
 
   BusinessEconomy:
-    'Markets and work rebuilt on the page—alternate incentives, ownership, and enterprise. Economic imagination aimed at models that could actually be tried.',
+    'Fresh ideas for money, jobs, and businesses. Stories about better ways to work, trade, and build companies that help people.',
 
   ArtsEntertainment:
-    'Culture under new light—how stories, music, film, and fame might be made, shared, and valued differently. Creative industries as sites of experiment.',
+    'A new vision for music, movies, fame, and storytelling. Exploring how creative art could be made and shared in the future.',
 
   MedicineHealthcare:
-    'Care rethought: breakthroughs, blind spots, and systems between people and help. Narratives that pressure-test how healing and health infrastructure could improve.',
+    'Better ways to care for the sick and fix health systems. Smart ideas and breakthroughs for doctors, hospitals, and taking care of people.',
 
   LawOrder:
-    'Justice systems reimagined—rights, procedure, accountability, and repair. Legal speculation that asks what fairness could look like in practice.',
+    'Rules and courts reimagined. Creative stories about justice, protecting rights, and finding fairer ways to fix wrongs.',
 
   SocietalNormsValues:
-    'The silent rules of belonging, rewritten. Ethical and cultural experiments that explore how we might live together with different defaults.',
+    'Re-thinking everyday habits, customs, and how we treat each other. Big questions about how to build kinder, better communities.',
 
   HistoryCulture:
-    'Memory and heritage with the locks off—reframed pasts that illuminate better presents. What-ifs tied to the record, aimed at understanding and renewal.',
+    'Rewriting history with "what-if" questions. Looking at the past in a new way to help us build a brighter present.',
 
   EnvironmentClimate:
-    'Ecology as design problem and moral stake. Stories that confront damage while sketching stewardship, adaptation, and how we inhabit the planet differently.',
+    'Smart ideas to protect nature, clean up the planet, and fight climate change. Stories about fixing damage and living alongside nature.',
 
   ReligionSpirituality:
-    'Faith, doubt, and meaning as living practice. Explorations of how communities might hold the sacred—and the questions—with more honesty and depth.',
+    'Big questions about faith, belief, and meaning. Honest stories about how communities find purpose, hope, and togetherness.',
 
   FamilyRelationships:
-    'Kin and chosen family as the first institutions we invent. Bonds, care, and conflict explored in search of healthier ways to belong to one another.',
+    'Stories about parents, kids, friends, and chosen family. Exploring better ways to communicate, care for each other, and solve conflicts.',
 
   Miscellaneous:
-    'Hybrid and hard-to-label experiments that still follow the OutScribed form—odd angles where new ideas often start.',
+    'Wild, unusual, and hard-to-classify ideas that do not fit anywhere else—because big new ideas often start in strange places.',
 } as const;
-
 export const ContentTypeDescriptions: Record<ContentType, string> = {
   Account: 'Account',
   Tale: 'Tales',
