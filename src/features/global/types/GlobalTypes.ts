@@ -83,6 +83,14 @@ export interface GetCountriesResponse {
 }
 
 
+// Helper type for response
+export interface GetTagsResponse {
+  tags: TagListDto[];
+  hasNext: boolean;
+  pointer: string | null; 
+  anchor: string | null
+}
+
 export interface TagDraftDto {
   tagId: string; // Using string to handle backend Ulid representation
   name: string;

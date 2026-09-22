@@ -232,9 +232,10 @@ onUnmounted(() => {
 
       </template>
 
-   <div class="container">
-        <h1 class="container__header">Trending Recently</h1>
-      </div>
+    <header class="page-header container">
+      <h1>Trending Tags</h1>
+      <RouterLink to="/tags" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
+    </header>
 
        <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
 
@@ -264,10 +265,11 @@ onUnmounted(() => {
 
       </template>
   
-   <div class="container">
-        <h1 class="container__header">Country Leaderboard</h1>
-      </div>
-
+      <header class="page-header container">
+      <h1>Country Leaderboard</h1>
+      <RouterLink to="/country/metrics" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+    </header>
+  
          <template v-if="homepageStore.countries && homepageStore.countries.length > 0">
 
         <div class="container">
@@ -278,12 +280,6 @@ onUnmounted(() => {
               :country="country" 
               :index="index"
             />
-
-          <div class="container__footer">
-             <span class="container__divider"></span>
-            <RouterLink class="container__text" to="/country/metrics" title="Countries">See All Countries</RouterLink>
-             <span class="container__divider"></span>
-          </div>
 
         </div>
     
@@ -303,10 +299,11 @@ onUnmounted(() => {
 
       </template>
       
-   <div class="container">
-        <h1 class="container__header">Writer Leaderboard</h1>
-      </div>
-
+        <header class="page-header container">
+      <h1>Writer Leaderboard</h1>
+      <RouterLink to="/writers" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+    </header>
+  
          <template v-if="homepageStore.prolificWriters && homepageStore.prolificWriters.length > 0">
 
         <div class="container">

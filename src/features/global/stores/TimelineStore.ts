@@ -4,7 +4,6 @@ import { getAsync } from '@/api/apiGetServices'
 import { APIError } from '@/api/apiTypes.ts'
 import type {GetTimelineResponse, TimelineDto} from '../types/GlobalTypes.ts';
 import { useTimelineFilterStore } from '../stores/TimelineFilterStore'
-import { setStoredAnchor } from '@/utils/anchorStorage';
 
 // Native JS Set wrapper implementation shortcut
 class HashSetOrSet extends Set<string> {}

@@ -167,6 +167,11 @@ const router = createRouter({
           path: 'country/metrics', // Renders at outscribed.com/country/metrics
           name: 'CountryMetrics',
           component: () => import('@/features/global/views/CountryMetricsView.vue')
+        },
+        {
+          path: 'tags', // Renders at outscribed.com/tags
+          name: 'Tags',
+          component: () => import('@/features/global/views/TagListsView.vue')
         }
       ]
     },
