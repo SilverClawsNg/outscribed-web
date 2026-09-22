@@ -84,7 +84,7 @@ export const useTagStore = defineStore('tagStore', () => {
             feedController = new AbortController();
     
                 const nextPageUrl = filterStore.buildApiPath('api/global/timeline', pointer.value, anchor.value)
-                const outcome = await getAsync<GetTagsResponse>(nextPageUrl, true, {} as GetTagsResponse, feedController.signal)
+                const outcome = await getAsync<GetTagsResponse>(nextPageUrl, false, {} as GetTagsResponse, feedController.signal)
         
             if (outcome.isFailure) {
               if (outcome.error) {
