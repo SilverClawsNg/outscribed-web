@@ -100,10 +100,11 @@ main {
 h1.logo {
     z-index: 1000;
     position: relative;
+   
 
     & svg {
         fill: var(--text-color);
-        //fill: @white-color;
+        //fill: @link-color;
         width: auto;
 
        @media @phone {
@@ -121,6 +122,11 @@ h1.logo {
         @media @largeDevice {
             height: 32px; /* Your desired height */
         }
+    }
+
+    & a:hover svg{
+        fill: var(--hover-color);
+
     }
 }
 
