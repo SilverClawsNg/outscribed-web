@@ -68,7 +68,7 @@ const ToggleUserMenu = () => {
             </button>
 
             <button class="icon-btn" @click="ToggleUserMenu" aria-label="User Menu">
-             <SvgIcons name="user" :size="20" />
+             <SvgIcons name="user" />
             </button>
 
           </div>
@@ -83,12 +83,12 @@ const ToggleUserMenu = () => {
 
           <div class="main-header__top-navigation-right">
 
-            <button @click="modalStore.push('Search', 'Search Contents')">
-               <SvgIcons name="search" :size="28" /> 
+            <button class="btn btn--primary btn--has-icon" @click="modalStore.push('Search', 'Search Contents')">
+               <SvgIcons name="search" /> <span class="btn--hide-text">Search</span>
             </button>
 
-            <button class="btn spin" @click="modalStore.push('CreateTale', 'Create Tale')">
-              <SvgIcons name="edit" :size="20" /> <span>OutScribe</span>
+            <button class="btn btn--secondary btn--has-icon" @click="modalStore.push('CreateTale', 'Create Tale')">
+              <SvgIcons name="edit" /> <span class="btn--hide-text">OutScribe</span>
             </button>
 
           </div>

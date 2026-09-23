@@ -124,16 +124,17 @@ header.main-header {
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    
-    & button:hover{
-        color: @link-alt-color;
-    }
+  
 }
 
 .main-header__top-navigation-left {
     display: flex;
     align-items: center;
     width: calc(100% / 3);
+      
+    & button:hover{
+        color: @link-alt-color;
+    }
 
     @media @smallDevice {
         column-gap: 1rem;
@@ -146,7 +147,6 @@ header.main-header {
     & svg {
         width: 28px;
         height: 28px;
-        //stroke-width: 2px;
     }
 
 }
@@ -170,60 +170,6 @@ header.main-header {
         column-gap: 0.5rem;
     }
 
-    & button {
-
-        &.spin{
-
-              background-color:@link-color;
-              border-color: transparent;
-              color:@white-color;
-              padding: 0.25rem 0.5rem;
-
-             @media @phone {
-                border-radius: 99999px;
-            }
-
-             @media @largeDevice {
-                display: flex;
-                column-gap: 0.25rem;
-            }
-
-            &:hover{
-                background-color: @link-alt-color;
-            }
-        }
-
-        &:not(.spin){
-             & svg {
-                width: 28px;
-                height: 28px;
-            }
-        }
-
-         & svg {
-            //stroke-width: 2px;
-        }
- 
-        @media @smallDevice {
-            border: none;
-            padding: 0;
-            background-color: transparent;
-            min-width: unset;
-
-            & span {
-                display: none;
-            }
-
-           & svg {
-                width: 28px;
-                height: 28px;
-            }
-
-            &:hover {
-                box-shadow: none;
-            }
-        }
-    }
 }
 
 .main-header__menu-container {
@@ -245,8 +191,6 @@ header.main-header {
     @media @largeDevice {
         height: 50px;
     }
-
-
 }
 
 .login-required-instruction {
