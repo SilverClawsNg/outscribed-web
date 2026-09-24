@@ -59,8 +59,11 @@ const updateParent = () => {
 }
 
 const CloseMenu = () => {
-  //currentState.value = 'Neutral'
-  //updateParent()
+  if (!isLargeDevice()) {
+    currentState.value = 'Neutral'
+    updateParent()
+  } 
+ 
 }
 
 const TogglePublicMenu = () => {
