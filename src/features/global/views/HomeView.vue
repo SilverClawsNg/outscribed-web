@@ -176,7 +176,7 @@ onUnmounted(() => {
 
   </template>
 
-   <header class="page-header">
+   <header class="page-header page-header--top-bordered">
      <div class="page-header__contents">
        <h1>Recent Insights</h1>
       <RouterLink to="/insights" class="btn btn--secondary"  title="Recent Insights"><span>View All</span></RouterLink>
@@ -247,7 +247,7 @@ onUnmounted(() => {
 
       </template>
 
-       <header class="page-header">
+       <header class="page-header page-header--top-bordered">
      <div class="page-header__contents">
        <h1>Trending Tags</h1>
       <RouterLink to="/tags" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
