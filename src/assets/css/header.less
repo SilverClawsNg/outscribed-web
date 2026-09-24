@@ -35,7 +35,19 @@ header.main-header {
         @media @largeDevice {
             height: 65px;
         }
+
+        
     }
+
+     &.state-neutral .main-header__menu-container {
+
+       @media @smallDevice{
+                        border-top: none;
+
+        }
+    }
+
+      
 
     &.state-public-open,
     &.state-user-open {
@@ -55,6 +67,8 @@ header.main-header {
             transform: translateY(-50px);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+       
     }
 
     &.state-user-open .main-header__menu-container,
@@ -64,6 +78,8 @@ header.main-header {
             overflow-y: auto;
         }
     }
+
+   
 
     &.state-public-open .main-header__public-menu,
     &.state-user-open .main-header__user-menu {
