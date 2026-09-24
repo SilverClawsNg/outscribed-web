@@ -6,6 +6,8 @@
   max-width: 450px;
   margin: 0 auto;
 
+ 
+
    h1.form-header {
         text-align: center;
         margin-bottom: 2rem;
@@ -32,8 +34,11 @@
     background-color: inherit;
     border: none;
     border: 1px solid var(--border-color);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
     //min-height: 4rem;
     padding: 0 0.6rem;
+    min-height: 3rem;
+    border-radius:4px;
 
     &.with-ticks {
       flex-direction: column;
@@ -104,11 +109,8 @@
     background: transparent;
     padding: 0.625rem 0;
     font-size: 0.875rem;
-    color: var(--text-color, #1f2937);
 
-    &::placeholder {
-      color: var(--placeholder-color, #9ca3af);
-    }
+    
   }
 }
 
@@ -193,7 +195,8 @@
     font-size: 1rem;
     line-height: 1;
     letter-spacing: 2.25px;
-    color: var(--muted-text-color);
+    //color: var(--muted-text-color);
+    color: #AEAEAE;
     opacity: 1;
   }
 
@@ -298,8 +301,8 @@
       align-items: center;
       width: 100%;
       z-index: 1;
-      border-radius:unset;
-      height: 2rem;
+      //border-radius:unset;
+      height: 4rem;
       text-transform:uppercase;
 
       &.active {
