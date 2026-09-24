@@ -68,8 +68,6 @@ onUnmounted(() => {
 
   <div class="hero-contents">
 
-    
-    
    <div class="hero">
     
     <header class="hero__brand">
@@ -109,7 +107,7 @@ onUnmounted(() => {
     </div>
 
   </div>
-
+  
 </div>
 
 </div>
