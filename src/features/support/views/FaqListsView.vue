@@ -15,16 +15,18 @@ const modalStore = useModalStore()
 
 <template>
 
-   <header class="page-header container">
-     <h1>FAQs</h1>
-      <!-- Variant 1: Filter Button -->
-      <button 
+
+     <header class="page-header">
+      <div class="page-header__contents">
+        <h1>Frequently Asked Questions</h1>
+          <button 
         type="button" 
-        class="btn btn--primary"  
+        class="btn btn--secondary"  
         @click="modalStore.push('AskQuestion', 'Ask a Question')"
       >
       Ask a Question
       </button>
+      </div>
     </header>
  
   <template v-if="faqData.length > 0">
@@ -37,6 +39,8 @@ const modalStore = useModalStore()
         :faq="faq"/>
 
   </div>
+
+  <div class="page-closure"></div>
 
   </template>
 

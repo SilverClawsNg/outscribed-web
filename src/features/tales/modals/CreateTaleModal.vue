@@ -8,13 +8,22 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integ
 import { getValidCategory } from '@/utils/validators'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
 import type { CreateRequest } from '../types/TalesTypes'
+import { useRouter } from 'vue-router';
 
 import { CategorySelectItems } from '@/utils/selectItemHelper'
 import { useLoginHint } from '@/utils/authHelper'
 
+const router = useRouter();
+
+function redirectToEditor() {
+  router.push(`/tales/editor`)
+}
+
 // 🎯 LOCAL CIRCUIT BREAKER: Prevents the UI vacuum
 const isInitializing = ref(true)
 const isLoggedIn = useLoginHint()
+const isSuccessful = ref(false)
+
 
 // 1. Mark payload as optional with a '?'
 const props = defineProps<{
@@ -122,7 +131,9 @@ async function handleFormSubmission() {
   } else{
  
     // Close down the active overlay panel instance securely
-    modalStore.pop()
+    //modalStore.pop()
+
+     isSuccessful.value = true
   
   }
 
@@ -206,6 +217,20 @@ onMounted(async () => {
         </template>
       </PageStatusMessage>
     </template>
+
+    <template v-else-if="isSuccessful">
+        <PageStatusMessage 
+        title="Created!" 
+        message="Your tale has been created but you have to use your editor to update and launch."
+        icon="check"
+        :is-standalone="true"
+      >
+        <template #actions>
+          <button class="btn btn--primary"  @click="redirectToEditor">Editor</button>
+          <button class="btn btn--secondary"  @click="modalStore.pop">Close</button>
+        </template>
+      </PageStatusMessage>
+  </template>
    
     <template v-else-if="authStore.writerStatus === 'Active'">
 

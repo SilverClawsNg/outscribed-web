@@ -130,13 +130,15 @@ onUnmounted(() => {
 
   <template v-else>
    
-        <header class="page-header container">
-          <h1 class="page-header__title">
+     <header class="page-header">
+     <div class="page-header__contents">
+        <h1>
               Timelines
             </h1>
-        <button class="btn btn--primary"  @click="modalStore.push('TimelineFilter', 'Filter Timelines')">Filter</button>
-       </header>
-       
+        <button class="btn btn--secondary"  @click="modalStore.push('TimelineFilter', 'Filter Timelines')">Filter</button>
+     </div>
+    </header>
+    
     <template v-if="wasCleaned">
      <div class="container">
           <PageStatusMessage 

@@ -291,7 +291,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 1 }"></span>
-          <h3>Enter Email Address</h3>
+          <h3>1. Enter a valid email address to get started</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 1 }">
           <!-- Initial Send Step (Uses parent captchaToken) -->
@@ -320,7 +320,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 2 }"></span>
-          <h3>Enter Verification Token</h3>
+           <h3>2. Check your email addres for a six figure token and enter it here</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 2 }">
           <VerifyTokenStep 
@@ -337,7 +337,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 3 }"></span>
-          <h3>Enter New Password</h3>
+          <h3>3. Enter your new passord to complete</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 3 }">
           <CompleteResetStep 

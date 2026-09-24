@@ -2,10 +2,17 @@
 
 .tag-card {
   width: 100%;
-  padding-bottom: 1rem;
+  padding: 1rem 0.5rem;
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+   border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  //background-color:#F5F5F5;
+  //border-radius: 4px;
 
+  &:last-child{
+    border-bottom:none;
+  }
   &__contents {
     display: flex;
     align-items: center;

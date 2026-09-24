@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed,  onMounted, onUnmounted} from 'vue'
 import { RouterLink } from 'vue-router'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
@@ -20,6 +20,30 @@ type HeaderState = 'Neutral' | 'Public' | 'User'
 
 const currentState = ref<HeaderState>('Neutral')
 
+  
+const LARGE_MQ = '(min-width: 992px)' // match your @largeDevice
+
+function isLargeDevice() {
+  return typeof window !== 'undefined' && window.matchMedia(LARGE_MQ).matches
+}
+
+function applyDefaultForViewport() {
+  // Only auto-open public when nothing user-driven is forcing User
+  if (isLargeDevice()) {
+    if (currentState.value !== 'User') {
+      currentState.value = 'Public'
+      updateParent()
+    }
+  } else {
+    // Mobile: menus closed by default
+    if (currentState.value === 'Public') {
+      currentState.value = 'Neutral'
+      updateParent()
+    }
+  }
+}
+
+
 // 4. Computed property (mirrors your C# switch statement switch expression)
 const activeStateClass = computed(() => {
   switch (currentState.value) {
@@ -35,8 +59,8 @@ const updateParent = () => {
 }
 
 const CloseMenu = () => {
-  currentState.value = 'Neutral'
-  updateParent()
+  //currentState.value = 'Neutral'
+  //updateParent()
 }
 
 const TogglePublicMenu = () => {
@@ -48,6 +72,19 @@ const ToggleUserMenu = () => {
   currentState.value = currentState.value === 'User' ? 'Neutral' : 'User'
   updateParent()
 }
+
+
+onMounted(() => {
+  applyDefaultForViewport()
+  const mq = window.matchMedia(LARGE_MQ)
+  // modern browsers
+  mq.addEventListener?.('change', applyDefaultForViewport)
+  // fallback
+  // mq.addListener?.(applyDefaultForViewport)
+  onUnmounted(() => {
+    mq.removeEventListener?.('change', applyDefaultForViewport)
+  })
+})
 
 </script>
 

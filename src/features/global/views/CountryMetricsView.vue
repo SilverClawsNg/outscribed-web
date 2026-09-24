@@ -85,13 +85,14 @@ onUnmounted(() => {
 
   </template>
 
-  <template v-else>
+         <template v-else-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
 
-   <div class="container">
-        <h1 class="container__header">Country Leaderboard</h1>
-      </div>
-
-         <template v-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
+           <header class="page-header">
+     <div class="page-header__contents">
+     <h1> Country Leaderboard</h1>
+      <time>Last Updated - {{ toLongDate(countryStore.countriesMetrics.lastUpdatedAt) }}</time>
+     </div>
+    </header>
 
         <div class="container">
 
@@ -102,17 +103,11 @@ onUnmounted(() => {
               :index="index"
             />
 
-          <div class="container__footer">
-             <span class="container__divider"></span>
-           <time class="container__text">Last Updated - {{ toLongDate(countryStore.countriesMetrics.lastUpdatedAt) }}</time>
-             <span class="container__divider"></span>
-          </div>
-
         </div>
+
+        <div class="page-closure"></div>
     
   </template>
-
-  
 
     <template v-else>
 
@@ -121,14 +116,13 @@ onUnmounted(() => {
         <PageStatusMessage 
               title="Error Getting Countries!" 
               message="We encountered an error while retreiving countries leaderboard."
-              icon="inbox" 
-              :is-bordered="true"
+              icon="fail" 
+              :is-standalone="true"
             />
         </div>
 
       </template>
  
-  </template>
 
 </template>
 

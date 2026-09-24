@@ -182,6 +182,7 @@ export const CategorySummaries: Record<Category, string> = {
   Miscellaneous:
     'Wild, unusual, and hard-to-classify ideas that do not fit anywhere else—because big new ideas often start in strange places.',
 } as const;
+
 export const ContentTypeDescriptions: Record<ContentType, string> = {
   Account: 'Account',
   Tale: 'Tales',

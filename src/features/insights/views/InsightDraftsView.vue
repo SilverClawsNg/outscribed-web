@@ -129,15 +129,15 @@ onUnmounted(() => {
   </template>
 
    <template v-else>
-   
-    <header class="page-header container">
-   <h1 class="page-header__title">
-      Insight Drafts
-    </h1>
-          <button type="button" class="btn btn--primary"  
+
+     <header class="page-header">
+      <div class="page-header__contents">
+        <h1>  Insight Drafts</h1>
+         <button type="button" class="btn btn--secondary"  
           @click="modalStore.push('InsightDraftFilter', 'Filter Drafts')">Filter</button>
-  </header>
-      
+      </div>
+    </header>
+
        <template v-if="wasCleaned">
          
         <div class="container">

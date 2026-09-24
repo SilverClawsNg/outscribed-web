@@ -131,16 +131,18 @@ onUnmounted(() => {
   </template>
 
    <template v-else>
-   
-      <header class="page-header container">
-        <h1>My Comments</h1>
+
+     <header class="page-header">
+      <div class="page-header__contents">
+          <h1>My Comments</h1>
          <button 
          type="button" 
-         class="btn btn--primary"  @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">
+         class="btn btn--secondary"  @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')">
          Filter
         </button>
+      </div>
     </header>
-    
+   
     <template v-if="wasCleaned">
      <div class="container">
           <PageStatusMessage 

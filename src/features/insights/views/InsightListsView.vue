@@ -177,22 +177,19 @@ onUnmounted(() => {
 
   <template v-else>
 
-    <header class="page-header container">
-     <h1 class="page-header__title"  :class="{ at: creatorUsername }">
-      {{ pageTitle }}
-    </h1>
-
-  <!-- Variant 1: Filter Button -->
-  <button 
-    type="button" 
-    class="btn btn--primary"  
-    @click="modalStore.push('InsightListFilter', 'Filter Lists', type)"
-  >
-    Filter
-  </button>
-
+     <header class="page-header">
+      <div class="page-header__contents">
+        <h1 :class="{ at: creatorUsername }">  {{ pageTitle }}</h1>
+          <button 
+            type="button" 
+            class="btn btn--secondary"  
+            @click="modalStore.push('InsightListFilter', 'Filter Lists', type)"
+          >
+            Filter
+          </button>
+      </div>
     </header>
-   
+
      <template v-if="wasCleaned">
       
         <div class="container">

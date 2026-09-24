@@ -61,13 +61,13 @@ onUnmounted(() => {
 
     <div ref="sentinelRef" id="scroll-sentinel" style="height: 1px;"></div>
 
-    <section class="container">
+     <header class="page-header page-header--top-bordered">
 
-    <PageStatusMessage v-if="error"
+     <div class="page-header__contents">
+       <PageStatusMessage v-if="error"
         :title="error.title || 'Loading Error!'" 
         :message="error.detail || 'An unexpected error occured while loading contents'"
-        icon="warning"
-        :is-bordered="true">
+        icon="warning">
         <template #actions>
           <button type="button" class="btn btn--primary"  @click="emit('retry')">
             Retry
@@ -78,8 +78,11 @@ onUnmounted(() => {
       <p v-else-if="hasNext" class="loader__dot"></p>
 
       <p v-else class="loaded"></p>
+      
+     </div>
 
-    </section>
+    </header>
+   
 
 </template>
 

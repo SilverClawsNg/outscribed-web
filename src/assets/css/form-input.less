@@ -32,8 +32,8 @@
     background-color: inherit;
     border: none;
     border: 1px solid var(--border-color);
-    min-height: 4rem;
-    padding-left:0.25rem;
+    //min-height: 4rem;
+    padding: 0 0.6rem;
 
     &.with-ticks {
       flex-direction: column;
@@ -120,7 +120,7 @@
     width: 100%;
     box-sizing: border-box;
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.5; // Raised from 1 to give descenders (p, g, y) vertical headroom
     color: var(--text-color);
     background-color: transparent !important;
@@ -160,12 +160,11 @@
   }
 
   input.form-field {
-    height: 30px;
+    height: 2rem;
   }
 
   textarea.form-field {
-    height: 100px;
-    padding: 0.5rem 0;
+    height: 5rem;
     resize: vertical;
   }
 
@@ -175,6 +174,7 @@
     vertical-align: middle;
     padding-top: 2px;
     padding-bottom: 2px;
+    border-radius:99999px;
 
     option {
       padding: 4px 8px; // Gives the options internal vertical breathable space in the dropdown list
@@ -190,7 +190,7 @@
 
   // --- Placeholders & Labels ---
   ::placeholder {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1;
     letter-spacing: 2.25px;
     color: var(--muted-text-color);
@@ -298,7 +298,7 @@
       width: 100%;
       z-index: 1;
       border-radius:unset;
-      height: 4rem;
+      height: 2rem;
       text-transform:uppercase;
 
       &.active {

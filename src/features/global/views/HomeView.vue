@@ -65,7 +65,12 @@ onUnmounted(() => {
 <template>
 
 <div class="hero-wrapper">
-  <section class="hero">
+
+  <div class="hero-contents">
+
+    
+    
+   <div class="hero">
     
     <header class="hero__brand">
      
@@ -103,7 +108,10 @@ onUnmounted(() => {
       </div>
     </div>
 
-  </section>
+  </div>
+
+</div>
+
 </div>
 
    <template v-if="isLoading">
@@ -132,9 +140,12 @@ onUnmounted(() => {
 
   <template v-else>
 
-    <header class="page-header container">
-      <h1>Recent Tales</h1>
-      <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
+   
+    <header class="page-header">
+     <div class="page-header__contents">
+       <h1>Recent Tales</h1>
+      <RouterLink to="/tales" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
+     </div>
     </header>
     
        <template v-if="homepageStore.tales && homepageStore.tales.length > 0">
@@ -165,11 +176,13 @@ onUnmounted(() => {
 
   </template>
 
-   <header class="page-header container">
-      <h1>Recent Insights</h1>
-      <RouterLink to="/insights" class="btn btn--primary"  title="Recent Insights"><span>View All</span></RouterLink>
+   <header class="page-header">
+     <div class="page-header__contents">
+       <h1>Recent Insights</h1>
+      <RouterLink to="/insights" class="btn btn--secondary"  title="Recent Insights"><span>View All</span></RouterLink>
+     </div>
     </header>
-    
+
        <template v-if="homepageStore.insights && homepageStore.insights.length > 0">
 
          <div class="container">
@@ -198,9 +211,11 @@ onUnmounted(() => {
 
       </template>
       
-  <div class="container">
-        <h1 class="container__header">Categories Leaderboard</h1>
-      </div>
+        <header class="page-header page-header--top-bordered">
+     <div class="page-header__contents">
+       <h1>Categories Leaderboard</h1>
+     </div>
+    </header>
 
        <template v-if="homepageStore.categories && homepageStore.categories.length > 0">
 
@@ -232,11 +247,13 @@ onUnmounted(() => {
 
       </template>
 
-    <header class="page-header container">
-      <h1>Trending Tags</h1>
-      <RouterLink to="/tags" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
+       <header class="page-header">
+     <div class="page-header__contents">
+       <h1>Trending Tags</h1>
+      <RouterLink to="/tags" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
+     </div>
     </header>
-
+    
        <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
 
          <div class="container">
@@ -265,11 +282,13 @@ onUnmounted(() => {
 
       </template>
   
-      <header class="page-header container">
-      <h1>Country Leaderboard</h1>
-      <RouterLink to="/country/metrics" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+        <header class="page-header page-header--top-bordered">
+     <div class="page-header__contents">
+       <h1>Country Leaderboard</h1>
+      <RouterLink to="/country/metrics" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+     </div>
     </header>
-  
+      
          <template v-if="homepageStore.countries && homepageStore.countries.length > 0">
 
         <div class="container">
@@ -299,11 +318,13 @@ onUnmounted(() => {
 
       </template>
       
-        <header class="page-header container">
-      <h1>Writer Leaderboard</h1>
-      <RouterLink to="/writers" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+        <header class="page-header page-header--top-bordered">
+     <div class="page-header__contents">
+       <h1>Writer Leaderboard</h1>
+      <RouterLink to="/writers" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+     </div>
     </header>
-  
+      
          <template v-if="homepageStore.prolificWriters && homepageStore.prolificWriters.length > 0">
 
         <div class="container">
@@ -335,9 +356,12 @@ onUnmounted(() => {
 
       </template>
       
-   <div class="container">
-        <h1 class="container__header">And Introducing...</h1>
-      </div>
+        <header class="page-header page-header--top-bordered">
+     <div class="page-header__contents">
+       <h1>And Introducing...</h1>
+     </div>
+    </header>
+  
 
          <template v-if="homepageStore.newWriters && homepageStore.newWriters.length > 0">
 
@@ -353,6 +377,8 @@ onUnmounted(() => {
         </template>
 
         </div>
+
+        <div class="page-closure"></div>
 
     
   </template>

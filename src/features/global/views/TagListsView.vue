@@ -106,11 +106,12 @@ onUnmounted(() => {
 
   <template v-else>
    
-       <div class="container">
-        <h1 class="container__header">Trending Tags</h1>
-      </div>
-
-       
+      <header class="page-header">
+     <div class="page-header__contents">
+      <h1>Trending Tags</h1>
+     </div>
+    </header>
+    
   <template v-if="tagStore.tags && tagStore.tags.length > 0">
 
       <InfiniteScroller
