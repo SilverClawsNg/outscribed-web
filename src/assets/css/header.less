@@ -10,9 +10,10 @@ header.main-header {
     left: 0;
     z-index: 1000;
     
-    box-shadow: var(--header-box-shadow);
+    //box-shadow: var(--header-box-shadow);
     background-color: @header-background-color;
     background-color: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
     //color: @white-color;
 }
 
@@ -168,6 +169,10 @@ header.main-header {
 
     @media @largeDevice {
         column-gap: 0.5rem;
+    }
+
+    & svg{
+        stroke-width: 2px;
     }
 
 }
