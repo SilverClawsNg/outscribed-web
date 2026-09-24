@@ -118,6 +118,9 @@ async function handleFinalOnboardingSubmit() {
 
   <FormProgress :progress="progressState" />
 
+    <div class="form-container">
+
+      
       <fieldset :disabled="progressState.type === 'Loading'">
          <select v-model="formData.country" class="form-field">
             <option value="-1">-- select country --</option>
@@ -151,9 +154,11 @@ async function handleFinalOnboardingSubmit() {
           {{ validationErrors.liability }}
         </span>
 
+    </div>
+
     <div class="action-footer">
       <button 
-        class="btn btn--primary"  
+        class="btn btn--secondary"  
         :disabled="!authoringStore.isFullyCertified || progressState.type === 'Loading'"
         @click="handleFinalOnboardingSubmit"
       >
