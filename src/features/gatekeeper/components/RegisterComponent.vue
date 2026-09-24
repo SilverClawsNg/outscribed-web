@@ -16,6 +16,7 @@ import SendTokenStep from './SendTokenComponent.vue'
 import ResendTokenStep from './ResendTokenComponent.vue'
 import VerifyTokenStep from './VerifyTokenComponent.vue'
 import CreateAccessStep from './CreateAccessComponent.vue'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 interface Props {
   isPage?: boolean
@@ -291,18 +292,20 @@ onUnmounted(() => {
     <!-- MAIN REGISTRATION ACCORDION (UNLOCKED UPON CAPTCHA SUCCESS) -->
     <article class="multi-form">
       
-    <template v-if="isPage">
-      <h1 class="form-header">Create Account</h1>
-    </template>
-    
-    <h2>Follow these steps to create a new account</h2>
+        <div class="form-header">
+        <template v-if="isPage">
+          <h1 class="form-title">New Account</h1>
+        </template>
+        <h2>Complete these three quick steps to start creating contents on outScribed</h2>
+        <HelpIcon topic="CreateAccount" />
+    </div>
 
     <FormProgress :progress="progressState" />
 
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 1 }"></span>
-          <h3>1. Enter a valid email address to get started</h3>
+          <h3>1. Enter a valid email address</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 1 }">
           <SendTokenStep 
@@ -329,7 +332,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 2 }"></span>
-          <h3>2. Check your email addres for a six figure token and enter it here</h3>
+          <h3>2. Enter token sent to email address</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 2 }">
           <VerifyTokenStep 
@@ -346,7 +349,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 3 }"></span>
-          <h3>3. Enter a unique username & password for login and your names to complete </h3>
+          <h3>3. Enter your credentials </h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 3 }">
           <CreateAccessStep 

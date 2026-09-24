@@ -47,6 +47,8 @@ const contentPath = 'tale'
           </RouterLink>
        </template>
 
+     
+
       <div class="content-card__author-badge" :class="{ 'stand-alone': !tale.photo }">
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}

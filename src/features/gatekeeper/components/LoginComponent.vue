@@ -6,6 +6,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { APIError } from '@/api/apiTypes'
 import type { LoginRequest} from '../types/GatewayTypes'
 import { useModalStore } from '@/stores/modalStore';
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // 🎯 Conditional layout environment prop flags
 interface Props {
@@ -119,12 +120,14 @@ onMounted(() => {
 
   <div class="form-container">
 
-    <template v-if="isPage">
-      <h1 class="form-header">Login</h1>
-    </template>
-
-    <h2>{{ displayMessage }}</h2>
-
+   <div class="form-header">
+        <template v-if="isPage">
+          <h1 class="form-title">Login</h1>
+        </template>
+        <h2>{{ displayMessage }}</h2>
+        <HelpIcon topic="LoginAccount" />
+    </div>
+ 
     <FormProgress :progress="progressState" :is-boxed="true" />
 
     <form @submit.prevent="handleSubmit">
@@ -162,14 +165,13 @@ onMounted(() => {
     {{ validationErrors.password }}
   </span>
 
-
       <div class="button-holder">
           <button 
             type="submit" 
             class="btn btn--secondary"  
             :disabled="progressState.type === 'Loading'"
           >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Complete' }}
+            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Login' }}
           </button>
         </div>
 

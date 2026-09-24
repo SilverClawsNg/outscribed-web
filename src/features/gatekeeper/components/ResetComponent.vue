@@ -15,6 +15,7 @@ import SendTokenStep from './SendTokenComponent.vue'
 import ResendTokenStep from './ResendTokenComponent.vue'
 import VerifyTokenStep from './VerifyTokenComponent.vue'
 import CompleteResetStep from './ResetPasswordComponent.vue'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 const isFormLoading = ref(false)
 const activeStep = ref(1)
@@ -277,13 +278,15 @@ onUnmounted(() => {
      </template>
 
      <template  v-else >
-      
-    <template v-if="isPage">
-      <h1 class="form-header">Reset Password</h1>
-    </template>
-    
-    <h2>Follow these steps to reset your password</h2>
 
+         <div class="form-header">
+        <template v-if="isPage">
+          <h1 class="form-title">Reset Password</h1>
+        </template>
+        <h2>Complete these three quick steps to get a new password</h2>
+        <HelpIcon topic="ResetPassword" />
+    </div>
+      
     <FormProgress :progress="progressState" :is-boxed="true" />
 
     <!-- MAIN RESET ACCORDION (UNLOCKED AFTER CAPTCHA VERIFICATION) -->
@@ -291,7 +294,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 1 }"></span>
-          <h3>1. Enter a valid email address to get started</h3>
+          <h3>1. Enter your email address</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 1 }">
           <!-- Initial Send Step (Uses parent captchaToken) -->
@@ -320,7 +323,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 2 }"></span>
-           <h3>2. Check your email addres for a six figure token and enter it here</h3>
+           <h3>2. Enter token sent to email address</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 2 }">
           <VerifyTokenStep 
@@ -337,7 +340,7 @@ onUnmounted(() => {
       <section>
         <div class="multi-form__header">
           <span :class="{ active: activeStep === 3 }"></span>
-          <h3>3. Enter your new passord to complete</h3>
+          <h3>3. Enter your new passord</h3>
         </div>
         <div class="multi-form__step" :class="{ expanded: activeStep === 3 }">
           <CompleteResetStep 

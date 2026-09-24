@@ -6,21 +6,23 @@
   max-width: 450px;
   margin: 0 auto;
 
- 
+    & form{ width: 100%}
 
-   h1.form-header {
-        text-align: center;
-        margin-bottom: 2rem;
-        font-size: 1.5rem
+  .form-header{
+    //border-left: 5px solid @link-color;
+    //padding-left: 0.5rem;
+    margin-bottom: 2rem;
+
+   & .form-title {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight:600
    }
 
-     & > h2 {
-        text-align: center;
-        margin-bottom: 1rem;
-        font-style: italic;
+     & h2 {
+        margin-bottom: 0.5rem;
     }
-
-    & form{ width: 100%}
+  }
 
   // --- Fieldsets & Control Enclosures ---
   fieldset {

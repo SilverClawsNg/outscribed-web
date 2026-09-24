@@ -83,6 +83,7 @@ import UpdateCommentModal from '@/features/engagements/modals/UpdateCommentModal
 import UpdateCommentAddendumModal from '@/features/engagements/modals/UpdateCommentAddendumModal.vue'
 
 import WriterFilterModal from '@/features/authoring/modals/WriterFilterModal.vue'
+import HelpTopicsModal from '@/features/support/modals/HelpTopicsModal.vue'
 
 const modalStore = useModalStore()
 const isExpandModal = ref(false)
@@ -159,7 +160,8 @@ AppealSuspension: AppealSuspensionModal,
 DeleteComment: DeleteCommentModal,
 ArchiveComment: ArchiveCommentModal,
 UpdateComment: UpdateCommentModal,
-UpdateCommentAddendum: UpdateCommentAddendumModal
+UpdateCommentAddendum: UpdateCommentAddendumModal,
+HelpTopics: HelpTopicsModal
 }
 
 // Helper getter to deliver the raw payload directly without flattening
