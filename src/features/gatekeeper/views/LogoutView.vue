@@ -6,6 +6,7 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
 import { useRouter } from 'vue-router'
 import type { LogoutRequest } from '@/features/gatekeeper/types/GatewayTypes'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 const authStore = useAuthStore()
 const modalStore = useModalStore()
@@ -43,8 +44,12 @@ onBeforeMount(() => {
 
   <div class="form-container">
 
-    <h1  class="form-header">Logout</h1>
-    <h2>Confirm your logout preferences</h2>
+        <div class="form-header">
+       <h1 class="form-title">Logout</h1>
+        <h2>Confirm your logout preferences</h2>
+        <HelpIcon topic="LogoutAccount" />
+    </div>
+
 
     <FormProgress :progress="progressState" />
 
@@ -60,8 +65,8 @@ onBeforeMount(() => {
           
           <label for="FlushCache">
             {{ formData.flushCache 
-              ? 'Remove all cached data (Recommended if this is a public device)' 
-              : 'Keep all cached data (Recommended if this is a private device)' 
+              ? 'Untick to keep all cached data (Recommended if this is a private device)' 
+              : 'Tick to remove all cached data (Recommended if this is a public device)' 
             }}
           </label>
 
@@ -78,8 +83,8 @@ onBeforeMount(() => {
           
           <label for="CloseAll">
             {{ formData.closeAll 
-              ? 'Logout of all devices' 
-              : 'Logout of only current device' 
+              ? 'Untick to logout of this device only' 
+              : 'Tick to logout of all devices your are currently logged in' 
             }}
           </label>
 

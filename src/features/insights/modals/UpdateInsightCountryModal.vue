@@ -9,6 +9,7 @@ import type { UpdateCountryRequest } from '../types/InsightsTypes'
 import { useModalStore } from '@/stores/modalStore'
 import { getValidCountry } from '@/utils/validators'
 import { CountrySelectItems } from '@/utils/selectItemHelper'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const insightStore = useInsightDraftStore()
@@ -128,7 +129,11 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
-    <h2>Which country gets the reality check?</h2>
+        <div class="form-header">
+         <h2>Which country gets the reality check?</h2>
+        <HelpIcon topic="CreateInsight" />
+      </div>
+    
 
     <FormProgress :progress="progressState" />
     
@@ -151,7 +156,7 @@ async function handleFormSubmission() {
    <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
             :disabled="progressState.type === 'Loading' || lockSubmission"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}

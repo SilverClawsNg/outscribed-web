@@ -110,6 +110,14 @@ export const InsightStatusClass: Record<InsightStatus, string> = {
   SelfArchived: 'Self Archived'
 } as const;
 
+export const AccountStatusClass: Record<AccountStatus, string> = {
+  Active: 'info',
+  HiddenByModeration: 'warning',
+  SuspendedByAdmin: 'warning',
+  BannedByAdmin: 'danger',
+  SelfArchived: 'warning',
+} as const;
+
   export const CategoryDescriptions: Record<Category, string> = {
   Tributuary: 'Tributuary',
   Reflections: 'Reflections',

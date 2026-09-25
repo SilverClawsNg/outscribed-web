@@ -6,7 +6,8 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 const props = defineProps<{
   hasNext: boolean // Determines if there are more pages to load
   isFetching: boolean            // Blocks multiple concurrent requests
-  error: APIError | null  // Displays error UI if present
+  error: APIError | null, // Displays error UI if present
+  isModal?: boolean
 }>()
 
 const emit = defineEmits(['loadMore', 'retry'])
@@ -61,9 +62,11 @@ onUnmounted(() => {
 
     <div ref="sentinelRef" id="scroll-sentinel" style="height: 1px;"></div>
 
-     <header class="page-header page-header--top-bordered">
+     <header class="page-header"
+        :class="isModal ? 'page-header--no-borders' : 'page-header--top-bordered'"
+      >
 
-     <div class="page-header__contents">
+     <div class="page-header__contents" :class="isModal ? 'page-header__contents--no-borders' : null">
        <PageStatusMessage v-if="error"
         :title="error.title || 'Loading Error!'" 
         :message="error.detail || 'An unexpected error occured while loading contents'"
@@ -78,7 +81,7 @@ onUnmounted(() => {
       <p v-else-if="hasNext" class="loader__dot"></p>
 
       <p v-else class="loaded"></p>
-      
+
      </div>
 
     </header>

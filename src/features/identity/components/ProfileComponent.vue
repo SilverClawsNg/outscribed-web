@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { AccountStatusDescriptions, CountryDescriptions } from '@/utils/descriptors'
+import { AccountStatusDescriptions, CountryDescriptions, AccountStatusClass } from '@/utils/descriptors'
 import { type ContactType } from '@/utils/enumHelper.ts'
 import { formatCounts, truncateText } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
@@ -133,12 +133,17 @@ function handleEditContactClick(platform: ContactType) {
 
 <template>
 
-  <div class="profile-details">
+  <div class="profile-details profile-details--has-borders">
 
-    <div class="shared__content-status">
-      <span>Status</span>
-      <span :class="profileStore.statusClass">
-         {{ AccountStatusDescriptions[profile.status] }}
+    <div class="profile-details__contents">
+
+      <div class="content-status">
+      <span class="content-status__label">Status</span>
+      <span 
+        class="content-status__value" 
+        :class="`content-status__value--${AccountStatusClass[profile.status]}`"
+      >
+       {{ AccountStatusDescriptions[profile.status] }}
       </span>
     </div>
 
@@ -296,6 +301,8 @@ function handleEditContactClick(platform: ContactType) {
           <span class="profile-details__link-field">Insights</span>
         </RouterLink>
       </div>
+    </div>
+
     </div>
 
    <div class="profile-details__contacts" aria-label="Social and email contacts">

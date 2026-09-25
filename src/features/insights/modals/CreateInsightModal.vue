@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router';
 
 import { CategorySelectItems } from '@/utils/selectItemHelper'
 import { useLoginHint } from '@/utils/authHelper'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const router = useRouter();
@@ -175,7 +176,10 @@ resetProgress()
 
      <div class="form-container">
 
-    <h2>Let's give this tale some substance</h2>
+      <div class="form-header">
+        <h2>Let's give this tale some substance</h2>
+        <HelpIcon topic="CreateInsight" />
+      </div>
 
    <FormProgress :progress="progressState" />
 
@@ -209,7 +213,7 @@ resetProgress()
         <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
             :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Create Draft' }}

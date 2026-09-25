@@ -15,7 +15,6 @@ const modalStore = useModalStore()
 
 <template>
 
-
      <header class="page-header">
       <div class="page-header__contents">
         <h1>Frequently Asked Questions</h1>

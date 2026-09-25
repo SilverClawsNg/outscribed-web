@@ -34,55 +34,52 @@ border-bottom: 1px solid var(--border-color);
   }
 
   &__type {
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    font-weight: 600;
+    text-transform: capitalize;
+    font-size: 0.9rem;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    align-self: flex-start;
-    transition: opacity 0.2s ease;
+    border-width: 1px;
+    border-style:solid;
+    
 
     &:hover {
-      opacity: 0.5;
+      background-color:var(--background-hover-color);
+      color:var(--text-color);
     }
 
     /* Content-Type BEM Modifiers */
     &--account {
-    background-color: #FFB300; /* vivid amber */
+    border-color: #FFB300; /* vivid amber */
     }
 
     &--tale {
-    background-color: #3F51B5; /* deep indigo */
+    border-color: #107C10; /* deep indigo */
     }
 
     &--comment {
-    background-color: #E91E63; /* hot pink/magenta */
+    border-color: #E91E63; /* hot pink/magenta */
     }
 
     &--insight {
-    background-color: #4CAF50; /* bright green */
+    border-color: #4CAF50; /* bright green */
     }
 
     &--support {
-    background-color: #00BCD4; /* cyan */
+    border-color: #00BCD4; /* cyan */
     }
 
     &--writer {
-    background-color: #9C27B0; /* purple */
+    border-color: #9C27B0; /* purple */
     }
 
     &--role {
-    background-color: #AD1457; /* orange-red */
+    border-color: #AD1457; /* orange-red */
     }
 
     &--engagement {
-    background-color: #32ABA1; /* brown */
+    border-color: #32ABA1; /* brown */
     }
 
-  }
-
-  &__type-link {
-    color: @white-color;
   }
 
   &__body {

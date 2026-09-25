@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router';
 
 import { CategorySelectItems } from '@/utils/selectItemHelper'
 import { useLoginHint } from '@/utils/authHelper'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 const router = useRouter();
 
@@ -236,7 +237,11 @@ onMounted(async () => {
 
      <div class="form-container">
 
-    <h2>We can't wait to see what you are about to spin</h2>
+        <div class="form-header">
+    
+         <h2>We can't wait to see what you are about to spin</h2>
+        <HelpIcon topic="CreateTale" />
+    </div>
 
    <FormProgress :progress="progressState" />
 

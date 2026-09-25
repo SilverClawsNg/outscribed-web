@@ -7,6 +7,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateAddendumRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
@@ -128,7 +129,12 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
-    <h2>Correct, clarify, or cancel. Each item on its own line.</h2>
+      <div class="form-header">
+    
+          <h2>Correct, clarify, or cancel. Each item on its own line.</h2>
+        <HelpIcon topic="CreateTale" />
+    </div>
+   
 
     <FormProgress :progress="progressState" />
 

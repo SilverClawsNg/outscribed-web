@@ -126,7 +126,7 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
 
     <PageStatusMessage 
     title="No Metrics Found!"
-    message="It appears no metrics exists for this comment"
+    message="It appears no metrics exists for this content"
     icon="inbox"
     :is-standalone="true">
      
@@ -141,7 +141,8 @@ const handleKeyPress = (event: KeyboardEvent, item: any) => {
         :is-fetching="snapshotStore.isFetchingMore"
         :error="snapshotStore.loadMoreError"
         @load-more="snapshotStore.loadMoreSnapshots"
-        @retry="snapshotStore.loadMoreSnapshots">
+        @retry="snapshotStore.loadMoreSnapshots"
+        :is-modal="true">
 
       <DisplayComponent
         :items="snapshotStore.snapshots"

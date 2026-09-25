@@ -46,9 +46,7 @@ const contentPath = 'tale'
           />
           </RouterLink>
        </template>
-
-     
-
+    
       <div class="content-card__author-badge" :class="{ 'stand-alone': !tale.photo }">
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
@@ -56,6 +54,7 @@ const contentPath = 'tale'
         <span class="divider divider--line"></span>
         <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
       </div>
+      
     </header>
 
     <!-- Content Body -->

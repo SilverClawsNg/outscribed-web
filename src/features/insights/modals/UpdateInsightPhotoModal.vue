@@ -9,6 +9,7 @@ import type { UpdatePhotoRequest } from '../types/InsightsTypes'
 import { useModalStore } from '@/stores/modalStore'
 import { mediaHelper } from '@/utils/mediaHelper'
 import SvgIcons from '@/components/SvgIcons.vue'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const insightStore = useInsightDraftStore()
@@ -208,7 +209,11 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
-    <h2>What image best captures this insight?</h2>
+       <div class="form-header">
+          <h2>What image best captures this insight?</h2>
+        <HelpIcon topic="CreateInsight" />
+      </div>
+   
 
    <FormProgress :progress="progressState" />
 
@@ -250,7 +255,7 @@ async function handleFormSubmission() {
    <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
               :disabled="progressState.type === 'Loading' || lockSubmission"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}

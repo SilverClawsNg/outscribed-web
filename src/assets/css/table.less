@@ -19,8 +19,9 @@
         width: 100%;
         border-collapse: collapse;
         white-space: nowrap; // Prevents text from wrapping, forcing the scroll
-        border-top: 2px solid var(--border-color);
+        border-top: 1px solid var(--border-color);
         border-bottom: 1px solid var(--border-color);
+                text-align: left;
 
         thead {
 
@@ -31,13 +32,11 @@
             }
 
             th {
-                text-align: left;
                 font-size: 0.9rem;
                 font-weight: 600;
                 position: sticky;
                 top: 0;
                 z-index: 10;
-                box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
             }
         }
 

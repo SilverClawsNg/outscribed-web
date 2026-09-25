@@ -8,6 +8,7 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import type { TagRequest, UntagRequest } from '../types/InsightsTypes'
 import { useModalStore } from '@/stores/modalStore'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const insightStore = useInsightDraftStore()
@@ -169,7 +170,11 @@ currentTag.value = tagId
 
      <div class="form-container">
 
-    <h2>Add your insight to trending issues</h2>
+     <div class="form-header">
+    
+        <h2>Add your insight to trending issues</h2>
+        <HelpIcon topic="TagContent" />
+    </div>
 
    <FormProgress :progress="progressState" />
 
@@ -190,7 +195,7 @@ currentTag.value = tagId
   <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
             :disabled="progressState.type === 'Loading' || lockSubmission"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Add' }}

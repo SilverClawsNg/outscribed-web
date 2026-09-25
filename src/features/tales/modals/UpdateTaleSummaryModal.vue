@@ -7,6 +7,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateSummaryRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
@@ -125,7 +126,12 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
-    <h2>This tale in a sentence</h2>
+       <div class="form-header">
+    
+         <h2>This tale in a sentence</h2>
+        <HelpIcon topic="CreateTale" />
+    </div>
+   
 
    <FormProgress :progress="progressState" />
 
@@ -146,7 +152,7 @@ async function handleFormSubmission() {
    <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
               :disabled="progressState.type === 'Loading' || lockSubmission"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}

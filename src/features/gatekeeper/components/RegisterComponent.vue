@@ -296,7 +296,7 @@ onUnmounted(() => {
         <template v-if="isPage">
           <h1 class="form-title">New Account</h1>
         </template>
-        <h2>Complete these three quick steps to start creating contents on outScribed</h2>
+        <h2>Complete these three quick steps to start creating contents on OutScribed</h2>
         <HelpIcon topic="CreateAccount" />
     </div>
 
