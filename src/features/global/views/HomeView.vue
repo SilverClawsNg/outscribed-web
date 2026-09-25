@@ -100,7 +100,7 @@ onUnmounted(() => {
         <RouterLink class="btn btn--primary hero__action" to="/faqs">
           More About OutScribed
         </RouterLink>
-        <RouterLink class="btn btn--contrast hero__action" to="/register">
+        <RouterLink class="btn btn--secondary hero__action" to="/register">
           Become An OutScriber
         </RouterLink>
       </div>

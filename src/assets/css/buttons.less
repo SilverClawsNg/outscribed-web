@@ -41,21 +41,21 @@
     &--primary {
         background-color: inherit;
         border-color: var(--text-color);
-        border-color:  @link-color;
-        color:  @link-color;
+        border-color:  var(--text-color);
+        color:  var(--text-color);
        
         &:hover {
             background-color: var(--background-hover-color);
-            color: @link-alt-color;
         }
         
     }
 
     &--secondary {
-        background-color:  @link-color;
-        color: @white-color;
+        background-color:  var(--text-color);
+        color: var(--background-color);
+
         &:hover {
-            background-color: @link-alt-color;
+            background-color: var(--hover-color);
             color: @white-color;
         }
 
@@ -67,10 +67,10 @@
     &--contrast {
        background-color: @link-color;
         border-color: transparent;
-        color:@white-color;
+        color:var(--background-color);
 
         &:hover {
-            background-color: @link-alt-color;
+            background-color: var(--background-hover-color);
         }
     }
 }
