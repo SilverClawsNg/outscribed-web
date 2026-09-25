@@ -169,7 +169,7 @@ onUnmounted(() => {
         @retry="writerStore.loadMoreWriters">
 
         
-  <div class="container min">
+  <div class="container">
 
       <WriterListComponent 
         v-for="writer in writerStore.writers" 

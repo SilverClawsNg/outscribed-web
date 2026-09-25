@@ -40,11 +40,16 @@ onBeforeMount(() => {
 
     <template v-else>
   
-  <article class="content-details">
+  <article class="content-details preview">
     
     <header class="content-details__header-container">
 
       <div class="content-details__header">
+        
+         <div class="content-details__top-meta">
+ <time>{{ toShortDate(insightStore.activeInsight.createdAt) }}</time>
+    
+        </div>
 
         <h1 class="content-details__title">{{ insightStore.activeInsight.title }}</h1>
 
@@ -57,7 +62,7 @@ onBeforeMount(() => {
           >
             {{ authStore.username }}
           </button>
-           — <time>{{ toShortDate(insightStore.activeInsight.createdAt) }}</time>
+           
         </div>
 
          <div class="content-details__meta">
@@ -166,14 +171,19 @@ onBeforeMount(() => {
         </template>
 
        <template  v-if="insightStore.activeInsight.tags && insightStore.activeInsight.tags.length > 0">
-  <div class="content-details__tags">
-       <h4 class="content-details__tag-title">Tagged In</h4>
-        <span class="divider divider--line"></span>
-        <span v-for="tag in insightStore.activeInsight.tags" :key="tag.tagId"  class="content-details__tag-item">
+
+                    <h4 class="content-details__section-title">Tagged In</h4>
+
+                      <div class="content-details__tags">
+               <span v-for="tag in insightStore.activeInsight.tags" :key="tag.tagId"  class="content-details__tag-item">
           #<router-link :to="`/insights/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
         </span>
-      </div>
+
+          </div>
+     
         </template>
+
+      
         <template v-else >
             <PageStatusMessage
                 title="No Tags Added!"

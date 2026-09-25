@@ -45,11 +45,16 @@ onBeforeMount(() => {
 
     <template v-else>
   
-  <article class="content-details">
+  <article class="content-details preview">
     
      <header class="content-details__header-container">
 
       <div class="content-details__header">
+
+         <div class="content-details__top-meta">
+ <time>{{ toShortDate(taleStore.activeTale.createdAt) }}</time>
+    
+        </div>
 
         <h1 class="content-details__title">{{ taleStore.activeTale.title }}</h1>
 
@@ -62,7 +67,7 @@ onBeforeMount(() => {
           >
             {{ authStore.username }}
           </button>
-           — <time>{{ toShortDate(taleStore.activeTale.createdAt) }}</time>
+
         </div>
 
        <div class="content-details__meta">
@@ -230,13 +235,17 @@ onBeforeMount(() => {
         </template>
 
        <template  v-if="taleStore.activeTale.tags && taleStore.activeTale.tags.length > 0">
+
+                    <h4 class="content-details__section-title">Tagged In</h4>
+
         <div class="content-details__tags">
-              <h4>Tagged In: </h4><span class="divider divider--line"></span>
-              <span v-for="tag in taleStore.activeTale.tags" :key="tag.tagId">
+            <span v-for="tag in taleStore.activeTale.tags" :key="tag.tagId">
                 #<router-link :to="`/tales/browse?tag=${tag.tagId}`">{{ tag.name }}</router-link>
               </span>
-            </div>
-              </template>
+          </div>
+
+        </template>
+     
           <template v-else>
               <PageStatusMessage
                 title="No Tags Added!"
