@@ -67,20 +67,9 @@ function createComment() {
 
       <div class="content-details__header">
 
-        <div class="content-details__writer">
-          <button 
-           type="button"
-             class="content-details__writer-link at" 
-            @click="modalStore.push('Profile', 'Profile', insight.creator.accountId)"
-          >
-            {{ insight.creator.username }}
-          </button>
-          <time>{{ toShortDate(insight.createdAt) }}</time>
-        </div>
-
-        <h1 class="content-details__title">{{ insight.title }}</h1>
-
-        <button 
+        <div class="content-details__top-meta">
+  <time>{{ toShortDate(insight.createdAt) }}</time>
+     <button 
               type="button"
               class="content-details__menu-btn" 
               @click="modalStore.push('InsightStats', 'Insight Stats', insight)"
@@ -91,7 +80,23 @@ function createComment() {
               <span class="content-details__menu-dot"></span>
             </button>
 
+        </div>
 
+
+        <h1 class="content-details__title">{{ insight.title }}</h1>
+
+        <div class="content-details__writer">
+          By
+          <button 
+           type="button"
+             class="content-details__writer-link at" 
+            @click="modalStore.push('Profile', 'Profile', insight.creator.accountId)"
+          >
+            {{ insight.creator.username }}
+          </button>
+         
+        </div>
+     
          <div class="content-details__meta">
          
           <div class="content-details__meta-item">

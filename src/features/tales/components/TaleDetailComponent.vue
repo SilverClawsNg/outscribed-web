@@ -68,20 +68,10 @@ function createComment() {
 
       <div class="content-details__header">
 
-        <div class="content-details__writer">
-          <button 
-            type="button"
-            class="content-details__writer-link at" 
-            @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
-          >
-            {{ tale.creator.username }}
-          </button>
-         <time>{{ toShortDate(tale.createdAt) }}</time>
-          
-        </div>
-
-        <h1 class="content-details__title">{{ tale.title }}</h1>
-
+        
+        <div class="content-details__top-meta">
+  <time>{{ toShortDate(tale.createdAt) }}</time>
+    
          <button 
               type="button"
               class="content-details__menu-btn" 
@@ -92,7 +82,23 @@ function createComment() {
               <span class="content-details__menu-dot"></span>
               <span class="content-details__menu-dot"></span>
             </button>
+        </div>
 
+
+        <h1 class="content-details__title">{{ tale.title }}</h1>
+
+
+        <div class="content-details__writer">
+        By  <button 
+            type="button"
+            class="content-details__writer-link at" 
+            @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
+          >
+            {{ tale.creator.username }}
+          </button>
+        
+          
+        </div>
 
         <div class="content-details__meta">
         
