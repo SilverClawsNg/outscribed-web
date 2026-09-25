@@ -18,12 +18,14 @@
     font-weight: 400;
     font-size: clamp(1.8rem, 3vw + 1rem, 2.6rem);
     line-height: clamp(2rem, 3vw + 1rem, 2.8rem);
-    padding: 1.5rem 0.5rem 1rem 0.5rem;
+    padding: 0.5rem 0.5rem 2rem 0.5rem;
   }
 
   &__writer {
     color: var(--muted-text-color);
-        padding: 0 0.5rem 1.5rem 0.5rem;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    display: flex;
+    justify-content: space-between;
 
   }
 
@@ -198,8 +200,9 @@
 
   // --- Engagement Grid ---
   &__engagement-grid {
-    width: 100%;
-    max-width: @min-width;
+    width: @min-width;
+        max-width: calc(100% - 20px);
+
     margin: 0 auto 3rem auto;
 
   }

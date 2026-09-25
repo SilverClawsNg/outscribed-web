@@ -68,10 +68,7 @@ function createComment() {
 
       <div class="content-details__header">
 
-        <h1 class="content-details__title">{{ tale.title }}</h1>
-
         <div class="content-details__writer">
-          By 
           <button 
             type="button"
             class="content-details__writer-link at" 
@@ -79,9 +76,11 @@ function createComment() {
           >
             {{ tale.creator.username }}
           </button>
-          — <time>{{ toShortDate(tale.createdAt) }}</time>
+         <time>{{ toShortDate(tale.createdAt) }}</time>
           
         </div>
+
+        <h1 class="content-details__title">{{ tale.title }}</h1>
 
          <button 
               type="button"
@@ -454,7 +453,6 @@ function createComment() {
             title="No Comments Found!" 
             message="There are currently no comments attached to this tale."
             icon="inbox" 
-            :is-bordered="true"
           />
           </template>
       </div>

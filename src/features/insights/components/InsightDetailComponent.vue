@@ -67,12 +67,7 @@ function createComment() {
 
       <div class="content-details__header">
 
-        <h1 class="content-details__title">{{ insight.title }}</h1>
-
-         <div class="content-details__top-meta">
-
         <div class="content-details__writer">
-          By 
           <button 
            type="button"
              class="content-details__writer-link at" 
@@ -80,8 +75,10 @@ function createComment() {
           >
             {{ insight.creator.username }}
           </button>
-           — <time>{{ toShortDate(insight.createdAt) }}</time>
+          <time>{{ toShortDate(insight.createdAt) }}</time>
         </div>
+
+        <h1 class="content-details__title">{{ insight.title }}</h1>
 
         <button 
               type="button"
@@ -94,7 +91,6 @@ function createComment() {
               <span class="content-details__menu-dot"></span>
             </button>
 
-        </div>
 
          <div class="content-details__meta">
          
@@ -173,17 +169,19 @@ function createComment() {
       </div>
 
       </template>
-    
+
        <template  v-if="insight.tags && insight.tags.length > 0">
-          <div class="content-details__tags">
-            <h4 class="content-details__tag-title">Tagged In</h4>
-            <span class="divider divider--line"></span>
-          <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
+
+                    <h4 class="content-details__section-title">Tagged In</h4>
+
+        <div class="content-details__tags">
+              <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
               #<router-link :to="`/insights?tag=${tag.slug}`">{{ tag.name }}</router-link>
             </span>
           </div>
-        </template>
 
+        </template>
+    
       <div class="content-details__engagement-grid">
 
         <div class="content-details__engagement">
@@ -303,16 +301,17 @@ function createComment() {
     </div>
 
       <div class="content-details__footer">
-
-      <header class="page-header">
-        <h1>Inspired By</h1>
-           <button 
+        
+            <header class="page-header page-header--top-bordered">
+     <div class="page-header__contents page-header__contents--no-borders">
+      <h1>Inspired By</h1>
+            <button 
            type="button"
               @click="router.push(`/tale/${insight.source.slug}`)" 
-              class="btn btn--primary" >
+              class="btn btn--secondary" >
               View Tale
       </button>
-       
+     </div>
     </header>
 
           <Content
@@ -323,23 +322,24 @@ function createComment() {
             :created-at="insight.source.createdAt"
             content-type='tale'
             :summary="insight.source.summary"
-            :is-bordered="true"
           />
 
-      <header class="page-header">
-        <h1>Featured Comments</h1>
-        <button 
-        type="button"
-          v-if="insight.engagement.commentsCount > 0" 
-          class="btn btn--primary"  
+            <header class="page-header page-header--top-bordered">
+     <div class="page-header__contents page-header__contents--no-borders">
+       <h1>Recent Comments</h1>
+           <button 
+          type="button"
+          class="btn btn--secondary"  
+          :disabled="insight.engagement.commentsCount === 0"
           @click="viewComments"
         >
           View {{ formatCounts(insight.engagement.commentsCount) }}
         </button>
-        <button v-else class="btn btn--primary"  disabled>
-          View {{ insight.engagement.commentsCount }}
-        </button>
-      </header>
+        
+     </div>
+    </header>
+
+    
 
       <div :class="['content-details__enrichment', insightStore.hasLoadedEnrichment ? 'show' : '']">
         <template v-if="insightStore.hasLoadedEnrichment">
@@ -354,7 +354,6 @@ function createComment() {
             title="No Comments Found!" 
             message="There are currently no comments attached to this insight."
             icon="inbox" 
-            :is-bordered="true"
           />
           </template>
       </div>
