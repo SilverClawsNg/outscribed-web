@@ -70,18 +70,7 @@ onUnmounted(() => {
 
    <div class="hero">
     
-    <header class="hero__brand">
-     
-      <img 
-        src="@/assets/images/icon.png" 
-        alt="OutScribed Logo" 
-        class="hero__logo"
-        width="100"
-        height="100"
-      />
-
-    </header>
-
+   
     <div class="hero__content">
       <h3 class="hero__tagline">
         The Facts, The Fiction, 
@@ -100,13 +89,21 @@ onUnmounted(() => {
         <RouterLink class="btn btn--primary hero__action" to="/faqs">
           More About OutScribed
         </RouterLink>
-        <RouterLink class="btn btn--secondary hero__action" to="/register">
+        <RouterLink class="btn btn--contrast hero__action" to="/register">
           Become An OutScriber
         </RouterLink>
       </div>
     </div>
 
   </div>
+
+    <div class="hero-contents-image">
+       <img 
+        src="@/assets/images/hero-background.png" 
+        alt="OutScribed Logo" 
+        class="hero__background"
+      />
+    </div>
   
 </div>
 
@@ -376,7 +373,7 @@ onUnmounted(() => {
 
         </div>
 
-        <div class="page-closure"></div>
+        <!--<div class="page-closure"></div>-->
 
     
   </template>

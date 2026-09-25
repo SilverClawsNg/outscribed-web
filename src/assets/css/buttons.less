@@ -51,23 +51,20 @@
     }
 
     &--secondary {
-        background-color:  var(--text-color);
-        color: var(--background-color);
+        background-color:  @link-color;
+        color: @black-color;
 
         &:hover {
             background-color: var(--hover-color);
             color: @white-color;
         }
 
-        & svg{
-            stroke-width: 2px;
-        }
     }
 
     &--contrast {
-       background-color: @link-color;
+       background-color: @black-color;
         border-color: transparent;
-        color:var(--background-color);
+        color:@white-color;
 
         &:hover {
             background-color: var(--background-hover-color);
