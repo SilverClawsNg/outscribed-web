@@ -53,7 +53,7 @@ export interface InsightListDto {
   readingTime: number;
   summary: string;
   photo: string;
-  country: Country | null;
+  country: Country;
   category: Category;
   isVisible: boolean;
   engagement: Engageable
@@ -71,7 +71,7 @@ export interface InsightDetailDto {
   photoCaption: string;
   addendum: string | null;
   addendumDate: string | null;
-  country: Country | null;
+  country: Country;
   category: Category;
   status: InsightStatus,
   tags: TagListDto[];
@@ -165,21 +165,6 @@ export interface GetInsightPageEnrichmentResponse {
       stats: Engageable
 }
 
-export interface InsightListDto {
-  insightId: string;
-  createdAt: string;
-  creatorId: string;
-  creatorUsername: string;
-  title: string;
-  slug: string;
-  readingTime: number;
-  summary: string;
-  photo: string;
-  country: Country | null;
-  category: Category;
-  status: InsightStatus;
- engagement: Engageable
-}
 
 export function initializeInsightListEngagement(rawInsight: any): InsightListDto {
   return {

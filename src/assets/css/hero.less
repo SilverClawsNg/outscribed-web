@@ -65,15 +65,17 @@
  
   height: auto;
   z-index: 11;
-  padding: 4rem 0.5rem 1rem 0;
+  
 
   
   @media @smallDevice {
          width: 100%;
+         padding: 1.5rem 0.5rem;
     }
 
      @media @largeDevice {
          width: @min-width;
+         padding: 4rem 0.5rem 1rem 0;
     }
 
   // Element: Logo and line divider header
@@ -114,7 +116,6 @@
     font-size: 1.1rem;
     font-weight: normal;
     text-transform: capitalize;
-    color:var(--muted-text-color);
 
     &-break {
       @media @phone, @phablet {

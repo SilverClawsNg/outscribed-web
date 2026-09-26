@@ -320,6 +320,7 @@ export const ActivityTypeDescriptions: Record<ActivityType, string> = {
 
 // Mapping from code → description
 export const CountryDescriptions: Record<Country, string> = {
+  ZZ: 'Global',
   AF: 'Afghanistan',
   AL: 'Albania',
   DZ: 'Algeria',

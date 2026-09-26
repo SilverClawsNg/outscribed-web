@@ -76,7 +76,7 @@ export interface TaleListDto {
   summary: string;
   photo: string;
   insightsCount: number;
-  country: Country | null;
+  country: Country;
   category: Category;
   isVisible: boolean;
   engagement: Engageable
@@ -95,7 +95,7 @@ export interface TaleDetailDto {
   photoCaption: string;
   addendum: string | null;
   addendumDate: string | null;
-  country: Country | null;
+  country: Country;
   category: Category;
   status: TaleStatus,
   tags: TagListDto[];

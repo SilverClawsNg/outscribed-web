@@ -175,6 +175,7 @@ export type ContactType =
 
 // Union type of all ISO codes
 export type Country =
+   'ZZ'
   | 'AF'
   | 'AL'
   | 'DZ'

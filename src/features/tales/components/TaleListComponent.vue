@@ -34,10 +34,39 @@ const contentPath = 'tale'
 
   <article class="content-card">
     <!-- Cover Image Header -->
-           
-     <header class="content-card__media" :class="{ 'no-media': !tale.photo }">
+     
+    <!-- Content Body -->
+        <!-- Taxonomy Metadata -->
+      <div class="content-card__meta">
+        <RouterLink :to="`/${contentType}?category=${tale.category}`" class="content-card__meta-link">
+          {{ CategoryDescriptions[tale.category] }}
+        </RouterLink>
+        
+         <RouterLink :to="`/${contentType}?country=${tale.country}`" class="content-card__meta-link">
+            {{ CountryDescriptions[tale.country] }}
+          </RouterLink>
+      </div>
 
-        <template v-if="tale.photo">
+      <!-- Title -->
+      <h2 class="content-card__title">
+        <RouterLink :to="`/${contentPath}/${tale.slug}`">{{ tale.title }}</RouterLink>
+      </h2>
+ 
+      <div class="content-card__author-badge" :class="{ 'stand-alone': !tale.photo }">
+        <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
+          {{ tale.creatorUsername }}
+        </button>
+        <span class="divider divider--circle"></span>
+        <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
+      </div>
+      
+            
+      <!-- Summary -->
+      <p class="content-card__summary">
+        {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
+      </p>
+
+       <template v-if="tale.photo">
           <RouterLink class="content-card__media-link" :to="`/${contentPath}/${tale.slug}`">
               <img 
             :src="mediaHelper.getUrl(tale.photo, contentType, 'thumb') || undefined" 
@@ -46,43 +75,7 @@ const contentPath = 'tale'
           />
           </RouterLink>
        </template>
-    
-      <div class="content-card__author-badge" :class="{ 'stand-alone': !tale.photo }">
-        <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-          {{ tale.creatorUsername }}
-        </button>
-        <span class="divider divider--line"></span>
-        <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
-      </div>
-      
-    </header>
-
-    <!-- Content Body -->
-    <div class="content-card__body">
-      <!-- Taxonomy Metadata -->
-      <div class="content-card__meta">
-        <RouterLink :to="`/${contentType}?category=${tale.category}`" class="content-card__meta-link">
-          {{ CategoryDescriptions[tale.category] }}
-        </RouterLink>
-        
-        <template v-if="tale.country">
-          <span class="divider divider--circle"></span>
-          <RouterLink :to="`/${contentType}?country=${tale.country}`" class="content-card__meta-link">
-            {{ CountryDescriptions[tale.country] }}
-          </RouterLink>
-        </template>
-      </div>
-
-      <!-- Title -->
-      <h2 class="content-card__title">
-        <RouterLink :to="`/${contentPath}/${tale.slug}`">{{ tale.title }}</RouterLink>
-      </h2>
-
-      <!-- Summary -->
-      <p class="content-card__summary">
-        {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
-      </p>
-
+       
       <!-- Engagement Metrics -->
       <div class="content-card__stats">
         <p class="content-card__stat"><span>{{ tale.readingTime }}</span> Min Read</p>
@@ -94,7 +87,6 @@ const contentPath = 'tale'
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.upvotesCount) }}</span> Upvotes</p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.favoritesCount) }}</span> Saves</p>
       </div>
-    </div>
 
     <!-- Actions Footer -->
     <footer class="content-card__footer">
