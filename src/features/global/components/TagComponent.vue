@@ -34,7 +34,7 @@ const props = defineProps<Props>()
         </button>
       </h2>
 
-      <time>Since {{ toShortDate(tag.date) }}</time>
+      <time> {{ toShortDate(tag.date) }}</time>
 
  </header>
 

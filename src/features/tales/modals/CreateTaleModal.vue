@@ -86,8 +86,8 @@ const titleText = formData.value.title || '';
 
 onBeforeMount(() => {
   // Assign the string value directly, not a Ref<string>
-  formData.value.category = (preselectedCategory.value) as any;
-  formData.value.country = (preselectedCountry) as any;
+  formData.value.category = (preselectedCategory.value ?? '-1') as any;
+  formData.value.country = (preselectedCountry.value) as any;
  if (preselectedCountry.value && preselectedCountry.value in CountryDescriptions) {
   const countryKey = preselectedCountry.value as keyof typeof CountryDescriptions;
   pageTitle.value = `You are now outscribing into ${CountryDescriptions[countryKey]}`;
