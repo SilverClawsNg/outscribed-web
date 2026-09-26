@@ -159,8 +159,8 @@
             position: sticky;
             top: 0;
             z-index: 2003;
-            //border-bottom: 1px solid var(--border-color);
-             background-color: @link-color;
+            border-bottom: 1px solid @link-color;
+             //background-color: @link-color;
             /*background-color: @header-background-color;*/
 
            
@@ -179,7 +179,7 @@
                 display: flex;
                 align-items: center;
                 height: 100%;
-                color: @white-color;
+                //color: @white-color;
                 text-transform: capitalize;
                 border-bottom: 2px solid transparent;
                 font-size: 1.3rem;
@@ -191,7 +191,7 @@
                 }
 
                 &:hover {
-                    border-bottom-color: @white-color;
+                    border-bottom-color: var(--text-color);
                 }
             }
 
@@ -205,11 +205,11 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    color: @white-color;
+                    //color: @white-color;
                     border-bottom: 3px solid transparent;
                     
                       & svg {
-                        stroke: @white-color;
+                        //stroke: @white-color;
                         stroke-width: 2px;
                         width: 20px;
                         height: 20px;
@@ -222,7 +222,7 @@
                     }
 
                     &:hover {
-                        border-bottom-color: @white-color;
+                        border-bottom-color: var(--text-color);
                     }
                 }
             }
