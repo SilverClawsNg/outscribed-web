@@ -20,6 +20,7 @@ import { sanitizeHtml } from '@/utils/markupHelper';
 import ShareBar from '@/components/ShareBar.vue';
 import Content from '@/components/Content.vue'
 import WriterStats from '@/components/WriterStats.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
@@ -68,12 +69,26 @@ function createComment() {
       <div class="content-details__header">
 
         <div class="content-details__top-meta">
-  <time>{{ toShortDate(insight.createdAt) }}</time>
+
+        <div class="content-details__top-meta-left">
+
+          <button 
+           type="button"
+             class="content-details__writer-link at" 
+            @click="modalStore.push('Profile', 'Profile', insight.creator.accountId)"
+          >
+            {{ insight.creator.username }}
+          </button>
+           <span class="divider divider--circle"></span>
+          <time>{{ toShortDate(insight.createdAt) }}</time>
+    
+          </div>
+        
      <button 
               type="button"
               class="content-details__menu-btn" 
               @click="modalStore.push('InsightStats', 'Insight Stats', insight)"
-              title="Options"
+              title="Insight Metrics"
             >
               <span class="content-details__menu-dot"></span>
               <span class="content-details__menu-dot"></span>
@@ -82,45 +97,22 @@ function createComment() {
 
         </div>
 
-
         <h1 class="content-details__title">{{ insight.title }}</h1>
-
-        <div class="content-details__writer">
-          By
-          <button 
-           type="button"
-             class="content-details__writer-link at" 
-            @click="modalStore.push('Profile', 'Profile', insight.creator.accountId)"
-          >
-            {{ insight.creator.username }}
-          </button>
+      
+         <div class="content-details__meta-bottom">
          
-        </div>
-     
-         <div class="content-details__meta">
-         
-          <div class="content-details__meta-item">
-           <SvgIcons name='tag' /> 
-            <router-link 
+          <router-link 
               :to="`/insights?category=${insight.category}`" 
               class="content-details__category">
               {{ CategoryDescriptions[insight.category] }}
             </router-link>
-          </div>
 
-          <template  v-if="insight.country">
-
-          <div class="content-details__meta-item">
-             <SvgIcons name='globe' />
-            <router-link 
+          <router-link 
               :to="`/insights?country=${insight.country}`" 
               class="content-details__country"
             >
               {{ CountryDescriptions[insight.country] }}            
               </router-link>
-          </div>
-
-          </template>
 
         </div>
 
@@ -128,6 +120,7 @@ function createComment() {
           {{ insight.summary }}
         </p>
       </div>
+
     </header>
 
     <div class="content-details__main">
@@ -175,18 +168,22 @@ function createComment() {
 
       </template>
 
-       <template  v-if="insight.tags && insight.tags.length > 0">
+       <template v-if="insight.tags && insight.tags.length > 0">
 
-                    <h4 class="content-details__section-title">Tagged In</h4>
+        <div class="content-details__tags-container">
+          
+          <h4 class="content-details__tag-title">Tagged In: </h4>
 
-        <div class="content-details__tags">
-              <span v-for="tag in insight.tags" :key="tag.slug" class="content-details__tag-item">
-              #<router-link :to="`/insights?tag=${tag.slug}`">{{ tag.name }}</router-link>
-            </span>
+          <div class="content-details__tags">
+              <p v-for="tag in insight.tags" :key="tag.tagId" class="content-details__tag-item">
+              #<button type="button"  @click="modalStore.push('TagDetail', 'Tag Details', tag.tagId)">{{ tag.name }}</button>
+              </p>
+          </div>
+         
           </div>
 
         </template>
-    
+     
       <div class="content-details__engagement-grid">
 
         <div class="content-details__engagement">
@@ -263,7 +260,7 @@ function createComment() {
 
          <div class="content-details__creator-card">
           <div class="content-details__creator-header">
-            <h4>Scribed By</h4>
+            <h4>Written By</h4>
             <button 
               title="Creator Profile"
                type="button"
@@ -307,8 +304,7 @@ function createComment() {
 
       <div class="content-details__footer">
         
-            <header class="page-header page-header--top-bordered">
-     <div class="page-header__contents page-header__contents--no-borders">
+             <header class="page-header">
       <h1>Inspired By</h1>
             <button 
            type="button"
@@ -316,7 +312,6 @@ function createComment() {
               class="btn btn--secondary" >
               View Tale
       </button>
-     </div>
     </header>
 
           <Content
@@ -329,8 +324,7 @@ function createComment() {
             :summary="insight.source.summary"
           />
 
-            <header class="page-header page-header--top-bordered">
-     <div class="page-header__contents page-header__contents--no-borders">
+             <header class="page-header">
        <h1>Recent Comments</h1>
            <button 
           type="button"
@@ -340,21 +334,18 @@ function createComment() {
         >
           View {{ formatCounts(insight.engagement.commentsCount) }}
         </button>
-        
-     </div>
+     
     </header>
 
-    
-
-      <div :class="['content-details__enrichment', insightStore.hasLoadedEnrichment ? 'show' : '']">
-        <template v-if="insightStore.hasLoadedEnrichment">
+        <div :class="['content-details__enrichment', insightStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
+        <template v-if="insightStore.hasLoadedEnrichment && insightStore.latestComments?.length">
           <LatestCommentComponent 
             v-for="comment in insightStore.latestComments" 
             :key="comment.commentId" 
             :comment="comment" 
           />
         </template>
-          <template v-else>
+         <template v-else>
           <PageStatusMessage 
             title="No Comments Found!" 
             message="There are currently no comments attached to this insight."

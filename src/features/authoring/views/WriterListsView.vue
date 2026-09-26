@@ -136,14 +136,12 @@ onUnmounted(() => {
    <template v-else>
 
      <header class="page-header">
-      <div class="page-header__contents">
           <h1 class="page-header__title">
           Browse Writers
         </h1>
       <button 
         type="button" 
         class="btn btn--secondary"  @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
-      </div>
     </header>
 
     <template v-if="wasCleaned">

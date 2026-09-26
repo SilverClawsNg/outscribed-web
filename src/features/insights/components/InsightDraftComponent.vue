@@ -46,27 +46,24 @@ async function handleModalUpdate(type: string, title: string) {
 
     <div class="content-card__body">
 
-       <div class="content-card__meta">
-
-         <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
-
-        <span class="divider divider--circle"></span>
+       <div class="content-card__meta-top">
 
         <RouterLink :to="`/insights?category=${insight.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[insight.category] }}
         </RouterLink>
         
-        <template v-if="insight.country">
-          <span class="divider divider--circle"></span>
-          <RouterLink :to="`/insights?country=${insight.country}`" class="content-card__meta-link">
+         <RouterLink :to="`/insights?country=${insight.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[insight.country] }}
           </RouterLink>
-        </template>
       </div>
 
-        <h2 class="content-card__title">
+      <h2 class="content-card__title">
        {{ insight.title }}
       </h2>
+
+      <div class="content-card__meta-bottom">
+          <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
+      </div>
 
        <template  v-if="insight.summary">
 

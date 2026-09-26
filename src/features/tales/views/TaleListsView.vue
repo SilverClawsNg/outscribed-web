@@ -178,7 +178,6 @@ onUnmounted(() => {
    <template v-else>
 
      <header class="page-header">
-      <div class="page-header__contents">
         <h1  :class="{ at: creatorUsername }"> {{ pageTitle }}</h1>
           <button 
         type="button" 
@@ -187,7 +186,6 @@ onUnmounted(() => {
       >
       Filter
       </button>
-      </div>
     </header>
 
     <template v-if="wasCleaned">

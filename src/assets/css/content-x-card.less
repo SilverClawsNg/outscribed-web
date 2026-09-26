@@ -3,11 +3,10 @@
 .content-x-card {
   width: 100%;
   height: auto;
-  padding: 1rem 0.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 2px dotted @link-color;
 
-  &--bordered {
-    border-bottom: 1px solid var(--border-color);
-  }
+ 
 
   &__title {
     font-size: 1.2rem;
@@ -17,20 +16,17 @@
   }
 
   &__meta {
-    color: var(--muted-text-color);
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 0.25rem 0.5rem;
     margin-bottom: 0.5rem;
-    font-size:0.85rem;
   }
 
   
   &__summary {
     margin-bottom: 1rem;
     line-height: 1.5;
-    color: var(--text-color);
   }
 
  &__link {

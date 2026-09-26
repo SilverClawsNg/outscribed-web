@@ -288,7 +288,10 @@ header.main-header {
             display: flex;
             align-items: center;
             color: var(--background-color);
-            font-weight: 600;
+
+            &:hover{
+                color: @link-alt-color;
+            }
 
              @media @largeDevice {
                 height: 100%;

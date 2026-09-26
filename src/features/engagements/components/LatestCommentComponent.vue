@@ -52,10 +52,10 @@ onMounted(async () => {
       <button class="at" @click="modalStore.push('Profile', 'Profile', comment.commentatorId)">
         {{ comment.commentatorUsername }}
       </button>
-      
-      <p class="comment-x-card__date">
+      <span class="divider divider--circle"></span>
+      <time class="comment-x-card__date">
         {{ toRelativeTime(props.comment.commentedAt) }}
-      </p>
+      </time>
 
     </header>
 

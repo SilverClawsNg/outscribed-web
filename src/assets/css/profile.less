@@ -7,19 +7,6 @@
   max-width: calc(100% - 20px);
   padding-top: 2rem;
 
-  &--has-borders{
-
-  border-bottom: 1px solid var(--border-color);
-   border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-
-  }
-
-  &__contents{
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
   &__title {
     font-size: 1.2rem;
     margin-bottom: 0.25rem;
@@ -27,14 +14,8 @@
   }
 
   &__username {
-    color: var(--muted-text-color);
-    font-weight: 600;
     margin-bottom: 0.25rem;
     text-align: center;
-
-    @media @smallDevice {
-      font-size: 0.9rem;
-    }
 
   }
 
@@ -203,8 +184,12 @@
 
 
   &__contact-item {
-    border-top: 1px solid var(--border-color);
-    padding: 1rem;
+    border-top: 1px dotted @link-color;
+    padding: 1.5rem 0;
+
+      &:last-child {
+        border-bottom: 1px dotted @link-color;
+      }
   }
 
   &__contact-header {

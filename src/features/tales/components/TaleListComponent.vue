@@ -37,7 +37,7 @@ const contentPath = 'tale'
      
     <!-- Content Body -->
         <!-- Taxonomy Metadata -->
-      <div class="content-card__meta">
+      <div class="content-card__meta-top">
         <RouterLink :to="`/${contentType}?category=${tale.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[tale.category] }}
         </RouterLink>
@@ -52,7 +52,7 @@ const contentPath = 'tale'
         <RouterLink :to="`/${contentPath}/${tale.slug}`">{{ tale.title }}</RouterLink>
       </h2>
  
-      <div class="content-card__author-badge" :class="{ 'stand-alone': !tale.photo }">
+      <div class="content-card__meta-bottom">
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
         </button>

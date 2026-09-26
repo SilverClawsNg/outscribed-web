@@ -5,8 +5,10 @@
 
   // --- Header Area ---
   &__header-container {
-    width: 100%;
+    width: @mid-width;
     padding: 2rem 0 0 0;
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
   }
 
   &__top-meta{
@@ -15,10 +17,15 @@
     align-items:center;
     margin-bottom: 1.5rem;
    
-
     & time{
       font-size: 0.9rem;
     }
+  }
+
+  &_top-meta-left{
+
+    display:flex;
+    column-gap: 0.25px;
   }
 
   &__title {
@@ -34,16 +41,16 @@
   }
 
   // --- Metadata Bar ---
-  &__meta {
+  &__meta-bottom {
     display: flex;
     gap: 1rem 0.5rem;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
     font-size: 0.9rem;
     margin: 1.5rem 0;
      padding: 0.5rem 0;
      border-top: 1px dotted @link-color;
-  border-bottom: 1px dotted @link-color;
+    border-bottom: 1px dotted @link-color;
 
     @media @phone{
       gap: 0.5rem;
@@ -52,25 +59,26 @@
   }
 
   &__menu-btn {
-    width: 28px;
-    height: 28px;
+    width: auto;
+    height: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border-radius: 50%;
-    padding: 3px 0;
-   
+    border-radius: 4px;
+    padding: 4px 6px;
+    background-color: @link-color;
+    
 
     &:hover {
-      background-color: var(--light-background-color);
+      background-color: @link-alt-color;
     }
   }
 
   &__menu-dot {
     width: 4px;
     height: 4px;
-    background-color: var(--text-color);
+    background-color: var(--background-color);
     border-radius: 50%;
   }
 
@@ -106,8 +114,6 @@
 
   &__reading-time {
     margin-bottom: 1rem;
-     padding: 0 0.5rem;
-    font-size: 0.9rem;
     color: var(--muted-text-color);
   }
 
@@ -133,46 +139,35 @@
   // --- Reality Check ---
   &__realitycheck {
     margin: 1.5rem 0;
-    //background-color: var(--light-background-color);
     border-top: 2px dotted @link-color;
     border-bottom: 2px dotted @link-color;
-    padding: 1rem 0.5rem;
+    padding: 1.5rem 0;
     position: relative;
   }
 
   &__realitycheck-heading {
     font-size: 1.5rem;
     letter-spacing: 0.05em;
-    //text-align:center;
-    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
 
     & span{
         font-size:larger;
     }
   }
 
-  &__realitycheck-source {
-    font-weight: 700;
-  }
 
   &__realitycheck-title {
-    font-size: 1.25rem;
     margin-bottom: 0.75rem;
-    font-weight: 600;
-    //text-align:center;
+   
   }
 
   &__realitycheck-actions {
     margin-top: 1rem;
     display:flex;
-    //justify-content:center;
   }
 
-  // --- Tags ---
-
   &__tags-container{
-
-     margin-bottom: 1.5rem;
+     margin-bottom: 1rem;
   }
 
   &__tags {
@@ -193,12 +188,7 @@
   }
 
   &__disclaimer {
-   
     margin-bottom: 2rem;
-    display:flex;
-    gap: 0.5rem;
-    align-items: center;
-    flex-wrap: wrap;
   }
 
   
@@ -207,17 +197,21 @@
      margin-bottom: 0.5rem;
   }
 
+   &__disclaimer-text{
+    font-size:1.2rem;
+     margin-bottom: 0.5rem;
+  }
+
   // --- Engagement Grid ---
   &__engagement-grid {
     width: @min-width;
-        max-width: calc(100% - 20px);
-
+    max-width: 100%;
     margin: 0 auto 3rem auto;
 
   }
 
   &__engagement {
-    margin: 2rem 0;
+    margin: 3rem 0;
 
     @media @largeDevice {
       width: @min-width;
@@ -298,9 +292,8 @@
     margin-bottom: 0.75rem;
 
     h4 {
-      font-size: 0.9rem;
-      color: var(--muted-text-color);
-      margin-bottom: 0.25rem;
+      font-size: 1.1rem;
+      margin-bottom:0.5rem;
     }
   }
 
@@ -327,12 +320,6 @@
     opacity: 0;
     transition: max-height 0.6s ease-out, opacity 0.5s ease-in;
 
-    
-  & .page-status-message-container{
-    padding: 0.5rem;
-  }
-
-
     &--visible {
       max-height: 1200px;
       opacity: 1;
@@ -340,14 +327,13 @@
   }
 
   &__enrichment-action {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0;
   }
 
   &__enrichment-prompt {
     font-style: italic;
     line-height: 1.4;
     margin-bottom: 0.75rem;
-    color: var(--muted-text-color);
   }
 
 }

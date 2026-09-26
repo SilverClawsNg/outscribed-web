@@ -147,66 +147,30 @@ h1.logo {
    Page Header & Container
    ========================================================================== */
 .page-header{
-     width: 100%;
+    width: @mid-width;
+    max-width: calc(100% - 20px);
     height: auto;
     padding: 2rem 0;
-    //display: flex;
-    //justify-content:center;
-    
-    
-
-    &--top-bordered{
-     //border-top: 1px solid var(--border-color);   
-    }
-
-     &--no-borders{
-     //border: none;   
-    }
-    
-&__contents {
-
-    height: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    width: @mid-width;
-    max-width: calc(100% - 20px);
+    border-bottom: 1px solid @link-color;
     margin: 0 auto;
-    height: auto;
-    padding: 1rem 0;
-border-bottom: 1px solid @link-color;
-    //max-width: calc(100% - 20px);
-    //border-left: 1px solid var(--border-color);
-    //border-right: 1px solid var(--border-color);
-    //background-color: @link-color;
-    //color:@black-color;
+    position: relative;
 
-      &--no-borders{
-     border: none;   
+    &.min{
+        width: @min-width;
     }
-
-    & .btn--primary{
-        background-color:@white-color;
-        border-color:transparent;
-    }
-
+  
     & h1 {
         width: auto;
         font-weight: 500;
-         font-size: clamp(0.9rem, 3vw + 1rem, 1.2rem);
+        font-size: clamp(0.9rem, 3vw + 1rem, 1.2rem);
         line-height: clamp(1.1rem, 3vw + 1rem, 1.4rem);
     }
-
 }
 
-}
-
-.page-closure{
-    border-top: 1px solid var(--border-color);
-    width: 100%;
-
-}
 
 .container-wrapper{
     width: 100%;

@@ -3,7 +3,7 @@ import { type Engageable, createDefaultUiState, type CommentPageListDto } from '
 import { type SourceTaleDto } from '@/features/tales/types/TalesTypes' // 🎯 Import your clean semantics
 import { reactive } from 'vue';
 import { type CreatorDto } from '@/features/identity/types/IdentityTypes' // 🎯 Import your clean semantics
-import type{  TagListDto,  TagDraftDto} from '@/features/global/types/GlobalTypes' // 🎯 Import your clean semantics
+import type{  TagListDto,  TagDto} from '@/features/global/types/GlobalTypes' // 🎯 Import your clean semantics
 
 
 export interface GetInsightDraftListResponse {
@@ -28,10 +28,10 @@ export interface InsightDraftListDto {
   photo: string | null;
   photoCaption: string | null;
   hasEngagement: boolean;
-  country: Country | null;
+  country: Country;
   category: Category;
   status: InsightStatus,
-  tags: TagDraftDto[];
+  tags: TagDto[];
  
 }
 
@@ -74,7 +74,7 @@ export interface InsightDetailDto {
   country: Country;
   category: Category;
   status: InsightStatus,
-  tags: TagListDto[];
+  tags: TagDto[];
   insightscount: number;
   readingTime: number;
   isArchived: boolean;

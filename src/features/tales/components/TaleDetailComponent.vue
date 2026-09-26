@@ -67,16 +67,29 @@ function createComment() {
     <header class="content-details__header-container">
 
       <div class="content-details__header">
-
         
         <div class="content-details__top-meta">
-  <time>{{ toShortDate(tale.createdAt) }}</time>
+
+          <div class="content-details__top-meta-left">
+
+         <button 
+            type="button"
+            class="content-details__writer-link at" 
+            @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
+          >
+            {{ tale.creator.username }}
+          </button>
+          <span class="divider divider--circle"></span>
+          <time>{{ toShortDate(tale.createdAt) }}</time>
     
+          </div>
+
+
          <button 
               type="button"
               class="content-details__menu-btn" 
               @click="modalStore.push('TaleStats', 'Stats', tale)"
-              title="Options"
+              title="Tale Metrics"
             >
               <span class="content-details__menu-dot"></span>
               <span class="content-details__menu-dot"></span>
@@ -87,17 +100,7 @@ function createComment() {
 
         <h1 class="content-details__title">{{ tale.title }}</h1>
 
-        <div class="content-details__meta">
-
-           <button 
-            type="button"
-            class="content-details__writer-link at" 
-            @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
-          >
-            {{ tale.creator.username }}
-          </button>
-
-          <span class="divider divider--circle"></span>
+        <div class="content-details__meta-bottom">
         
             <RouterLink 
               :to="`/tales?category=${tale.category}`" 
@@ -105,8 +108,6 @@ function createComment() {
             >
               {{ CategoryDescriptions[tale.category] }}
             </RouterLink>
-
-             <span class="divider divider--circle"></span>
 
           <RouterLink 
               :to="`/tales?country=${tale.country}`" 
@@ -177,7 +178,9 @@ function createComment() {
         </h2>
         
         <h3 class="content-details__realitycheck-title">
+           <button type="button"  @click="showExternalLink = !showExternalLink">
           {{ tale.realityCheckTitle }}
+            </button>
         </h3>
         
         <div class="content-details__realitycheck-body">
@@ -224,13 +227,14 @@ function createComment() {
 
         <div class="content-details__tags-container">
           
-                    <h4 class="content-details__tag-title">Tagged In: </h4>
+          <h4 class="content-details__tag-title">Tagged In: </h4>
 
-           <div class="content-details__tags">
-             <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
-              #<RouterLink :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</RouterLink>
-            </span>
-           </div>
+          <div class="content-details__tags">
+              <p v-for="tag in tale.tags" :key="tag.tagId" class="content-details__tag-item">
+              #<button type="button"  @click="modalStore.push('TagDetail', 'Tag Details', tag.tagId)">{{ tag.name }}</button>
+              </p>
+          </div>
+         
           </div>
 
         </template>
@@ -248,7 +252,7 @@ function createComment() {
       <div class="content-details__engagement-grid">
         <!-- Interactive Engagement Block -->
         <div class="content-details__engagement">
-          <h4 class="content-details__engagement-title">Was this helpful?</h4>
+          <h4 class="content-details__engagement-title">Was this tale helpful?</h4>
 
           <div class="content-details__vote-actions">
             <button 
@@ -323,7 +327,7 @@ function createComment() {
         <!-- Creator Profile Meta Card -->
         <div class="content-details__creator-card">
           <div class="content-details__creator-header">
-            <h4>Scribed By</h4>
+            <h4>Outscribed By</h4>
             <button 
               type="button"
               class="content-details__writer-link at"
@@ -368,7 +372,6 @@ function createComment() {
     
       <!-- Recent Insights Enrichment Block -->
           <header class="page-header">
-     <div class="page-header__contents">
         <h1>Recent Insights</h1>
       <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
@@ -380,7 +383,6 @@ function createComment() {
         <button v-else type="button" class="btn btn--secondary"  disabled>
           View {{ tale.engagement.insightsCount }}
         </button>
-     </div>
     </header>
 
      <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
@@ -423,7 +425,6 @@ function createComment() {
 
       <!-- Recent Comments Enrichment Block -->
             <header class="page-header">
-     <div class="page-header__contents">
        <h1>Recent Comments</h1>
         <button 
           type="button"
@@ -433,7 +434,6 @@ function createComment() {
         >
           View {{ formatCounts(tale.engagement.commentsCount) }}
         </button>
-     </div>
     </header>
     
 

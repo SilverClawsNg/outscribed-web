@@ -4,7 +4,7 @@ import { reactive } from 'vue';
 import { type CreatorDto } from '@/features/identity/types/IdentityTypes' // 🎯 Import your clean semantics
 import { type InsightLatestListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
 
-import type{  TagListDto,  TagDraftDto} from '@/features/global/types/GlobalTypes' // 🎯 Import your clean semantics
+import type{  TagDto} from '@/features/global/types/GlobalTypes' // 🎯 Import your clean semantics
 
 /**
  * 🧱 BASE TALE COMPONENT
@@ -48,10 +48,10 @@ export interface TaleDraftListDto {
   photo: string | null;
   photoCaption: string | null;
   hasEngagement: boolean;
-  country: Country | null;
+  country: Country;
   category: Category;
   status: TaleStatus,
-  tags: TagDraftDto[];
+  tags: TagDto[];
   realityCheckTitle: string | null;
   realityCheckSummary: string | null;
   realityCheckSource: string | null;
@@ -98,7 +98,7 @@ export interface TaleDetailDto {
   country: Country;
   category: Category;
   status: TaleStatus,
-  tags: TagListDto[];
+  tags: TagDto[];
   insightscount: number;
   readingTime: number;
   isArchived: boolean;

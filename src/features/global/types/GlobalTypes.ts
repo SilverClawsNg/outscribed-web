@@ -92,8 +92,8 @@ export interface GetTagsResponse {
   anchor: string | null
 }
 
-export interface TagDraftDto {
-  tagId: string; // Using string to handle backend Ulid representation
+export interface TagDto {
+  tagId: string; 
   name: string;
 }
 

@@ -133,10 +133,8 @@ function handleEditContactClick(platform: ContactType) {
 
 <template>
 
-  <div class="profile-details profile-details--has-borders">
-
-    <div class="profile-details__contents">
-
+  <div class="profile-details">
+   
       <div class="content-status">
       <span class="content-status__label">Status</span>
       <span 
@@ -303,7 +301,6 @@ function handleEditContactClick(platform: ContactType) {
       </div>
     </div>
 
-    </div>
 
    <div class="profile-details__contacts" aria-label="Social and email contacts">
   <div 

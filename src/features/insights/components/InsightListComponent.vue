@@ -34,12 +34,10 @@ const contentPath = 'insight'
 <template>
   
   <article class="content-card">
-    <!-- Cover Image Header -->
-     
    
     <!-- Content Body -->
      <!-- Taxonomy Metadata -->
-      <div class="content-card__meta">
+      <div class="content-card__meta-top">
         <RouterLink :to="`/${contentType}?category=${insight.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[insight.category] }}
         </RouterLink>
@@ -61,7 +59,7 @@ const contentPath = 'insight'
         <span class="divider divider--circle"></span>
         <time class="content-card__date">{{ toRelativeTime(insight.createdAt) }}</time>
       </div>
-      
+
         <!-- Summary -->
       <p class="content-card__summary">
         {{ insight.summary.length > 500 ? insight.summary.substring(0, 500) + '...' : insight.summary }}

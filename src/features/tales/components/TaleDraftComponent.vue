@@ -6,7 +6,6 @@ import { toRelativeTime } from '@/utils/dateExtensions'
 import { useModalStore } from '@/stores/modalStore'
 import { useTaleDraftStore } from '../stores/TaleDraftStore';
 
-
 const modalStore = useModalStore()
 const taleStore = useTaleDraftStore();
 
@@ -43,29 +42,24 @@ async function handleModalUpdate(type: string, title: string) {
       </span>
     </div>
 
-    <div class="content-card__body">
-
-       <div class="content-card__meta">
-
-        <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
-
-        <span class="divider divider--circle"></span>
+       <div class="content-card__meta-top">
 
         <RouterLink :to="`/tales?category=${tale.category}`" class="content-card__meta-link">
           {{ CategoryDescriptions[tale.category] }}
         </RouterLink>
         
-        <template v-if="tale.country">
-          <span class="divider divider--circle"></span>
           <RouterLink :to="`/tales?country=${tale.country}`" class="content-card__meta-link">
             {{ CountryDescriptions[tale.country] }}
           </RouterLink>
-        </template>
       </div>
 
       <h2 class="content-card__title">
        {{ tale.title }}
       </h2>
+      
+       <div class="content-card__meta-bottom">
+          <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
+      </div>
 
       <template  v-if="tale.summary">
 
@@ -74,8 +68,6 @@ async function handleModalUpdate(type: string, title: string) {
       </p>
 
       </template>
-
-    </div>
 
     <div class="btn-group">
       
