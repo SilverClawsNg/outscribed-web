@@ -40,6 +40,7 @@ export interface GetHomeContentsResponse {
 
 export interface TagListDto {
     tagId: string,
+    date: string,
     name: string,
     slug: string,
     insightsCounter: number,

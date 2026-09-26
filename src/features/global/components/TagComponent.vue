@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { formatCounts } from '@/utils/stringHelpers'
 import { type TagListDto } from '../types/GlobalTypes';
 import { useModalStore } from '@/stores/modalStore'
+import { toRelativeTime } from '@/utils/dateExtensions'
 
 const modalStore = useModalStore()
 
@@ -18,8 +19,10 @@ const props = defineProps<Props>()
 
 <template>
   <article class="tag-card">
-    <div class="tag-card__contents">
-      <!-- Tag Name Trigger: Opens Details Modal -->
+
+   
+ <header class="tag-card__header">
+ 
       <h2 class="tag-card__title">
         <button 
           type="button" 
@@ -31,6 +34,10 @@ const props = defineProps<Props>()
         </button>
       </h2>
 
+      <time>{{ toRelativeTime(tag.date) }}</time>
+
+ </header>
+
       <!-- Metrics Navigation Links -->
       <div class="tag-card__metrics">
         <RouterLink 
@@ -39,7 +46,7 @@ const props = defineProps<Props>()
           title="Filter Tales"
         >
           <span class="tag-card__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
-          <span class="tag-card__metric-label">Tales</span>
+          <span class="tag-card__metric-label">Tales &rarr;</span>
         </RouterLink>
 
           <span class="divider divider--line"></span>
@@ -50,10 +57,9 @@ const props = defineProps<Props>()
           title="Filter Insights"
         >
           <span class="tag-card__metric-value">{{ formatCounts(tag.insightsCounter) }}</span>
-          <span class="tag-card__metric-label">Insights</span>
+          <span class="tag-card__metric-label">Insights &rarr;</span>
         </RouterLink>
       </div>
-    </div>
   </article>
 </template>
 

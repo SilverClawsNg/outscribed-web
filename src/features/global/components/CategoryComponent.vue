@@ -30,6 +30,8 @@ const props = defineProps<Props>()
     }"
   >
 
+  <header class="category-card__header">
+
   <h3 class="category-card__title">
       
   <!-- Rank Indicator -->
@@ -47,6 +49,18 @@ const props = defineProps<Props>()
 
     {{ CategoryDescriptions[category.category] }}
   </h3>
+
+   <button 
+            type="button"
+            class="btn btn--secondary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', category.category)"
+          >
+            OutScribe
+          </button>
+
+  </header>
+
+
     <p class="category-card__summary">{{ CategorySummaries[category.category] }}</p>
     
     <div 
@@ -56,10 +70,11 @@ const props = defineProps<Props>()
       <RouterLink 
           :to="`/tales?category=${category.category}`" 
           class="category-card__metric-link" 
+          :class="{ 'disabled': category.talesCounter === 0 }"
           title="Filter Tales"
         >
           <span class="category-card__metric-value">{{ formatCounts(category.talesCounter) }}</span>
-          <span class="category-card__metric-label">Tales</span>
+          <span class="category-card__metric-label">Tales &rarr;</span>
         </RouterLink>
 
       <span class="divider divider--line"></span>
@@ -67,22 +82,12 @@ const props = defineProps<Props>()
        <RouterLink 
           :to="`/insights?category=${category.category}`" 
           class="category-card__metric-link" 
+          :class="{ 'disabled': category.insightsCounter === 0 }"
           title="Filter Insights"
         >
           <span class="category-card__metric-value">{{ formatCounts(category.insightsCounter) }}</span>
-          <span class="category-card__metric-label">Insights</span>
+          <span class="category-card__metric-label">Insights &rarr;</span>
         </RouterLink>
-
-        <span class="divider divider--line"></span>
-
-        <!-- Writer Call to Action -->
-          <button 
-            type="button"
-            class="btn btn--secondary" 
-            @click="modalStore.push('CreateTale', 'Create Tale', category.category)"
-          >
-            OutScribe
-          </button>
 
     </div>
   </article>

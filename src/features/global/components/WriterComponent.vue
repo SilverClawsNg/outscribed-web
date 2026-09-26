@@ -6,7 +6,7 @@ import { formatCounts } from '@/utils/stringHelpers'
 import { type WriterStatsDto } from '../types/GlobalTypes'
 import { useModalStore } from '@/stores/modalStore'
 import { CountryDescriptions } from '@/utils/descriptors'
-import { toRelativeTime } from '@/utils/dateExtensions'
+import { toShortDate } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement'
 
@@ -46,6 +46,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
   >
 
     <div class="writer-card__header">
+
       <h3 class="writer-card__title">
         
         <!-- Rank / Badge Indicator (30px x 30px square element) -->
@@ -74,51 +75,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
             {{ writer.creator.username }}
           </button>
       </h3>
-
-      <div class="writer-card__metadata">
       
-        <span class="writer-card__metadata--item">{{ CountryDescriptions[writer.country] }}</span>
-                <span class="divider divider--circle"></span>
-
-          <time>{{ toRelativeTime(writer.onboardedAt) }}</time>
-
-      </div>
-    </div>
-
-    <div class="writer-card__meta">
-      <RouterLink 
-        :to="`/tales?username=${writer.creator.username}`" 
-        class="writer-card__metric-link" 
-        title="Filter Tales"
-      >
-        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
-        <span class="writer-card__metric-label">Tales</span>
-      </RouterLink>
-
-      <span class="divider divider--line"></span>
-
-      <RouterLink 
-        :to="`/insights?username=${writer.creator.username}`" 
-        class="writer-card__metric-link" 
-        title="Filter Insights"
-      >
-        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.insightsCount) }}</span>
-        <span class="writer-card__metric-label">Insights</span>
-      </RouterLink>
-
-      <span class="divider divider--line"></span>
-
-      <RouterLink 
-        :to="`/comments?username=${writer.creator.username}`" 
-        class="writer-card__metric-link" 
-        title="Filter Comments"
-      >
-        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.commentsCount) }}</span>
-        <span class="writer-card__metric-label">Comments</span>
-      </RouterLink>
-
-      <span class="divider divider--line"></span>
-
       <!-- Writer Call to Action -->
       <button 
         type="button" 
@@ -129,6 +86,51 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
       >
         <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
       </button>
+
+    </div>
+
+      <div class="writer-card__metadata">
+      
+       <span class="writer-card__metadata--item">{{ CountryDescriptions[writer.country] }}</span>
+             <span class="divider divider--circle"></span>
+          <time>{{ toShortDate(writer.onboardedAt) }}</time>
+
+      </div>
+
+    <div class="writer-card__metric">
+      <RouterLink 
+        :to="`/tales?username=${writer.creator.username}`" 
+        class="writer-card__metric-link" 
+         :class="{ 'disabled': writer.creator.talesCount === 0 }"
+        title="Filter Tales"
+      >
+        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+        <span class="writer-card__metric-label">Tales &rarr;</span>
+      </RouterLink>
+
+      <span class="divider divider--line"></span>
+
+      <RouterLink 
+        :to="`/insights?username=${writer.creator.username}`" 
+        class="writer-card__metric-link" 
+        :class="{ 'disabled': writer.creator.insightsCount === 0 }"
+        title="Filter Insights"
+      >
+        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.insightsCount) }}</span>
+        <span class="writer-card__metric-label">Insights &rarr;</span>
+      </RouterLink>
+
+      <span class="divider divider--line"></span>
+
+      <RouterLink 
+        :to="`/comments?username=${writer.creator.username}`" 
+        class="writer-card__metric-link" 
+        :class="{ 'disabled': writer.creator.commentsCount === 0 }"
+        title="Filter Comments"
+      >
+        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.commentsCount) }}</span>
+        <span class="writer-card__metric-label">Comments &rarr;</span>
+      </RouterLink>
 
     </div>
   </article>

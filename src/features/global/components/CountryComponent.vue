@@ -61,6 +61,7 @@ const props = defineProps<Props>()
         <RouterLink 
           :to="`/tales?country=${country.country}`" 
           class="country-card__metric-link" 
+          :class="{ 'disabled': country.talesCounter === 0 }"
           title="Filter Tales"
         >
           <span class="country-card__metric-value">{{ formatCounts(country.talesCounter) }}</span>
@@ -72,6 +73,7 @@ const props = defineProps<Props>()
         <RouterLink 
           :to="`/insights?country=${country.country}`" 
           class="country-card__metric-link" 
+          :class="{ 'disabled': country.insightsCounter === 0 }"
           title="Filter Insights"
         >
           <span class="country-card__metric-value">{{ formatCounts(country.insightsCounter) }}</span>
