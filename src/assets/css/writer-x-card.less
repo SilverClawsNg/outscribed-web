@@ -3,46 +3,27 @@
 .writer-card {
   display: flex;
   flex-direction: column;
-  //padding: 1rem 0.5rem;
- //border-bottom: 1px solid var(--border-color);
-   //border-left: 1px solid var(--border-color);
- // border-right: 1px solid var(--border-color);
-  //background-color:#F5F5F5;
-  //border-radius: 4px;
-  //margin-bottom: 1rem;
-
-  //padding: 1rem 0.5rem;
-    //border-radius: 4px;
-
-    //max-width: calc(100% - 20px);
-    //border-left: 1px solid var(--border-color);
-    //border-right: 1px solid var(--border-color);
-    
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid @link-color;
-
-  &:last-child{
-    margin-bottom:0;
-  }
+  padding: 1.5rem 0;
+  border-bottom: 2px dotted @link-color;
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
-
+    margin-bottom: 1.25rem;
   }
 
   &__title {
     display: flex;
     align-items: center;
     column-gap: 0.25rem;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.25rem;
+
+      @media @phone{
+      font-size: 1rem;
+    }
   }
 
-  // Exact 30px x 30px Badge Component
   &__badge {
     font-size: 0.95rem;
     font-weight: 900;
@@ -81,28 +62,23 @@
   }
 
   &__metadata{
-     margin-bottom: 1rem;
-
+    margin-bottom: 1rem;
+    display: flex;
+    align-items:center;
+    column-gap: 0.25rem;
   }
-  
-  // --- Metrics ---
+
   &__metrics {
     display: flex;
     align-items: center;
     column-gap: 0.75rem;
     font-size: 0.95rem;
-    
-    @media @phone{
-      column-gap: 0.15rem;
-    }
   }
 
   &__metric-link {
     display: inline-flex;
     align-items: center;
     column-gap: 0.25rem;
-
-  
   }
 
   &__metric-value {

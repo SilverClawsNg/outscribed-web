@@ -93,7 +93,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
       
        <span class="writer-card__metadata--item">{{ CountryDescriptions[writer.country] }}</span>
              <span class="divider divider--circle"></span>
-          <time>{{ toShortDate(writer.onboardedAt) }}</time>
+          <time>Since {{ toShortDate(writer.onboardedAt) }}</time>
 
       </div>
 
@@ -105,7 +105,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
         title="Filter Tales"
       >
         <span class="writer-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
-        <span class="writer-card__metric-label">Tales &rarr;</span>
+        <span class="writer-card__metric-label">Tales&rarr;</span>
       </RouterLink>
 
       <span class="divider divider--line"></span>
@@ -117,7 +117,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
         title="Filter Insights"
       >
         <span class="writer-card__metric-value">{{ formatCounts(writer.creator.insightsCount) }}</span>
-        <span class="writer-card__metric-label">Insights &rarr;</span>
+        <span class="writer-card__metric-label">Insights&rarr;</span>
       </RouterLink>
 
       <span class="divider divider--line"></span>
@@ -129,7 +129,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
         title="Filter Comments"
       >
         <span class="writer-card__metric-value">{{ formatCounts(writer.creator.commentsCount) }}</span>
-        <span class="writer-card__metric-label">Comments &rarr;</span>
+        <span class="writer-card__metric-label">Comments&rarr;</span>
       </RouterLink>
 
     </div>

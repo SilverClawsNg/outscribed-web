@@ -4,29 +4,32 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  //padding: 1rem 0.5rem;
-  //border-bottom: 1px solid var(--border-color);
-   //border-left: 1px solid var(--border-color);
-  //border-right: 1px solid var(--border-color);
-  //background-color:#F5F5F5;
-  //border-radius: 4px;
-  //padding: 1rem 0.5rem;
-    //border-radius: 4px;
-    //margin-bottom: 1rem;
+  padding: 1.5rem 0;
+  border-bottom: 2px dotted @link-color;
 
-    //max-width: calc(100% - 20px);
-    //border-left: 1px solid var(--border-color);
-    //border-right: 1px solid var(--border-color);
-    
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-border-bottom: 2px dotted @link-color;
-
- &:last-child{
-    margin-bottom:0;
+  &__header{
+    width: 100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom: 1.25rem;
   }
 
-  // Metallic badges for ranks 2 and 3
+  &__title {
+    font-size: 1.25rem;
+    display: flex;
+    align-items:center;
+    column-gap: 0.25rem;
+
+     @media @phone{
+      font-size: 1rem;
+    }
+  }
+
+  &__summary {
+    margin-bottom: 1.25rem;
+  }
+
   &__badge {
     font-size: 0.95rem;
     font-weight: 900;
@@ -38,7 +41,7 @@ border-bottom: 2px dotted @link-color;
     display: flex;
     align-items:center;
     justify-content:center;
-        color: var(--background-color);
+    color: var(--background-color);
 
     &--gold {
       background-color: @gold-color;
@@ -56,42 +59,7 @@ border-bottom: 2px dotted @link-color;
         background-color: var(--text-color);
     }
   }
-
-  &__header{
-    width: 100%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-     margin-bottom: 1rem;
-  }
-
-  &__title {
-    font-size: 1.25rem;
-    //font-weight: 600;
-    display: flex;
-    align-items:center;
-    column-gap: 0.25rem;
-  }
-
   
-  // Rank badge container
-  &__rank {
-    padding: 0.25rem 0.5rem;
-  }
-
-
-  &__summary {
-    margin-bottom: 1rem;
-  }
-
-  &__meta {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-   
-  }
-
- // --- Metrics ---
   &__metrics {
     display: flex;
     align-items: center;

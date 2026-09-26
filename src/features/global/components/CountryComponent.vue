@@ -29,10 +29,11 @@ const props = defineProps<Props>()
       'country-card--bronze': index === 2
     }"
   >
-    <div class="country-card__contents">
-
+    
       <div class="country-card__header">
   
+      <h2 class="country-card__title">
+     
      <!-- Rank Indicator -->
       <!-- #1: Top border handles the gold visual accent -->
         
@@ -48,11 +49,18 @@ const props = defineProps<Props>()
       <span v-else class="country-card__badge country-card__badge--number">{{ index + 1 }}</span>
 
       <!-- Tag Name Trigger: Opens Details Modal -->
-      <h2 class="country-card__title">
-     
+
         {{ CountryDescriptions[country.country] }}
 
       </h2>
+
+        <button 
+            type="button"
+            class="btn btn--secondary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
+          >
+            OutScribe
+          </button>
 
       </div>
 
@@ -65,7 +73,7 @@ const props = defineProps<Props>()
           title="Filter Tales"
         >
           <span class="country-card__metric-value">{{ formatCounts(country.talesCounter) }}</span>
-          <span class="country-card__metric-label">Tales</span>
+          <span class="country-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
           <span class="divider divider--line"></span>
@@ -77,10 +85,9 @@ const props = defineProps<Props>()
           title="Filter Insights"
         >
           <span class="country-card__metric-value">{{ formatCounts(country.insightsCounter) }}</span>
-          <span class="country-card__metric-label">Insights</span>
+          <span class="country-card__metric-label">Insights&rarr;</span>
         </RouterLink>
       </div>
-    </div>
   </article>
 </template>
 

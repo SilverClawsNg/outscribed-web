@@ -2,51 +2,23 @@
 
 .tag-card {
   width: 100%;
-  //padding: 1rem 0.5rem;
-  //border-bottom: 1px solid var(--border-color);
-  //border-bottom: 1px solid var(--border-color);
-   //border-left: 1px solid var(--border-color);
-  //border-right: 1px solid var(--border-color);
-  //background-color:#F5F5F5;
-  //border-radius: 4px;
-  //margin-bottom: 1rem;
-
-  //padding: 1rem 0.5rem;
-    //border-radius: 4px;
-
-    //max-width: calc(100% - 20px);
-    //border-left: 1px solid var(--border-color);
-    //border-right: 1px solid var(--border-color);
-   
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  padding: 1.5rem 0;
   border-bottom: 2px dotted @link-color;
-
- &:last-child{
-    margin-bottom:0;
-  }
 
   &__header{
     display: flex;
     width: 100%;
     align-items:center;
     justify-content:space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
-  // --- Title & Icon ---
   &__title {
-     font-size: 1.25rem;
-  }
+      font-size: 1.25rem;
 
-  &__name {
-    letter-spacing: -0.01em;
-  }
-
-  &__pre {
-    font-weight: 400;
-    font-size: smaller;
-    margin-right: 1px;
+      @media @phone{
+      font-size: 1rem;
+    }
   }
 
   // --- Metrics ---

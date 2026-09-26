@@ -7,12 +7,13 @@ import FormProgress from '@/components/FormProgress.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integrated safely
 import { getValidCategory } from '@/utils/validators'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
-import type { CreateRequest } from '../types/TalesTypes'
+import type { CreateRequest, CreateTalePayload } from '../types/TalesTypes'
 import { useRouter } from 'vue-router';
 
 import { CategorySelectItems } from '@/utils/selectItemHelper'
 import { useLoginHint } from '@/utils/authHelper'
 import HelpIcon from '@/components/HelpIcon.vue'
+import { CountryDescriptions } from '@/utils/descriptors'
 
 const router = useRouter();
 
@@ -24,23 +25,27 @@ function redirectToEditor() {
 const isInitializing = ref(true)
 const isLoggedIn = useLoginHint()
 const isSuccessful = ref(false)
+const pageTitle = ref('We can\'t wait to see what you are about to spin')
 
 
 // 1. Mark payload as optional with a '?'
 const props = defineProps<{
-  payload?: unknown;
+  payload?: CreateTalePayload | null;
 }>();
 
-// 2. Safely parse the category string from payload if available
-const initialCategory = computed<string | null>(() => {
+// Extract pre-selected Category (if passed)
+const preselectedCategory = computed<string | null>(() => {
   if (!props.payload) return null;
+  if (typeof props.payload === 'string') return props.payload;
+  return props.payload.category || '-1';
+});
 
-  // Case A: Payload passed directly as a string e.g. "Education"
-  if (typeof props.payload === 'string') {
-    return props.payload;
+// Extract pre-selected Country (if passed)
+const preselectedCountry = computed<string | null>(() => {
+  if (props.payload && typeof props.payload === 'object') {
+    return props.payload.country || null;
   }
-
-  return '-1';
+  return null;
 });
 
 // Local working state bound strictly to your official contract schema
@@ -48,7 +53,8 @@ const initialCategory = computed<string | null>(() => {
 
 const formData = ref<CreateRequest>({
   title: '',
-  category: '-1' as any
+  category: '-1' as any,
+  country: null
 })
 
 const taleStore = useTaleDraftStore()
@@ -80,7 +86,12 @@ const titleText = formData.value.title || '';
 
 onBeforeMount(() => {
   // Assign the string value directly, not a Ref<string>
-  formData.value.category = (initialCategory.value ?? '-1') as any;
+  formData.value.category = (preselectedCategory.value) as any;
+  formData.value.country = (preselectedCountry) as any;
+ if (preselectedCountry.value && preselectedCountry.value in CountryDescriptions) {
+  const countryKey = preselectedCountry.value as keyof typeof CountryDescriptions;
+  pageTitle.value = `You are now outscribing into ${CountryDescriptions[countryKey]}`;
+}
   resetProgress();
 })
 
@@ -239,7 +250,7 @@ onMounted(async () => {
 
         <div class="form-header">
     
-         <h2>We can't wait to see what you are about to spin</h2>
+         <h2>{{ pageTitle }}</h2>
         <HelpIcon topic="CreateTale" />
     </div>
 

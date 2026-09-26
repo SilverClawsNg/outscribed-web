@@ -9,17 +9,12 @@ header.main-header {
     top: 0;
     left: 0;
     z-index: 1000;
-    
-    //box-shadow: var(--header-box-shadow);
-    background-color: @header-background-color;
     background-color: var(--background-color);
     border-bottom: 1px solid @link-color;
-    //color: @white-color;
 }
 
 .main-header__wrapper {
     width: 100%;
-    //transition: height 0.4s ease-out;
     transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: auto;
 
@@ -35,7 +30,6 @@ header.main-header {
         @media @largeDevice {
             height: 100px;
         }
-        
     }
 
      &.state-neutral .main-header__menu-container {
@@ -45,8 +39,6 @@ header.main-header {
 
         }
     }
-
-      
 
     &.state-public-open,
     &.state-user-open {
@@ -73,7 +65,8 @@ header.main-header {
     &.state-user-open .main-header__menu-container,
     &.state-public-open .main-header__menu-container {
         @media @smallDevice {
-            max-height: 100lvh;
+            height: calc(100lvh - 80px);
+            max-height: calc(100lvh - 80px);
             overflow-y: auto;
         }
     }
@@ -206,15 +199,11 @@ header.main-header {
 
 .main-header__menu-container {
     width: 100%;
-    
     z-index: 998;
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
-    //border-top: 1px solid @white-color;
-    //border-top: 1px solid var(--border-color);
     background-color: @link-color;
-    //background: var(--background-color);
-    //color: @white-color;
+
     @media @smallDevice {
         max-height: 0;
         overflow: hidden;
@@ -293,7 +282,7 @@ header.main-header {
             transition: color 0.3s;
             display: flex;
             align-items: center;
-            //color: @white-color;
+            color: @black-color;
             font-weight: 600;
 
              @media @largeDevice {

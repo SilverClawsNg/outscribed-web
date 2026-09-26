@@ -53,20 +53,15 @@ const props = defineProps<Props>()
    <button 
             type="button"
             class="btn btn--secondary" 
-            @click="modalStore.push('CreateTale', 'Create Tale', category.category)"
+            @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
           >
             OutScribe
           </button>
-
   </header>
-
 
     <p class="category-card__summary">{{ CategorySummaries[category.category] }}</p>
     
-    <div 
-      class="category-card__meta" 
-      :class="{ 'category-card__meta--empty': (category.talesCounter + category.insightsCounter) === 0 }"
-    >
+    <div class="category-card__metrics">
       <RouterLink 
           :to="`/tales?category=${category.category}`" 
           class="category-card__metric-link" 
@@ -74,7 +69,7 @@ const props = defineProps<Props>()
           title="Filter Tales"
         >
           <span class="category-card__metric-value">{{ formatCounts(category.talesCounter) }}</span>
-          <span class="category-card__metric-label">Tales &rarr;</span>
+          <span class="category-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
       <span class="divider divider--line"></span>
@@ -86,7 +81,7 @@ const props = defineProps<Props>()
           title="Filter Insights"
         >
           <span class="category-card__metric-value">{{ formatCounts(category.insightsCounter) }}</span>
-          <span class="category-card__metric-label">Insights &rarr;</span>
+          <span class="category-card__metric-label">Insights&rarr;</span>
         </RouterLink>
 
     </div>

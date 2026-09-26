@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import { formatCounts } from '@/utils/stringHelpers'
 import { type TagListDto } from '../types/GlobalTypes';
 import { useModalStore } from '@/stores/modalStore'
-import { toRelativeTime } from '@/utils/dateExtensions'
+import { toShortDate } from '@/utils/dateExtensions'
 
 const modalStore = useModalStore()
 
@@ -34,7 +34,7 @@ const props = defineProps<Props>()
         </button>
       </h2>
 
-      <time>{{ toRelativeTime(tag.date) }}</time>
+      <time>Since {{ toShortDate(tag.date) }}</time>
 
  </header>
 
@@ -46,7 +46,7 @@ const props = defineProps<Props>()
           title="Filter Tales"
         >
           <span class="tag-card__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
-          <span class="tag-card__metric-label">Tales &rarr;</span>
+          <span class="tag-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
           <span class="divider divider--line"></span>
@@ -57,7 +57,7 @@ const props = defineProps<Props>()
           title="Filter Insights"
         >
           <span class="tag-card__metric-value">{{ formatCounts(tag.insightsCounter) }}</span>
-          <span class="tag-card__metric-label">Insights &rarr;</span>
+          <span class="tag-card__metric-label">Insights&rarr;</span>
         </RouterLink>
       </div>
   </article>

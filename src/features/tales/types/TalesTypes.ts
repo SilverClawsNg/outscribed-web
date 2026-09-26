@@ -112,6 +112,7 @@ export interface TaleDetailDto {
 export interface CreateRequest {
     title: string; 
     category: Category;
+    country: Country | null;
 }
 
 export interface CreateResponse { 
@@ -120,6 +121,10 @@ export interface CreateResponse {
     createdAt: string 
 }
 
+export interface CreateTalePayload {
+  category?: string | null;
+  country?: string | null; // ISO code or slug, e.g., 'NG', 'ZZ'
+}
 
 export interface UpdateRequest {
   taleId: string;
