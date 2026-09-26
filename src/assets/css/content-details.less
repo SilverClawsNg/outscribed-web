@@ -3,14 +3,6 @@
 .content-details {
   position: relative;
 
-  &:not(.preview){
-    
-   border-bottom: 1px solid var(--border-color);
-   border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-
-  }
-  
   // --- Header Area ---
   &__header-container {
     width: 100%;
@@ -21,7 +13,8 @@
     display: flex;
     justify-content: space-between;
     align-items:center;
-    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+   
 
     & time{
       font-size: 0.9rem;
@@ -33,43 +26,28 @@
     font-weight: 400;
     font-size: clamp(1.8rem, 3vw + 1rem, 2.6rem);
     line-height: clamp(2rem, 3vw + 1rem, 2.8rem);
-    padding: 1.5rem 0.5rem;
-  }
-
-  &__writer {
-    color: var(--muted-text-color);
-    padding: 0.5rem 0.5rem 1.5rem 0.5rem;
-
   }
 
   &__summary {
     font-style: italic;
-    line-height: 1.5;
-    padding: 1rem 0.5rem;
+    margin-bottom: 1.5rem;
   }
 
   // --- Metadata Bar ---
   &__meta {
     display: flex;
-    gap: 1rem;
+    gap: 1rem 0.5rem;
     align-items: center;
     flex-wrap: wrap;
-    position: relative;
     font-size: 0.9rem;
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0.5rem;
+    margin: 1.5rem 0;
+     padding: 0.5rem 0;
+     border-top: 1px dotted @link-color;
+  border-bottom: 1px dotted @link-color;
 
     @media @phone{
       gap: 0.5rem;
     }
-
-  }
-
-  &__meta-item {
-    display: flex;
-    align-items: center;
-    column-gap: 0.25rem;
 
   }
 
@@ -116,7 +94,7 @@
   }
 
   & .rich-text{
-    padding: 1rem 0.5rem;
+    padding: 1rem 0;
   }
 
   &__caption {
@@ -155,9 +133,9 @@
   // --- Reality Check ---
   &__realitycheck {
     margin: 1.5rem 0;
-    background-color: var(--light-background-color);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
+    //background-color: var(--light-background-color);
+    border-top: 2px dotted @link-color;
+    border-bottom: 2px dotted @link-color;
     padding: 1rem 0.5rem;
     position: relative;
   }
@@ -165,7 +143,7 @@
   &__realitycheck-heading {
     font-size: 1.5rem;
     letter-spacing: 0.05em;
-    text-align:center;
+    //text-align:center;
     padding: 1.5rem 0;
 
     & span{
@@ -181,36 +159,52 @@
     font-size: 1.25rem;
     margin-bottom: 0.75rem;
     font-weight: 600;
-    text-align:center;
+    //text-align:center;
   }
 
   &__realitycheck-actions {
     margin-top: 1rem;
     display:flex;
-    justify-content:center;
+    //justify-content:center;
   }
 
   // --- Tags ---
+
+  &__tags-container{
+
+     margin-bottom: 1.5rem;
+  }
+
   &__tags {
-    margin-bottom: 1.5rem;
+   
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    justify-content:center;
     flex-wrap: wrap;
   }
 
+  &__tag-title{
+    font-size:1.2rem;
+    margin-bottom: 0.5rem;
+  }
 
   &__tag-item {
-    font-size: 0.9rem;
+    
   }
 
   &__disclaimer {
-    font-size: 0.95rem;
-    color: var(--muted-text-color);
+   
     margin-bottom: 2rem;
-    text-align:center;
-    padding: 0 0.5rem;
+    display:flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  
+  &__disclaimer-title{
+    font-size:1.2rem;
+     margin-bottom: 0.5rem;
   }
 
   // --- Engagement Grid ---

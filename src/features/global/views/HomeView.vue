@@ -134,12 +134,11 @@ onUnmounted(() => {
   </template>
 
   <template v-else>
-
    
     <header class="page-header">
      <div class="page-header__contents">
        <h1>Recent Tales</h1>
-      <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
+      <RouterLink to="/tales" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
      </div>
     </header>
     
@@ -174,7 +173,7 @@ onUnmounted(() => {
    <header class="page-header page-header--top-bordered">
      <div class="page-header__contents">
        <h1>Recent Insights</h1>
-      <RouterLink to="/insights" class="btn btn--primary"  title="Recent Insights"><span>View All</span></RouterLink>
+      <RouterLink to="/insights" class="btn btn--secondary"  title="Recent Insights"><span>View All</span></RouterLink>
      </div>
     </header>
 
@@ -245,7 +244,7 @@ onUnmounted(() => {
        <header class="page-header page-header--top-bordered">
      <div class="page-header__contents">
        <h1>Trending Tags</h1>
-      <RouterLink to="/tags" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
+      <RouterLink to="/tags" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
      </div>
     </header>
     
@@ -280,7 +279,7 @@ onUnmounted(() => {
         <header class="page-header page-header--top-bordered">
      <div class="page-header__contents">
        <h1>Country Leaderboard</h1>
-      <RouterLink to="/country/metrics" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+      <RouterLink to="/country/metrics" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
      </div>
     </header>
       
@@ -316,7 +315,7 @@ onUnmounted(() => {
         <header class="page-header page-header--top-bordered">
      <div class="page-header__contents">
        <h1>Writer Leaderboard</h1>
-      <RouterLink to="/writers" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+      <RouterLink to="/writers" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
      </div>
     </header>
       

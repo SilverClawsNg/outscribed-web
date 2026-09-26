@@ -6,7 +6,7 @@ import { formatCounts } from '@/utils/stringHelpers'
 import { type WriterStatsDto } from '../types/GlobalTypes'
 import { useModalStore } from '@/stores/modalStore'
 import { CountryDescriptions } from '@/utils/descriptors'
-import { toShortDate } from '@/utils/dateExtensions'
+import { toRelativeTime } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement'
 
@@ -76,9 +76,12 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
       </h3>
 
       <div class="writer-card__metadata">
-        <time>{{ toShortDate(writer.onboardedAt) }}</time>
-        <span class="divider divider--circle"></span>
+      
         <span class="writer-card__metadata--item">{{ CountryDescriptions[writer.country] }}</span>
+                <span class="divider divider--circle"></span>
+
+          <time>{{ toRelativeTime(writer.onboardedAt) }}</time>
+
       </div>
     </div>
 

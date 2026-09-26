@@ -87,44 +87,33 @@ function createComment() {
 
         <h1 class="content-details__title">{{ tale.title }}</h1>
 
+        <div class="content-details__meta">
 
-        <div class="content-details__writer">
-        By  <button 
+           <button 
             type="button"
             class="content-details__writer-link at" 
             @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
           >
             {{ tale.creator.username }}
           </button>
-        
-          
-        </div>
 
-        <div class="content-details__meta">
+          <span class="divider divider--circle"></span>
         
-          <div class="content-details__meta-item">
-            <SvgIcons name="tag" /> 
             <RouterLink 
               :to="`/tales?category=${tale.category}`" 
               class="content-details__meta-link"
             >
               {{ CategoryDescriptions[tale.category] }}
             </RouterLink>
-          </div>
 
-          <template  v-if="tale.country">
+             <span class="divider divider--circle"></span>
 
-          <div class="content-details__meta-item">
-            <SvgIcons name="globe" />
-            <RouterLink 
+          <RouterLink 
               :to="`/tales?country=${tale.country}`" 
               class="content-details__meta-link"
             >
               {{ CountryDescriptions[tale.country] }}            
             </RouterLink>
-          </div>
-
-          </template>
 
         </div>
 
@@ -233,23 +222,26 @@ function createComment() {
        
        <template v-if="tale.tags && tale.tags.length > 0">
 
-                    <h4 class="content-details__section-title">Tagged In</h4>
+        <div class="content-details__tags-container">
+          
+                    <h4 class="content-details__tag-title">Tagged In: </h4>
 
-        <div class="content-details__tags">
-            <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
+           <div class="content-details__tags">
+             <span v-for="tag in tale.tags" :key="tag.slug" class="content-details__tag-item">
               #<RouterLink :to="`/tales?tag=${tag.slug}`">{{ tag.name }}</RouterLink>
             </span>
+           </div>
           </div>
 
         </template>
      
       <!-- Legal Disclaimer -->
       <div class="content-details__disclaimer">
-         <h4 class="content-details__section-title">Disclaimer</h4>
-        <p>This content represents the writer's perspective and exercise of artistic freedom. </p>
-        <button type="button" class="content-details__disclaimer-btn" @click="modalStore.push('DisclaimerModal', 'Disclaimer')">
+         <h4 class="content-details__disclaimer-title">Disclaimer: </h4>
+        <p>This content represents the writer's perspective and exercise of artistic freedom.  <button type="button" class="content-details__disclaimer-btn" @click="modalStore.push('DisclaimerModal', 'Disclaimer')">
           [Read full disclaimer]
-        </button>
+        </button> </p>
+       
       </div>
 
       <!-- Engagement & Creator Card Container -->
@@ -375,10 +367,10 @@ function createComment() {
   <div class="content-details__footer">
     
       <!-- Recent Insights Enrichment Block -->
-         <header class="page-header page-header--top-bordered">
-     <div class="page-header__contents page-header__contents--no-borders">
-      <h1>Recent Insights</h1>
-       <RouterLink 
+          <header class="page-header">
+     <div class="page-header__contents">
+        <h1>Recent Insights</h1>
+      <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
           :to="`/insights?taleId=${tale.taleId}`" 
           class="btn btn--secondary" 
@@ -390,7 +382,6 @@ function createComment() {
         </button>
      </div>
     </header>
-      
 
      <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
       <template v-if="taleStore.hasLoadedEnrichment && taleStore.latestInsights?.length">
@@ -431,8 +422,8 @@ function createComment() {
       </div>
 
       <!-- Recent Comments Enrichment Block -->
-            <header class="page-header page-header--top-bordered">
-     <div class="page-header__contents page-header__contents--no-borders">
+            <header class="page-header">
+     <div class="page-header__contents">
        <h1>Recent Comments</h1>
         <button 
           type="button"
