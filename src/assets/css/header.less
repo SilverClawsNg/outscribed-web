@@ -97,8 +97,7 @@ header.main-header {
     
     position: relative;
     z-index: 999;
-    background-color: @link-color;
-    background: var(--background-color);
+    background-color: var(--background-color);
     
     //color: @white-color;
 
@@ -282,7 +281,7 @@ header.main-header {
             transition: color 0.3s;
             display: flex;
             align-items: center;
-            color: @black-color;
+            color: var(--background-color);
             font-weight: 600;
 
              @media @largeDevice {
@@ -300,12 +299,12 @@ header.main-header {
             &.router-link-exact-active,
             &.active {
                 @media @smallDevice {
-                    border-right-color:@black-color;
+                    border-right-color:var(--background-color);
                    
                 }
 
                 @media @largeDevice {
-                    border-bottom-color: @black-color;
+                    border-bottom-color: var(--background-color);
                    
                 }
             }
