@@ -8,6 +8,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateCommentRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const draftStore = useDraftCommentsStore()

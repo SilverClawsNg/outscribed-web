@@ -7,6 +7,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateAddendumRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const draftStore = useDraftCommentsStore()
@@ -129,7 +130,11 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
+         <div class="form-header">
+    
     <h2>Correct, clarify, or cancel. Each item on its own line.</h2>
+        <HelpIcon topic="CreateComment" />
+    </div>
 
     <FormProgress :progress="progressState" />
 

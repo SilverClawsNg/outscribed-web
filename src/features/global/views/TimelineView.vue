@@ -131,12 +131,10 @@ onUnmounted(() => {
   <template v-else>
    
      <header class="page-header">
-     <div class="page-header__contents">
         <h1>
               Timelines
             </h1>
         <button class="btn btn--secondary"  @click="modalStore.push('TimelineFilter', 'Filter Timelines')">Filter</button>
-     </div>
     </header>
     
     <template v-if="wasCleaned">
@@ -169,6 +167,15 @@ onUnmounted(() => {
   </div>
     
     </InfiniteScroller>
+
+              <button 
+          type="button" 
+          class="filter-trigger" 
+          aria-label="Filter content"
+          @click="modalStore.push('TimelineFilter', 'Filter Timelines')"
+        >
+         <SvgIcons name="filter" />
+        </button>
 
   </template>
 

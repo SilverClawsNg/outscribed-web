@@ -37,16 +37,15 @@ const contentTypeClass = computed(() => {
 <template>
   <article class="timeline-card">
     <section class="timeline-card__metadata">
-      <p class="timeline-card__date">— {{ toTimelineDate(timeline.happenedAt) }}</p>
+      <p class="timeline-card__date"> — {{ toTimelineDate(timeline.happenedAt) }}</p>
       
-      <h2 :class="['timeline-card__type', contentTypeClass ? `timeline-card__type--${contentTypeClass}` : '']">
-        <RouterLink 
+      <RouterLink 
           :to="`/timeline?content=${timeline.contentType}`" 
-          class="timeline-card__type-link"
+          class="timeline-card__type"
+          :class="['timeline-card__type', contentTypeClass ? `timeline-card__type--${contentTypeClass}` : '']"
         >
           {{ ContentTypeDescriptions[timeline.contentType] || timeline.contentType }}
         </RouterLink>
-      </h2>
     </section>
 
     <section class="timeline-card__body">

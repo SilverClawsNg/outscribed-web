@@ -61,13 +61,10 @@ onUnmounted(() => {
     <slot />
 
     <div ref="sentinelRef" id="scroll-sentinel" style="height: 1px;"></div>
-
-     <header class="page-header"
-        :class="isModal ? 'page-header--no-borders' : 'page-header--top-bordered'"
-      >
-
-     <div class="page-header__contents" :class="isModal ? 'page-header__contents--no-borders' : null">
-       <PageStatusMessage v-if="error"
+    
+     <div class="end-of-file">
+      
+       <PageStatusMessage v-if="error" 
         :title="error.title || 'Loading Error!'" 
         :message="error.detail || 'An unexpected error occured while loading contents'"
         icon="warning">
@@ -83,9 +80,6 @@ onUnmounted(() => {
       <p v-else class="loaded"></p>
 
      </div>
-
-    </header>
    
-
 </template>
 

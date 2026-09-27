@@ -3,17 +3,9 @@
 .faq-card {
   width: 100%;
   height: auto;
-  padding: 1rem 0.5rem;
-   border-bottom: 1px solid var(--border-color);
-   border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  //background-color:#F5F5F5;
-  //border-radius: 4px;
-
-  &:last-child{
-    border-bottom:none;
-  }
-
+  padding: 1rem 0;
+   border-bottom: 2px dotted var(--link-color);
+   
   &__header {
     width: 100%;
     display: flex;
@@ -23,7 +15,6 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    text-align: left;
     gap: 1rem;
     transition: color 0.2s ease;
 
@@ -42,10 +33,9 @@
   }
 
   &__indicator {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 400;
     line-height: 1;
-    color: var(--muted-text-color);
     flex-shrink: 0;
 
     &::before {
@@ -75,6 +65,5 @@
 
   &__body {
     padding-bottom: 1rem;
-    color: var(--text-color);
   }
 }

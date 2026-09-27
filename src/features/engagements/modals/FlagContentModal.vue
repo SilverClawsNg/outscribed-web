@@ -9,6 +9,7 @@ import { useEngagement } from '@/composables/useEngagement';
 import { getValidFlagType } from '@/utils/validators'; 
 
 import { useModalStore } from '@/stores/modalStore'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const engage = useEngagement()
@@ -125,8 +126,14 @@ async function handleFormSubmission() {
 
      <div class="form-container">
 
-    <h2>Why are we taking this {{ engageable.contentType.toLowerCase() }} down?</h2>
+        <div class="form-header">
+    
+        <h2>Why are we taking this {{ engageable.contentType.toLowerCase() }} down?</h2>
 
+        <HelpIcon topic="FlagContent" />
+
+    </div>
+    
     <FormProgress :progress="progressState" />
 
     <form @submit.prevent="handleFormSubmission" autocomplete="off">

@@ -16,7 +16,6 @@ const modalStore = useModalStore()
 <template>
 
      <header class="page-header">
-      <div class="page-header__contents">
         <h1>Frequently Asked Questions</h1>
           <button 
         type="button" 
@@ -25,7 +24,6 @@ const modalStore = useModalStore()
       >
       Ask a Question
       </button>
-      </div>
     </header>
  
   <template v-if="faqData.length > 0">
@@ -38,8 +36,6 @@ const modalStore = useModalStore()
         :faq="faq"/>
 
   </div>
-
-  <div class="page-closure"></div>
 
   </template>
 

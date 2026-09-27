@@ -10,6 +10,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
 import { useLoginHint } from '@/utils/authHelper'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- DEFINE FORM DATA ---
 const props = defineProps<{
@@ -116,7 +117,9 @@ async function handleFormSubmission() {
 
     <PageStatusMessage 
       title="Login Required!" 
-      message="Not yet an OutScriber? Its easy and free. If your session expired, sign back in to submit your comment.">
+      message="Not yet an OutScriber? Its easy and free. If your session expired, sign back in to submit your comment."
+      icon="warning"
+      :is-standalone="true">
       <template #actions>
         <button class="btn btn--primary"  @click="modalStore.push('LoginUser', 'Login')">Login</button>
          <button class="btn btn--primary"  @click="modalStore.push('RegisterUser', 'Register')">Become An OutScriber</button>

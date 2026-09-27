@@ -137,58 +137,57 @@ export const AccountStatusClass: Record<AccountStatus, string> = {
   FamilyRelationships: 'Family & Relationships',
   Miscellaneous : 'Miscellaneous'
 } as const;
-
 export const CategorySummaries: Record<Category, string> = {
   Tributuary:
-    'Tributes that serve as a celebration of character and impact, a reflective keepsake, and a way to honor someone\'s legacy while they are still here to share in it.',
+    'Write a honoring narrative or commentary celebrating a living person’s character, achievements, and impact while they can still read and share it.',
 
   Reflections:
-    'Real life lessons turned into great stories. Advice to our younger selves, second chances, and hard truths that help everyone grow.',
+    'Share a genuine life lesson, personal mistake, or hard-earned wisdom packaged as a narrative or advice to guide others through similar real-world choices.',
 
   DoomsDay:
-    'Stories about what happens when things fall apart—not to scare us, but to help us build safer, stronger, and smarter systems for the future.',
+    'Construct a cautionary story or scenario analyzing systemic failures, crises, or worst-case breakdowns to highlight how to build more resilient real-world systems.',
 
   PoliticsGovernance:
-    'A new look at power, rules, and leaders. Creative ways to fix broken systems, help communities, and make public decisions better for everyone.',
+    'Analyze or fictionalize political structures, policy decisions, and leadership dynamics to demonstrate practical ways to reform public systems and exercise civic power.',
 
   SportsGaming:
-    'Sports and video games with new rules, better teamwork, and fairer play. A playground for how sports and gaming could be more fun and fair.',
+    'Explore competitive sports, esports, or gaming culture by proposing alternate rulebooks, fairer governance models, or new ethical standards for competition.',
 
   ScienceTechnology:
-    'Cool ideas for future tech, AI, space travel, and inventions. Big "what-if" stories about the tools we make and how to use them wisely.',
+    'Publish speculative or grounded commentary on AI, space exploration, and breakthrough technologies, focusing on practical societal impact and ethical safeguards.',
 
   Education:
-    'New ways to learn, teach, and go to school. Creative ideas for classrooms and skills when old learning styles just do not work anymore.',
+    'Propose alternative learning models, modern teaching techniques, or novel institutional rules to fix outdated schooling methods and skill development.',
 
   BusinessEconomy:
-    'Fresh ideas for money, jobs, and businesses. Stories about better ways to work, trade, and build companies that help people.',
+    'Examine workplace culture, market mechanics, or corporate models by detailing practical strategies for fairer trade, sustainable labor, and economic innovation.',
 
   ArtsEntertainment:
-    'A new vision for music, movies, fame, and storytelling. Exploring how creative art could be made and shared in the future.',
+    'Deconstruct media, pop culture, film, or music distribution, exploring how creative industries can operate, monetize, or evolve in changing cultural landscapes.',
 
   MedicineHealthcare:
-    'Better ways to care for the sick and fix health systems. Smart ideas and breakthroughs for doctors, hospitals, and taking care of people.',
+    'Evaluate healthcare systems, clinical ethics, or medical breakthroughs through narratives that explore better patient care, hospital management, and wellness access.',
 
   LawOrder:
-    'Rules and courts reimagined. Creative stories about justice, protecting rights, and finding fairer ways to fix wrongs.',
+    'Draft legal satire or narrative commentary dissecting statutes, court proceedings, and law enforcement to expose legal loopholes and advocate for legal clarity.',
 
   SocietalNormsValues:
-    'Re-thinking everyday habits, customs, and how we treat each other. Big questions about how to build kinder, better communities.',
+    'Challenge contemporary social customs, cultural expectations, or behavioral habits through scenarios that examine how everyday community standards evolve.',
 
   HistoryCulture:
-    'Rewriting history with "what-if" questions. Looking at the past in a new way to help us build a brighter present.',
+    'Write alternate-history scenarios or historical re-evaluations to explore how pivotal past events reshape present-day laws, cultures, and national identities.',
 
   EnvironmentClimate:
-    'Smart ideas to protect nature, clean up the planet, and fight climate change. Stories about fixing damage and living alongside nature.',
+    'Detail actionable solutions, conservation models, or speculative climate scenarios focused on environmental recovery, energy transition, and ecological policy.',
 
   ReligionSpirituality:
-    'Big questions about faith, belief, and meaning. Honest stories about how communities find purpose, hope, and togetherness.',
+    'Examine faith traditions, moral frameworks, and communal spiritual practices, focusing on how beliefs shape ethics, purpose, and social cohesion.',
 
   FamilyRelationships:
-    'Stories about parents, kids, friends, and chosen family. Exploring better ways to communicate, care for each other, and solve conflicts.',
+    'Deconstruct dynamics between partners, parents, children, or chosen families, offering realistic insights on communication, boundary-setting, and conflict resolution.',
 
   Miscellaneous:
-    'Wild, unusual, and hard-to-classify ideas that do not fit anywhere else—because big new ideas often start in strange places.',
+    'Submit unconventional, cross-disciplinary, or highly experimental pieces that do not fit standard categories but offer sharp, provocative legal or social commentary.',
 } as const;
 
 export const ContentTypeDescriptions: Record<ContentType, string> = {

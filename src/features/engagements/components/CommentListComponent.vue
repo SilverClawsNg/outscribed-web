@@ -58,7 +58,9 @@ onMounted(async () => {
   <article class="comment-card">
 
      <header class="comment-card__header">
-
+      
+      <div class="comment-card__header-left">
+        
         <button 
           type="button" 
           class="comment-card__author-link at" 
@@ -66,9 +68,12 @@ onMounted(async () => {
         >
           {{ comment.commentatorUsername }}
         </button>
+        
+         <span class="divider divider--circle"></span>
+
         <time class="comment-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
 
-         <span class="divider divider--circle"></span>
+      </div>
 
            <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
             {{ ContentTypeDescriptions[comment.contentType] }}

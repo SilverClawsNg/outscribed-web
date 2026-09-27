@@ -7,6 +7,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { ConfirmRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // --- INITIALIZE STORES ---
 const draftStore = useDraftCommentsStore()
@@ -121,7 +122,12 @@ async function handleFormSubmission() {
 
     <div class="form-container">
 
-    <h2> Lock up comment forever. FOREVER.</h2>
+       <div class="form-header">
+    
+         <h2> Lock up comment forever. FOREVER.</h2>
+        <HelpIcon topic="CreateComment" />
+    </div>
+    
 
     <FormProgress :progress="progressState" />
 

@@ -62,6 +62,7 @@ async function handleModalUpdate(type: string, title: string) {
   <article class="comment-card">
 
     <div class="content-status">
+
       <span class="content-status__label">Status</span>
       <span 
         class="content-status__value" 
@@ -73,14 +74,16 @@ async function handleModalUpdate(type: string, title: string) {
 
     <header class="comment-card__header">
 
+      <div class="comment-card__header-left">
+          
         <time class="comment-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
 
-         <span class="divider divider--circle"></span>
+      </div>
 
            <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
             {{ ContentTypeDescriptions[comment.contentType] }}
           </RouterLink>
-
+        
     </header>
 
     <section class="comment-card__text">

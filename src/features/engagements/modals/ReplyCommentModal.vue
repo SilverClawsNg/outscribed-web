@@ -10,6 +10,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integ
 import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
 import { useLoginHint } from '@/utils/authHelper'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 // 📥 Modal context payload passed on activation
 

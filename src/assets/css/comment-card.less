@@ -2,32 +2,31 @@
 
 .comment-card {
   width: 100%;
-   padding: 1.5rem 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-   border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  //background-color:#F5F5F5;
-  //border-radius: 4px;
-
-  &:last-child{
-    border-bottom:none;
-  }
-
+   padding: 1.5rem 0;
+  border-bottom: 2px dotted var(--link-color);
+  
    &__header {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    justify-content:space-between;
+    margin-bottom: 1rem;
     column-gap: 0.5rem;
+
+
+  }
+
+  &__header-left{
+    display: flex;
+    align-items:center;
+     column-gap: 0.25rem;
   }
 
   &__author-link {
-    font-size: 0.875rem;
-    color: var(--muted-text-color);
     column-gap: 0.25rem;
   }
 
   &__date {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
   
   &__text {
@@ -36,7 +35,6 @@
 
     &--system {
       font-style: italic;
-      color: var(--muted-text-color);
     }
 
     .rich-text {
@@ -86,8 +84,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem 0.75rem;
-    font-size: 0.875rem;
-    color: var(--muted-text-color);
+    font-size: 0.9rem;
   }
 
   &__stat {
