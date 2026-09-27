@@ -7,8 +7,7 @@
   &__header-container {
     width: @mid-width;
     padding: 2rem 0 0 0;
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
+   
   }
 
   &__top-meta{
@@ -48,7 +47,7 @@
     justify-content: space-between;
     font-size: 0.9rem;
     margin: 1.5rem 0;
-     padding: 0.5rem 0;
+    padding: 0.5rem 0;
     border-top: 2px dotted @link-color;
     border-bottom: 2px dotted @link-color;
 
@@ -67,19 +66,27 @@
     align-items: center;
     border-radius: 4px;
     padding: 4px 6px;
-    background-color: var(--link-color);
-    
 
     &:hover {
-      background-color: var(--link-alt-color);
+      background-color: var(--link-color);
+
+       .content-details__menu-dot {
+        background-color: var(--background-color);
+      }
     }
+
+    
+
+
   }
 
   &__menu-dot {
     width: 4px;
     height: 4px;
-    background-color: var(--background-color);
+    background-color: var(--link-color);
     border-radius: 50%;
+
+    
   }
 
   // --- Main Layout ---

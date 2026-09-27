@@ -5,7 +5,6 @@ import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useLoginHint } from '@/utils/authHelper'
 
-
 // 1. Setup your services/stores
 const modalStore = useModalStore()
 const isLoggedIn = useLoginHint()
@@ -19,7 +18,6 @@ const emit = defineEmits<{
 type HeaderState = 'Neutral' | 'Public' | 'User'
 
 const currentState = ref<HeaderState>('Neutral')
-
   
 const LARGE_MQ = '(min-width: 992px)' // match your @largeDevice
 
@@ -42,7 +40,6 @@ function applyDefaultForViewport() {
     }
   }
 }
-
 
 // 4. Computed property (mirrors your C# switch statement switch expression)
 const activeStateClass = computed(() => {
