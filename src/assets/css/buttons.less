@@ -45,17 +45,17 @@
         color:  var(--text-color);
        
         &:hover {
-            color: @link-color;
+            color: var(--link-color);
         }
         
     }
 
     &--secondary {
-        background-color:  @link-color;
+        background-color:  var(--link-color);
         color: var(--background-color);
 
         &:hover {
-            background-color: @link-alt-color;
+            background-color: var(--link-alt-color);
             color: var(--background-color);
         }
 
@@ -67,8 +67,7 @@
         color:@white-color;
 
         &:hover {
-            background-color: @white-color;
-            color:@black-color;
+            color:var(--link-color);
         }
     }
 }

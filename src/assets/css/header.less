@@ -10,7 +10,7 @@ header.main-header {
     left: 0;
     z-index: 1000;
     background-color: var(--background-color);
-    border-bottom: 1px solid @link-color;
+    border-bottom: 1px solid var(--link-color);
 }
 
 .main-header__wrapper {
@@ -35,8 +35,7 @@ header.main-header {
      &.state-neutral .main-header__menu-container {
 
        @media @smallDevice{
-                        border-top: none;
-
+            border-top: none;
         }
     }
 
@@ -141,7 +140,7 @@ header.main-header {
     width: calc(100% / 3);
       
     & button:hover{
-        color: @link-alt-color;
+        color: var(--link-alt-color);
     }
 
     @media @smallDevice {
@@ -204,7 +203,7 @@ header.main-header {
     z-index: 998;
     transition: max-height 0.8s ease-in-out;
     transition: max-height 0.6s ease-out, opacity 0.8s ease-in;
-    background-color: @link-color;
+    background-color: var(--link-color);
 
     @media @smallDevice {
         max-height: 0;
@@ -290,7 +289,7 @@ header.main-header {
             color: var(--background-color);
 
             &:hover{
-                color: @link-alt-color;
+                color: var(--link-alt-color);
             }
 
              @media @largeDevice {
@@ -342,7 +341,7 @@ header.main-header {
     &:hover {
 
         & div {
-            background-color: @link-color;
+            background-color: var(--link-color);
         }
     }
 }

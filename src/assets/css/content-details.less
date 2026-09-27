@@ -67,11 +67,11 @@
     align-items: center;
     border-radius: 4px;
     padding: 4px 6px;
-    background-color: @link-color;
+    background-color: var(--link-color);
     
 
     &:hover {
-      background-color: @link-alt-color;
+      background-color: var(--link-alt-color);
     }
   }
 
@@ -109,12 +109,10 @@
     font-size: 0.9rem;
     padding: 0.5rem;
     font-style: italic;
-    color: var(--muted-text-color);
   }
 
   &__reading-time {
     margin-bottom: 1rem;
-    color: var(--muted-text-color);
   }
 
   &__section-title {
@@ -140,7 +138,7 @@
   &__realitycheck {
     margin: 1.5rem 0;
     border-top: 2px dotted @link-color;
-    border-bottom: 2px dotted @link-color;
+    border-bottom: 2px dotted var(--link-color);
     padding: 1.5rem 0;
     position: relative;
   }
