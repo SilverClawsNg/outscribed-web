@@ -244,7 +244,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         photo: null,
         photoCaption: null,
         hasEngagement: false,
-        country: null,
+        country: payload.country === null ? 'ZZ' : payload.country,
         tags: [],
         realityCheckTitle: null,
         realityCheckSummary: null,

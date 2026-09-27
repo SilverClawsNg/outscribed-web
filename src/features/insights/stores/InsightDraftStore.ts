@@ -239,7 +239,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
         photo: null,
         photoCaption: null,
         hasEngagement: false,
-        country: null,
+        country: 'ZZ',
         tags: []
       };
       
