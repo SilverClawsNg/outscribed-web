@@ -371,7 +371,7 @@ function createComment() {
   <div class="content-details__footer">
     
       <!-- Recent Insights Enrichment Block -->
-          <header class="page-header">
+          <header class="page-header inline">
         <h1>Recent Insights</h1>
       <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
@@ -424,7 +424,7 @@ function createComment() {
       </div>
 
       <!-- Recent Comments Enrichment Block -->
-            <header class="page-header">
+            <header class="page-header inline">
        <h1>Recent Comments</h1>
         <button 
           type="button"

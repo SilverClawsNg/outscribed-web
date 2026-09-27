@@ -304,7 +304,7 @@ function createComment() {
 
       <div class="content-details__footer">
         
-             <header class="page-header">
+             <header class="page-header inline">
       <h1>Inspired By</h1>
             <button 
            type="button"
@@ -324,7 +324,7 @@ function createComment() {
             :summary="insight.source.summary"
           />
 
-             <header class="page-header">
+             <header class="page-header inline">
        <h1>Recent Comments</h1>
            <button 
           type="button"

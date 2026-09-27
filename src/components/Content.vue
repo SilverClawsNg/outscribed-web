@@ -39,6 +39,7 @@ const props = withDefaults(
       >
         @{{ creatorUsername }}
       </button>
+      <span class="divider divider--circle"></span>
       <time class="content-x-card__date">
         {{ toRelativeTime(createdAt) }}
       </time>

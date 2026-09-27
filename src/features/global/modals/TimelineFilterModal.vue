@@ -124,11 +124,12 @@ const sortSelected = computed({
 
 <template>
   <div class="form-container">
+    
     <form @submit.prevent="applyFilter">
       
       <!-- 1. Text Searching Content Inputs -->
-      <section>
-        <h3 class="form-heading">Search</h3>
+     <section class="form-filter-section">
+        <h3>Search</h3>
         <fieldset>
           <input 
             v-model="filterStore.keyword" 
@@ -141,8 +142,9 @@ const sortSelected = computed({
       </section>
 
       <!-- 2. Target Visibility Scopes Radio Controls -->
-      <section>
-        <h3 class="form-heading">Filter</h3>
+      <section class="form-filter-section">
+         
+        <h3>Filter</h3>
         <div class="ticks">
           <p>
             <input 
@@ -198,8 +200,8 @@ const sortSelected = computed({
       </section>
 
       <!-- 4. Dataset Result Record Ordering Parameters -->
-      <section>
-        <h3 class="form-heading">Order</h3>
+       <section class="form-filter-section">
+        <h3>Order</h3>
         <fieldset>
                 <select v-model="sortSelected" class="form-field">
                     <option value="-1">-- sort by --</option>

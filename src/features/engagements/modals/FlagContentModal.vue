@@ -138,7 +138,7 @@ async function handleFormSubmission() {
 
     <form @submit.prevent="handleFormSubmission" autocomplete="off">
 
-        <fieldset :disabled="progressState.type === 'Loading'">
+        <fieldset class="no-borders" :disabled="progressState.type === 'Loading'">
           <div class="ticks">
              <p>
               <input 
@@ -238,7 +238,7 @@ async function handleFormSubmission() {
    <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
               :disabled="progressState.type === 'Loading'"
           >
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Report' }}

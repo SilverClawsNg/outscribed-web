@@ -36,10 +36,8 @@ async function initPage() {
 
   console.log('🚀 [Timeline View]: Presence verified via hint. Dispatching data fetch...')
 
-  // 1. Hydrate and check if the incoming URL string was pristine
   const { isClean } =  timelineFilterStore.rehydrate(route.query);
 
-  // 2. 🛑 INTERCEPT TRASH: If parameters were stripped, update browser bar and halt!
   if (!isClean) {
 
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')
@@ -50,18 +48,12 @@ async function initPage() {
       path: route.path,
       query: timelineFilterStore.getAsDictionary()
     })
-    
-    // Abort this execution flow completely! 
-    // The router update triggers your route.query watcher, handling the fetch smoothly.
+   
     return
   }
 
-
-  // 2. Build the targeted API request endpoint string from those validated details
-  // 🛡️ Fix 4: Changed 'filterStore' to your actual variable 'taleFilterStore'
   const cleanApiPath = timelineFilterStore.buildApiPath(timelineStore.baseRoute);
   
-  // 3. Fetch from store
   const { success, error } = await timelineStore.loadTimelines(cleanApiPath)
 
   if (!success) {
@@ -86,11 +78,19 @@ onMounted(async () => {
   await initPage();
 })
 
-// Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  initPage();
-}, { deep: true });
 
+// --- Watch Route Changes ---
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
+
+    loadingError.value = null
+
+    await initPage() // fetch only; apiUrl/pageTitle already correct
+  },
+  { immediate: true }
+)
 
 // inside your HomeView.vue
 onUnmounted(() => {
@@ -180,12 +180,14 @@ onUnmounted(() => {
   </template>
 
   <template v-else>
-    <PageStatusMessage
+    <div class="container">
+  <PageStatusMessage
       title="No timeline found!"
-      message="Sorry. No timelines were found matching your filter requirements."
+      message="Sorry. No timeline was found matching your filter requirements."
         icon="inbox" 
               :is-bordered="true"
             />
+    </div>
   </template>
   </template>
 

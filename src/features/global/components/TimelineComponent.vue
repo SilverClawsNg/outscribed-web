@@ -40,7 +40,7 @@ const contentTypeClass = computed(() => {
       <p class="timeline-card__date"> — {{ toTimelineDate(timeline.happenedAt) }}</p>
       
       <RouterLink 
-          :to="`/timeline?content=${timeline.contentType}`" 
+          :to="`/timelines?contenttype=${timeline.contentType.toLowerCase()}`" 
           class="timeline-card__type"
           :class="['timeline-card__type', contentTypeClass ? `timeline-card__type--${contentTypeClass}` : '']"
         >

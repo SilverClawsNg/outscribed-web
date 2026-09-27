@@ -148,7 +148,7 @@ h1.logo {
    ========================================================================== */
 .page-header{
     width: @mid-width;
-    max-width: calc(100% - 20px);
+    
     height: auto;
     padding: 2rem 0;
     display: flex;
@@ -161,6 +161,10 @@ h1.logo {
 
     &.min{
         width: @min-width;
+    }
+
+    &:not(.inline){
+        max-width: calc(100% - 20px);
     }
   
     & h1 {

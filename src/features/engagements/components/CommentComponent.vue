@@ -98,6 +98,7 @@ function returnAncestor() {
         >
           {{ comment.commentatorUsername }}
         </button>
+        <span class="divider divider--circle"></span>
         <time class="comment-inline-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
       </div>
 

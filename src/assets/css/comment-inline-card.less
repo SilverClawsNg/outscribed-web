@@ -2,13 +2,11 @@
 
 .comment-inline-card {
   width: 100%;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
+  border-bottom: 2px dotted var(--link-color);
 
   &.pinned {
     border-bottom: none;
-    margin-bottom: 0;
   }
 
   // --- 1. Header (Author, Date, Menu) ---
@@ -22,13 +20,11 @@
   &__meta {
     display: flex;
     align-items: center;
-    font-size: 0.875rem;
-    column-gap: 0.5rem;
-    color: var(--muted-text-color);
+    column-gap: 0.25rem 0.5rem;
   }
 
   &__date {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   &__menu-btn {
