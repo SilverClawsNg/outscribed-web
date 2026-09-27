@@ -14,9 +14,9 @@
     line-height: 1rem;
     margin-bottom:1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px dashed var(--border-color);
+    border-bottom: 2px dotted var(--border-color);
     padding-top: 0.5rem;
-    border-top: 1px dashed var(--border-color);
+    border-top: 2px dotted var(--border-color);
 
     & h3 {
         font-weight: 600;
@@ -32,18 +32,4 @@
     font-size: 0.9rem;
     margin-right: 2px;
     border: none;
-}
-
-@keyframes pulse-border {
-    0% {
-        box-shadow: 0 0 0 0 var(--pulse-color);
-    }
-
-    70% {
-        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
-    }
 }

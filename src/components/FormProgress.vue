@@ -62,5 +62,5 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
-@import "../assets/css/form-progress.less";
+@import "@/assets/css/form-progress.less";
 </style>
