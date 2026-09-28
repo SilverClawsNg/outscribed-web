@@ -69,7 +69,6 @@ onUnmounted(() => {
   <div class="hero-contents">
 
    <div class="hero">
-    
    
     <div class="hero__content">
       <h3 class="hero__tagline">

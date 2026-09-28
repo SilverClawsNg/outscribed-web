@@ -29,16 +29,16 @@
     &--hide-text{
 
         
-        @media @phone {
+        @media @phone, @phablet {
             display: none;
         }
     }
 
-    @media @smallDevice {
+    @media @phone, @phablet {
         font-size: 0.85rem;
     }
 
-    @media @largeDevice {
+    @media @tablet, @largeDevice {
         font-size: 0.9rem;
     }
 
