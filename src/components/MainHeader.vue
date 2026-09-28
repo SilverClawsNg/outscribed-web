@@ -19,7 +19,7 @@ type HeaderState = 'Neutral' | 'Public' | 'User'
 
 const currentState = ref<HeaderState>('Neutral')
   
-const LARGE_MQ = '(min-width: 992px)' // match your @largeDevice
+const LARGE_MQ = '(min-width: 768px)' // match your @largeDevice
 
 function isLargeDevice() {
   return typeof window !== 'undefined' && window.matchMedia(LARGE_MQ).matches
