@@ -345,7 +345,7 @@ onUnmounted(() => {
   <div v-if="profileStore.email" class="profile-details__contact-item">
      
     <div class="profile-details__contact-icon profile-details__contact-icon--email">
-      <SvgIcons name="facebook" /> 
+      <SvgIcons name="email" /> 
     </div>
 
     <div class="profile-details__contact-content">
