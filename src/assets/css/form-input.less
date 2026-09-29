@@ -133,6 +133,25 @@
       margin-right: 4px;
     }
 
+    .character-counter {
+      position: absolute;
+      right: 0.5rem;
+      bottom: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-text-color, #94a3b8);
+      pointer-events: none; // Allows clicks to pass through to the input
+      font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
+
+      &.is-warning {
+        color: #d97706; // Amber when getting close
+      }
+
+      &.is-over-limit {
+        color: #dc2626; // Red when exceeded
+        font-weight: 700;
+      }
+    }
 
  // --- Form Controls (Input, Textarea, Select) ---
   .form-field {
@@ -364,6 +383,8 @@
     margin: 1rem 0;
 
   }
+
+  
 }
 
 
