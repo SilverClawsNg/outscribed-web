@@ -555,26 +555,3 @@ h1.logo {
 /* ==========================================================================
   SVG
    ========================================================================== */
-
-svg {
-
-    &.stroked {
-
-        & path, & circle, & rect, & line, & polyline, & polygon {
-            fill: none;
-            stroke: var(--hover-color);
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-width: 1px;
-        }
-    }
-
-    &.filled {
-        fill: none;
-
-        & path, & circle, & rect, & line, & polyline, & polygon {
-            fill: var(--text-color);
-            stroke-width: 2px;
-        }
-    }
-}

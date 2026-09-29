@@ -195,102 +195,221 @@ onUnmounted(() => {
       </div>
     
      <div class="profile-details__contacts" aria-label="Social and email contacts">
+      
   <!-- Facebook -->
   <div v-if="profileStore.facebook" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--facebook">
-        <SvgIcons name="facebook" /> Facebook
-      </p>
+    
+    <div class="profile-details__contact-icon profile-details__contact-icon--facebook">
+      <SvgIcons name="facebook" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--facebook">
+      Facebook
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <span>https://facebook.com/</span>
-      <a href="profileStore.facebookLink" target="_blank" rel="noopener noreferrer">
+         <span>https://facebook.com/</span>
+      <a :href="`profileStore.facebookLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.facebook }}
       </a>
-    </p>
+        </p>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- Twitter / X -->
   <div v-if="profileStore.twitter" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--twitter">
-        <SvgIcons name="twitter" /> X
-      </p>
+     
+    <div class="profile-details__contact-icon profile-details__contact-icon--twitter">
+      <SvgIcons name="twitter" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--twitter">
+      X
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <span>https://x.com/</span>
-      <a href="profileStore.twitterLink" target="_blank" rel="noopener noreferrer">
+          <span>https://x.com/</span>
+      <a :href="`profileStore.twitterLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.twitter }}
       </a>
-    </p>
+        </p>
+
+      </div>
+    </div>
   </div>
 
   <!-- LinkedIn -->
   <div v-if="profileStore.linkedin" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--linkedin">
-        <SvgIcons name="linkedin" /> LinkedIn
-      </p>
+     
+    <div class="profile-details__contact-icon profile-details__contact-icon--linkedin">
+      <SvgIcons name="linkedin" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--linkedin">
+      LinkedIn
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <span>https://linkedin.com/in/</span>
-      <a href="profileStore.linkedinLink" target="_blank" rel="noopener noreferrer">
+          <span>https://linkedin.com/in/</span>
+      <a :href="`profileStore.linkedinLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.linkedin }}
       </a>
-    </p>
+        </p>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- Instagram -->
   <div v-if="profileStore.instagram" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--instagram">
-        <SvgIcons name="instagram" /> Instagram
-      </p>
+     
+    <div class="profile-details__contact-icon profile-details__contact-icon--instagram">
+      <SvgIcons name="instagram" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--instagram">
+      Instagram
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <span>https://instagram.com/</span>
-      <a href="profileStore.instagramLink" target="_blank" rel="noopener noreferrer">
+        <span>https://instagram.com/</span>
+      <a :href="`profileStore.instagramLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.instagram }}
       </a>
-    </p>
+        </p>
+
+      </div>
+    </div>
+
   </div>
+
+  <!-- WhatsApp -->
+<div v-if="profileStore.whatsapp" class="profile-details__contact-item">
+  <div class="profile-details__contact-icon profile-details__contact-icon--whatsapp">
+    <SvgIcons name="whatsapp" />
+  </div>
+
+  <div class="profile-details__contact-content">
+    <div class="profile-details__contact-label profile-details__contact-label--whatsapp">
+      WhatsApp
+    </div>
+    <div class="profile-details__contact-value">
+      <p class="profile-details__contact-definition">
+        <span>wa.me/</span>
+        <a :href="`https://wa.me/${profileStore.whatsapp}`" target="_blank" rel="noopener noreferrer">
+          {{ profileStore.whatsapp }}
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- TikTok -->
+<div v-if="profileStore.tiktok" class="profile-details__contact-item">
+  <div class="profile-details__contact-icon profile-details__contact-icon--tiktok">
+    <SvgIcons name="tiktok" />
+  </div>
+
+  <div class="profile-details__contact-content">
+    <div class="profile-details__contact-label profile-details__contact-label--tiktok">
+      TikTok
+    </div>
+    <div class="profile-details__contact-value">
+      <p class="profile-details__contact-definition">
+        <span>tiktok.com/@</span>
+        <a :href="`https://tiktok.com/@${profileStore.tiktok}`" target="_blank" rel="noopener noreferrer">
+          {{ profileStore.tiktok }}
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
 
   <!-- Email -->
   <div v-if="profileStore.email" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--email">
-        <SvgIcons name="email" /> Email Address
-      </p>
+     
+    <div class="profile-details__contact-icon profile-details__contact-icon--email">
+      <SvgIcons name="facebook" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--email">
+      Email Address
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
-    </p>
+         <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
+        </p>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- Phone -->
   <div v-if="profileStore.telephone" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--phone">
-        <SvgIcons name="phone" /> Phone
-      </p>
+     
+    <div class="profile-details__contact-icon profile-details__contact-icon--telephone">
+      <SvgIcons name="telephone" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--telephone">
+      Phone Number
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <a :href="`tel:${profileStore.telephone}`">{{ profileStore.telephone }}</a>
-    </p>
+         <a :href="`tel:${profileStore.telephone}`">{{ profileStore.telephone }}</a>
+        </p>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- Website -->
   <div v-if="profileStore.website" class="profile-details__contact-item">
-    <div class="profile-details__contact-header">
-      <p class="profile-details__contact-title profile-details__contact-title--website">
-        <SvgIcons name="website" /> Website
-      </p>
+     
+    <div class="profile-details__contact-icon profile-details__contact-icon--website">
+      <SvgIcons name="website" /> 
     </div>
+
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label profile-details__contact-label--website">
+      Website
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
     <p class="profile-details__contact-definition">
-      <a :href="profileStore.website" target="_blank" rel="noopener noreferrer">
+          <a :href="profileStore.website" target="_blank" rel="noopener noreferrer">
         {{ profileStore.website }}
       </a>
-    </p>
+        </p>
+
+      </div>
+    </div>
+
   </div>
 </div>
     

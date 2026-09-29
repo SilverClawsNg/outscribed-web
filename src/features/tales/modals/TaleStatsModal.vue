@@ -179,7 +179,7 @@ function createComment() {
               :disabled="uiMeta.isFlagDisabled" 
               aria-label="Report this tale"
               title="Flag"
-                @click="modalStore.push('FlagContent', 'Flag Tale', tale.engagement)"
+              @click="modalStore.push('FlagContent', 'Flag Tale', tale.engagement)"
             >
             Report Tale
             </button>

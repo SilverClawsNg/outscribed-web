@@ -5,7 +5,7 @@ export type IconName =
   | 'linkedin' | 'email' | 'placeholder' | 'back-arrow' | 'globe' | 'tag' | 'clock'
   | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow'
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
-  | 'whatsapp' | 'phone' | 'website' | 'filter'
+  | 'whatsapp' | 'telephone' | 'website' | 'filter'
 
 const props = defineProps<{
   name: IconName
@@ -183,6 +183,59 @@ const icons: Record<IconName, IconConfig> = {
     class: 'filled email',
     paths: [{ d: 'M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z' }]
   },
+   // 🌟 Newly Added Icons
+  instagram: {
+    viewBox: '0 0 24 24',
+    class: 'filled instagram',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { type: 'rect', x: 2, y: 2, width: 20, height: 20, rx: 5, ry: 5 },
+      { type: 'path', d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' },
+      { type: 'line', x1: 17.5, y1: 6.5, x2: 17.51, y2: 6.5 }
+    ]
+  },
+  tiktok: {
+    viewBox: '0 0 24 24',
+    class: 'filled tiktok',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { d: 'M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5' }
+    ]
+  },
+  whatsapp: {
+    viewBox: '0 0 24 24',
+    class: 'filled whatsapp',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { d: 'M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z' }
+    ]
+  },
+  telephone: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { d: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z' }
+    ]
+  },
+  website: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { type: 'circle', cx: 12, cy: 12, r: 10 },
+      { type: 'line', x1: 2, y1: 12, x2: 22, y2: 12 },
+      { d: 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' }
+    ]
+  },
   placeholder: {
     viewBox: '0 0 64 64',
     fill: 'none',
@@ -350,59 +403,7 @@ const icons: Record<IconName, IconConfig> = {
       { type: 'line', x1: 12, y1: 16, x2: 12.01, y2: 16 }
     ]
   },
-  // 🌟 Newly Added Icons
-  instagram: {
-    viewBox: '0 0 24 24',
-    class: 'filled instagram',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1,
-    paths: [
-      { type: 'rect', x: 2, y: 2, width: 20, height: 20, rx: 5, ry: 5 },
-      { type: 'path', d: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' },
-      { type: 'line', x1: 17.5, y1: 6.5, x2: 17.51, y2: 6.5 }
-    ]
-  },
-  tiktok: {
-    viewBox: '0 0 24 24',
-    class: 'filled tiktok',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1,
-    paths: [
-      { d: 'M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5' }
-    ]
-  },
-  whatsapp: {
-    viewBox: '0 0 24 24',
-    class: 'filled whatsapp',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1,
-    paths: [
-      { d: 'M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z' }
-    ]
-  },
-  phone: {
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1,
-    paths: [
-      { d: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z' }
-    ]
-  },
-  website: {
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1,
-    paths: [
-      { type: 'circle', cx: 12, cy: 12, r: 10 },
-      { type: 'line', x1: 2, y1: 12, x2: 22, y2: 12 },
-      { d: 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' }
-    ]
-  },
+ 
   
 }
 </script>

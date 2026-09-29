@@ -9,6 +9,7 @@ import SvgIcons from '@/components/SvgIcons.vue'
 import { computed } from 'vue'
 import { useProfileStore } from '../stores/ProfileStore.ts' // 🚀 Import Profile Store
 import WriterStats from '@/components/WriterStats.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 const profileStore = useProfileStore() // 💡 Instantiate Store
 const profile = computed(() => profileStore.profile!)
@@ -28,7 +29,7 @@ export type IconName =
   | 'instagram'
   | 'tiktok'
   | 'whatsapp'
-  | 'phone'
+  | 'telephone'
   | 'website'
   | 'email'
   | 'inbox'
@@ -96,7 +97,7 @@ const contactDisplayList = computed<ContactDisplayConfig[]>(() => [
   {
     type: 'Telephone',
     label: 'Phone',
-    icon: 'phone',
+    icon: 'telephone',
     value: profileStore.telephone,
     link: profileStore.telephoneLink ?? '#'
   },
@@ -301,43 +302,48 @@ function handleEditContactClick(platform: ContactType) {
       </div>
     </div>
 
-
    <div class="profile-details__contacts" aria-label="Social and email contacts">
-  <div 
-    v-for="item in contactDisplayList" 
-    :key="item.type" 
-    class="profile-details__contact-item"
-  >
-    <div class="profile-details__contact-header">
-      <p 
-  class="profile-details__contact-title" 
-  :class="`profile-details__contact-title--${item.type.toLowerCase()}`"
->
-  <SvgIcons :name="item.icon" /> {{ item.label }}
-</p>
-    
-      <button :aria-label="`Edit ${item.label}`" @click="handleEditContactClick(item.type)">
-        <SvgIcons name="edit" />
-      </button>
+  
+    <div 
+      v-for="item in contactDisplayList" 
+      :key="item.type" 
+      class="profile-details__contact-item"
+    >
+
+    <div class="profile-details__contact-icon" :class="`profile-details__contact-icon--${item.type.toLowerCase()}`">
+      <SvgIcons :name="item.icon" /> 
     </div>
 
-    <!-- Active Contact Present -->
-    <template v-if="item.value">
-      <p class="profile-details__contact-item-definition">
-        <span v-if="item.prefix">{{ item.prefix }}</span>
-        <a :href="item.link" target="_blank" rel="noopener noreferrer">{{ item.value }}</a>
-      </p>
-    </template>
+    <div class="profile-details__contact-content">
+      <div class="profile-details__contact-label" :class="`profile-details__contact-label--${item.type.toLowerCase()}`">
+      {{ item.label }}
+      </div>
+        <div class="profile-details__contact-value">
+      
+      <!-- Active Contact Present -->
+      <template v-if="item.value">
+        <p class="profile-details__contact-definition">
+          <span v-if="item.prefix">{{ item.prefix }}</span>
+          <a :href="item.link" target="_blank" rel="noopener noreferrer">{{ item.value }}</a>
+        </p>
+      </template>
 
-    <!-- Empty State -->
-    <template v-else>
-      <PageStatusMessage
-        :title="`No ${item.label} Added!`"
-        :message="`Add a ${item.label} handle or details.`"
-        icon="inbox"
-      />
-    </template>
+      <!-- Empty State -->
+      <template v-else>
+      <p  class="profile-details__no-contact">No {{ item.label }} Added!</p>
+      </template>
+
+      </div>
+    </div>
+
+    <div class="profile-details__contact-action">
+        <button :aria-label="`Edit ${item.label}`" @click="handleEditContactClick(item.type)">
+          <SvgIcons name="edit" />
+        </button>
+    </div>
+
   </div>
+
 </div>
 
   </div>

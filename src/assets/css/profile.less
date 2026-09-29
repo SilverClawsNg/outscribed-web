@@ -182,36 +182,165 @@
     }
   }
 
+  &__contacts{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
 
   &__contact-item {
-    border-top: 1px dotted @link-color;
-    padding: 1.5rem 0;
+    border: 1px solid var(--text-color);
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--link-color);
+    width: 100%;
+  }
 
-      &:last-child {
-        border-bottom: 1px dotted @link-color;
+/* Column 1: Icon Badge (40px desktop, scaled for mobile) */
+&__contact-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  
+
+  @media @phone {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  & svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2px;
+    
+
+    @media @phone {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  /* Specific Platform Fills */
+  &--twitter { background: @twitter-color; }
+  &--facebook { background: @facebook-color; }
+  &--linkedin { background: @linkedin-color; }
+  &--whatsapp { background: @whatsapp-color; }
+  &--email { background: @email-color; }
+  &--telephone { background: @phone-color; }
+  &--website { background: @website-color; }
+  &--instagram { background: @instagram-color; }
+
+  /* Theme-adaptive monochrome platforms */
+  &--twitter {
+    background: var(--x-background-color);
+    color: var(--x-color);
+  }
+
+  &--tiktok {
+    background: var(--tiktok-background-color);
+    color: var(--tiktok-color);
+  }
+}
+
+/* Column 2: Text Layout */
+&__contact-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0; /* Prevents text overflow breaks */
+
+}
+
+  &__contact-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    border-bottom: 2px dotted var(--link-color);
+    padding-bottom: 0.5rem;
+     margin-bottom: 0.25rem;
+
+     &--twitter { color: @twitter-color; }
+      &--facebook { color: @facebook-color; }
+      &--linkedin { color: @linkedin-color; }
+      &--whatsapp { color: @whatsapp-color; }
+      &--email { color: @email-color; }
+      &--telephone { color: @phone-color; }
+      &--website { color: @website-color; }
+      &--instagram { color: @instagram-color; }
+
+      /* Theme-adaptive monochrome platforms */
+      &--twitter {
+        color: var(--x-background-color);
+      }
+
+      &--tiktok {
+        color: var(--tiktok-background-color);
       }
   }
 
-  &__contact-header {
-    display: flex;
-    column-gap: 0.5rem;
-    margin-bottom: 0.25rem;
-    justify-content: space-between;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
+  &__contact-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-&__contact-title {
-  font-weight: 600;
+
+/* Column 3: Edit Action Button */
+&__contact-action {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 4px;
+  background-color: var(--link-color);
+  color: var(--background-color);
   display: flex;
   align-items: center;
-  column-gap: 0.5rem;
+  justify-content: center;
+  flex-shrink: 0;
+
+  @media @phone {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
 
  
-}
-  &__contact-definition {
-    word-break: break-all;
+
+  &:hover {
+    background-color: var(--link-alt-color);
+  
+     & button{
+      color: var(--background-color);
   }
+  }
+
+  & svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2px;
+    
+
+    @media @phone {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
 }
