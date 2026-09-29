@@ -18,7 +18,8 @@ const engage = useEngagement()
 
 // Declare compile-time parameter contract boundaries
 interface Props {
-  insight: InsightListDto
+  insight: InsightListDto,
+  isHomepage?: boolean
 }
 
 const props = defineProps<Props>()
@@ -79,10 +80,14 @@ const contentPath = 'insight'
       <!-- Engagement Metrics -->
       <div class="content-card__stats">
         <p class="content-card__stat"><span>{{ insight.readingTime }}</span> Min Read</p>
-        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.commentsCount) }}</span> Comments</p>
-        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.viewsCount) }}</span> Views</p>
-        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.upvotesCount) }}</span> Upvotes</p>
-        <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.favoritesCount) }}</span> Saves</p>
+
+        <template v-if="!isHomepage">
+          <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.commentsCount) }}</span> Comments</p>
+          <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.viewsCount) }}</span> Views</p>
+          <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.upvotesCount) }}</span> Upvotes</p>
+          <p class="content-card__stat"><span>{{ formatCounts(insight.engagement.favoritesCount) }}</span> Saves</p>
+        </template>
+       
       </div>
     <!-- Actions Footer -->
     <footer class="content-card__footer">

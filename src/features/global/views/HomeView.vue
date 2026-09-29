@@ -147,6 +147,7 @@ onUnmounted(() => {
         v-for="tale in homepageStore.tales" 
         :key="tale.taleId" 
         :tale="tale" 
+        :is-homepage="true"
       />
 
         </div>
@@ -180,6 +181,7 @@ onUnmounted(() => {
               v-for="insight in homepageStore.insights" 
               :key="insight.insightId" 
               :insight="insight"
+              :is-homepage="true"
             />
 
         </div>

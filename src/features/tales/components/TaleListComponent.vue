@@ -17,7 +17,8 @@ const modalStore = useModalStore()
 const engage = useEngagement()
 
 interface Props {
-  tale: TaleListDto
+  tale: TaleListDto,
+  isHomepage?: boolean
 }
 
 const props = defineProps<Props>()
@@ -79,13 +80,17 @@ const contentPath = 'tale'
       <!-- Engagement Metrics -->
       <div class="content-card__stats">
         <p class="content-card__stat"><span>{{ tale.readingTime }}</span> Min Read</p>
-        <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.commentsCount) }}</span> Comments</p>
+         <template v-if="!isHomepage">
+         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.commentsCount) }}</span> Comments</p>
+
         <p v-if="tale.insightsCount !== undefined" class="content-card__stat">
           <span>{{ formatCounts(tale.insightsCount) }}</span> Insights
         </p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.viewsCount) }}</span> Views</p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.upvotesCount) }}</span> Upvotes</p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.favoritesCount) }}</span> Saves</p>
+        </template>
+       
       </div>
 
     <!-- Actions Footer -->
