@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import TurnstileWidget from '@/components/TurnstileWidget.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import { isValidEmail } from '@/utils/validators'
 
@@ -10,25 +9,12 @@ const props = defineProps<{
   email: string }>()
 
 const emit = defineEmits<{
-  (e: 'submit', email: string, captchaToken: string): void
+  (e: 'submit', email: string): void
   (e: 'warning', message: string): void
   (e: 'clear-warning'): void
 }>()
 
 const emailAddress = ref(props.email)
-const captchaToken = ref<string | null>(null)
-
-// Template Ref mapping to bind to the custom widget component instance
-const turnstileRef = ref<InstanceType<typeof TurnstileWidget> | null>(null)
-
-function handleCaptchaSuccess(token: string) {
-  captchaToken.value = token
-}
-
-function handleCaptchaError() {
-  captchaToken.value = null
-  emit('warning', "Error occurred while verifying captcha. Refresh page and try again.")
-}
 
 
 // 1. Tracks whether the user has at least attempted to submit the form once
@@ -76,12 +62,10 @@ function handleSubmit() {
   formSubmitted.value = true
 
   // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
-  if (!isFormValid.value || !captchaToken.value) return
+  if (!isFormValid.value) return
 
-  emit('submit', emailAddress.value.trim(), captchaToken.value)
+  emit('submit', emailAddress.value.trim())
   
-  // Clean up widget security listeners cleanly on submission (Matches your _turnstileRef.RemoveAsync())
-  turnstileRef.value?.remove()
 }
 </script>
 
@@ -102,19 +86,11 @@ function handleSubmit() {
     {{ validationErrors.email }}
   </span>
 
-    <TurnstileWidget 
-      ref="turnstileRef"
-      :site-key="siteKey" 
-      @success="handleCaptchaSuccess"
-      @error="handleCaptchaError"
-      @expired="captchaToken = null"
-    />
-
     <div class="button-holder">
       <button 
         type="submit" 
         class="btn btn--secondary"  
-        :disabled="isLoading || !captchaToken"
+        :disabled="isLoading"
       >
         {{ isLoading ? 'Submitting...' : 'Continue' }}
       </button>

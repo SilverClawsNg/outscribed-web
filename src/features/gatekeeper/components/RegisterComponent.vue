@@ -115,7 +115,7 @@ async function onEmailSubmitted(email: string) {
 }
 
 // --- STEP 1B: Resend Token ---
-async function onResendSubmitted(email: string, newCaptchaToken: string) {
+async function onResendSubmitted(email: string) {
   if (!verificationId.value) {
     setError(new APIError(0, 'Client Error', 'Missing verification state. Please restart registration.'))
     return
@@ -127,7 +127,6 @@ async function onResendSubmitted(email: string, newCaptchaToken: string) {
   const resendTokenData = {
     verificationId: verificationId.value,
     emailAddress: email,
-    captchaToken: newCaptchaToken,
     type: 1
   }
 

@@ -163,8 +163,8 @@ function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<s
 
   <div class="photo-preview">
     
-    <div v-if="profileStore.uploadStatus === 'Loading'" class="loader" aria-label="Loading profile">
-      <p class="loader__dots"></p>
+    <div v-if="profileStore.uploadStatus === 'Loading'" class="loader small" aria-label="Loading profile">
+      <p class="loader__dot"></p>
     </div>
 
     <div v-else-if="profileStore.uploadStatus === 'Uploaded'" class="wrapper">

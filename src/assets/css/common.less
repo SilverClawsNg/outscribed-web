@@ -348,12 +348,21 @@ h1.logo {
 .loader {
     width: 100%;
     height: auto;
-    min-height: calc(100lvh - 100px);
     z-index: 998;
     display: flex;
     justify-content: center;
     align-items:flex-start;
-    padding: 3rem;
+
+    &:not(.small){
+        min-height: calc(100lvh - 100px);
+        padding: 3rem;
+    }
+
+    &.small{
+        height: 100%;
+        position: absolute;
+        align-items:center;
+    }
 
   // Element: the dot graphic
   &__dot {
