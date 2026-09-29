@@ -64,7 +64,7 @@ const photoText = formData.value.base64String || '';
 const captionText = formData.value.caption || '';
 
   return {
-    photo: photoText === null
+    photo: photoText === ''
       ? 'Please select an image to upload before submitting'
       : '',
 
