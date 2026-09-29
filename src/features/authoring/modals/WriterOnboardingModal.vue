@@ -8,6 +8,7 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import type { WriterOnboardingRequest } from '../types/AuthoringTypes'
 import { getValidCountry } from '@/utils/validators'
 import FormProgress from '@/components/FormProgress.vue'
+import HelpIcon from '@/components/HelpIcon.vue'
 
 const authoringStore = useAuthoringStore()
 const modalStore = useModalStore()
@@ -114,7 +115,12 @@ async function handleFinalOnboardingSubmit() {
 
   <div class="form-container">
 
-    <h2>Unlock your creative dashboard workspace.</h2>
+        <div class="form-header">
+    
+         <h2>Unlock your creative dashboard workspace.</h2>
+        <HelpIcon topic="OnboardWriter" />
+    </div>
+  
 
   <FormProgress :progress="progressState" />
 

@@ -47,9 +47,12 @@ const validationErrors = computed(() => {
 const usernameText = formData.value.username || '';
 const passwordText = formData.value.password || '';
 
+const sanitizedUsername = usernameText.replace(/^@+/, '').trim();
+formData.value.username = sanitizedUsername;
+
   return {
   
-    username: usernameText === '' || usernameText.length < 2 || usernameText.length > 20
+    username: sanitizedUsername === '' || sanitizedUsername.length < 2 || sanitizedUsername.length > 20
       ? 'Enter a valid username'
       : '',
 
@@ -132,11 +135,12 @@ onMounted(() => {
 
     <form @submit.prevent="handleSubmit">
 
-      <fieldset :disabled="progressState.type === 'Loading'">
+      <fieldset class="has-useranme" :disabled="progressState.type === 'Loading'">
+        <span class="at-symbol" aria-hidden="true">@</span>
         <input 
           v-model="formData.username" 
           type="text" 
-          class="form-field" 
+          class="form-field is-username" 
           placeholder="Username" 
         />
       </fieldset>

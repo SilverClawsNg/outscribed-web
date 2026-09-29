@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, Teleport } from 'vue'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { computed } from 'vue'
 import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
 import { mediaHelper } from '@/utils/mediaHelper'
 import type { UpdatePhotoRequest } from '../types/IdentityTypes'
+import ImageCropper from '@/components/ImageCropper.vue'
 
 const profileStore = useProfileStore() // 💡 Instantiate Store
 const profile = computed(() => profileStore.profile!)
 
 // --- ⚙️ COMPONENT STATE ---
 const photoUrl = ref<string | null>(null)
+const rawImageSource = ref<string | null>(null)
+const showCropper = ref(false)
   
 // --- INITIALIZE FORM DATA FROM STORE ---
 const formData = ref<UpdatePhotoRequest>({
@@ -22,89 +25,38 @@ const formData = ref<UpdatePhotoRequest>({
 function reset() {
   formData.value.base64String = ''
   photoUrl.value = null
+  rawImageSource.value = null
+  showCropper.value = false
   profileStore.uploadStatus = null
   profileStore.uploadError = null
 }
 
-/**
- * 📸 CLIENT-SIDE IMAGE PROCESSING & RESIZING PIPELINE
- */
-async function displayPhotoUpload(event: Event) {
-
+function handleFileSelection(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files || target.files.length === 0) return
 
-  profileStore.uploadStatus = 'Loading'
-  profileStore.uploadError = null
-
   const file = target.files[0]
+  
+  // 🛡️ Early return if file is undefined
+  if (!file) return
 
-if (file == null) {
-    profileStore.uploadError = 'File cannot exceed 3mb'
-    profileStore.uploadStatus = 'Error'
-    return
-  }
+  target.value = ''
 
-  const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase()
-  const contentType = file.type.toLowerCase()
-  const fileSizeInMB = file.size / (1024 * 1024)
-
-  // 1. VALIDATION CHECKS
-  const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
-  const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
-
-  if (!validExtensions.includes(fileExtension) || !validTypes.includes(contentType)) {
-    profileStore.uploadError = 'Only JPG, PNG, WebP, or Avif files are allowed'
-    profileStore.uploadStatus = 'Error'
-    return
-  }
-
-  if (fileSizeInMB > 3) {
-    profileStore.uploadError = 'File cannot exceed 3mb'
-    profileStore.uploadStatus = 'Error'
-    return
-  }
-
-  try {
-   // 2. READ RAW IMAGE TO BASE64
-    const base64Result = await convertToBase64(file)
-
-     // For local UI preview pane display
-    photoUrl.value = base64Result
-
-    // Strip metadata prefix for the raw backend Base64 string transfer requirement
-    formData.value.base64String = base64Result.split(',')[1] ?? ''
-
-    // Pass the actual content type so .NET can compute the extension dynamically
-    formData.value.contentType = contentType 
-
-    profileStore.uploadStatus = 'Uploaded'
-  } catch (err) {
-    profileStore.uploadError = 'An error occurred during upload processing.'
-    profileStore.uploadStatus = 'Error'
-  } finally {
-    // Clear input value so the change event triggers even if selecting the same file consecutively
-    target.value = ''
+  const reader = new FileReader()
+  reader.readAsDataURL(file) // TypeScript now knows 'file' is strictly type 'File'
+  reader.onload = () => {
+    rawImageSource.value = reader.result as string
+    showCropper.value = true
   }
 }
 
-
-/**
- * 🎛️ HELPER: Simple FileReader Promise
- */
-function convertToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (error) => reject(error)
-  })
+function handleCropComplete(cropResult: { base64String: string; contentType: string; dataUrl: string }) {
+  showCropper.value = false
+  photoUrl.value = cropResult.dataUrl
+  formData.value.base64String = cropResult.base64String
+  formData.value.contentType = cropResult.contentType
+  profileStore.uploadStatus = 'Uploaded'
 }
-
-
-/**
- * 🚀 DISPATCH COMPRESSED PAYLOAD TO MUTATION MONOLITH
- */
 
 async function upload() {
   if (!formData.value.base64String) {
@@ -112,54 +64,26 @@ async function upload() {
     profileStore.uploadError = 'Upload an image before submitting'
     return
   }
-
   profileStore.uploadProfilePhoto(formData.value)
 }
 
-/**
- * 🎛️ HELPER: Standard Canvas Downscaler
- */
-function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = (event) => {
-      const img = new Image()
-      img.src = event.target?.result as string
-      img.onload = () => {
-        const canvas = document.createElement('canvas')
-        let width = img.width
-        let height = img.height
 
-        // Maintain exact aspect ratio bounds
-        if (width > height) {
-          if (width > maxWidth) {
-            height = Math.round((height * maxWidth) / width)
-            width = maxWidth
-          }
-        } else {
-          if (height > maxHeight) {
-            width = Math.round((width * maxHeight) / height)
-            height = maxHeight
-          }
-        }
-
-        canvas.width = width
-        canvas.height = height
-        const ctx = canvas.getContext('2d')
-        ctx?.drawImage(img, 0, 0, width, height)
-
-        // Export as optimized low-weight JPEG
-        resolve(canvas.toDataURL('image/jpeg', 0.85))
-      }
-      img.onerror = (err) => reject(err)
-    }
-    reader.onerror = (err) => reject(err)
-  })
-}
 </script>
 
 <template>
+
+ <!-- Teleport extracts the cropper out of the side modal and mounts it directly under <body> -->
+    <Teleport to="body">
+      <ImageCropper
+        v-if="showCropper"
+        :image-source="rawImageSource"
+        :target-width="250"
+        :target-height="250"
+        aspect-ratio-label="Profile Photo (250 × 250)"
+        @crop-complete="handleCropComplete"
+        @cancel="showCropper = false"
+      />
+    </Teleport>
 
   <div class="photo-preview">
     
@@ -184,7 +108,7 @@ function resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<s
 
     <label class="small">
       
-      <input type="file" accept="image/jpeg,image/png" @change="displayPhotoUpload" style="display: none;" />
+    <input type="file" accept="image/*" @change="handleFileSelection" style="display: none;" />
 
       <img v-if="photoUrl" :src="photoUrl" alt="Staged Preview" />
       <img v-else-if="profile.photo" :src="mediaHelper.getUrl(profile.photo, 'profiles') || undefined" alt="Profile Photo" />

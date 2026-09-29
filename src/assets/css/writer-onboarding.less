@@ -1,6 +1,6 @@
 @import "variables.less";
 
-.water-onboarding{
+.writer-onboarding{
     width: 100%;
     
 &__instruction{
@@ -8,6 +8,28 @@
     font-style: italic;
 
 }
+
+    &__actions{
+        width: 100%;
+        margin-top: 1rem;
+
+        
+  & .btn.btn--secondary {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      z-index: 1;
+      //border-radius:unset;
+      height: 4rem;
+      text-transform:uppercase;
+      
+      &.active {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+    }
+    }
 
     &__items{
         list-style: decimal;

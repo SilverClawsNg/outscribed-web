@@ -60,6 +60,39 @@ const props = defineProps({
 </div>
      </template>
 
+     <template v-else-if="payload === 'OnboardWriter'">
+      <div class="topic-content rich-text">
+
+        
+<p><strong>3-Step Onboarding Process:</strong></p>
+<ul>
+  <li>
+    <strong>Step 1 (Select Your Location):</strong> Select the country you are publishing from using the location dropdown, then click <i>Confirm</i> to launch the guideline review windows.
+  </li>
+  <li>
+    <strong>Step 2 (Review Guidelines):</strong> Carefully read both review windows that open sequentially and click <strong>Continue</strong> at the bottom of each modal to proceed:
+    <ul>
+      <li><i>OutScribed Story Structure Guidelines:</i> Confirms that your Tales are grounded in real-world data or trends, include a mandatory <strong>Reality Check</strong> section linking to credible sources, avoid clickbait, and maintain respectful language.</li>
+      <li><i>OutScribed Legal Responsibility Guidelines:</i> Covers content ownership, defamation policies, community moderation rules, and your sole legal liability as an author while holding OutScribed harmless.</li>
+    </ul>
+  </li>
+  <li>
+    <strong>Step 3 (Final Confirmation):</strong> Check both required acknowledgment boxes on the main page:
+    <ul>
+      <li><i>I confirm that I have read and understood the OutScribed Story Structure guidelines. I will apply these principles when creating and publishing tales.</i></li>
+      <li><i>I confirm that I have read and understood the OutScribed Legal Responsibility guidelines. I will conform to these principles when creating and publishing tales.</i></li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Getting Started:</strong></p>
+<p>Once you click <strong>Confirm Onboarding</strong>, your writer status is instantly activated! You can now access your creator workspace, crop cover media, and begin publishing your work to the community.</p>
+
+      </div>
+    
+
+     </template>
+
       <!-- Topic: Tagging contents -->
        <template v-else-if="payload === 'TagContent'">
           <div class="topic-content rich-text">

@@ -495,10 +495,8 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         || activeTale.value?.category == null
         || activeTale.value?.detail == null
       || activeTale.value?.summary == null
-|| activeTale.value?.realityCheckSource == null
 || activeTale.value?.realityCheckSummary == null
-|| activeTale.value?.realityCheckTitle == null
-|| activeTale.value?.realityCheckUrl == null){
+|| activeTale.value?.realityCheckTitle == null){
 
           return { success: false, error: new APIError(400, 'Bad Request', 'Tale cannot be published without a title, category, details, summary, photo, or reality check') };
 

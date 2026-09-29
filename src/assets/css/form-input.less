@@ -27,9 +27,7 @@
   }
 
   fieldset {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  
     position: relative;
     width: 100%;
     margin-bottom: 0.5rem;
@@ -42,6 +40,12 @@
       align-items: flex-start;
       row-gap: 0.5rem;
       
+    }
+
+    &.has-username{
+        display: flex;
+        justify-content: space-between;
+
     }
 
     &.no-borders{
@@ -121,6 +125,15 @@
 
   }
 
+  
+    .at-symbol {
+      font-weight: 600;
+      color: var(--text-muted, #888);
+      user-select: none;
+      margin-right: 4px;
+    }
+
+
  // --- Form Controls (Input, Textarea, Select) ---
   .form-field {
     width: 100%;
@@ -138,6 +151,10 @@
     appearance: none !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
+    
+        &.is-username{
+          width: calc(100% - 1.5rem);
+        }
 
     &:disabled {
       color: var(--muted-text-color);
@@ -256,6 +273,7 @@
     &.read-only-check {
       cursor: pointer;
       margin-bottom: 1rem;
+      padding-left: 5px;
 
       input {
         pointer-events: none;

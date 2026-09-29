@@ -10,6 +10,7 @@ import { useModalStore } from '@/stores/modalStore'
 import { mediaHelper } from '@/utils/mediaHelper'
 import SvgIcons from '@/components/SvgIcons.vue'
 import HelpIcon from '@/components/HelpIcon.vue'
+import ImageCropper from '@/components/ImageCropper.vue'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
@@ -25,6 +26,8 @@ const formData = ref<UpdatePhotoRequest>({
 
 // --- ⚙️ COMPONENT STATE ---
 const photo = ref<string | null>(null)
+const rawImageSource = ref<string | null>(null)
+const showCropper = ref(false)
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
@@ -112,70 +115,31 @@ function reset() {
 /**
  * 📸 CLEAN CLIENT-SIDE IMAGE READING PIPELINE (No Canvas Resizing)
  */
-async function displayPhotoUpload(event: Event) {
-
+function handleFileSelection(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files || target.files.length === 0) return
 
-  startLoading()
-
   const file = target.files[0]
-  if (file == null) {
-    setWarning('No file has been uploaded')
-    return
-  }
+  
+  // 🛡️ Early return if file is undefined
+  if (!file) return
 
-  const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase()
-  const contentType = file.type.toLowerCase()
-  const fileSizeInMB = file.size / (1024 * 1024)
+  target.value = ''
 
-  // 1. VALIDATION CHECKS (Keep your rules, but allow modern formats if you want later)
-  const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
-  const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
-
-  if (!validExtensions.includes(fileExtension) || !validTypes.includes(contentType)) {
-    setWarning('Only JPG, PNG, WebP, or Avif files are allowed')
-    return
-  }
-
-  // Increased max size boundary since we want high-res master assets in R2
-  if (fileSizeInMB > 5) {
-    setWarning('Master file cannot exceed 5mb')
-    return
-  }
-
-  try {
-    // 2. READ RAW IMAGE TO BASE64
-    const base64Result = await convertToBase64(file)
-
-    // For local UI preview pane display
-    photoUrl.value = base64Result
-
-    // Strip metadata prefix for the backend string requirements
-    formData.value.base64String = base64Result.split(',')[1] ?? ''
-    
-    // Pass the actual content type so .NET can compute the extension dynamically
-    formData.value.contentType = contentType 
-    
-    setSuccess('File successfully attached.')
-
-  } catch (err) {
-    setWarning('An error occurred during file reading.')
-  } finally {
-    target.value = ''
+  const reader = new FileReader()
+  reader.readAsDataURL(file) // TypeScript now knows 'file' is strictly type 'File'
+  reader.onload = () => {
+    rawImageSource.value = reader.result as string
+    showCropper.value = true
   }
 }
 
-/**
- * 🎛️ HELPER: Simple FileReader Promise
- */
-function convertToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (error) => reject(error)
-  })
+function handleCropComplete(cropResult: { base64String: string; contentType: string; dataUrl: string }) {
+  showCropper.value = false
+  photoUrl.value = cropResult.dataUrl
+  formData.value.base64String = cropResult.base64String
+  formData.value.contentType = cropResult.contentType
+  setSuccess('File cropped and ready for submission.')
 }
 
 /**
@@ -210,6 +174,19 @@ async function handleFormSubmission() {
 
 <template>
 
+  <!-- Teleport extracts the cropper out of the side modal and mounts it directly under <body> -->
+    <Teleport to="body">
+      <ImageCropper
+        v-if="showCropper"
+        :image-source="rawImageSource"
+        :target-width="750"
+        :target-height="562"
+        aspect-ratio-label="Insight Cover Photo (750 × 562)"
+        @crop-complete="handleCropComplete"
+        @cancel="showCropper = false"
+      />
+    </Teleport>
+
      <div class="form-container">
 
       <div class="form-header">
@@ -225,7 +202,7 @@ async function handleFormSubmission() {
 
      <label class="large">
 
-            <input type="file" accept="image/jpeg,image/png" @change="displayPhotoUpload" style="display: none;" />
+    <input type="file" accept="image/*" @change="handleFileSelection" style="display: none;" />
 
              <img v-if="photoUrl" :src="photoUrl" alt="Staged Preview" />
             <img v-else-if="photo" :src="mediaHelper.getUrl(photo, 'tales','full') || undefined" alt="Photo" />
