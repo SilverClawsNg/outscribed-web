@@ -55,6 +55,10 @@ onBeforeMount(() => {
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const titleLength = computed(() => formData.value.title?.length || 0)
+const bioLength = computed(() => formData.value.bio?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -64,7 +68,7 @@ const bioText = formData.value.bio || '';
 
   return {
   
-    title: titleText === '' || titleText.length < 8 || titleText.length > 128
+    title: titleText === '' || titleText.length < 3 || titleText.length > 128
       ? 'Title must be between 8 and 128 characters'
       : '',
 
@@ -154,6 +158,15 @@ onMounted(() => {
             class="form-field" 
             placeholder="Title" 
           />
+             <span 
+            class="character-counter"
+            :class="{ 
+              'is-warning': titleLength > 120 || titleLength <= 128,
+              'is-over-limit': titleLength < 3 || titleLength > 128 
+            }"
+          >
+            {{ titleLength }}/128
+          </span>
         </fieldset>
 
          <span v-if="formSubmitted && validationErrors.title" class="validation-message">
@@ -182,6 +195,15 @@ onMounted(() => {
             class="form-field" 
             placeholder="Short Bio" 
           ></textarea>
+           <span 
+            class="character-counter"
+            :class="{ 
+              'is-warning': bioLength > 500 || bioLength <= 512,
+              'is-over-limit': bioLength < 10 || bioLength > 512 
+            }"
+          >
+            {{ bioLength }}/512
+          </span>
         </fieldset>
 
          <span v-if="formSubmitted && validationErrors.bio" class="validation-message">

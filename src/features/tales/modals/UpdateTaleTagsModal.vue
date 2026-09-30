@@ -62,6 +62,9 @@ const lockSubmission = ref(false)
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const tagLength = computed(() => tagFormData.value.name?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -185,6 +188,15 @@ currentTag.value = tagId
             class="form-field" 
             placeholder="Title" 
           />
+           <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': tagLength > 30  && tagLength <= 36,
+              'is-over-limit': tagLength < 3  || tagLength > 36 
+            }"
+          >
+            {{ tagLength }}/36
+          </span>
         </fieldset>
            <span v-if="formSubmitted && validationErrors.name" class="validation-message">
         {{ validationErrors.name }}

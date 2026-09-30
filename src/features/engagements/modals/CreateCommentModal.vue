@@ -40,6 +40,9 @@ onBeforeMount(() => {
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const detailLength = computed(() => formData.value.detail?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -47,8 +50,8 @@ const detailText = formData.value.detail || '';
 
   return {
   
-    detail: detailText === '' || detailText.length < 10 || detailText.length > 4096  || detailText === '<p></p>'
-      ? 'Detail must be between 10 and 4096 characters'
+    detail: detailText === '' || detailText.length < 48 || detailText.length > 4096  || detailText === '<p></p>'
+      ? 'Detail must be between 48 and 4096 characters'
       : ''
   }
 })
@@ -141,10 +144,21 @@ async function handleFormSubmission() {
               v-model="formData.detail" 
             />
 
-           <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
-        {{ validationErrors.detail }}
-      </span>
-
+              <div class="form-errors">
+            <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
+            {{ validationErrors.detail }}
+          </span>
+            <span 
+            v-else
+            class="character-counter"
+            :class="{ 
+              'is-warning': detailLength > 4000 || detailLength <= 4096,
+              'is-over-limit': detailLength < 48 || detailLength > 4096 
+            }"
+          >
+            {{ detailLength }}/4096
+          </span>
+        </div>
         <div class="button-holder">
           <button 
             type="button" 
@@ -155,6 +169,7 @@ async function handleFormSubmission() {
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Comment' }}
           </button>
         </div>
+       
     </form>
     
   </div>

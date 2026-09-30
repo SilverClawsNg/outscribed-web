@@ -55,27 +55,10 @@ onMounted(async () => {
 </script>
 <template>
   <article class="user-card">
-    <div class="user-card__main">
-      <!-- User Avatar -->
-      <figure class="user-card__avatar">
-        <template v-if="user.photo">
-          <img 
-            :src="mediaHelper.getUrl(user.photo, 'profiles') || undefined" 
-            :alt="user.title" 
-            class="user-card__avatar-img"
-          />
-        </template>
-        <template v-else>
-          <SvgIcons name="user" class="user-card__avatar-icon" /> 
-        </template>
-      </figure>
-
-      <!-- Content Stack -->
-      <div class="user-card__details">
+   
         <!-- Header Stack: Title left-aligned, Date right-aligned on desktop -->
         <header class="user-card__header">
           <h1 class="user-card__title">
-            <span class="user-card__name">{{ user.title }}</span>
             <button 
               type="button" 
               class="user-card__username at" 
@@ -86,9 +69,11 @@ onMounted(async () => {
           </h1>
 
           <div class="user-card__date">
-            User since {{ toShortDate(user.registeredAt) }}
+            {{ toShortDate(user.registeredAt) }}
           </div>
         </header>
+
+        
 
         <!-- Metric Badges/Stats -->
         <div class="user-card__stats">
@@ -130,8 +115,7 @@ onMounted(async () => {
             <span>{{ uiMeta.favoriteLongText }}</span>
           </button>
         </footer>
-      </div>
-    </div>
+        
   </article>
 </template>
 <style lang="less" scoped>

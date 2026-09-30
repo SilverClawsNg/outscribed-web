@@ -16,8 +16,17 @@ const password = ref('')
 const title = ref('')
 const passwordVisible = ref(false)
 
+// Regex: 2 to 20 chars, letters, numbers, underscores (_), and hyphens (-).
+// Starts and ends with alphanumeric characters.
+const USERNAME_REGEX = /^[a-zA-Z0-9](?:[a-zA-Z0-9_-]{0,18}[a-zA-Z0-9])?$/;
+
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
+
+// Clean character length derived directly from reactive state
+const usernameLength = computed(() => username.value?.length || 0)
+const passwordLength = computed(() => password.value?.length || 0)
+const titleLength = computed(() => title.value?.length || 0)
 
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
@@ -26,11 +35,26 @@ const usernameText = username.value || '';
 const passwordText = password.value || '';
 const titleText = title.value || '';
 
+let usernameError = '';
+
+  if (usernameText === '') {
+    usernameError = 'Username is required.';
+  } else if (usernameText.length < 2 || usernameText.length > 20) {
+    usernameError = 'Username must be between 2 and 20 characters.';
+  } else if (!USERNAME_REGEX.test(usernameText)) {
+    // Specific feedback for special characters, spaces, or invalid start/end symbols
+    if (usernameText.includes(' ')) {
+      usernameError = 'Username cannot contain spaces.';
+    } else if (usernameText.includes('@')) {
+      usernameError = 'Do not include the @ symbol.';
+    } else {
+      usernameError = 'Only letters, numbers, underscores (_), and hyphens (-) are allowed.';
+    }
+  }
+
   return {
   
-    username: usernameText === '' || usernameText.length < 2 || usernameText.length > 20
-      ? 'Enter a valid username'
-      : '',
+    username: usernameError,
 
     password: passwordText === '' || passwordText.length < 8
       ? 'Enter a valid password'
@@ -94,6 +118,15 @@ function handleSubmit() {
         placeholder="Username" 
         @blur="emit('blurUsername', username)"
       />
+           <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': usernameLength < 2 || usernameLength == 20,
+              'is-over-limit': usernameLength > 20 
+            }"
+          >
+            {{ usernameLength }}/20
+          </span>
     </fieldset>
 
      <span v-if="formSubmitted  && validationErrors.username" class="validation-message">
@@ -114,14 +147,32 @@ function handleSubmit() {
         class="form-field" 
         placeholder="Password" 
       />
+         <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': passwordLength == 8,
+              'is-over-limit': passwordLength < 8 
+            }"
+          >
+            {{ passwordLength }}
+          </span>
     </fieldset>
 
-        <span v-if="formSubmitted  && validationErrors.password" class="validation-message">
+  <span v-if="formSubmitted  && validationErrors.password" class="validation-message">
     {{ validationErrors.password }}
   </span>
 
     <fieldset :disabled="isLoading">
       <input v-model="title" type="text" class="form-field" placeholder="Names" />
+         <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': titleLength > 100 && titleLength <= 128,
+              'is-over-limit': titleLength > 128 
+            }"
+          >
+            {{ titleLength }}/128
+          </span>
     </fieldset>
 
     <span v-if="formSubmitted  && validationErrors.title" class="validation-message">

@@ -189,15 +189,11 @@ onUnmounted(() => {
 
    <template v-else>
 
-     <header class="page-header">
-      <div class="page-header__contents">
-         <h1  :class="{ at: creatorUsername }">
-               {{ pageTitle }}
-            </h1>
-        <button class="btn btn--primary"  @click="modalStore.push('UserListFilter', 'Filter Lists')">Filter</button>
-      </div>
+      <header class="page-header">
+        <h1 :class="{ at: creatorUsername }">  {{ pageTitle }}</h1>
+        <button class="btn btn--secondary"  @click="modalStore.push('UserListFilter', 'Filter Lists')">Filter</button>
     </header>
-   
+
        <template v-if="wasCleaned">
       <PageStatusMessage 
               title="Invalid Filters Removed!" 

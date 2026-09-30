@@ -269,7 +269,6 @@ onMounted(async () => {
             class="form-field" 
             placeholder="Title" 
           />
-          <!-- Character Counter -->
           <span 
             class="character-counter" 
             :class="{ 

@@ -128,19 +128,7 @@ const sortSelected = computed({
     <form @submit.prevent="applyFilter">
       
       <!-- 1. Text Searching Content Inputs -->
-     <section class="form-filter-section">
-        <h3>Search</h3>
-        <fieldset>
-          <input 
-            v-model="filterStore.keyword" 
-            type="text" 
-            id="Keyword" 
-            class="form-field" 
-            placeholder="-- enter keyword --" 
-          />
-        </fieldset>
-      </section>
-
+    
       <!-- 2. Target Visibility Scopes Radio Controls -->
       <section class="form-filter-section">
          

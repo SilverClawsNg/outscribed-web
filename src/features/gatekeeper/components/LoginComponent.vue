@@ -48,6 +48,7 @@ const usernameText = formData.value.username || '';
 const passwordText = formData.value.password || '';
 
 const sanitizedUsername = usernameText.replace(/^@+/, '').trim();
+
 formData.value.username = sanitizedUsername;
 
   return {

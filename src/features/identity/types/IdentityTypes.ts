@@ -158,10 +158,9 @@ export interface UserListDto {
   username: string;
   country: Country | null;
   registeredAt: string;
-  photo: string;
-  title: string;
   talesCount: number;
   followsCount: number;
+  isVisible: boolean;
   engagement: Engageable;
 }
 

@@ -14,7 +14,6 @@ export const useTimelineFilterStore = defineStore('timelineFilter', () => {
   const contenttype = ref<string | null>(null)
   const activity = ref<string | null>(null)
   
-  const keyword = ref<string | null>(null)
   const isprivate = ref<string | null>(null)
   const isbroadcast = ref<string | null>(null)
   const broadcasterid = ref<string | null>(null)
@@ -43,7 +42,6 @@ export const useTimelineFilterStore = defineStore('timelineFilter', () => {
     contenttype.value = '-1'
     activity.value = '-1'
     
-    keyword.value = ''
     isprivate.value = ''
     isbroadcast.value = ''
     broadcasterid.value = ''
@@ -91,11 +89,6 @@ export const useTimelineFilterStore = defineStore('timelineFilter', () => {
       isbroadcast.value = parseBoolean(queryParameters.isbroadcast)
    }
 
-   if(queryParameters.keyword){
-    // 🎯 Category B: Text Inputs & Identity Flags (Retain clean null profiles)
-    keyword.value = parseString(queryParameters.keyword)
-   }
-
     if(queryParameters.broadcasterid){
        broadcasterid.value = parseString(queryParameters.broadcasterid)
     }
@@ -117,7 +110,6 @@ function getAsDictionary(): Record<string, string> {
     sort: sort.value,
     contenttype: contenttype.value,
     activity: activity.value,
-    keyword: keyword.value,
     isprivate: isprivate.value,
     isbroadcast: isbroadcast.value,
     broadcasterid: broadcasterid.value,
@@ -179,9 +171,6 @@ function getAsDictionary(): Record<string, string> {
     if (broadcaster.value  && broadcaster.value.trim() !== '') 
       urlParams.append('broadcaster', broadcaster.value);
 
-    if (keyword.value && keyword.value.trim() !== '') 
-      urlParams.append('keyword', keyword.value);
-
     const currentPointer = overridePointer ? String(overridePointer) : String(pointer.value);
     urlParams.append('pointer', currentPointer);
 
@@ -205,7 +194,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, keyword, pointer,
+    sort, contenttype, activity, isprivate, isbroadcast, broadcasterid, broadcaster, pointer,
     reset, rehydrate, getAsDictionary, buildApiPath
   };
 });

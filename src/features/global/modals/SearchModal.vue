@@ -17,7 +17,13 @@ const searchTargets = [
 ]
 
 function executeSearch() {
-  const trimmedKeyword = keyword.value.trim()
+
+  // Silent cleanup: trim whitespace, hard-cap to 128 characters
+  const trimmedKeyword = keyword.value.trim().slice(0, 128)
+  
+  // Update local ref to match clean query if needed
+  keyword.value = trimmedKeyword
+
   if (!trimmedKeyword) return
 
   isLoading.value = true
@@ -69,6 +75,7 @@ function executeSearch() {
             id="Keyword" 
             class="form-field" 
             placeholder="-- enter keyword --" 
+            maxlength="128"
           />
         </fieldset>
 

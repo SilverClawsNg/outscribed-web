@@ -57,6 +57,9 @@ onBeforeMount(() => {
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const captionLength = computed(() => formData.value.caption?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -190,12 +193,10 @@ async function handleFormSubmission() {
      <div class="form-container">
 
       <div class="form-header">
-    
-          <h2>What image best captures this tale?</h2>
+        <h2>What image best captures this tale?</h2>
         <HelpIcon topic="CreateTale" />
     </div>
     
-
     <FormProgress :progress="progressState" />
 
     <div class="photo-preview">
@@ -227,6 +228,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Photo caption" 
           >
+           <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': captionLength > 120  && captionLength <= 128,
+              'is-over-limit': captionLength < 3  || captionLength > 128 
+            }"
+          >
+            {{ captionLength }}/128
+          </span>
         </fieldset>
                 <span v-if="formSubmitted && validationErrors.caption" class="validation-message">
         {{ validationErrors.caption }}

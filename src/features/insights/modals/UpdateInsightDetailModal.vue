@@ -51,6 +51,9 @@ const { progressState, startLoading, setWarning, setError, resetProgress } = use
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const detailLength = computed(() => formData.value.detail?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -135,10 +138,21 @@ const { success, error } = await insightStore.updateInsightDetails(formData.valu
               v-model="formData.detail" 
             />
 
-           <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
-        {{ validationErrors.detail }}
-      </span>
-
+               <div class="form-errors">
+            <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
+            {{ validationErrors.detail }}
+          </span>
+            <span 
+            v-else
+            class="character-counter"
+            :class="{ 
+              'is-warning': detailLength > 64000 || detailLength <= 65535,
+              'is-over-limit': detailLength < 256 || detailLength > 65535 
+            }"
+          >
+            {{ detailLength }}/65535
+          </span>
+        </div>
         <div class="button-holder">
           <button 
             type="button" 
@@ -149,6 +163,7 @@ const { success, error } = await insightStore.updateInsightDetails(formData.valu
             {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
           </button>
         </div>
+       
     </form>
   </div>
 

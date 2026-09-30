@@ -49,9 +49,11 @@ const { progressState, startLoading, setWarning, setError, resetProgress } = use
 // --- RUN VALIDATION ---
 const lockSubmission = ref(false)
 
-
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
+
+// Clean character length derived directly from reactive state
+const addendumLength = computed(() => formData.value.addendum?.length || 0)
 
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
@@ -60,8 +62,8 @@ const addendumText = formData.value.addendum || '';
 
   return {
   
-    addendum: addendumText === '' || addendumText.length < 3 || addendumText.length > 1024
-      ? 'Addendum must be between 3 and 1024 characters'
+    addendum: addendumText === '' || addendumText.length < 10 || addendumText.length > 1024
+      ? 'Addendum must be between 10 and 1024 characters'
       : ''
   }
 })
@@ -147,6 +149,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Addendum" 
           ></textarea>
+           <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': addendumLength > 1000  && addendumLength <= 1024,
+              'is-over-limit': addendumLength < 10  || addendumLength > 1024 
+            }"
+          >
+            {{ addendumLength }}/1024
+          </span>
         </fieldset>
                  <span v-if="formSubmitted && validationErrors.addendum" class="validation-message">
         {{ validationErrors.addendum }}

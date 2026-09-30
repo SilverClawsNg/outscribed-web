@@ -136,19 +136,19 @@
     .character-counter {
       position: absolute;
       right: 0.5rem;
-      bottom: 0.5rem;
+      bottom: 0;
       font-size: 0.75rem;
       font-weight: 500;
-      color: var(--muted-text-color, #94a3b8);
+      color: var(--muted-text-color,);
       pointer-events: none; // Allows clicks to pass through to the input
       font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
 
       &.is-warning {
-        color: #d97706; // Amber when getting close
+        color: @warning-color; // Amber when getting close
       }
 
       &.is-over-limit {
-        color: #dc2626; // Red when exceeded
+        color: @fatal-color; // Red when exceeded
         font-weight: 700;
       }
     }

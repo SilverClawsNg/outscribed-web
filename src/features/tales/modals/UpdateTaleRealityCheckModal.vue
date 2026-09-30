@@ -55,9 +55,14 @@ const { progressState, startLoading, setWarning, setError, resetProgress } = use
 // --- RUN VALIDATION ---
 const lockSubmission = ref(false)
 
-
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
+
+// Clean character length derived directly from reactive state
+const titleLength = computed(() => formData.value.title?.length || 0)
+const summaryLength = computed(() => formData.value.summary?.length || 0)
+const sourceLength = computed(() => formData.value.source?.length || 0)
+const urlLength = computed(() => formData.value.sourceUrl?.length || 0)
 
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
@@ -84,9 +89,9 @@ const urlText = formData.value.sourceUrl || '';
        url: urlText !== '' && (urlText.length < 8 || urlText.length > 256)
       ? 'Source Url must be between 3 and 256 characters'
       : ''
-
     
   }
+
 })
 
 
@@ -116,7 +121,6 @@ watch(
   { immediate: true }
 )
 
-
 // --- SUBMIT FORM TO STORE ---
 async function handleFormSubmission() {
 
@@ -145,6 +149,7 @@ async function handleFormSubmission() {
   }
   
 }
+
 </script>
 
 <template>
@@ -170,6 +175,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Title" 
           />
+            <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': titleLength > 120  && titleLength <= 128,
+              'is-over-limit': titleLength < 8  || titleLength > 128 
+            }"
+          >
+            {{ titleLength }}/128
+          </span>
         </fieldset>
             <span v-if="formSubmitted && validationErrors.title" class="validation-message">
         {{ validationErrors.title }}
@@ -183,6 +197,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Summary" 
           ></textarea>
+            <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': summaryLength > 500  && summaryLength <= 512,
+              'is-over-limit': summaryLength < 8  || summaryLength > 512 
+            }"
+          >
+            {{ summaryLength }}/512
+          </span>
         </fieldset>
   <span v-if="formSubmitted && validationErrors.summary" class="validation-message">
         {{ validationErrors.summary }}
@@ -195,6 +218,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Optional Source e.g. CNN" 
           />
+            <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': sourceLength > 30  && sourceLength <= 36,
+              'is-over-limit': sourceLength < 2  || sourceLength > 36 
+            }"
+          >
+            {{ sourceLength }}/36
+          </span>
         </fieldset>
   <span v-if="formSubmitted && validationErrors.source" class="validation-message">
         {{ validationErrors.source }}
@@ -207,6 +239,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Optional Source url e.g. https://cnn.com" 
           />
+            <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': urlLength > 240  && urlLength <= 256,
+              'is-over-limit': urlLength < 3  || urlLength > 256 
+            }"
+          >
+            {{ urlLength }}/256
+          </span>
         </fieldset>
   <span v-if="formSubmitted && validationErrors.url" class="validation-message">
         {{ validationErrors.url }}

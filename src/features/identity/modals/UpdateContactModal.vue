@@ -99,6 +99,11 @@ onBeforeMount(() => {
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+
+// Clean character length derived directly from reactive state
+const titleLength = computed(() => formTitle.value?.length || 0)
+
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -106,8 +111,8 @@ const titleText = formTitle.value || '';
 
   return {
   
-    title: titleText === ''
-      ? 'Enter a valid title'
+    title: titleText === '' || titleText.length > 56
+      ? 'Enter a valid title not greater than 56 characters'
       : ''
   }
 })
@@ -205,6 +210,15 @@ onMounted(() => {
       class="form-field" 
       :placeholder="currentContactConfig.placeholder" 
     />
+     <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': titleLength > 50  && titleLength <= 56,
+              'is-over-limit': titleLength > 56 
+            }"
+          >
+            {{ titleLength }}/56
+          </span>
   </fieldset>
 
   <span v-if="formSubmitted && validationErrors.title" class="validation-message">

@@ -52,6 +52,9 @@ const lockSubmission = ref(false)
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const summaryLength = computed(() => formData.value.summary?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -141,6 +144,15 @@ async function handleFormSubmission() {
             class="form-field" 
             placeholder="Summary" 
           ></textarea>
+            <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': summaryLength > 500  && summaryLength <= 512,
+              'is-over-limit': summaryLength < 8  || summaryLength > 512 
+            }"
+          >
+            {{ summaryLength }}/512
+          </span>
         </fieldset>
               <span v-if="formSubmitted && validationErrors.summary" class="validation-message">
         {{ validationErrors.summary }}

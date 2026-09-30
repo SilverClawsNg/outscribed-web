@@ -51,6 +51,9 @@ const { progressState, startLoading, setWarning, setError, resetProgress } = use
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
+// Clean character length derived directly from reactive state
+const titleLength = computed(() => formData.value.title?.length || 0)
+
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -193,6 +196,15 @@ resetProgress()
             class="form-field" 
             placeholder="Title" 
           />
+             <span 
+            class="character-counter" 
+            :class="{ 
+              'is-warning': titleLength > 100 && titleLength <= 128,
+              'is-over-limit': titleLength > 128 
+            }"
+          >
+            {{ titleLength }}/128
+          </span>
         </fieldset>
           <span v-if="formSubmitted && validationErrors.title" class="validation-message">
         {{ validationErrors.title }}
