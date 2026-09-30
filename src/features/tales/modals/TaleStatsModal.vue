@@ -95,7 +95,7 @@ function createComment() {
         {{ formatCounts(tale.engagement.insightsCount) }}
         <router-link 
           v-if="tale.engagement.insightsCount > 0" 
-          :to="`/insights?taleId=${tale.taleId}`" 
+          :to="`/insights?taleid=${tale.taleId}`" 
           title="View Insights"
         >
           View Insights

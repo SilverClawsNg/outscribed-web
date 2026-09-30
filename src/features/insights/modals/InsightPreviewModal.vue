@@ -41,58 +41,47 @@ onBeforeMount(() => {
     <template v-else>
   
   <article class="content-details preview">
-    
-    <header class="content-details__header-container">
+
+      <header class="content-details__header-container">
 
       <div class="content-details__header">
         
-         <div class="content-details__top-meta">
- <time>{{ toShortDate(insightStore.activeInsight.createdAt) }}</time>
-    
-        </div>
+        <div class="content-details__top-meta">
 
-        <h1 class="content-details__title">{{ insightStore.activeInsight.title }}</h1>
+          <div class="content-details__top-meta-left">
 
-        <div class="content-details__writer">
-          By 
-          <button 
+       <button 
             type="button"
              class="content-details__writer-link at" 
             @click="modalStore.push('Profile', 'Profile', authStore.userId)"
           >
             {{ authStore.username }}
           </button>
-           
+          <span class="divider divider--circle"></span>
+         <time>{{ toShortDate(insightStore.activeInsight.createdAt) }}</time>
+    
+          </div>
+
         </div>
 
-         <div class="content-details__meta">
+        <h1 class="content-details__title">{{ insightStore.activeInsight.title }}</h1>
+
+        <div class="content-details__meta-bottom">
         
-         <div class="content-details__meta-item">
-           <SvgIcons name='tag' /> 
             <router-link 
-              class="content-details__category" 
+               class="content-details__meta-link"
               :to="`/insights?category=${insightStore.activeInsight.category}`"
             >
              {{ CategoryDescriptions[insightStore.activeInsight.category] }}
             </router-link>
-          </div>
 
-          <template  v-if="insightStore.activeInsight.country">
-
-          <div class="content-details__meta-item">
-             <SvgIcons name='globe' />
-            <router-link 
-              class="content-details__country" 
+              <router-link 
+               class="content-details__meta-link"
               :to="`/insights?country=${insightStore.activeInsight.country}`"
             >
               {{ CountryDescriptions[insightStore.activeInsight.country] }}            
             </router-link>
-          </div>
-          </template>
-
-             <template v-else >
-                   <p class="content-details__no-content">No country selected!</p>
-            </template>
+        
         </div>
 
           <template v-if="insightStore.activeInsight.summary">
@@ -102,19 +91,21 @@ onBeforeMount(() => {
               </p>
               
             </template>
-             <template v-else>
+          
+          <template v-else>
 
              <PageStatusMessage
                 title="No Summary Added!"
-                message="Add a concise but descriptive summary of the tale."
+                message="Add a concise but descriptive summary of the insight."
                 icon="inbox"
                 :is-bordered="true"
                 />
 
           </template>
-      
+
       </div>
-    </header>  
+    </header>
+      
 
     <div class="content-details__main">
      

@@ -84,7 +84,6 @@ function createComment() {
     
           </div>
 
-
          <button 
               type="button"
               class="content-details__menu-btn" 

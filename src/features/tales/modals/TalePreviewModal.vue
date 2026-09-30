@@ -46,56 +46,49 @@ onBeforeMount(() => {
     <template v-else>
   
   <article class="content-details preview">
+
     
-     <header class="content-details__header-container">
+    <!-- Header Section -->
+    <header class="content-details__header-container">
 
       <div class="content-details__header">
+        
+        <div class="content-details__top-meta">
 
-         <div class="content-details__top-meta">
- <time>{{ toShortDate(taleStore.activeTale.createdAt) }}</time>
-    
-        </div>
+          <div class="content-details__top-meta-left">
 
-        <h1 class="content-details__title">{{ taleStore.activeTale.title }}</h1>
-
-        <div class="content-details__writer">
-          By 
-          <button 
+         <button 
           type="button"
             class="content-details__writer-link at" 
             @click="modalStore.push('Profile', 'Profile', authStore.userId)"
           >
             {{ authStore.username }}
           </button>
+          <span class="divider divider--circle"></span>
+           <time>{{ toShortDate(taleStore.activeTale.createdAt) }}</time>
+    
+          </div>
 
         </div>
 
-       <div class="content-details__meta">
+        <h1 class="content-details__title">{{ taleStore.activeTale.title }}</h1>
+
+        <div class="content-details__meta-bottom">
         
-          <div class="content-details__meta-item">
-           <SvgIcons name='tag' /> 
             <router-link 
-              class="content-details__category" 
+               class="content-details__meta-link"
               :to="`/tales?category=${taleStore.activeTale.category}`"
             >
              {{ CategoryDescriptions[taleStore.activeTale.category] }}
             </router-link>
-          </div>
 
-          <template  v-if="taleStore.activeTale.country">
-
-           <div class="content-details__meta-item">
-             <SvgIcons name='globe' />
-            <router-link 
-              class="content-details__country" 
+              <router-link 
+               class="content-details__meta-link"
               :to="`/tales?country=${taleStore.activeTale.country}`"
             >
               {{ CountryDescriptions[taleStore.activeTale.country] }}            
             </router-link>
-          </div>
-
-          </template>
-
+        
         </div>
 
           <template v-if="taleStore.activeTale.summary">
@@ -116,10 +109,9 @@ onBeforeMount(() => {
                 />
 
           </template>
-      
-      </div>
 
-    </header>  
+      </div>
+    </header>
 
     <div class="content-details__main">
      
