@@ -488,17 +488,21 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     }
   }
 
+  function CannotPublish(){
+    return activeTale.value?.title == null 
+        || activeTale.value?.category == null
+        || activeTale.value?.detail == null
+        || activeTale.value?.summary == null
+        || activeTale.value?.realityCheckSummary == null
+        || activeTale.value?.realityCheckTitle == null;
+  }
+
   async function launchTale(payload: ConfirmRequest) {
     try {
 
- if(activeTale.value?.title == null 
-        || activeTale.value?.category == null
-        || activeTale.value?.detail == null
-      || activeTale.value?.summary == null
-|| activeTale.value?.realityCheckSummary == null
-|| activeTale.value?.realityCheckTitle == null){
+ if(CannotPublish()){
 
-          return { success: false, error: new APIError(400, 'Bad Request', 'Tale cannot be published without a title, category, details, summary, photo, or reality check') };
+          return { success: false, error: new APIError(400, 'Bad Request', 'Tale cannot be published without a title, category, country, details, summary, or reality check') };
 
       }
 
@@ -625,6 +629,6 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleCountry, updateTaleBasic, 
     deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTaleSummary, updateTalePhoto,
-    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, resetState, abort
+    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, resetState, abort, CannotPublish
   };
 });

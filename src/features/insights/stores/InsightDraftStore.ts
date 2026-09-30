@@ -454,15 +454,19 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
     }
   }
 
+   function CannotPublish(){
+    return activeInsight.value?.title == null 
+        || activeInsight.value?.category == null
+        || activeInsight.value?.detail == null
+      || activeInsight.value?.summary == null;
+  }
+
   async function launchInsight(payload: ConfirmRequest) {
     try {
 
-      if(activeInsight.value?.title == null 
-        || activeInsight.value?.category == null
-        || activeInsight.value?.detail == null
-      || activeInsight.value?.summary == null){
+      if(CannotPublish()){
 
-          return { success: false, error: new APIError(400, 'Bad Request', 'Insight cannot be published without a title, category, details, summary, or photo') };
+          return { success: false, error: new APIError(400, 'Bad Request', 'Insight cannot be published without a title, category, country, details, or summary') };
 
       }
 
@@ -589,6 +593,6 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
     insights, activeInsight, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createInsight, setActiveInsight, loadInsights, loadMoreInsights, updateInsightDetails, updateInsightCountry, updateInsightBasic, 
     deleteInsight, launchInsight, archiveInsight, unArchiveInsight, addInsightTag, removeInsightTag, updateInsightSummary, 
-    updateInsightAddendum, updateInsightPhoto, clearActiveInsight, cleanLocalDraft, resetState, abort
+    updateInsightAddendum, updateInsightPhoto, clearActiveInsight, cleanLocalDraft, resetState, abort, CannotPublish
   };
 });

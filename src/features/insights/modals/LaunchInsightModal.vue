@@ -8,6 +8,7 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import type { ConfirmRequest } from '../types/InsightsTypes'
 import { useModalStore } from '@/stores/modalStore'
 import HelpIcon from '@/components/HelpIcon.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // --- INITIALIZE STORES ---
 const insightStore = useInsightDraftStore()
@@ -122,6 +123,19 @@ async function handleFormSubmission() {
 
 <template>
 
+   <template v-if="insightStore.CannotPublish()">
+
+       <PageStatusMessage
+        title="Incomplete Insight!"
+        message="Insight cannot be published without a title, category, country, details, or summary"
+        icon="warning"
+        :is-standalone="true"
+        />
+
+    </template>
+
+    <template v-else>
+
      <div class="form-container">
 
          <div class="form-header">
@@ -160,6 +174,8 @@ async function handleFormSubmission() {
         </div>
     </form>
   </div>
+
+  </template>
 
 </template>
 

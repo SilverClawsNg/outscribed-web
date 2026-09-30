@@ -8,6 +8,7 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import type { ConfirmRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
 import HelpIcon from '@/components/HelpIcon.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
@@ -121,6 +122,19 @@ async function handleFormSubmission() {
 
 <template>
 
+    <template v-if="taleStore.CannotPublish()">
+
+       <PageStatusMessage
+        title="Incomplete Tale!"
+        message="Tale cannot be published without a title, category, country, details, summary, or reality check"
+        icon="warning"
+        :is-standalone="true"
+        />
+
+    </template>
+
+    <template v-else>
+
      <div class="form-container">
 
         <div class="form-header">
@@ -160,6 +174,8 @@ async function handleFormSubmission() {
         </div>
     </form>
   </div>
+
+    </template>
 
 </template>
 
