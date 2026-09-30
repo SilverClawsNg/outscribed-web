@@ -42,7 +42,7 @@ function applyFilter() {
             type="text" 
             id="Keyword" 
             class="form-field" 
-            placeholder="-- enter keyword --" 
+            placeholder="Keyword"  
           />
         </fieldset>
       </section>

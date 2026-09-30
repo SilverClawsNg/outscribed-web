@@ -105,6 +105,7 @@ if(queryParameters.tag){
 }
   
 if(queryParameters.taleid){
+   console.log('hydrating taleid: ${`queryParameters.taleid`}');
    taleid.value = parseValue(queryParameters.taleid)
 }
 

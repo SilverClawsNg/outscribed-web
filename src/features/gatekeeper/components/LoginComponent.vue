@@ -136,7 +136,7 @@ onMounted(() => {
 
     <form @submit.prevent="handleSubmit">
 
-      <fieldset class="has-useranme" :disabled="progressState.type === 'Loading'">
+      <fieldset class="has-username" :disabled="progressState.type === 'Loading'">
         <span class="at-symbol" aria-hidden="true">@</span>
         <input 
           v-model="formData.username" 

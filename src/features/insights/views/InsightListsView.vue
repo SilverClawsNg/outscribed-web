@@ -90,10 +90,11 @@ watch(
 // --- 2. PAGE INITIALIZATION ---
 async function initPage() {
  
-  console.log(`🚀 [Insight Lists View]: Fetching for path -> ${apiUrl.value}`)
+  console.log(`🚀 [Insight Lists View]: Fetching for path -> ${apiUrl.value}. route -> ${route.query}`)
 
   // Hydrate and validate filter state
   const { isClean } = insightFilterStore.rehydrate(route.query);
+
 
   if (!isClean) {
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')

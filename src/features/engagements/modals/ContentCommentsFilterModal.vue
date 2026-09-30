@@ -34,7 +34,7 @@ function applyFilter() {
             type="text" 
             id="Keyword" 
             class="form-field" 
-            placeholder="-- enter keyword --" 
+            placeholder="Keyword"  
           />
         </fieldset>
           <fieldset>
@@ -43,7 +43,7 @@ function applyFilter() {
             type="text" 
             id="Username" 
             class="form-field" 
-            placeholder="-- enter username --" 
+            placeholder="Username"  
           />
         </fieldset>
       </section>

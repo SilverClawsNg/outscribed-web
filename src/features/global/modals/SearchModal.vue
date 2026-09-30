@@ -74,7 +74,7 @@ function executeSearch() {
             type="search" 
             id="Keyword" 
             class="form-field" 
-            placeholder="-- enter keyword --" 
+            placeholder="Keyword"  
             maxlength="128"
           />
         </fieldset>

@@ -75,7 +75,7 @@ const router = createRouter({
         {
           path: 'insights', // Renders at outscribed.com/insights
           name: 'InsightLists',
-          component: () => import('@/features/insights/views/InsightListsView.vue')
+          component: () => import('@/features/insights/views/InsightListsView.vue'),
         },
         {
           path: 'insights/my/:relationType', 

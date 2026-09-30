@@ -60,17 +60,17 @@ const typeSelected = computed({
             type="text" 
             id="Keyword" 
             class="form-field" 
-            placeholder="-- enter keyword --" 
+            placeholder="Keyword"  
           />
         </fieldset>
-           <fieldset>
-              
+             <fieldset class="has-username">
+             <span class="at-symbol" aria-hidden="true">@</span>
           <input 
             v-model="filterStore.username" 
             type="text" 
             id="Username" 
             class="form-field" 
-            placeholder="-- enter username --" 
+            placeholder="Username"  
           />
         </fieldset>
       </section>

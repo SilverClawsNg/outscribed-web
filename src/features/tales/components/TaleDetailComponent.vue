@@ -375,7 +375,7 @@ function createComment() {
         <h1>Recent Insights</h1>
       <RouterLink 
           v-if="tale.engagement.insightsCount > 0" 
-          :to="`/insights?taleId=${tale.taleId}`" 
+          :to="`/insights?taleid=${tale.taleId}`" 
           class="btn btn--secondary" 
         >
           View {{ formatCounts(tale.engagement.insightsCount) }}
@@ -435,7 +435,6 @@ function createComment() {
           View {{ formatCounts(tale.engagement.commentsCount) }}
         </button>
     </header>
-    
 
       <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
         <template v-if="taleStore.hasLoadedEnrichment && taleStore.latestComments?.length">

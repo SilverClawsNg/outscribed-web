@@ -45,7 +45,7 @@
 
     &.has-username{
         display: flex;
-        justify-content: space-between;
+        column-gap: 0.1rem
 
     }
 
@@ -126,9 +126,11 @@
   
     .at-symbol {
       font-weight: 600;
-      color: var(--text-muted, #888);
+      color: var(--muted-text-color);
       user-select: none;
-      margin-right: 4px;
+      display: flex;
+      align-items:center;
+      
     }
 
     .character-counter {
