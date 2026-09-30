@@ -43,6 +43,20 @@ onBeforeMount(() => {
 
 })
 
+// Helper to extract visible text without rendering HTML elements
+function getPlainText(html: string): string {
+  if (!html) return ''
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  // textContent extracts visible text and converts block tags to natural text
+  return doc.body.textContent || ''
+}
+
+// 1. Visible plain text extracted reactively
+const plainTextDetail = computed(() => getPlainText(formData.value.detail))
+
+// 2. Character length based on what the user actually sees
+const detailLength = computed(() => plainTextDetail.value.trim().length)
+
 // --- UI TRANSACTION STATES ---
 const lockSubmission = ref(false)
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
@@ -51,9 +65,6 @@ const { progressState, startLoading, setWarning, setError, resetProgress } = use
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
-// Clean character length derived directly from reactive state
-const detailLength = computed(() => formData.value.detail?.length || 0)
-
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
@@ -61,8 +72,8 @@ const detailText = formData.value.detail || '';
 
   return {
   
-    detail: detailText === '' || detailText.length < 10 || detailText.length > 65535  || detailText === '<p></p>'
-      ? 'Detail must be between 10 and 65535 characters'
+    detail: detailText === '' || detailText.length < 256 || detailText.length > 65535
+      ? 'Detail must be between 256 and 65535 characters'
       : ''
   }
 })

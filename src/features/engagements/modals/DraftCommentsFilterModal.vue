@@ -34,8 +34,9 @@ function applyFilter() {
     <form @submit.prevent="applyFilter">
       
       <!-- 1. Text Searching Content Inputs -->
-      <section>
-        <h3 class="form-heading">Search</h3>
+      <section class="form-filter-section">
+         
+        <h3>Search</h3>
         <fieldset>
           <input 
             v-model="filterStore.keyword" 
@@ -48,8 +49,9 @@ function applyFilter() {
       </section>
 
    <!-- 3. Dataset Result Record Filtering Parameters -->
-      <section>
-        <h3 class="form-heading">Filter</h3>
+     <section class="form-filter-section">
+         
+        <h3>Filter</h3>
         <fieldset>
                 <select v-model="filterStore.status" class="form-field">
                     <option value="-1">-- by status --</option>
@@ -70,8 +72,9 @@ function applyFilter() {
       </section>
 
       <!-- 4. Dataset Result Record Ordering Parameters -->
-      <section>
-        <h3 class="form-heading">Order</h3>
+     <section class="form-filter-section">
+         
+        <h3>Order</h3>
         <fieldset>
                 <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>

@@ -123,6 +123,7 @@ const sortSelected = computed({
 </script>
 
 <template>
+
   <div class="form-container">
     
     <form @submit.prevent="applyFilter">
@@ -133,6 +134,7 @@ const sortSelected = computed({
       <section class="form-filter-section">
          
         <h3>Filter</h3>
+        
         <div class="ticks">
           <p>
             <input 

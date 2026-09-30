@@ -3,14 +3,19 @@
 
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useInsightDraftFilterStore } from '../stores/InsightDraftFilterStore'
+import { useUserListFilterStore } from '../stores/UserListFilterStore'
 import { useModalStore } from '@/stores/modalStore'
-import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems, 
-  InsightStatusSelectItems } from '@/utils/selectItemHelper'
+import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems } from '@/utils/selectItemHelper'
 
 const router = useRouter()
-const filterStore = useInsightDraftFilterStore()
+const filterStore = useUserListFilterStore()
 const modalStore = useModalStore()
+
+const props = defineProps<{
+  payload: unknown // Arrives untouched as the raw string AccountId from your container
+}>()
+
+const type = computed(() => props.payload as string)
 
 function resetFilters() {
   filterStore.reset()
@@ -34,7 +39,7 @@ function applyFilter() {
     <form @submit.prevent="applyFilter">
       
       <!-- 1. Text Searching Content Inputs -->
-    <section class="form-filter-section">
+      <section class="form-filter-section">
          
         <h3>Search</h3>
         <fieldset>
@@ -46,28 +51,22 @@ function applyFilter() {
             placeholder="-- enter keyword --" 
           />
         </fieldset>
+         <fieldset>
+          <input 
+            v-model="filterStore.username" 
+            type="text" 
+            id="Username" 
+            class="form-field" 
+            placeholder="-- enter username --" 
+          />
+        </fieldset>
       </section>
 
    <!-- 3. Dataset Result Record Filtering Parameters -->
       <section class="form-filter-section">
          
         <h3>Filter</h3>
-        <fieldset>
-                <select v-model="filterStore.status" class="form-field">
-                    <option value="-1">-- by status --</option>
-                    <option v-for="item in InsightStatusSelectItems" :key="item.value" :value="item.value">
-                    {{ item.label }}
-                    </option>
-                </select>
-            </fieldset>
-             <fieldset>
-                <select v-model="filterStore.category" class="form-field">
-                    <option value="-1">-- by category --</option>
-                    <option v-for="item in CategorySelectItems" :key="item.value" :value="item.value">
-                    {{ item.label }}
-                    </option>
-                </select>
-            </fieldset>
+       
              <fieldset>
                 <select v-model="filterStore.country" class="form-field">
                     <option value="-1">-- by country --</option>
@@ -76,13 +75,15 @@ function applyFilter() {
                     </option>
                 </select>
             </fieldset>
+      
       </section>
 
       <!-- 4. Dataset Result Record Ordering Parameters -->
       <section class="form-filter-section">
          
         <h3>Order</h3>
-        <fieldset>
+        <template v-if="type">
+            <fieldset>
                 <select v-model="filterStore.sort"  class="form-field">
                     <option value="-1">-- sort by --</option>
                     <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
@@ -90,7 +91,20 @@ function applyFilter() {
                     </option>
                 </select>
             </fieldset>
+        </template>
+         <template v-else>
+            <fieldset>
+                <select v-model="filterStore.sort"  class="form-field">
+                    <option value="-1">-- sort by --</option>
+                    <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                    </option>
+                </select>
+            </fieldset>
+        </template>
+      
       </section>
+
 
       <!-- 5. Form Actions Layout Triggers -->
       <div class="filter-buttons">

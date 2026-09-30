@@ -211,7 +211,6 @@ onUnmounted(() => {
         :error="userStore.loadMoreError"
         @load-more="userStore.loadMoreUsers"
         @retry="userStore.loadMoreUsers">
-
         
   <div class="container">
 

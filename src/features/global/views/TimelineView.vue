@@ -104,8 +104,8 @@ onUnmounted(() => {
   <template v-if="isLoading">
 
    <div class="loader" role="status" aria-label="Loading timeline">
-  <p class="loader__dot"></p>
-</div>
+    <p class="loader__dot"></p>
+  </div>
 
   </template>
   
