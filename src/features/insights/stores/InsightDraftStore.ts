@@ -27,7 +27,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
   const hasNext = ref<boolean>(false);
   const pointer = ref<string | null>('1');
   const anchor = ref<string | null>(null);
-  const baseRoute = 'api/insights/drafts'; 
+  const baseRoute = ref<string>('api/insights/drafts'); 
   const loadMoreError = ref<APIError | null>(null);
 
   // Keys for LocalStorage references
@@ -111,12 +111,10 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
   function setActiveInsight(insight: any) {
     activeInsight.value = { ...insight };
   }
-
   
   function clearActiveInsight() {
     activeInsight.value = null;
   }
-
 
   async function syncActiveInsightChanges() {
     if (!activeInsight.value) return;
@@ -130,6 +128,9 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
   // --- Store Actions ---
 
   async function loadInsights(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+   
+   reset()
+
     try {
       feedController = new AbortController();
       const outcome = await getAsync<GetInsightDraftListResponse>(apiPathWithFilters, true, {} as GetInsightDraftListResponse, feedController.signal);
@@ -169,7 +170,7 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
 
     try {
       feedController = new AbortController();
-      const nextPageUrl = filterStore.buildApiPath(baseRoute, pointer.value, anchor.value);
+      const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value);
       const outcome = await getAsync<GetInsightDraftListResponse>(nextPageUrl, true, {} as GetInsightDraftListResponse, feedController.signal);
 
       if (outcome.isFailure) {
@@ -572,12 +573,15 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
     localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${insightId}`);
   }
 
-  function resetState() {
+  function reset() {
     insights.value = [];
     activeInsight.value = null;
     pointer.value = '1';
     hasNext.value = false;
     anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/insights/drafts';
+     isFetchingMore.value = false;
   }
 
   function abort() {
@@ -586,6 +590,8 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
       feedController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   // 🎯 Cleaned return footprint exposing "create" precisely
@@ -593,6 +599,6 @@ export const useInsightDraftStore = defineStore('insightDraft', () => {
     insights, activeInsight, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createInsight, setActiveInsight, loadInsights, loadMoreInsights, updateInsightDetails, updateInsightCountry, updateInsightBasic, 
     deleteInsight, launchInsight, archiveInsight, unArchiveInsight, addInsightTag, removeInsightTag, updateInsightSummary, 
-    updateInsightAddendum, updateInsightPhoto, clearActiveInsight, cleanLocalDraft, resetState, abort, CannotPublish
+    updateInsightAddendum, updateInsightPhoto, clearActiveInsight, cleanLocalDraft, abort, CannotPublish
   };
 });

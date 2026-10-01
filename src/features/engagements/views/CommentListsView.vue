@@ -134,11 +134,6 @@ function redirectToLogin() {
   router.push(`/login?returnUrl=${currentPath.value}`)
 }
 
-// --- MOUNT & WATCHERS ---
-onMounted(async () => {
-  await initPage();
-})
-
 onUnmounted(() => {
   commentStore.abort();
 });

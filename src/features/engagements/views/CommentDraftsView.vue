@@ -1,7 +1,7 @@
 <script setup lang="ts"> 
 
 // --- IMPORTS ---
-import { ref, onMounted, watch, onUnmounted } from 'vue' // 🛡️ Fix 2: Added missing 'watch' hook import
+import { ref, watch, onUnmounted } from 'vue' // 🛡️ Fix 2: Added missing 'watch' hook import
 import { useDraftCommentsStore } from '../stores/DraftCommentsStore'; 
 import { useDraftCommentsFilterStore } from '../stores/DraftCommentsFilterStore.ts'; 
 import { useRouter, useRoute } from 'vue-router'
@@ -82,16 +82,18 @@ async function initPage() {
   isLoading.value = false
 }
 
-// --- MOUNT PAGE ---
-onMounted(async () => {
-  await initPage();
-})
-
 // Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  loadingError.value = null
-  initPage();
-}, { deep: true });
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
+
+    loadingError.value = null
+
+    await initPage() 
+  },
+  { immediate: true }
+)
 
 
 // inside your HomeView.vue

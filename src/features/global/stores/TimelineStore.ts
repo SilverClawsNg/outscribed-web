@@ -12,22 +12,34 @@ export const useTimelineStore = defineStore('timeline', () => {
 
     // State
       const timelines = ref<TimelineDto[]>([]); 
-      const baseRoute = 'api/global/timeline'; 
-            const filterStore = useTimelineFilterStore()
+      const baseRoute = ref<string>('api/global/timeline'); 
+      const filterStore = useTimelineFilterStore()
 
     // Loading and Tracking flags matching your C# states
-        const isFetchingMore = ref<boolean>(false);
-        const hasNext = ref<boolean>(false);
-        const pointer = ref<string | null>('1');
-         const anchor = ref<string | null>(null);
-        const loadMoreError = ref<APIError | null>(null)
+      const isFetchingMore = ref<boolean>(false);
+      const hasNext = ref<boolean>(false);
+      const pointer = ref<string | null>('1');
+      const anchor = ref<string | null>(null);
+      const loadMoreError = ref<APIError | null>(null)
 
         // 🔒 Keep the controller private/local to this store context
   let feedController: AbortController | null = null;
 
+  function reset() {
+    timelines.value = [];
+    pointer.value = '1';
+    hasNext.value = false;
+     anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/global/timeline';
+     isFetchingMore.value = false;
+  }
+
     // 1. Initial Load Path
     async function loadTimelines(apiPathWithFilters: string): Promise<{ success: boolean; error: any | null }> {
     
+      reset()
+
       try {
 
           // Spawn a fresh controller instance for this specific execution pass
@@ -88,7 +100,7 @@ export const useTimelineStore = defineStore('timeline', () => {
             // Spawn a fresh controller instance for this specific execution pass
         feedController = new AbortController();
 
-            const nextPageUrl = filterStore.buildApiPath(baseRoute, pointer.value, anchor.value)
+            const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value)
             const outcome = await getAsync<GetTimelineResponse>(nextPageUrl, true, {} as GetTimelineResponse, feedController.signal)
     
         if (outcome.isFailure) {
@@ -136,6 +148,7 @@ export const useTimelineStore = defineStore('timeline', () => {
       feedController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+    reset()
   }
     
       return {baseRoute, timelines, isFetchingMore, loadMoreError, hasNext, pointer,loadTimelines, loadMoreTimelines, abort

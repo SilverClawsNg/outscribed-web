@@ -146,10 +146,6 @@ async function initPage() {
   }
 }
 
-// --- MOUNT PAGE ---
-onMounted(async () => {
-  await initPage();
-})
 
 // inside your HomeView.vue
 onUnmounted(() => {

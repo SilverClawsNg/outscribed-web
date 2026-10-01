@@ -48,6 +48,8 @@ export const useUserListStore = defineStore('userList', () => {
 // 1. Initial Load Path
 async function loadUsers(apiPathWithFilters: string, isAuthorized: boolean): Promise<{ success: boolean; error: APIError | null }> {
 
+  reset()
+  
   try {
 
       // Spawn a fresh controller instance for this specific execution pass
@@ -281,7 +283,16 @@ async function loadMoreUsers() {
 
 
   }
-
+  
+  function reset() {
+    users.value = [];
+    pointer.value = '1';
+    hasNext.value = false;
+     anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/users';
+     isFetchingMore.value = false;
+  }
 
    function abort() {
     if (feedController) {
@@ -294,6 +305,8 @@ async function loadMoreUsers() {
       hydrateController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   return {

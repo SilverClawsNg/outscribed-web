@@ -61,8 +61,8 @@ const validationErrors = computed(() => {
 const summaryText = formData.value.summary || '';
 
   return {
-    summary: summaryText === '' || summaryText.length < 3 || summaryText.length > 512
-      ? 'Summary must be between 3 and 512 characters'
+    summary: summaryText === '' || summaryText.length < 10 || summaryText.length > 512
+      ? 'Summary must be between 10 and 512 characters'
       : ''
   }
 })
@@ -148,7 +148,7 @@ async function handleFormSubmission() {
             class="character-counter" 
             :class="{ 
               'is-warning': summaryLength > 500  && summaryLength <= 512,
-              'is-over-limit': summaryLength < 8  || summaryLength > 512 
+              'is-over-limit': summaryLength < 10  || summaryLength > 512 
             }"
           >
             {{ summaryLength }}/512

@@ -1,7 +1,7 @@
 <script setup lang="ts"> 
 
 // --- IMPORTS ---
-import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
+import { ref, watch, computed, onUnmounted } from 'vue'
 import { useInsightListStore } from '../stores/InsightListStore'; 
 import { useInsightListFilterStore } from '../stores/InsightListFilterStore'; 
 import { useRouter, useRoute } from 'vue-router'
@@ -136,10 +136,6 @@ function redirectToLogin() {
   router.push(`/login?returnUrl=${currentPath.value}`)
 }
 
-// --- MOUNT & WATCHERS ---
-onMounted(async () => {
-  await initPage();
-})
 
 onUnmounted(() => {
   insightStore.abort();

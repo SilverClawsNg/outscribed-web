@@ -333,10 +333,12 @@ async function recordView() {
       recordController = null;
       console.log('[Store]: Requests successfully canceled via recordController.');
     }
+
+    reset()
   }
 
   return {
-    insight, hasLoadedEnrichment, latestComments, loadInsight, loadArchivedInsight, enrichInsight, recordView, reset, abort
+    insight, hasLoadedEnrichment, latestComments, loadInsight, loadArchivedInsight, enrichInsight, recordView, abort
   };
 
 });

@@ -231,6 +231,9 @@ async function login(formData: LoginRequest): Promise<Result<boolean>> {
   // 🎯 CASE 3: Clean path success! Store intercepts the token, saves it, and converts T to boolean
   setAccessToken(outcome.value.accessToken)
   
+  //set the current user
+  handleAuthStorageTransition(formData.username)
+
   return {
     value: true,
     error: null,
@@ -267,12 +270,47 @@ async function createAccess(formData: any): Promise<Result<boolean>> {
   // Store saves token locally
   setAccessToken(outcome.value.accessToken)
 
+  //set the current user
+  handleAuthStorageTransition(formData.username)
+
   return {
     value: true,
     error: null,
     isFailure: false,
     isSuccess: true
   }
+}
+
+function handleAuthStorageTransition(newUsername: string) {
+  const canonicalNewUser = newUsername.trim().toLowerCase();
+  const currentOwner = (localStorage.getItem('outsCribed:owner') || '').toLowerCase();
+
+  // 1. Returning Same User: Preserve drafts & anchors
+  if (currentOwner === canonicalNewUser) {
+    console.log(`[Storage] Session restored for: ${canonicalNewUser}`);
+    return;
+  }
+
+  // 2. Account Switch or New Registration: Full Purge
+  console.log(`[Storage] Purging storage for new session (${currentOwner || 'none'} -> ${canonicalNewUser})`);
+  
+   clearByPatterns([
+    // 1. Purge all offline draft contents
+    'tale:draft', 
+    'insight:draft', 
+    'comment:draft',
+
+    // 2. Purge all pagination anchors (covers base, favorites, upvotes, flags, etc.)
+    'tale:anchor', 
+    'insight:anchor', 
+    'comment:anchor',
+    'timeline:anchor',
+
+    // 3. Purge user network anchors
+    'user:anchor'
+  ]);
+
+  localStorage.setItem('OutScribed:owner', canonicalNewUser);
 }
 
 function logout(logoutData: LogoutRequest): void {
@@ -291,9 +329,9 @@ if(logoutData.flushCache){
  if (flushCache) {
   clearByPatterns([
     // 1. Purge all offline draft contents
-    'tale:drafts', 
-    'insight:drafts', 
-    'comment:drafts',
+    'tale:draft', 
+    'insight:draft', 
+    'comment:draft',
 
     // 2. Purge all pagination anchors (covers base, favorites, upvotes, flags, etc.)
     'tale:anchor', 

@@ -161,7 +161,7 @@ onMounted(() => {
              <span 
             class="character-counter"
             :class="{ 
-              'is-warning': titleLength > 120 || titleLength <= 128,
+              'is-warning': titleLength > 120 || titleLength == 128,
               'is-over-limit': titleLength < 3 || titleLength > 128 
             }"
           >
@@ -198,7 +198,7 @@ onMounted(() => {
            <span 
             class="character-counter"
             :class="{ 
-              'is-warning': bioLength > 500 || bioLength <= 512,
+              'is-warning': bioLength > 500 || bioLength == 512,
               'is-over-limit': bioLength < 10 || bioLength > 512 
             }"
           >

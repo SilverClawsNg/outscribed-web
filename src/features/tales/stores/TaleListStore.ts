@@ -49,7 +49,7 @@ let feedController: AbortController | null = null;
     baseRoute.value = apiUrl;
   }
   
-  function resetState() {
+  function reset() {
     tales.value = [];
     markAsAuthorized.value = false;
     isFetchingMore.value = false;
@@ -64,6 +64,8 @@ let feedController: AbortController | null = null;
 
 // 1. Initial Load Path
 async function loadTales(apiPathWithFilters: string, isAuthorized: boolean): Promise<{ success: boolean; error: APIError | null }> {
+
+  reset()
 
   try {
 
@@ -300,11 +302,13 @@ async function loadMoreTales() {
       hydrateController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   return {
     tales, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute,
-    hydratePersonals, activateEngagementButtons, setBaseRoute, loadTales, loadMoreTales, resetState, abort
+    hydratePersonals, activateEngagementButtons, setBaseRoute, loadTales, loadMoreTales, abort
   };
 
 });

@@ -131,6 +131,7 @@ async function initPage() {
   }
 }
 
+
 function redirectToLogin() {
   router.push(`/login?returnUrl=${currentPath.value}`)
 }

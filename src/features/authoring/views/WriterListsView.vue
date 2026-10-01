@@ -1,7 +1,7 @@
 <script setup lang="ts"> 
 
 // --- IMPORTS ---
-import { ref, onMounted, watch, computed, onUnmounted } from 'vue' // 🛡️ Fix 2: Added missing 'watch' hook import
+import { ref, watch, onUnmounted } from 'vue' // 🛡️ Fix 2: Added missing 'watch' hook import
 import { useWriterListStore } from '../stores/WriterListStore'; 
 import { useWriterListFilterStore } from '../stores/WriterListFilterStore'; 
 import { useRouter, useRoute } from 'vue-router'
@@ -84,17 +84,18 @@ async function initPage() {
   }
 }
 
-// --- MOUNT PAGE ---
-onMounted(async () => {
-  
-  await initPage();
-})
+// --- Watch Route Changes ---
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
 
-// Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  loadingError.value = null
-  initPage();
-}, { deep: true });
+    loadingError.value = null
+
+    await initPage() // fetch only; apiUrl/pageTitle already correct
+  },
+  { immediate: true }
+)
 
 
 // inside your HomeView.vue

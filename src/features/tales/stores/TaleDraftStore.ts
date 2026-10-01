@@ -27,7 +27,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
   const hasNext = ref<boolean>(false);
   const pointer = ref<string | null>('1');
   const anchor = ref<string | null>(null);
-  const baseRoute = 'api/tales/drafts'; 
+   const baseRoute = ref<string>('api/tales/drafts'); 
   const loadMoreError = ref<APIError | null>(null);
 
   // Keys for LocalStorage references
@@ -132,6 +132,8 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
   async function loadTales(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
     
+    reset()
+
     try {
 
       feedController = new AbortController();
@@ -178,7 +180,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
     try {
       feedController = new AbortController();
-      const nextPageUrl = filterStore.buildApiPath(baseRoute, pointer.value, anchor.value);
+      const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value);
       const outcome = await getAsync<GetTaleDraftListResponse>(nextPageUrl, true, {} as GetTaleDraftListResponse, feedController.signal);
 
       if (outcome.isFailure) {
@@ -608,12 +610,16 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${taleId}`);
   }
 
-  function resetState() {
+  function reset() {
     tales.value = [];
     activeTale.value = null;
     pointer.value = '1';
     hasNext.value = false;
     anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/tales/drafts';
+     isFetchingMore.value = false;
+
   }
 
   function abort() {
@@ -622,6 +628,8 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       feedController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   // 🎯 Cleaned return footprint exposing "create" precisely
@@ -629,6 +637,6 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleCountry, updateTaleBasic, 
     deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTaleSummary, updateTalePhoto,
-    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, resetState, abort, CannotPublish
+    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, abort, CannotPublish
   };
 });

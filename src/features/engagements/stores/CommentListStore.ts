@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { useContentCommentsFilterStore } from './ContentCommentsFilterStore.ts'
 import { APIError } from '@/api/apiTypes.ts'
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
@@ -9,8 +8,6 @@ import {initializeCommentPageListEngagement,
     type LoadingPageCommentsResponse,
     type GetPageCommentsResponse, type CommentPageListDto, type GetFavoriteIdsResponse
 } from '../types/EngagementTypes.ts';
-import {initializeCommentListEngagement} from '../types/EngagementTypes.ts';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
 import { useLoginHint } from '@/utils/authHelper'
 import { setStoredAnchor } from '@/utils/anchorStorage';
 import { useCommentListFilterStore } from './CommentListFilterStore.ts'
@@ -36,11 +33,11 @@ export const useCommentListStore = defineStore('commentList', () => {
     const pointer = ref<string | null>('1');
     const anchor = ref<string | null>(null);
     const baseRoute = ref<string>('api/comments'); 
-    const loadMoreError = ref<APIError | null>(null)
+   const loadMoreError = ref<APIError | null>(null)
   const markAsAuthorized = ref(false)
 
   
-  function resetState() {
+  function reset() {
     comments.value = [];
     pointer.value = '1';
     hasNext.value = false;
@@ -49,7 +46,6 @@ export const useCommentListStore = defineStore('commentList', () => {
      loadMoreError.value = null;
      baseRoute.value = 'api/comments';
      isFetchingMore.value = false;
-     setBaseRoute;
   }
 
     
@@ -69,7 +65,8 @@ export const useCommentListStore = defineStore('commentList', () => {
   async function loadComments(apiPathWithFilters: string, isAuthorized: boolean) : Promise<{ success: boolean; error: APIError | null }>{
   
       // 2. Initialize the default response layout envelope right at the entrance gate
-        
+        reset();
+
     try {
 
       feedController = new AbortController();
@@ -187,7 +184,6 @@ async function loadMoreComments() {
   } 
   }
 
-
   
   /**
    * 💧 Parameterless Hydration (Self-Draining)
@@ -301,6 +297,7 @@ async function loadMoreComments() {
     if (feedController) {
       feedController.abort();
       feedController = null;
+      
       console.log('[Store]: Requests successfully canceled via feedController.');
     }
    if (hydrateController) {
@@ -308,12 +305,14 @@ async function loadMoreComments() {
       hydrateController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   return {
    
   comments, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute,
-    hydratePersonals, activateEngagementButtons, setBaseRoute, loadComments, loadMoreComments, resetState, abort
+    hydratePersonals, activateEngagementButtons, setBaseRoute, loadComments, loadMoreComments, abort
 
   };
 });

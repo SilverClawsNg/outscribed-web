@@ -104,12 +104,16 @@ onMounted(async () => {
   await initPage();
 })
 
-// Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  loadingError.value = null
-  initPage();
-}, { deep: true });
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath || isInitializing.value) return
 
+    loadingError.value = null
+
+    await initPage()
+  }
+)
 
 // inside your HomeView.vue
 onUnmounted(() => {

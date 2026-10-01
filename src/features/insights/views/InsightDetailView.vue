@@ -117,9 +117,6 @@ onMounted(async () => {
     }
   }
 
-  // 1. Clear out the previous insight immediately before starting the new fetch pass
-  insightStore.reset()
-  
   await initPage();
 
       
@@ -133,7 +130,7 @@ onMounted(async () => {
 
 // inside your HomeView.vue
 onUnmounted(() => {
-  insightStore.reset()
+  insightStore.abort()
 });
 
 </script>

@@ -73,12 +73,6 @@ async function initPage() {
   isLoading.value = false
 }
 
-// --- MOUNT PAGE ---
-onMounted(async () => {
-  await initPage();
-})
-
-
 // --- Watch Route Changes ---
 watch(
   () => route.fullPath,

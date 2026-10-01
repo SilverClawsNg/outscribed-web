@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import {type CommentPageListDto } from '@/features/engagements/types/EngagementTypes.ts'
@@ -7,7 +7,6 @@ import { type InsightLatestListDto } from '@/features/insights/types/InsightsTyp
 import {initializeAccountEngagement } from '@/features/identity/types/IdentityTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
-import { useTaleListFilterStore } from './TaleListFilterStore.ts'
 import { useLoginHint } from '@/utils/authHelper'
 
 import {type TaleDetailDto, type GetTaleDetailPersonalizeResponse, type GetTalePageEnrichmentResponse, 
@@ -333,10 +332,13 @@ async function recordView() {
       recordController = null;
       console.log('[Store]: Requests successfully canceled via recordController.');
     }
+
+    reset()
   }
 
   return {
-    tale, hasLoadedEnrichment, latestInsights, latestComments, loadTale, loadArchivedTale, enrichTale, recordView, reset, abort
+    tale, hasLoadedEnrichment, latestInsights, latestComments, loadTale, loadArchivedTale, enrichTale, 
+    recordView, abort
   };
 
 });

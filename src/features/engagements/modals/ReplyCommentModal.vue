@@ -152,7 +152,7 @@ async function handleFormSubmission() {
             v-else
             class="character-counter"
             :class="{ 
-              'is-warning': detailLength > 4000 || detailLength <= 4096,
+              'is-warning': detailLength > 4000 && detailLength <= 4096,
               'is-over-limit': detailLength < 48 || detailLength > 4096 
             }"
           >

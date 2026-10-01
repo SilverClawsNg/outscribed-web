@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import {type GetFavoriteIdsResponse } from '@/features/engagements/types/EngagementTypes.ts'
@@ -217,6 +217,9 @@ async function loadMoreWriters() {
     pointer.value = '1';
     hasNext.value = false;
      anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/writers';
+     isFetchingMore.value = false;
   }
 
   
@@ -326,11 +329,13 @@ async function loadMoreWriters() {
       hydrateController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   return {
     writers, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute,
-    hydratePersonals, activateEngagementButtons, loadWriters, loadMoreWriters, reset, abort
+    hydratePersonals, activateEngagementButtons, loadWriters, loadMoreWriters, abort
   };
 
 });

@@ -9,6 +9,7 @@ import { CountryDescriptions } from '@/utils/descriptors'
 import { toShortDate } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement'
+import SvgIcons from '@/components/SvgIcons.vue'
 
 const modalStore = useModalStore()
 const engage = useEngagement()

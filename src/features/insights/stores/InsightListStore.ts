@@ -36,7 +36,7 @@ export const useInsightListStore = defineStore('insightList', () => {
   const markAsAuthorized = ref(false)
 
   
-  function resetState() {
+  function reset() {
     insights.value = [];
     pointer.value = '1';
     hasNext.value = false;
@@ -44,7 +44,7 @@ export const useInsightListStore = defineStore('insightList', () => {
        markAsAuthorized.value = false;
      loadMoreError.value = null;
      baseRoute.value = 'api/insights';
-     isFetchingMore.value = false;setBaseRoute;
+     isFetchingMore.value = false;
   }
 
 
@@ -66,6 +66,8 @@ export const useInsightListStore = defineStore('insightList', () => {
 
 // 1. Initial Load Path
 async function loadInsights(apiPathWithFilters: string, isAuthorized: boolean): Promise<{ success: boolean; error: APIError | null }> {
+
+  reset()
 
   try {
 
@@ -311,7 +313,7 @@ async function loadMoreInsights() {
 
   return {
     insights, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute,
-    hydratePersonals, activateEngagementButtons, setBaseRoute, loadInsights, loadMoreInsights, resetState, abort
+    hydratePersonals, activateEngagementButtons, setBaseRoute, loadInsights, loadMoreInsights, abort
   };
 
 });

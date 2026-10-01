@@ -10,7 +10,6 @@ import InsightDraftComponent from '../components/InsightDraftComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import { useLoginHint } from '@/utils/authHelper'
 import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
@@ -80,17 +79,18 @@ async function initPage() {
   isLoading.value = false
 }
 
-// --- MOUNT PAGE ---
-onMounted(async () => {
-  await initPage();
-})
+// --- Watch Route Changes ---
+watch(
+  () => route.fullPath,
+  async (newPath, oldPath) => {
+    if (newPath === oldPath) return
 
-// Watch for browser navigation query parameters changing (Handles back/forward buttons cleanly)
-watch(() => route.query, () => {
-  loadingError.value = null
-  initPage();
-}, { deep: true });
+    loadingError.value = null
 
+    await initPage() // fetch only; apiUrl/pageTitle already correct
+  },
+  { immediate: true }
+)
 
 // inside your HomeView.vue
 onUnmounted(() => {

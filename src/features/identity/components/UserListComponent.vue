@@ -8,8 +8,6 @@ import { getEngagementMetadata } from '@/features/engagements/types/EngagementTy
 import { useEngagement } from '@/composables/useEngagement';
 import SvgIcons from '@/components/SvgIcons.vue'
 import { formatCounts } from '@/utils/stringHelpers'
-import { ContentTypeDescriptions } from '@/utils/descriptors'
-import { mediaHelper } from '@/utils/mediaHelper'
 
 // 2. Setup Shared Store Hooks
 const modalStore = useModalStore()

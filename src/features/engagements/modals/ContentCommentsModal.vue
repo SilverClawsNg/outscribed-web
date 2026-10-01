@@ -301,7 +301,7 @@ onMounted(async () => {
     <PageStatusMessage
       title="Unknown Error!"
       message="Unknown error occured while loading comments. Refresh page and try again."
-      icon="warning"
+      icon="inbox"
       :is-standalone="true"
       />
   </template>

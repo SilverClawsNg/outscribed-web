@@ -156,7 +156,7 @@ const { success, error } = await taleStore.updateTaleDetails(formData.value!)
             v-else
             class="character-counter"
             :class="{ 
-              'is-warning': detailLength > 64000 || detailLength <= 65535,
+              'is-warning': detailLength > 64000 && detailLength <= 65535,
               'is-over-limit': detailLength < 512 || detailLength > 65535 
             }"
           >

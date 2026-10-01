@@ -29,8 +29,8 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
   const hasNext = ref<boolean>(false);
   const pointer = ref<string | null>('1');
   const anchor = ref<string | null>(null);
-  const baseRoute = 'api/comments/drafts'; 
   const loadMoreError = ref<APIError | null>(null);
+const baseRoute = ref<string>('api/comments/drafts'); 
 
   // Keys for LocalStorage references
   const NEW_DRAFT_PREFIX = 'comment:draft:new:';
@@ -129,6 +129,9 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
 
   // --- Store Actions ---
   async function loadComments(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+    
+    reset();
+    
     try {
       feedController = new AbortController();
       const outcome = await getAsync<GetContentCommentsResponse>(apiPathWithFilters, true, {} as GetContentCommentsResponse, feedController.signal);
@@ -166,7 +169,7 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
 
     try {
       feedController = new AbortController();
-      const nextPageUrl = filterStore.buildApiPath(baseRoute, pointer.value, anchor.value);
+      const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value);
       const outcome = await getAsync<GetContentCommentsResponse>(nextPageUrl, true, {} as GetContentCommentsResponse, feedController.signal);
 
       if (outcome.isFailure) {
@@ -503,12 +506,15 @@ async function replyComment(detail: string)
     localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${commentId}`);
   }
 
-  function resetState() {
+  function reset() {
     comments.value = [];
     activeComment.value = null;
     pointer.value = '1';
     hasNext.value = false;
     anchor.value = null;
+     loadMoreError.value = null;
+     baseRoute.value = 'api/comments/drafts';
+     isFetchingMore.value = false;
   }
 
   function abort() {
@@ -517,12 +523,14 @@ async function replyComment(detail: string)
       feedController = null;
       console.log('[Store]: Requests successfully canceled.');
     }
+
+    reset()
   }
 
   // 🎯 Cleaned return footprint exposing "create" precisely
   return {
     comments, activeComment, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createComment, replyComment, setActiveComment, loadComments, loadMoreComments, updateCommentDetails, deleteComment, 
-    archiveComment, unArchiveComment, updateCommentAddendum, clearActiveComment, cleanLocalDraft, resetState, abort
+    archiveComment, unArchiveComment, updateCommentAddendum, clearActiveComment, cleanLocalDraft, reset, abort
   };
 });

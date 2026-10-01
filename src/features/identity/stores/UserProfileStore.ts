@@ -232,6 +232,8 @@ async function recordView() {
       hydrateController = null;
       console.log('[Store]: Requests successfully canceled via hydrateController.');
     }
+
+    reset()
   }
 
 
