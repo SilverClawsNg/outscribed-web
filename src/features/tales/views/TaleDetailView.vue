@@ -110,9 +110,6 @@ onMounted(async () => {
     }
   }
 
-  // 1. Clear out the previous tale immediately before starting the new fetch pass
-  taleStore.reset()
-  
   await initPage();
  
     // 1. Instantly fire enrichment hydration pass in the background
@@ -125,7 +122,7 @@ onMounted(async () => {
 
 // inside your HomeView.vue
 onUnmounted(() => {
-  taleStore.reset()
+  taleStore.abort()
 });
 
 </script>

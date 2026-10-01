@@ -91,6 +91,8 @@ async function loadTale(taleId: string): Promise<{ success: boolean; error: APIE
 // 1. Initial Load Path
 async function loadArchivedTale(taleId: string): Promise<{ success: boolean; error: APIError | null }> {
 
+   reset()
+   
   try {
 
       // Spawn a fresh controller instance for this specific execution pass

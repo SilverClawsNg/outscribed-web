@@ -89,6 +89,8 @@ async function loadInsight(insightId: string): Promise<{ success: boolean; error
 // 1. Initial Load Path
 async function loadArchivedInsight(insightId: string): Promise<{ success: boolean; error: APIError | null }> {
 
+   reset()
+   
   try {
 
       // Spawn a fresh controller instance for this specific execution pass
