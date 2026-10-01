@@ -136,11 +136,6 @@ function redirectToLogin() {
   router.push(`/login?returnUrl=${currentPath.value}`)
 }
 
-// --- MOUNT & WATCHERS ---
-onMounted(async () => {
-  await initPage();
-  console.log(`✅ [Tale Lists View]: Page initialized for path -> ${apiUrl.value}, path -> ${pageTitle.value}`)
-})
 
 onUnmounted(() => {
   taleStore.abort();

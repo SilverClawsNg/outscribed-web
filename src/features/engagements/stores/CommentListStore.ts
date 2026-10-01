@@ -12,6 +12,9 @@ import { useLoginHint } from '@/utils/authHelper'
 import { setStoredAnchor } from '@/utils/anchorStorage';
 import { useCommentListFilterStore } from './CommentListFilterStore.ts'
 
+// Native JS Set wrapper implementation shortcut
+class HashSetOrSet extends Set<string> {}
+
 export const useCommentListStore = defineStore('commentList', () => {
 
   const filterStore = useCommentListFilterStore()
@@ -122,18 +125,12 @@ async function loadMoreComments() {
   /**
    * 2. LoadMoreComments (Infinite scroll continuation pipeline)
    */
-  async function executeLoadMoreComments() : Promise<LoadingPageCommentsResponse> {
+  async function executeLoadMoreComments() {
 
-      // 2. Initialize the default response layout envelope right at the entrance gate
-        const response: LoadingPageCommentsResponse = {
-          success: false,
-          comments: [],
-          hasNext: false,
-          pointer: null,
-          anchor: null,
-          error: null
-        };
-        
+       if (isFetchingMore.value || !hasNext.value) return;
+
+    isFetchingMore.value = true;
+
     try {
 
   // Spawn a fresh controller instance for this specific execution pass
@@ -147,41 +144,53 @@ async function loadMoreComments() {
         )
 
           if (outcome.isFailure) {
-      response.error = outcome.error || null
-        return response;
-      }
+          if (outcome.error) {
+            loadMoreError.value = outcome.error
+          }
+            else{
+                loadMoreError.value = new APIError(
+                    500,
+                    'Unknown Error!',
+                    'Unknown error occured while retrieving comments. Refresh page and try again.'
+                );
+            }
+
+            return
+        }
 
         
     // Consideration 2: Reconcile updates if data was retrieved
        if (outcome.isSuccess && outcome.value?.comments?.length) {
           // Reconcile updates against incoming block (handles slower message brokers)
           
-          // Commit clean data to store state
-          response.hasNext = outcome.value.hasNext;
-          response.pointer = outcome.value.pointer;
+            // Commit clean data to store state
+          hasNext.value = outcome.value.hasNext;
+          pointer.value = outcome.value.pointer;
 
-            // 🔄 Map and clean the data stream BEFORE it hits the UI state engine
-      const freshItems = outcome.value.comments.map((item: any) => initializeCommentPageListEngagement(item));
+            // Filter duplicates already caught by state or top navigation creations
+          const existingIds = new HashSetOrSet(comments.value.map(t => t.commentId));
 
+              // 1. Filter out duplicates and immediately shape the raw inputs into valid DTO structures
+                  const freshItems = outcome.value.comments
+                    .filter((t: any) => !existingIds.has(t.insightId))
+                    .map((item: any) => initializeCommentPageListEngagement(item));
+          
         comments.value.push(...freshItems);
       
       // 📌 Append the new batch to the staging queue
       awaitingHydration.value.push(...freshItems);
 
         } else{ // stop infinite scrolling by setting has next to false
-           response.hasNext = false
-           response.pointer ='-1'
+           hasNext.value = false
+          pointer.value ='-1'
         }
 
-         response.success = true
-    // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
-    return response;
-
-    } catch (err: any) {
-    // Fail-safe catch-all wrapper
-    response.error = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.', 'Client.Exception')
-    return response;
-  } 
+   
+        } catch (err) {
+  console.error("Handled gracefully:", err)
+}finally {
+          isFetchingMore.value = false;
+        }
   }
 
   
