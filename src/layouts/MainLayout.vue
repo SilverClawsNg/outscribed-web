@@ -33,10 +33,6 @@ watch(() => route.path, () => modalStore.closeAll())
       <RouterView />
     </main>
 
-    <RouterLink to="/" title="Home" class="site-icon">
-      <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
-    </RouterLink>
-
   </div>
 
 </template>
