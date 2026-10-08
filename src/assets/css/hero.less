@@ -4,62 +4,110 @@
   width: 100%;
   height: auto;
   margin-top: -1px;
-  background-color: var(--link-color);
-  color:var(--background-color);
+  position:relative;
+  //background-color: var(--link-color);
+  //color:@black-color;
+  //border-bottom: 1px solid var(--border-color);
+  //background-image: url('@/assets/images/background-image.png');
+
+  background-color: var(--bg-surface);
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+
+
+  
+ 
+  
 }
 
 .hero-contents{
  
   margin: 0 auto;
-  display:flex;
   position:relative;
   max-width: calc(100% - 20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    @media @phone, @phablet {
-        flex-direction: column;
-         width: @min-width;
-    }
-
-     @media @tablet, @largeDevice {
-       justify-content:space-between;
-        width: @mid-width;
-    }
   
 }
+.hero__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* Layer 1: Top wash gradient fading downward from header */
+    //linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
+    
+    /* Layer 2: Repeating Vertical Gridlines */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 48px,
+      var(--hero-grid-color) 48px,
+      var(--hero-grid-color) 49px
+    );
+}
 
-.hero-contents-image{
+.hero__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero__fade--bottom {
+  bottom: 0;
+  height: 100px; /* Provides a smooth 100px transition into page content */
+  background: var(--hero-fade-bottom);
+}
+
+.hero-contents {
+  position: relative;
+  z-index: 2; /* Sits cleanly above background pattern & bottom fade */
+}
+
+.hero__fade--top {
+  top: 0;
+  height: 100px;
+  background: linear-gradient(
+    0deg,
+    rgba(23, 21, 25, 0) 0%,
+    var(--background-color) 100%
+  );
+}
+
+
+.hero__image{
   height: auto;
   display:flex;
-  align-items: end;
- 
-  & img{
-    width: 100%;
-    height: auto;
- }
- 
-  @media @phone, @phablet {
-         width: 100%;
-    }
+  justify-content:center;
+  margin-bottom: 1.5rem;
 
-     @media @tablet, @largeDevice {
-        width: calc(100% - 450px);
-        min-height:100%;
-    }
+  & img{
+    width: 3rem;
+    height: auto;
+  }
+ 
 }
 
 .hero {
   position: relative;
   height: auto;
-  z-index: 11;
+  z-index: 1;
+  text-align:center;
+   width: @min-width;
+   max-width: 100%;
   
    @media @phone, @phablet {
-         width: 100%;
-         padding: 2rem 0.5rem;
+         padding: 2rem 0;
     }
 
      @media @tablet, @largeDevice {
-         width: @min-width;
-         padding: 4rem 0.5rem 1rem 0;
+        
+         padding: 4rem 0;
     }
 
   // Element: Logo and line divider header
@@ -84,8 +132,8 @@
   }
 
    &__title,
-   &__tagline,
-   &__description {
+   &__eyebrow,
+   &__explainer {
     margin-bottom: 1.5rem;
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
 
@@ -96,10 +144,10 @@
   }
 
  
-  &__tagline {
-    font-size: 1.1rem;
+  &__eyebrow {
+    font-size: 0.94rem;
     font-weight: normal;
-    text-transform: capitalize;
+    text-transform: uppercase;
 
     &-break {
        @media @phone, @phablet {
@@ -111,18 +159,18 @@
   &__title {
     font-size: clamp(2.4rem, 2.5vw + 1rem, 3.2rem);
     line-height: clamp(2.6rem, 2.5vw + 1rem, 3.4rem);
-    //font-weight: 900;
+    font-weight: 600;
     //text-transform: uppercase;
-    //color: #D71138;
+    //color: var(--link-color);
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
     &-highlight{
       display:block;
     }
   }
 
-  &__description {
+  &__explainer {
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1.12rem;
   }
 
   &__cta {
@@ -133,6 +181,7 @@
     gap: 0.75rem;
     flex-wrap: wrap; // Allows buttons to wrap cleanly when space runs out
   }
+
   &__action {
    
     flex: 1 1 auto; // Allows buttons to grow and fill available space evenly
@@ -143,7 +192,6 @@
     &.btn--primary {
       background-color: @white-color;
       color:@black-color;
-      border-color: @white-color;
 
       &:hover{
         color:@link-color;

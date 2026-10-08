@@ -13,6 +13,7 @@ interface Props {
   isPage?: boolean
   message?: string
 }
+
 const props = withDefaults(defineProps<Props>(), {
   isPage: true
 })
@@ -118,6 +119,7 @@ async function handleSubmit() {
 onMounted(() => {
   resetProgress()
 })
+
 </script>
 
 <template>

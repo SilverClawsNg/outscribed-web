@@ -8,6 +8,12 @@ import { useLoginHint } from '@/utils/authHelper'
 // 1. Setup your services/stores
 const modalStore = useModalStore()
 const isLoggedIn = useLoginHint()
+const isMenuOpen = ref(false)
+
+
+function handleCreateDraftClick() {
+  if (!isLoggedIn.value) modalStore.push('CreateTale', 'Create Tale')
+}
 
 // 2. Define your component inputs and outputs (Props & Emits)
 const emit = defineEmits<{
@@ -90,126 +96,122 @@ onMounted(() => {
 
 <template>
 
-  <header class="main-header" id="main-header">
-
-    <div class="main-header__wrapper" :class="activeStateClass">
-      
-      <section class="main-header__top-navigation-container">
-
-        <section class="main-header__top-navigation">
-          
-          <div class="main-header__top-navigation-left">
-
-            <button class="hamburger" @click="TogglePublicMenu">
-              <div></div><div></div><div></div>
-            </button>
-
-            <button class="icon-btn" @click="ToggleUserMenu" aria-label="User Menu">
-             <SvgIcons name="user" />
-            </button>
-
-          </div>
-
-          <div class="main-header__top-navigation-center">
-
-            <h1 class="logo">
-              <RouterLink to="/" title="Home" @click="CloseMenu"><SvgIcons name="logo" /></RouterLink>
-            </h1>
-
-          </div>
-
-          <div class="main-header__top-navigation-right">
-
-            <button class="btn btn--primary btn--has-icon" @click="modalStore.push('Search', 'Search Contents')">
-               <SvgIcons name="search" /> <span class="btn--hide-text">Search</span>
-            </button>
-
-            <button class="btn btn--secondary btn--has-icon" @click="modalStore.push('CreateTale', 'Create Tale')">
-              <SvgIcons name="edit" /> <span class="btn--hide-text">OutScribe</span>
-            </button>
-
-          </div>
-
-        </section>
-
-      </section>
-
-      <section class="main-header__menu-container">
-
-        <div class="main-header__menu">
-          
-          <nav class="main-header__public-menu">
-
-            <RouterLink to="/" title="Home" @click="CloseMenu">Home</RouterLink>
-
-            <RouterLink to="/tales" title="Tales" @click="CloseMenu">Tales</RouterLink>
-
-            <RouterLink to="/insights" title="Insights" @click="CloseMenu">Insights</RouterLink>
-
-            <RouterLink to="/comments" title="Comments" @click="CloseMenu">Comments</RouterLink>
-
-            <RouterLink to="/writers" title="Writers" @click="CloseMenu">Writers</RouterLink>
-
-            <RouterLink to="/faqs" title="FAQs" @click="CloseMenu">FAQs</RouterLink>
-            
-            <template v-if="isLoggedIn">
-
-              <RouterLink to="/logout" @click="CloseMenu">Logout</RouterLink>
-
-            </template>
-
-            <template v-else>
-
-              <RouterLink to="/login" title="Login" @click="CloseMenu">Login</RouterLink>
-
-              <RouterLink to="/register" title="Register" @click="CloseMenu">Create Account</RouterLink>
-
-            </template>
-
-          </nav>
-
-          <nav class="main-header__user-menu">
-
-            <template v-if="isLoggedIn">
-
-              <RouterLink to="/profile" title="Profile" @click="CloseMenu">Profile</RouterLink>
-
-              <RouterLink to="/timelines" title="Timeline" @click="CloseMenu">Timeline</RouterLink>
-
-              <RouterLink to="/tales/editor" title="Tale Drafts" @click="CloseMenu">Tales</RouterLink>
-
-              <RouterLink to="/insights/editor" title="Insight Drafts" @click="CloseMenu">Insights</RouterLink>
-
-              <RouterLink to="/comments/editor" title="Comment Drafts" @click="CloseMenu">Comments</RouterLink>
-
-            </template>
-
-            <template v-else>
-
-              <p class="login-required-instruction">
-
-                <RouterLink to="/login" title="Login" @click="CloseMenu">Login to view account</RouterLink>
-
-                or
-
-                <RouterLink to="/register" title="Register" @click="CloseMenu">Register in quick steps.</RouterLink>
-
-              </p>
-
-            </template>
-
-          </nav>
-
+  <header class="main-header">
+    
+    <!-- ==================================================================== -->
+    <!-- UTILITY BAR (Level 1 Wrapper - 100% Width for Full Bleed Border)    -->
+    <!-- ==================================================================== -->
+    <div class="main-header__utility-bar-wrapper">
+      <div class="main-header__utility-bar">
+        
+        <!-- Slot A: Account / Auth Status (Desktop Left) -->
+        <div class="main-header__account-slot">
+          <template v-if="isLoggedIn">
+            <router-link to="/profile" class="main-header__utility-link">Profile</router-link>
+            <span class="main-header__utility-divider">/</span>
+            <router-link to="/timeline" class="main-header__utility-link">Timeline</router-link>
+            <span class="main-header__utility-divider">/</span>
+            <router-link to="/logout" class="main-header__utility-link">logout</router-link>
+          </template>
+          <template v-else>
+            <span class="main-header__auth-prompt">
+              Get Started. 
+              <router-link to="/login" class="main-header__editorial-link" @click="isMenuOpen = false">Log In</router-link>
+              or 
+              <router-link to="/register" class="main-header__auth-btn main-header__auth-btn--highlight" @click="isMenuOpen = false">Sign Up</router-link>
+            </span>
+          </template>
         </div>
 
-      </section>
+        <!-- Slot B: Mobile Menu Toggle Button (Mobile Left) -->
+        <button 
+          class="main-header__menu-toggle" 
+          :class="{ 'main-header__menu-toggle--active': isMenuOpen }"
+          aria-label="Toggle Navigation Menu"
+          @click="isMenuOpen = !isMenuOpen"
+        >
+           <SvgIcons name="menu" :size="20" />
+        </button>
 
+        <!-- Slot C: Main Brand Anchor (Always Centered) -->
+        <div class="main-header__brand-slot">
+        <router-link to="/" class="main-header__brand-link" title="OutScribed Home">
+            <SvgIcons name="logo" />
+          </router-link>
+        </div>
+
+        <!-- Slot D: Quick Write Icon (Mobile Right) -->
+          <button class="main-header__quick-write-btn" @click="modalStore.push('CreateTale', 'Create Tale')">
+             <SvgIcons name="edit" :size="20" />
+          </button>
+
+        <!-- Slot E: Studio Actions & Draft CTA (Desktop Right) -->
+        <div class="main-header__studio-slot">
+           <router-link to="/tales/editor" class="main-header__utility-link">
+           Saved Drafts
+          </router-link>
+         
+          <button class="btn btn--secondary" @click="modalStore.push('CreateTale', 'Create Tale')">
+            Create a Draft
+          </button>
+        </div>
+   
+      </div>
     </div>
 
-  </header>
+    <!-- ==================================================================== -->
+    <!-- PRIMARY NAV (Level 2 Wrapper - 100% Width Full-Bleed Border)        -->
+    <!-- ==================================================================== -->
+     <div class="main-header__primary-nav-wrapper" :class="{ 'main-header__primary-nav-wrapper--expanded': isMenuOpen }">
+      <div class="main-header__primary-nav">
+        <div class="main-header__primary-nav-inner">
+          
+         <!-- Slot F: Core Editorial Links -->
+        <nav class="main-header__editorial-links">
+          <router-link to="/tales" class="main-header__editorial-link" @click="isMenuOpen = false">Discover Tales</router-link>
+          <router-link to="/writers" class="main-header__editorial-link" @click="isMenuOpen = false">Meet the Writers</router-link>
+          <router-link to="/faqs" class="main-header__editorial-link" @click="isMenuOpen = false">Learn More About OutScribed</router-link>
+          <router-link to="/search" class="main-header__editorial-link main-header__search-trigger" @click="isMenuOpen = false">
+            <SvgIcons name="search" :size="20" />
+            <span>Search</span>
+          </router-link>
+        </nav>
 
+        <!-- Mobile Accordion Content (Slots A & E mirrored on Mobile Expand) -->
+        <div class="main-header__mobile-account-group">
+          <div class="main-header__mobile-section-label">Account</div>
+           <template v-if="isLoggedIn">
+            <router-link to="/profile" class="main-header__mobile-link" @click="isMenuOpen = false">
+              <SvgIcons name="user" /> Profile
+            </router-link>
+            <router-link to="/timeline" class="main-header__mobile-link" @click="isMenuOpen = false">
+              <SvgIcons name="clock" /> Timeline
+            </router-link>
+          </template>
+          <template v-else>
+            <router-link to="/login"  class="main-header__mobile-link" @click="isMenuOpen = false">Log In</router-link>
+            <router-link to="/register"  class="main-header__mobile-link main-header__mobile-link--highlight" @click="isMenuOpen = false">Sign Up For Free</router-link>
+          </template>
+        </div>
+
+        <div class="main-header__mobile-studio-group">
+           <button class="main-header__mobile-cta-btn" @click="modalStore.push('CreateTale', 'Create Tale')">
+               <span>Create a Draft</span>
+            </button>
+          <router-link to="/drafts" class="main-header__mobile-link" @click="isMenuOpen = false">
+            <SvgIcons name="archive" /> Saved Drafts
+          </router-link>
+          <router-link v-if="isLoggedIn" to="/logout" class="main-header__mobile-link main-header__mobile-link--logout" @click="isMenuOpen = false">
+            Logout
+          </router-link>
+        </div>
+        </div>
+      </div>
+    </div>
+  </header>
 </template>
 
-<style lang="less" scoped>
-   @import "../assets/css/header.less";
+
+<style scoped lang="less">
+@import "@/assets/css/header.less";
 </style>

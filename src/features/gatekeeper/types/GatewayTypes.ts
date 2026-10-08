@@ -2,9 +2,10 @@
 // Requests
 export interface SendTokenRequest { 
     emailAddress: string; 
-    captchaToken: string; 
+    verificationId: string; 
     type: number 
 }
+
 
 export interface VerifyTokenRequest { 
     verificationId: string; 
@@ -19,12 +20,12 @@ export interface ResetPasswordRequest {
 }
 
 // Responses
-export interface SendTokenResponse { 
+export interface ReserveResponse { 
     verificationId: string 
 }
 
 export interface CheckUsernameResponse { 
-    isAvailable: boolean 
+    isTaken: boolean 
 }
 
 export interface LoginRequest { 
@@ -32,8 +33,34 @@ export interface LoginRequest {
     password: string; 
 }
 
+export interface ReserveRequest { 
+    username: string; 
+    password: string; 
+    captchaToken: string;
+}
+
+
+export interface VerifyRequest { 
+    username: string; 
+    password: string; 
+    verificationId: string;
+}
+
+export interface RegisterRequest { 
+    username: string; 
+    password: string; 
+    verificationId: string;
+    captchaToken: string;
+}
+
 export interface LogoutRequest { 
     closeAll: boolean; 
     flushCache: boolean; 
     type: number;
+}
+ // 🎯 Contract for the specific identity wrapper returned by these endpoints
+export interface AuthEnvelopeResponse {
+  isSuccessful: boolean
+  accessToken: string | null
+  verificationId: string | null
 }

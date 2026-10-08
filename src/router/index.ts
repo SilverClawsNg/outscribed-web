@@ -182,8 +182,8 @@ const router = createRouter({
       children: [
         {
           path: 'register', // Renders at outscribed.com/register
-          name: 'submit-tale',
-          component: () => import('@/features/gatekeeper/views/RegisterView.vue')
+          name: 'register',
+          component: () => import('@/features/authentication/views/RegisterView.vue')
         },
         {
           path: 'logout', // Renders at outscribed.com/logout
@@ -193,12 +193,12 @@ const router = createRouter({
         {
           path: 'login', // Renders at outscribed.com/login
           name: 'login',
-          component: () => import('@/features/gatekeeper/views/LoginView.vue')
+          component: () => import('@/features/authentication/views/LoginView.vue')
         },
         {
           path: 'reset', // Renders at outscribed.com/reset
           name: 'reset-password',
-          component: () => import('@/features/gatekeeper/views/ResetView.vue')
+          component: () => import('@/features/authentication/views/ResetView.vue')
         }
       ]
     }

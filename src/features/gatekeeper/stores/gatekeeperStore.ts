@@ -3,14 +3,15 @@ import { ref, computed } from 'vue'
 import authApiClient from '@/api/apiClient'
 import apiClient from '@/api/apiClient'
 
-import { mapToApiError } from '@/utils/errorMapper' // 🎯 Import our new mapper
 import { postAsync } from '@/api/apiPostServices'
+import { getAsync } from '@/api/apiGetServices'
+
 import type { Result } from '@/api/apiTypes'
 import { APIError } from '@/api/apiTypes'
 import type { ChangePasswordRequest } from '@/features/identity/types/IdentityTypes'
 import type { WriterStatus } from '@/utils/enumHelper'
 import { setLoginHint, clearLoginHint, checkIsLoggedIn, clearByPatterns } from '@/utils/authHelper'
-import type { LoginRequest, LogoutRequest } from '@/features/gatekeeper/types/GatewayTypes'
+import type { CheckUsernameResponse, LoginRequest, LogoutRequest, SendTokenRequest, ReserveResponse, AuthEnvelopeResponse } from '@/features/gatekeeper/types/GatewayTypes'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(null)
@@ -188,12 +189,7 @@ async function executeSilentRefresh(): Promise<{ token: string | null; status: n
   // 🛡️ Rule 3: Valid hint and ready memory token are both present
   return true
 }
-  // 🎯 Contract for the specific identity wrapper returned by these endpoints
-interface AuthEnvelopeResponse {
-  isSuccessful: boolean
-  accessToken: string | null
-}
-
+ 
 /**
  * 🎯 SILENT BACKGROUND REFRESH
  * Intercepts expired request tokens inline. Uses raw apiClient to avoid circular dependencies.
@@ -204,33 +200,108 @@ interface AuthEnvelopeResponse {
  * View handles it as: const outcome = await authStore.login(credentials)
  * Expected return: Result<boolean>
  */
-async function login(formData: LoginRequest): Promise<Result<boolean>> {
+async function login(formData: LoginRequest): Promise<Result<string>> {
   // 1. Post to the backend endpoint getting the raw AuthEnvelopeResponse
   const outcome = await postAsync<AuthEnvelopeResponse, any>('/api/login', formData, false)
   
   // 🎯 CASE 1: The network layer or error mapper caught a classic failure (e.g., HTTP 400/500/Timeout)
-  if (outcome.isFailure) {
+  if (outcome.isFailure || !outcome.value?.isSuccessful ) {
     return {
-      value: false,
-      error: outcome.error,
-      isFailure: true,
-      isSuccess: false
-    }
-  }
-
-  // 🎯 CASE 2: The endpoint hit HTTP 200, but identity domain rules failed (e.g., wrong password)
-  if (!outcome.value?.isSuccessful || !outcome.value?.accessToken) {
-    return {
-      value: false,
+      value: null,
       error: outcome.error || new APIError(400, 'Authentication Failed', 'Invalid email address or password combination.'),
       isFailure: true,
       isSuccess: false
     }
   }
 
+   if(outcome.value.verificationId){
+
+    return {
+      value: outcome.value.verificationId,
+      error: null,
+      isFailure: false,
+      isSuccess: true
+    }
+    }
+
+  // 🎯 CASE 2: The endpoint hit HTTP 200, but identity domain rules failed (e.g., wrong password)
+  if (!outcome.value?.accessToken) {
+    return {
+      value: null,
+      error: new APIError(400, 'Authentication Failed', 'Unknown error occured.'),
+      isFailure: true,
+      isSuccess: false
+    }
+  }
+
+  
+
   // 🎯 CASE 3: Clean path success! Store intercepts the token, saves it, and converts T to boolean
   setAccessToken(outcome.value.accessToken)
   
+  //set the current user
+  handleAuthStorageTransition(formData.username)
+
+  return {
+    value: null,
+    error: null,
+    isFailure: false,
+    isSuccess: true
+  }
+}
+
+/**
+ * 🎯 CREATE ACCESS (Registration Validation) HANDLER
+ * Expected return: Result<boolean>
+ */
+
+async function reserveAccount(formData: any): Promise<Result<string>> {
+  const outcome = await postAsync<ReserveResponse, any>('/api/reserve', formData, false)
+
+  if (outcome.isFailure || !outcome.value) {
+    return {
+      value: null,
+      error: outcome.error || new APIError(400, 'Registration Failed', 'Could not complete registration process.'),
+      isFailure: true,
+      isSuccess: false
+    }
+  }
+
+   return {
+      value: outcome.value?.verificationId,
+      error: null,
+      isFailure: false,
+      isSuccess: true
+    }
+
+}
+
+async function verifyAccount(formData: any): Promise<Result<boolean>> {
+
+  const outcome = await postAsync<AuthEnvelopeResponse, any>('/api/verify', formData, false)
+
+  if (outcome.isFailure || !outcome.value?.isSuccessful) {
+    return {
+      value: null,
+      error: outcome.error || new APIError(400, 'Verification Failed', 'Could not complete verification process.'),
+      isFailure: true,
+      isSuccess: false
+    }
+  }
+
+  if(!outcome.value.accessToken){
+
+    return {
+      value: false,
+      error: null,
+      isFailure: false,
+      isSuccess: true
+    }
+    }
+
+  // Store saves token locally
+  setAccessToken(outcome.value.accessToken)
+
   //set the current user
   handleAuthStorageTransition(formData.username)
 
@@ -242,23 +313,11 @@ async function login(formData: LoginRequest): Promise<Result<boolean>> {
   }
 }
 
-/**
- * 🎯 CREATE ACCESS (Registration Validation) HANDLER
- * Expected return: Result<boolean>
- */
 async function createAccess(formData: any): Promise<Result<boolean>> {
+
   const outcome = await postAsync<AuthEnvelopeResponse, any>('/api/access', formData, false)
 
-  if (outcome.isFailure) {
-    return {
-      value: null,
-      error: outcome.error,
-      isFailure: true,
-      isSuccess: false
-    }
-  }
-
-  if (!outcome.value?.isSuccessful || !outcome.value?.accessToken) {
+  if (outcome.isFailure || !outcome.value?.isSuccessful || !outcome.value?.accessToken) {
     return {
       value: null,
       error: outcome.error || new APIError(400, 'Registration Failed', 'Could not complete registration process.'),
@@ -280,6 +339,73 @@ async function createAccess(formData: any): Promise<Result<boolean>> {
     isSuccess: true
   }
 }
+
+async function isUsernameTaken(username: string): Promise<Result<boolean>> {
+  
+  const outcome = await getAsync<CheckUsernameResponse>(`/api/check/username?username=${username}`, false, {} as CheckUsernameResponse)
+
+  if (outcome.isFailure || !outcome.value) {
+    return {
+      value: null,
+      error: outcome.error,
+      isFailure: true,
+      isSuccess: false
+    }
+  }
+
+   return {
+      value: outcome.value.isTaken ? true : false,
+      error: null,
+      isFailure: false,
+      isSuccess: true
+    }
+
+}
+
+async function sendToken(formData: SendTokenRequest): Promise<Result<boolean>> {
+  
+  const outcome = await postAsync('/api/token', formData, false)
+
+  if (outcome.isFailure) {
+    return {
+      value: null,
+      error: outcome.error,
+      isFailure: true,
+      isSuccess: false
+    }
+  }
+
+   return {
+      value: null,
+      error: null,
+      isFailure: false,
+      isSuccess: true
+    }
+
+}
+
+async function resendToken(formData: SendTokenRequest): Promise<Result<boolean>> {
+  
+  const outcome = await postAsync('/api/token/resend', formData, false)
+
+  if (outcome.isFailure || !outcome.value) {
+    return {
+      value: null,
+      error: outcome.error,
+      isFailure: true,
+      isSuccess: false
+    }
+  }
+
+   return {
+      value: true,
+      error: null,
+      isFailure: false,
+      isSuccess: true
+    }
+
+}
+
 
 function handleAuthStorageTransition(newUsername: string) {
   const canonicalNewUser = newUsername.trim().toLowerCase();
@@ -398,6 +524,11 @@ if(logoutData.flushCache){
     createAccess,
     logout,
     changePassword,
-    verifyAuthoring
+    verifyAuthoring,
+    isUsernameTaken,
+    sendToken,
+    resendToken,
+    reserveAccount,
+    verifyAccount
   }
 })

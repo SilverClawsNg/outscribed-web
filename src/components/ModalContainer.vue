@@ -4,8 +4,7 @@ import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 
 // 1. Structural Imports - Forms & Modals mapped precisely to your architectural directories
-import LoginModal from '@/features/gatekeeper/modals/LoginModal.vue'
-import RegisterModal from '@/features/gatekeeper/modals/RegisterModal.vue'
+import AuthenticateModal from '@/features/gatekeeper/modals/AuthenticateModal.vue'
 import ResetModal from '@/features/gatekeeper/modals/ResetModal.vue'
 import UpdateContactModal from '@/features/identity/modals/UpdateContactModal.vue'
 import UpdateProfileModal from '@/features/identity/modals/UpdateProfileModal.vue'
@@ -92,8 +91,7 @@ const isExpandModal = ref(false)
 
 // 2. Dynamic Component Dictionary Map (Replaces the large C# @switch block)
 const componentMap: Record<string, any> = {
-  LoginUser: LoginModal,
-  RegisterUser: RegisterModal,
+  Authenticate: AuthenticateModal,
   ResetPassword: ResetModal,
   UpdateContact: UpdateContactModal,
   UpdateProfile: UpdateProfileModal,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted, onMounted  } from 'vue'
 import { APIError } from '@/api/apiTypes.ts'
-import type { SendTokenResponse } from '@/features/gatekeeper/types/GatewayTypes.ts'
+import type { ReserveResponse } from '@/features/gatekeeper/types/GatewayTypes.ts'
 import { postAsync } from '@/api/apiPostServices'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
@@ -87,7 +87,7 @@ async function onEmailSubmitted(email: string) {
     type: 2 // PasswordReset Verification Enum Value
   }
 
-  const outcome = await postAsync<SendTokenResponse>('/api/token', sendTokenData, false)
+  const outcome = await postAsync<ReserveResponse>('/api/token', sendTokenData, false)
 
   if (outcome.isFailure) {
     isFormLoading.value = false
@@ -135,7 +135,7 @@ async function onResendSubmitted(email: string) {
     type: 2
   }
 
-  const outcome = await postAsync<SendTokenResponse>('/api/token/resend', resendTokenData, false)
+  const outcome = await postAsync<ReserveResponse>('/api/token/resend', resendTokenData, false)
 
   if (outcome.isFailure) {
     isFormLoading.value = false
@@ -207,6 +207,7 @@ async function onResetPassword(password: string, confirm: boolean) {
 /**
  * --- Countdown Timer Utilities ---
  */
+
 function startResendTimer() {
   if (timerInterval) clearInterval(timerInterval)
 

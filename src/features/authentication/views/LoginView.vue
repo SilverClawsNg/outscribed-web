@@ -2,7 +2,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { computed } from 'vue'
 
-import Login from '../components/AuthenticationControllerComponent.vue'
+import Login from '../components/LoginComponent.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -66,7 +66,7 @@ const contextKey = route.query.context as string
 </script>
 
 <template>
-      <Login 
+      <Login
       :is-page="true" 
       :message="activeContext?.message"
       @success="handleLoginSuccess" 

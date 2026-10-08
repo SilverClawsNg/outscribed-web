@@ -5,7 +5,6 @@ import { isValidEmail } from '@/utils/validators'
 
 const props = defineProps<{ 
   isLoading: boolean; 
-  siteKey: string, 
   email: string }>()
 
 const emit = defineEmits<{

@@ -1,0 +1,118 @@
+<svg viewBox="0 0 1600 900"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+
+        <linearGradient id="realityA"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%">
+
+            <stop offset="0%" stop-color="#00A870" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#00A870" stop-opacity="0"/>
+        </linearGradient>
+
+        <linearGradient id="realityB"
+                        x1="100%"
+                        y1="0%"
+                        x2="0%"
+                        y2="100%">
+
+            <stop offset="0%" stop-color="#CE1A52" stop-opacity="0.05"/>
+            <stop offset="100%" stop-color="#CE1A52" stop-opacity="0"/>
+        </linearGradient>
+
+        <linearGradient id="realityC"
+                        x1="50%"
+                        y1="0%"
+                        x2="50%"
+                        y2="100%">
+
+            <stop offset="0%" stop-color="#FFD400" stop-opacity="0.04"/>
+            <stop offset="100%" stop-color="#FFD400" stop-opacity="0"/>
+        </linearGradient>
+
+    </defs>
+
+    <!-- Perspective Lines -->
+
+    <g stroke="#000"
+       stroke-opacity="0.04"
+       stroke-width="1">
+
+        <line x1="0" y1="450" x2="800" y2="450"/>
+
+        <line x1="1600" y1="450" x2="800" y2="450"/>
+
+        <line x1="800" y1="0" x2="800" y2="450"/>
+
+        <line x1="800" y1="900" x2="800" y2="450"/>
+
+        <line x1="0" y1="0" x2="800" y2="450"/>
+
+        <line x1="1600" y1="0" x2="800" y2="450"/>
+
+        <line x1="0" y1="900" x2="800" y2="450"/>
+
+        <line x1="1600" y1="900" x2="800" y2="450"/>
+
+    </g>
+
+    <!-- Shifted Reality Frames -->
+
+    <g fill="none"
+       stroke-width="1">
+
+        <rect x="560"
+              y="220"
+              width="480"
+              height="480"
+              stroke="url(#realityA)"/>
+
+        <rect x="590"
+              y="250"
+              width="420"
+              height="420"
+              stroke="url(#realityB)"/>
+
+        <rect x="620"
+              y="280"
+              width="360"
+              height="360"
+              stroke="url(#realityC)"/>
+
+        <rect x="650"
+              y="310"
+              width="300"
+              height="300"
+              stroke="#000"
+              stroke-opacity="0.04"/>
+
+    </g>
+
+    <!-- Reality Drift -->
+
+    <path d="
+        M300 150
+        C500 100,
+          700 200,
+          900 130
+        S1300 120,
+          1500 200"
+          fill="none"
+          stroke="#000"
+          stroke-opacity="0.03"
+          stroke-width="2"/>
+
+    <path d="
+        M100 700
+        C400 620,
+          900 780,
+          1500 650"
+          fill="none"
+          stroke="#000"
+          stroke-opacity="0.03"
+          stroke-width="2"/>
+
+</svg>

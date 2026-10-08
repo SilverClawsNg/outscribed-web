@@ -11,6 +11,12 @@
       margin-bottom:1rem;
     }
 
+       &.boxed{
+      padding: 2rem 1rem;
+      background-color: var(--native-background-color);
+      border-radius: 12px;
+    }
+
   .form-header{
     margin-bottom: 2rem;
     text-align:center;
@@ -18,7 +24,7 @@
    & .form-title {
         margin-bottom: 1rem;
         font-size: 1.6rem;
-        font-weight:600;
+        font-weight:500;
    }
 
      & h2 {
@@ -53,11 +59,8 @@
       padding: 1rem 0;
     }
 
-    &:not(.no-borders){
-      border: 1px solid var(--border-color);
-      box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
-      padding: 1rem 0.6rem;
-    }
+ 
+ 
 
     &.password-box {
       position: relative;
@@ -170,6 +173,14 @@
     appearance: none !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
+   
+
+      &:not(.has-username){
+      border: 1px solid var(--border-color);
+      box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
+      padding: 0 0.6rem;
+      border-radius: 6px;
+      }
     
         &.is-username{
           width: calc(100% - 1.5rem);
@@ -201,7 +212,7 @@
   }
 
   input.form-field {
-    height: 2rem;
+    height: 3rem;
   }
 
   textarea.form-field {
@@ -210,7 +221,7 @@
   }
 
   select.form-field {
-    height: 32px; // Increased slightly to prevent container truncation
+    height: 2rem; // Increased slightly to prevent container truncation
     cursor: pointer;
     vertical-align: middle;
     padding-top: 2px;
@@ -228,6 +239,15 @@
     }
   }
   
+  .input-wrapper{
+      position: relative;
+      border: 1px solid var(--border-color);
+      box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
+      padding: 0 0.6rem;
+      display: flex;
+      border-radius: 6px;
+      column-gap: 0.1rem;
+  }
 
   // --- Placeholders & Labels ---
   ::placeholder {
@@ -338,6 +358,28 @@
     position: relative;
     width: auto;
     height: auto;
+
+    &.dual{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+
+      .btn {
+        width: auto;
+        white-space: nowrap;
+      }
+
+       .btn--primary{
+        flex-grow: 0;
+      }
+
+      .btn--secondary{
+        flex-grow: 1;
+      }
+    }
   }
 
   .filter-buttons {
@@ -363,6 +405,7 @@
       z-index: 1;
       //border-radius:unset;
       height: 4rem;
+      height: 3rem;
       text-transform:uppercase;
       
       &.active {

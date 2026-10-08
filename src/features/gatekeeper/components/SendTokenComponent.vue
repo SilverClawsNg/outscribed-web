@@ -1,10 +1,11 @@
+<!-- components/auth/panes/SendTokenComponent.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { isValidEmail } from '@/utils/validators'
 
 const props = defineProps<{ 
   isLoading: boolean;
-  captchaToken: string; // Passed down from parent after captcha gate completes
+  defaultEmail?: string;
 }>()
 
 const emit = defineEmits<{
@@ -13,11 +14,11 @@ const emit = defineEmits<{
   (e: 'clear-warning'): void
 }>()
 
-const emailAddress = ref('')
+const emailAddress = ref(props.defaultEmail || '')
 const formSubmitted = ref(false)
 
 const validationErrors = computed(() => {
-  const emailText = emailAddress.value || ''
+  const emailText = emailAddress.value.trim()
   return {
     email: emailText === '' || !isValidEmail(emailText)
       ? 'Enter a valid email address'
@@ -45,7 +46,7 @@ watch(
 
 function handleSubmit() {
   formSubmitted.value = true
-  if (!isFormValid.value || !props.captchaToken) return
+  if (!isFormValid.value) return
 
   emit('submit', emailAddress.value.trim())
 }

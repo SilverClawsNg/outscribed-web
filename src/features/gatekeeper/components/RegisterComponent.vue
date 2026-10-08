@@ -2,7 +2,7 @@
 import { ref, onUnmounted, onMounted } from 'vue'
 import { APIError } from '@/api/apiTypes'
 import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
-import type { SendTokenResponse, CheckUsernameResponse } from '@/features/gatekeeper/types/GatewayTypes'
+import type { CheckUsernameResponse } from '@/features/gatekeeper/types/GatewayTypes'
 import { postAsync } from '@/api/apiPostServices'
 import { getAsync } from '@/api/apiGetServices'
 
@@ -42,8 +42,8 @@ const countdownTimer = ref(0)
 const canResendToken = ref(false)
 
 let timerInterval: number | null = null
-const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
 
+const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
 
 // --- CAPTCHA GATE HANDLERS ---
 const captchaToken = ref<string | null>(null)
@@ -60,7 +60,6 @@ function handleCaptchaError() {
   captchaState.value = 'FAILED'
   captchaErrorMessage.value = 'Error occurred while verifying captcha. Ensure you are connected to the Internet, refresh page and try again.'
 }
-
 
 function resetCaptcha() {
   captchaToken.value = null
@@ -84,7 +83,7 @@ async function onEmailSubmitted(email: string) {
     type: 1
   }
 
-  const outcome = await postAsync<SendTokenResponse>('/api/token', sendTokenData, false)
+  const outcome = await postAsync('/api/token', sendTokenData, false)
 
   if (outcome.isFailure) {
     isFormLoading.value = false
@@ -102,13 +101,9 @@ async function onEmailSubmitted(email: string) {
   }
 
 
-  if (!outcome.value?.verificationId) {
-    setError(new APIError(0, 'Server Error', 'Invalid response from server.'))
-    return
-  }
 
   setSuccess('Verification token sent successfully.')
-  verificationId.value = outcome.value.verificationId
+ //verificationId.value = outcome.value.verificationId
   activeStep.value = 2
   isFormLoading.value = false
   startResendTimer()
@@ -130,7 +125,7 @@ async function onResendSubmitted(email: string) {
     type: 1
   }
 
-  const outcome = await postAsync<SendTokenResponse>('/api/token/resend', resendTokenData, false)
+  const outcome = await postAsync('/api/token/resend', resendTokenData, false)
 
   if (outcome.isFailure) {
     isFormLoading.value = false
@@ -138,9 +133,7 @@ async function onResendSubmitted(email: string) {
     return
   }
 
-  if (outcome.value?.verificationId) {
-    verificationId.value = outcome.value.verificationId
-  }
+
 
   setSuccess('A new verification token has been sent.')
   activeStep.value = 2
@@ -207,7 +200,7 @@ async function checkUsernameAvailability(username: string): Promise<boolean> {
     return false
   }
 
-  if (outcome.value?.isAvailable) {
+  if (outcome.value?.isTaken) {
     isUsernameError.value = true
     setWarning('Username is already in use. Please choose another.')
     return false

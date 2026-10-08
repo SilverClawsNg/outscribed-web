@@ -66,43 +66,45 @@ onUnmounted(() => {
 
 <div class="hero-wrapper">
 
+  <div class="hero__pattern" aria-hidden="true"></div>
+  <div class="hero__fade hero__fade--bottom" aria-hidden="true"></div>
+  <div class="hero__fade hero__fade--top" aria-hidden="true"></div>
+ 
   <div class="hero-contents">
 
    <div class="hero">
+
+    <div class="hero__image">
+      <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
+    </div>
    
     <div class="hero__content">
-      <h3 class="hero__tagline">
+      <h3 class="hero__eyebrow">
         The Facts, The Fiction, 
-        <span class="hero__tagline-break">& Everything In-Between</span>
+        <span class="hero__eyebrow-break">& Everything In-Between</span>
       </h3>
       
       <h1 class="hero__title">
-        We tell stories from <span class="hero__title-highlight">alternate realities.</span>
+       Reality has more than one version.
       </h1>
       
-      <h2 class="hero__description">
-        Blending logic & artistic freedom, our writers attempt to re-imagine the past, reframe the present, and sculpt the future.
+      <h2 class="hero__explainer">
+        Blending logic and artistic freedoms, our stories re-imagine the past, 
+                  reframe the present, and sculpt new futures.
       </h2>
 
       <div class="hero__cta">
         <RouterLink class="btn btn--primary hero__action" to="/faqs">
           More About OutScribed
         </RouterLink>
-        <RouterLink class="btn btn--contrast hero__action" to="/register">
+        <RouterLink class="btn btn--secondary hero__action" to="/register">
           Become An OutScriber
         </RouterLink>
       </div>
     </div>
 
   </div>
-
-    <div class="hero-contents-image">
-       <img 
-        src="@/assets/images/hero-background.png" 
-        alt="OutScribed Logo" 
-        class="hero__background"
-      />
-    </div>
+  
   
 </div>
 
