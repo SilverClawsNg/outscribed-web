@@ -80,8 +80,7 @@ onUnmounted(() => {
    
     <div class="hero__content">
       <h3 class="hero__eyebrow">
-        The Facts, The Fiction, 
-        <br />& Everything In-Between
+      First close your eyes. Now open...
       </h3>
       
       <h1 class="hero__title">
