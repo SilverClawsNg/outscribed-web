@@ -81,11 +81,11 @@ onUnmounted(() => {
     <div class="hero__content">
       <h3 class="hero__eyebrow">
         The Facts, The Fiction, 
-        <span class="hero__eyebrow-break">& Everything In-Between</span>
+        <br />& Everything In-Between
       </h3>
       
       <h1 class="hero__title">
-       Reality has more than one version.
+       The <span class="text-gradient">reality</span> you know is just one <span class="text-gradient">version</span>.
       </h1>
       
       <h2 class="hero__explainer">

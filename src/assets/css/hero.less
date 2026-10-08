@@ -15,6 +15,9 @@
   transition: background-color 0.3s ease;
 
 
+  @media @phone{
+    min-height: calc(100lvh - 56px);
+  }
   
  
   
@@ -38,15 +41,35 @@
   pointer-events: none;
   background-image:
     /* Layer 1: Top wash gradient fading downward from header */
-    //linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
-    
-    /* Layer 2: Repeating Vertical Gridlines */
+    linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
+
+    /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
     repeating-linear-gradient(
       90deg,
-      transparent,
+      transparent 0px,
       transparent 48px,
-      var(--hero-grid-color) 48px,
-      var(--hero-grid-color) 49px
+      var(--grid-green) 48px,
+      var(--grid-green) 49px,
+
+      transparent 49px,
+      transparent 97px,
+      var(--grid-red) 97px,
+      var(--grid-red) 98px,
+
+      transparent 98px,
+      transparent 146px,
+      var(--grid-purple) 146px,
+      var(--grid-purple) 147px,
+
+      transparent 147px,
+      transparent 195px,
+      var(--grid-orange) 195px,
+      var(--grid-orange) 196px,
+
+      transparent 196px,
+      transparent 244px,
+      var(--grid-yellow) 244px,
+      var(--grid-yellow) 245px
     );
 }
 
@@ -60,7 +83,7 @@
 
 .hero__fade--bottom {
   bottom: 0;
-  height: 100px; /* Provides a smooth 100px transition into page content */
+  height: 5rem; /* Provides a smooth 100px transition into page content */
   background: var(--hero-fade-bottom);
 }
 
@@ -71,7 +94,7 @@
 
 .hero__fade--top {
   top: 0;
-  height: 100px;
+  height: 5rem;
   background: linear-gradient(
     0deg,
     rgba(23, 21, 25, 0) 0%,
@@ -157,14 +180,37 @@
   }
 
   &__title {
-    font-size: clamp(2.4rem, 2.5vw + 1rem, 3.2rem);
-    line-height: clamp(2.6rem, 2.5vw + 1rem, 3.4rem);
-    font-weight: 600;
-    //text-transform: uppercase;
+    font-size: clamp(2rem, 2.2vw + 1rem, 2.3rem);
+    line-height: clamp(2.6rem, 2.5vw + 1rem, 2.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
     //color: var(--link-color);
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
     &-highlight{
       display:block;
+    }
+
+    & .text-gradient {
+      background: linear-gradient(
+        115deg,
+        #05a660 0%,   /* Emerald Green */
+        #e61d38 25%,  /* Crimson Red */
+        #8b1e8b 50%,  /* Violet Purple */
+        #f26522 75%,  /* Sunset Orange */
+        #ffcc00 100%  /* Warm Yellow */
+      );
+      
+      /* Standard & Webkit clip definitions */
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      
+      /* Fallback color for legacy browsers */
+      color: #0066cc;
+      
+      /* Prevents descenders from clipping horizontally */
+      display: inline-block;
+      padding-right: 0.05em;
     }
   }
 
@@ -188,6 +234,7 @@
     min-width: 150px; // Guarantees enough horizontal space so text won't wrap inside the button
     white-space: nowrap; // Prevents the text string itself from breaking onto multiple lines
     transition: background-color 0.3s ease;
+    border-radius:99999px;
    
     &.btn--primary {
       background-color: @white-color;
