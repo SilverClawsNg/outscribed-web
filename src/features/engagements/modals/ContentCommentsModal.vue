@@ -166,7 +166,7 @@ async function openAdvancedFilter() {
   showFilterDropdown.value = false;
 
   // ⏳ Await the modal lifecycle loop completion!
-  const filtersApplied = await modalStore.push('ContentCommentsFilter', 'Filter Comments', null, true);
+  const filtersApplied = await modalStore.push('ContentCommentsFilter', 'Filter Comments', null, 'standard', true);
 
   // 🔄 If the user confirmed their search/filter changes, reload the feed
   if (filtersApplied) {

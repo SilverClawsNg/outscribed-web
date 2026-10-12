@@ -135,7 +135,7 @@ async function applySort(type: GeneralSortType) {
 
 async function openAdvancedFilter() {
   showFilterDropdown.value = false;
-  const filtersApplied = await modalStore.push('ContentCommentsFilter', 'Filter Comments', null, true);
+  const filtersApplied = await modalStore.push('ContentCommentsFilter', 'Filter Comments', null, 'standard', true);
 
   if (filtersApplied) {
     await loadData();
