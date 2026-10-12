@@ -16,7 +16,13 @@ export interface ReserveResponse {
 
 export interface SendTokenRequest { 
     emailAddress: string; 
-    verificationId: string; 
+    verificationId: string | null; 
+    type: number;
+    isResend: boolean;
+}
+
+export interface SendTokenWithCaptchaRequest { 
+    emailAddress: string; 
     type: number;
     isResend: boolean;
     CaptchaToken: string | null
@@ -31,12 +37,11 @@ export interface LogoutRequest {
 export interface ChangePasswordRequest { 
     oldPassword: string; 
     newPassword: string; 
-    confirm: boolean
 }
 
 export interface ResetPasswordRequest { 
-    verificationId: string; 
+    emailAddress: string; 
+    token: string;
     password: string; 
-    confirm: boolean 
 }
 

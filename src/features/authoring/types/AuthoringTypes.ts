@@ -5,7 +5,6 @@ import type { TaleLatestDto } from '@/features/tales/types/TalesTypes'
 
 export interface WriterOnboardingRequest { 
     confirm: boolean; 
-    country: Country | '-1'
 }
 
 export interface WriterListDto {

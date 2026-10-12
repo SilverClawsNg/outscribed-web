@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import {type CommentPageListDto } from '@/features/engagements/types/EngagementTypes.ts'
-import { type InsightLatestListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
 import {initializeAccountEngagement } from '@/features/identity/types/IdentityTypes.ts'
 
 import { APIError } from '@/api/apiTypes.ts'
@@ -16,7 +15,6 @@ export const useTaleDetailStore = defineStore('taleDetail', () => {
   
   // State
     const tale = ref<TaleDetailDto | null>(null);
-    const latestInsights = ref<InsightLatestListDto[]>([]);
     const latestComments = ref<CommentPageListDto[]>([]);
 
     const isLoggedIn = useLoginHint()
@@ -227,7 +225,6 @@ async function loadArchivedTale(taleId: string): Promise<{ success: boolean; err
 
   if (outcome.value && tale.value != null) {
     // 🎯 FIX: Shift from PascalCase to match the lowercase log footprints
-    latestInsights.value = outcome.value.insights || []
     latestComments.value = outcome.value.comments || []
     hydrateTaleEngagement(tale.value.engagement, outcome.value.stats);
 
@@ -308,7 +305,6 @@ async function recordView() {
 
   function reset() {
     tale.value = null
-    latestInsights.value = []
     latestComments.value = []
     abort()
   }
@@ -339,7 +335,7 @@ async function recordView() {
   }
 
   return {
-    tale, hasLoadedEnrichment, latestInsights, latestComments, loadTale, loadArchivedTale, enrichTale, 
+    tale, hasLoadedEnrichment, latestComments, loadTale, loadArchivedTale, enrichTale, 
     recordView, abort
   };
 

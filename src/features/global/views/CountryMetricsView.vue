@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { RouterLink } from 'vue-router'
 import { APIError } from '@/api/apiTypes'
 import { useCountryStore } from '../stores/CountryStore.ts'; 
 
 // Import your sub-components (We map these next)
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
-import TaleListComponent from '@/features/tales/components/TaleListComponent.vue'
-import InsightListComponent from '@/features/insights/components/InsightListComponent.vue'
-import TagComponent from '../components/TagComponent.vue'
 import { useModalStore } from '@/stores/modalStore'
-import CategoryComponent from '../components/CategoryComponent.vue';
 import CountryComponent from '../components/CountryComponent.vue';
-import WriterComponent from '../components/WriterComponent.vue';
 import { toLongDate } from '@/utils/dateExtensions'
 
 // 1. Setup Services & State

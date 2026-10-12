@@ -47,7 +47,7 @@ main {
     }
 
     &.form-layout {
-        width: 450px;
+        width: @mid-width;
         height: auto;
         margin: 0 auto;
         max-width: calc(100% - 20px);
@@ -55,6 +55,9 @@ main {
         border-radius: 28px;
         padding: 2.5rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border:1px solid var(--border-color);
+        position:relative;
+        z-index:100;
     }
 }
 
@@ -66,12 +69,78 @@ main {
 .form-page {
     height: auto;
     min-height: 100lvh;
-    background-color: var(--background-color);
     background-color: #f0f4f9;
+    background-color: var(--background-color);
     width: 100%;
     position: relative;
     z-index: 999;
     padding-bottom: 4rem;
+
+    
+.form-page__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* Layer 1: Top wash gradient fading downward from header */
+    linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
+
+    /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 48px,
+      var(--grid-green) 48px,
+      var(--grid-green) 49px,
+
+      transparent 49px,
+      transparent 97px,
+      var(--grid-red) 97px,
+      var(--grid-red) 98px,
+
+      transparent 98px,
+      transparent 146px,
+      var(--grid-purple) 146px,
+      var(--grid-purple) 147px,
+
+      transparent 147px,
+      transparent 195px,
+      var(--grid-orange) 195px,
+      var(--grid-orange) 196px,
+
+      transparent 196px,
+      transparent 244px,
+      var(--grid-yellow) 244px,
+      var(--grid-yellow) 245px
+    );
+}
+
+
+.form-page__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.form-page__fade--bottom {
+  bottom: 0;
+  height: 5rem; /* Provides a smooth 100px transition into page content */
+  background: var(--hero-fade-bottom);
+}
+
+.form-page__fade--top {
+  top: 0;
+  height: 5rem;
+  background: linear-gradient(
+    0deg,
+    rgba(23, 21, 25, 0) 0%,
+    var(--background-color) 100%
+  );
+}
+
 
     @media @smallDevice {
         padding-top: 2rem;
@@ -106,6 +175,7 @@ main {
         row-gap: 0.25rem;
     font-size: 0.875rem;
     color: #718096;
+    margin-top: 1.25rem;
 
     
     & svg {
@@ -130,6 +200,91 @@ main {
     }
     }
 }
+
+
+/* ==========================================================================
+   Form
+   ========================================================================== */
+
+
+.plain-page {
+    height: auto;
+    min-height: 100lvh;
+    background-color: var(--background-color);
+    width: 100%;
+    position: relative;
+    z-index: 999;
+    padding-bottom: 4rem;
+
+    @media @smallDevice {
+        padding-top: 2rem;
+    }
+
+    @media @largeDevice {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        row-gap: 1rem;
+        padding-top: 2rem;
+    }
+
+    &__card{
+         width: @min-width;
+        max-width: calc(100% - 20px);
+        background:var(--background-color);
+        text-align:center;
+
+      
+        &--icon {
+        width: 80px;
+        height: 80px;
+        }
+
+        &--title {
+        font-size: 1.8rem;
+        line-height: 2.2rem;
+        margin-bottom: 0.5rem;
+        }
+
+        &--text {
+        font-size: 1.05rem;
+        line-height: 1.5;
+        }
+
+        &--action {
+        margin-top: 1.5rem;
+        }
+    }
+
+    
+    & .plain-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     flex-direction: column;
+        row-gap: 0.25rem;
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 1.5rem;
+
+    
+    & svg {
+        fill: var(--text-color);
+        fill:#718096;
+        width: auto;
+ height: 20px;
+     
+    }
+
+  &  .footer-copyright{
+
+    font-size: 0.9rem;
+    }
+
+    }
+}
+
 
 /* ==========================================================================
    Logo
@@ -252,7 +407,7 @@ h1.logo {
     &__divider {
         flex-grow: 1;
         height: 0;
-        //background-color: var(--link-color);
+        //background-color: @link-color;
         //background-color: var(--border-color);
         border: 1px dashed var(--border-color);
     }
@@ -301,7 +456,7 @@ h1.logo {
   border: 1px solid @link-color;
   border-radius: 50%; // Circular icon button
   background-color: var(--background-color);
-  color: var(--link-color);
+  color: @link-color;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;

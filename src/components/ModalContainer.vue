@@ -35,23 +35,6 @@ import TaleListFilterModal from '@/features/tales/modals/TaleListFilterModal.vue
 import TaleStatsModal from '@/features/tales/modals/TaleStatsModal.vue'
 import TalePreviewModal from '@/features/tales/modals/TalePreviewModal.vue'
 
-import CreateInsightModal from '@/features/insights/modals/CreateInsightModal.vue'
-import UpdateInsightDetailModal from '@/features/insights/modals/UpdateInsightDetailModal.vue'
-import UpdateInsightModal from '@/features/insights/modals/UpdateInsightModal.vue'
-import UpdateInsightCountryModal from '@/features/insights/modals/UpdateInsightCountryModal.vue'
-import UpdateInsightSummaryModal from '@/features/insights/modals/UpdateInsightSummaryModal.vue'
-import UpdateInsightTagsModal from '@/features/insights/modals/UpdateInsightTagsModal.vue'
-import UpdateInsightAddendumModal from '@/features/insights/modals/UpdateInsightAddendumModal.vue'
-import UpdateInsightPhotoModal from '@/features/insights/modals/UpdateInsightPhotoModal.vue'
-import LaunchInsightModal from '@/features/insights/modals/LaunchInsightModal.vue'
-import DeleteInsightModal from '@/features/insights/modals/DeleteInsightModal.vue'
-import ArchiveInsightModal from '@/features/insights/modals/ArchiveInsightModal.vue'
-import UnarchiveInsightModal from '@/features/insights/modals/UnarchiveInsightModal.vue'
-import InsightDraftFilterModal from '@/features/insights/modals/InsightDraftFilterModal.vue'
-import InsightListFilterModal from '@/features/insights/modals/InsightListFilterModal.vue'
-import InsightStatsModal from '@/features/insights/modals/InsightStatsModal.vue'
-import InsightPreviewModal from '@/features/insights/modals/InsightPreviewModal.vue'
-
 import ContentCommentsModal from '@/features/engagements/modals/ContentCommentsModal.vue'
 import CreateCommentModal from '@/features/engagements/modals/CreateCommentModal.vue'
 import CommentThreadModal from '@/features/engagements/modals/CommentThreadModal.vue'
@@ -72,7 +55,6 @@ import FlagContentModal from '@/features/engagements/modals/FlagContentModal.vue
 import SearchModal from '@/features/global/modals/SearchModal.vue'
 import TagDetailModal from '@/features/global/modals/TagDetailModal.vue'
 
-import AskQuestionModal from '@/features/support/modals/AskQuestionModal.vue'
 import ProblemDefinitionModal from '@/features/support/modals/ProblemDefinitionModal.vue'
 import TaleDisclaimerModal from '@/features/tales/modals/TaleDisclaimerModal.vue'
 
@@ -118,22 +100,7 @@ TaleDraftFilter: TaleDraftFilterModal,
 TaleListFilter: TaleListFilterModal,
 TaleStats: TaleStatsModal,
 TalePreview: TalePreviewModal,
- CreateInsight: CreateInsightModal,
-  UpdateInsightDetail: UpdateInsightDetailModal,
-  UpdateInsight: UpdateInsightModal,
-  UpdateInsightSummary: UpdateInsightSummaryModal,
-  UpdateInsightCountry: UpdateInsightCountryModal,
-UpdateInsightTags: UpdateInsightTagsModal,
-UpdateInsightAddendum: UpdateInsightAddendumModal,
-UpdateInsightPhoto: UpdateInsightPhotoModal,
-LaunchInsight : LaunchInsightModal,
-DeleteInsight: DeleteInsightModal,
-ArchiveInsight: ArchiveInsightModal,
-UnarchiveInsight: UnarchiveInsightModal,
-InsightDraftFilter: InsightDraftFilterModal,
-InsightListFilter: InsightListFilterModal,
-InsightStats: InsightStatsModal,
-InsightPreview: InsightPreviewModal,
+ 
 ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,
 CommentListFilter: CommentListFilterModal,
@@ -148,7 +115,6 @@ EngagementCommentsFilter: EngagementCommentsFilterModal,
 Search: SearchModal,
 TagDetail: TagDetailModal,
 FlagContent: FlagContentModal,
-AskQuestion: AskQuestionModal,
 ProblemDefinition: ProblemDefinitionModal,
 TaleDisclaimer: TaleDisclaimerModal,
 SnapshotDetail: SnapshotDetailModal,
@@ -189,9 +155,7 @@ async function onAnimationEnd(windowItem: any) {
 </script>
 
 <template>
-
   <div id="modal" :class="{ open: modalStore.isOpen }">
-    
     <div 
       class="close-modal-wrapper" 
       :class="{ active: modalStore.isContainerOpen }"
@@ -199,7 +163,6 @@ async function onAnimationEnd(windowItem: any) {
     ></div>
 
     <div class="inner-modal" :class="{ expand: isExpandModal }">
-      
       <template v-if="modalStore.modalStack.length > 0">
         <div 
           v-for="(windowItem, index) in modalStore.modalStack" 
@@ -215,10 +178,9 @@ async function onAnimationEnd(windowItem: any) {
           @animationend="onAnimationEnd(windowItem)"
         >
           
-          <div class="modal-header">
-            
+          <!-- 🎯 1. STANDARD HEADER LAYOUT -->
+          <div v-if="windowItem.headerType !== 'editor'" class="modal-header">
             <div class="inner-modal-header">
-              
               <button class="close" @click="modalStore.closeAll()">
                 &larr;
                 <span>{{ windowItem.title }}</span>
@@ -235,33 +197,47 @@ async function onAnimationEnd(windowItem: any) {
                 <button class="close" @click="modalStore.cancel()">
                   X
                 </button>
-
               </div>
-
             </div>
-
           </div>
 
-          <div class="modal-body">
+          <!-- 🎯 2. RICH TEXT EDITOR HEADER LAYOUT -->
+          <div v-else class="modal-header modal-header--editor">
+            <div class="inner-modal-header inner-modal-header--editor">
+              <!-- Quick Close All -->
+              <button class="close-btn" @click="modalStore.cancel()" title="Close">
+                 <!--<SvgIcons name="close" />  -->
+                 X
+              </button>
 
+              <!-- Dynamic Mount Container for Quill Snow Formatting Bar -->
+              <div 
+                :id="`modal-header-toolbar-${windowItem.id}`" 
+                class="editor-toolbar-slot"
+              ></div>
+
+              <!-- Mount Slot for Rich Text Submit Action -->
+              <div 
+                :id="`modal-header-submit-${windowItem.id}`" 
+                class="editor-submit-slot"
+              ></div>
+            </div>
+          </div>
+
+          <!-- MODAL BODY -->
+          <div class="modal-body">
             <div class="inner-modal-body">
-              
               <component 
                 :is="componentMap[windowItem.type] || componentMap['ModalError']"
                 v-bind="getComponentProps(windowItem)"
                 @success="windowItem.onSuccessCallback ? windowItem.onSuccessCallback() : null"
               />
-
               <p class="buffer"></p>
-
             </div>
-
           </div>
 
         </div>
-
       </template>
-
     </div>
   </div>
 </template>

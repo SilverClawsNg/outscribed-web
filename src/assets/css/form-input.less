@@ -11,7 +11,7 @@
       margin-bottom:1rem;
     }
 
-       &.boxed{
+    &.boxed{
       padding: 2rem 1rem;
       background-color: var(--native-background-color);
       border-radius: 12px;
@@ -93,7 +93,7 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
    &:focus-within {
-    border-color: var(--link-color);
+    border-color: @link-color;
     box-shadow: 0 0 0 2px var(--focus-ring-color, rgba(37, 99, 235, 0.2));
   }
 
@@ -264,6 +264,43 @@
     color: var(--muted-text-color);
     opacity: 1;
     z-index: 1;
+    
+    &:not(.checkbox-label){
+      margin-left:0.5rem;
+    }
+
+    &.checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      cursor: pointer;
+      margin-bottom: 1.25rem;
+
+      & input[type="checkbox"] {
+        margin-top: 0.2rem;
+        flex-shrink: 0; /* Prevents checkbox from squeezing on multi-line text */
+      }
+      
+      & .attestation-text {
+        font-size: 0.95rem;
+        line-height: 1.45;
+        color: var(--text-color);
+      }
+
+      & .inline-link {
+        color: @link-color;
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline; /* 👈 Allows natural inline text wrapping across lines */
+        white-space: normal; /* 👈 Ensures long link phrases break gracefully on small screens */
+
+        &:hover,
+        &:focus {
+          color: @link-alt-color;
+        }
+      }
+
+    }
   }
 
   .validation-message {
@@ -305,19 +342,45 @@
 
   // --- Checkboxes & Radios (Ticks) ---
   .ticks {
-    label {
-      margin-left: 0.5rem;
+   .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      cursor: pointer;
+      
+      input[type="checkbox"] {
+        margin-top: 0.25rem;
+      }
     }
 
     &.read-only-check {
       cursor: pointer;
       margin-bottom: 1rem;
       padding-left: 5px;
+      display: flex;
+      column-gap: 0.75rem;
+      align-items:flex-start;
 
-      input {
-        pointer-events: none;
+      & input {
+        //pointer-events: none;
         transform: scale(1.2);
+        margin-top: 0.3rem;
       }
+
+      & label{
+        margin-left: 0;
+        cursor: pointer;
+        text-decoration:underline;
+        font-size: inherit;
+        color: var(--text-color);
+
+        &:hover{
+          color: @link-color;
+        }
+
+
+      }
+
     }
 
     p {

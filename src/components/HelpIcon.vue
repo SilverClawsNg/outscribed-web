@@ -21,6 +21,6 @@ function openHelp() {
 
 <template>
   <button type="button" class="help-icon-btn" @click="openHelp" title="Click for help">
-    [See Help Topic]
+    Help?
   </button>
 </template>

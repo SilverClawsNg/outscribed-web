@@ -19,13 +19,17 @@ watch(() => route.path, () => modalStore.closeAll())
   
   <div class="form-page">
 
+     <div class="form-page__pattern" aria-hidden="true"></div>
+    <div class="form-page__fade form-page__fade--bottom" aria-hidden="true"></div>
+    <div class="form-page__fade form-page__fade--top" aria-hidden="true"></div>
+ 
     <main class="form-layout">
 
       <RouterView />
       <!-- Footer -->
-    
-      
+     
     </main>
+    
    <footer class="form-footer">
        <div class="footer-brand">
        <SvgIcons name="logo" class="brand-logo" :size="25" />

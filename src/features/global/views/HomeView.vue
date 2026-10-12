@@ -7,7 +7,6 @@ import { useHomeStore } from '../stores/HomeStore';
 // Import your sub-components (We map these next)
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import TaleListComponent from '@/features/tales/components/TaleListComponent.vue'
-import InsightListComponent from '@/features/insights/components/InsightListComponent.vue'
 import TagComponent from '../components/TagComponent.vue'
 import { useModalStore } from '@/stores/modalStore'
 import CategoryComponent from '../components/CategoryComponent.vue';
@@ -80,7 +79,7 @@ onUnmounted(() => {
    
     <div class="hero__content">
       <h3 class="hero__eyebrow">
-      First close your eyes. Now open...
+      When did you find out that...
       </h3>
       
       <h1 class="hero__title">
@@ -104,7 +103,6 @@ onUnmounted(() => {
 
   </div>
   
-  
 </div>
 
 </div>
@@ -113,6 +111,7 @@ onUnmounted(() => {
 
     <div class="loader" role="status" aria-label="Loading homepage">
   <p class="loader__dot"></p>
+  
 </div>
 
   </template>
@@ -169,40 +168,6 @@ onUnmounted(() => {
 
   </template>
 
-   <header class="page-header">
-       <h1>Recent Insights</h1>
-      <RouterLink to="/insights" class="btn btn--secondary"  title="Recent Insights"><span>View All</span></RouterLink>
-    </header>
-
-       <template v-if="homepageStore.insights && homepageStore.insights.length > 0">
-
-         <div class="container">
-
-            <InsightListComponent 
-              v-for="insight in homepageStore.insights" 
-              :key="insight.insightId" 
-              :insight="insight"
-              :is-homepage="true"
-            />
-
-        </div>
-    
-  </template>
-
-    <template v-else>
-
-       <div class="container">
-
-        <PageStatusMessage 
-              title="Error Getting Insights!" 
-              message="We encountered an error while retreiving recent insights."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-      </template>
-      
         <header class="page-header">
        <h1>Categories Leaderboard</h1>
     </header>

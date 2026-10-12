@@ -14,7 +14,6 @@ export interface Engageable {
   flagsCount: number;
   sharesCount: number;
   viewsCount: number;
-  insightsCount: number;
   hasFlagged: boolean;
   isEngagementLoaded: boolean;
   uiState: EngagementState; // Optional placeholder container
@@ -242,10 +241,6 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
     contentId: rawComment.commentId || '',
     contentType: 'Comment',
 
-    
-
-      
-      
       // 📊 Phase 1 Defaults (Overwritten during lazy-loaded metrics sync)
       upvotesCount:rawComment.upvotesCount || 0,
       downvotesCount: rawComment.downvotesCount || 0,
@@ -255,7 +250,6 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
 
       sharesCount: 0,
       viewsCount: 0,
-      insightsCount: 0,
      
       // 🔒 Phase 1 Personalization Defaults (Overwritten during Auth check sync)
       isFavorite: false,
@@ -297,7 +291,6 @@ export function initializeCommentPageListEngagement(rawComment: any, isNew = fal
 
       sharesCount: 0,
       viewsCount: 0,
-      insightsCount: 0,
      
       // 🔒 Phase 1 Personalization Defaults (Overwritten during Auth check sync)
       isFavorite: false,
@@ -473,6 +466,5 @@ export interface GetSnapshotListResponse {
     flagsCount: number;
     favoritesCount: number;
     talesCount: number;
-    insightsCount: number;
     totalCounts: number
 }

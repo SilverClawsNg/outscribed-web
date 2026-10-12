@@ -369,59 +369,6 @@ function createComment() {
 
   <div class="content-details__footer">
     
-      <!-- Recent Insights Enrichment Block -->
-          <header class="page-header inline">
-        <h1>Recent Insights</h1>
-      <RouterLink 
-          v-if="tale.engagement.insightsCount > 0" 
-          :to="`/insights?taleid=${tale.taleId}`" 
-          class="btn btn--secondary" 
-        >
-          View {{ formatCounts(tale.engagement.insightsCount) }}
-        </RouterLink>
-        <button v-else type="button" class="btn btn--secondary"  disabled>
-          View {{ tale.engagement.insightsCount }}
-        </button>
-    </header>
-
-     <div :class="['content-details__enrichment', taleStore.hasLoadedEnrichment ? 'content-details__enrichment--visible' : '']">
-      <template v-if="taleStore.hasLoadedEnrichment && taleStore.latestInsights?.length">
-        <Content 
-          v-for="(insight, index) in taleStore.latestInsights" 
-          :key="insight.insightId || insight.slug" 
-          :title="insight.title"
-          :slug="insight.slug"
-          :creator-id="insight.creatorId"
-          :creator-username="insight.creatorUsername"
-          :created-at="insight.createdAt"
-          content-type="insight"
-          :summary="insight.summary"
-          :is-bordered="true"
-        />
-      </template>
-
-      <template v-else>
-      <PageStatusMessage 
-        title="No Insights Found!" 
-        message="There are currently no insights attached to this tale."
-        icon="inbox" 
-      />
-      </template>
-    </div>
-
-      <div class="content-details__enrichment-action">
-        <p class="content-details__enrichment-prompt">
-          Insights are used to direct the heats of fires started by tales. Present evidence-based analysis, real-world consequences, or matters arising.
-        </p>
-        <button 
-          type="button" 
-          class="btn btn--secondary btn--has-icon"
-          @click="modalStore.push('CreateInsight', 'Create Insight', { taleId: tale.taleId, category: tale.category })"
-        >
-          <SvgIcons name="edit" /> Write an insight
-        </button>
-      </div>
-
       <!-- Recent Comments Enrichment Block -->
             <header class="page-header inline">
        <h1>Recent Comments</h1>

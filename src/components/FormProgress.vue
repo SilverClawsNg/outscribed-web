@@ -28,9 +28,9 @@ const emit = defineEmits<{
 
 <template v-if="progress.type !== 'Idle'">
 
-    <div v-if="progress.type === 'Loading'" class="form-loader">
-      <p class="shared__loader"></p>
-    </div>
+    <div  v-if="progress.type === 'Loading'" class="form-loader-dots-container" role="status" aria-label="Submitting form">
+    <p class="loader__dot"></p>
+  </div>
 
     <div v-else-if="progress.type === 'Success'" class="form-message-contents success" :class="{ boxed: isBoxed }">
       <p><span class="form-message-icon">✓</span> {{ progress.message }}</p>

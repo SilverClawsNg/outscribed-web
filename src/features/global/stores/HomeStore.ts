@@ -10,7 +10,6 @@ import type {CategoryMetricsDto, GetHomeContentsResponse, TagDetailDto, TagListD
 } from '../types/GlobalTypes.ts';
 
 import {type TaleListDto, initializeTaleListEngagement} from '@/features/tales/types/TalesTypes.ts'
-import {type InsightListDto, initializeInsightListEngagement} from '@/features/insights/types/InsightsTypes.ts'
 import { useLoginHint } from '@/utils/authHelper'
 import {initializeAccountEngagement } from '@/features/identity/types/IdentityTypes.ts'
 
@@ -18,7 +17,6 @@ export const useHomeStore = defineStore('homeStore', () => {
 
     // State
       const tales = ref<TaleListDto[]>([]); 
-      const insights = ref<InsightListDto[]>([]); 
       const tags = ref<TagListDto[]>([]); 
       const categories = ref<CategoryMetricsDto[]>([]); 
       const countries = ref<CountryMetricsDto[]>([]); 
@@ -52,7 +50,6 @@ export const useHomeStore = defineStore('homeStore', () => {
         if (outcome.value) {
         // Ensure data mappings are assigned cleanly to reactive state trackers
         tales.value = outcome.value.tales || [];
-        insights.value = outcome.value.insights || [];
         tags.value = outcome.value.tags || [];
         categories.value = outcome.value.categories || [];
         countries.value = outcome.value.countries || [];
@@ -61,7 +58,6 @@ export const useHomeStore = defineStore('homeStore', () => {
 
         // Map Tales & Insights
         tales.value = (outcome.value.tales || []).map((item: any) => initializeTaleListEngagement(item));
-        insights.value = (outcome.value.insights || []).map((item: any) => initializeInsightListEngagement(item));
         
         // Map Prolific Writers (Preserve WriterStatsDto wrapper & initialize nested creator)
           prolificWriters.value = (outcome.value.prolificWriters || []).map((writerStats: WriterStatsDto) => ({
@@ -99,7 +95,7 @@ export const useHomeStore = defineStore('homeStore', () => {
     // 🛡️ Fix 1: Access the value inside the storage boundary cleanly without wrapper pollution
 
     // 🛡️ Fix 2: Check active store lengths directly rather than transient parameters
-    if (!isLoggedIn.value || (tales.value.length === 0 && insights.value.length === 0 
+    if (!isLoggedIn.value || (tales.value.length === 0 
       && prolificWriters.value.length === 0  && newWriters.value.length === 0)) {
       activateEngagementButtons();
       console.log('[HydratePersonals]: Anonymous user session or empty state feed. Bypassing personalization.');
@@ -110,7 +106,6 @@ export const useHomeStore = defineStore('homeStore', () => {
    // Map IDs safely straight out of our active tracked collection variables
     const allIds = [
       ...tales.value.map(t => t.taleId),
-      ...insights.value.map(i => i.insightId),
       ...prolificWriters.value.map(i => i.creator.accountId),
       ...newWriters.value.map(i => i.creator.accountId)
     ];
@@ -134,10 +129,6 @@ export const useHomeStore = defineStore('homeStore', () => {
             // 🎯 Direct Target: Mutate the tracking targets that the Vue Template is actively listening to
             tales.value.forEach((tale) => {
               tale.engagement.isFavorite = favSet.has(tale.taleId);
-            });
-
-            insights.value.forEach((insight) => {
-              insight.engagement.isFavorite = favSet.has(insight.insightId);
             });
 
               prolificWriters.value.forEach((writer) => {
@@ -192,9 +183,7 @@ export const useHomeStore = defineStore('homeStore', () => {
     tales.value.forEach((tale) => {
       tale.engagement.isEngagementLoaded = true;
     });
-    insights.value.forEach((insight) => {
-      insight.engagement.isEngagementLoaded = true;
-    });
+  
      prolificWriters.value.forEach((writer) => {
       writer.creator.engagement.isEngagementLoaded = true;
     });
@@ -260,7 +249,7 @@ export const useHomeStore = defineStore('homeStore', () => {
     }
   }
 
-      return {tales,insights, tags, categories, countries, prolificWriters, newWriters,
+      return {tales, tags, categories, countries, prolificWriters, newWriters,
         loadhomecontents, hydratePersonals, abort, loadTag
   };
 

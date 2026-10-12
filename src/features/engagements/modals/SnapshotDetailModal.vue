@@ -128,14 +128,7 @@ onMounted(async () => {
       </dd>
      </dl>
      </template>
-      <template v-if="snapshotStore.snapshot.insightsCount && snapshotStore.snapshot.insightsCount != 0">
- <dl>
-        <dt>Insights Count</dt>
-        <dd>
-        {{ snapshotStore.snapshot.insightsCount }}
-      </dd>
-     </dl>
-     </template>
+     
       <template v-if="snapshotStore.snapshot.commentsCount && snapshotStore.snapshot.commentsCount != 0">
  <dl>
         <dt>Comments Count</dt>

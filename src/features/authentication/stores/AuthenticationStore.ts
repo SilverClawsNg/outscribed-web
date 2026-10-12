@@ -12,7 +12,8 @@ import { APIError } from '@/api/apiTypes'
 import type { WriterStatus } from '@/utils/enumHelper'
 import { setLoginHint, clearLoginHint, checkIsLoggedIn, clearByPatterns } from '@/utils/authHelper'
 import type { AuthenticationSessionResponse, LoginRequest, ReserveResponse,
-    SendTokenRequest, LogoutRequest, ChangePasswordRequest, ResetPasswordRequest
+    SendTokenRequest, LogoutRequest, ChangePasswordRequest, ResetPasswordRequest,
+    SendTokenWithCaptchaRequest
  } from '../types/AuthenticationTypes'
 
 
@@ -283,10 +284,10 @@ export const useAuthenticationStore = defineStore('authStore', () => {
 
     }
 
-    // --- Verify Account - Polled After Third Party Auth Started ---
-    async function verifyAccount(formData: any): Promise<Result<boolean>> {
+    // --- Register Via OAuth - Polled After Third Party Auth Started ---
+    async function registerOAuth(formData: any): Promise<Result<boolean>> {
 
-    const outcome = await postAsync<AuthenticationSessionResponse, any>('/api/verify', formData, false)
+    const outcome = await postAsync<AuthenticationSessionResponse, any>('/api/register/oauth', formData, false)
 
     if (outcome.isFailure || !outcome.value?.isSuccessful) {
         return {
@@ -322,10 +323,10 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
     }
 
-    // --- Register Account - Using Token ---
-    async function registerAccount(formData: any): Promise<Result<boolean>> {
+    // --- Register Via Token - Using Token ---
+    async function registerToken(formData: any): Promise<Result<boolean>> {
 
-        const outcome = await postAsync<AuthenticationSessionResponse, any>('/api/access', formData, false)
+        const outcome = await postAsync<AuthenticationSessionResponse, any>('/api/register/token', formData, false)
 
         if (outcome.isFailure || !outcome.value?.isSuccessful || !outcome.value?.accessToken) {
             return {
@@ -351,7 +352,7 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
 
     // --- Send Verification Token ---
-    async function sendToken(formData: SendTokenRequest): Promise<Result<boolean>> {
+    async function sendToken(formData: SendTokenRequest | SendTokenWithCaptchaRequest): Promise<Result<boolean>> {
     
         const outcome = await postAsync('/api/token', formData, false)
 
@@ -378,7 +379,7 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     
         const outcome = await postAsync<boolean>('/api/password/reset', formData, false)
 
-         if (outcome.isFailure || !outcome.value) {
+         if (outcome.isFailure) {
             return {
             value: null,
             error: outcome.error || new APIError(400, 'Registration Failed', 'Could not complete registration process.'),
@@ -472,13 +473,13 @@ export const useAuthenticationStore = defineStore('authStore', () => {
         setWriterActive,
         getAccessToken,
         login,
-        registerAccount,
+        registerToken,
         logout,
         changePassword,
         verifyAuthoring,
         sendToken,
         reserveAccount,
-        verifyAccount,
+        registerOAuth,
         resetPassword
     }
 

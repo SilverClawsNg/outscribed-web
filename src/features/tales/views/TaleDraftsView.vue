@@ -10,8 +10,6 @@ import TaleDraftComponent from '../components/TaleDraftComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
-import { useLoginHint } from '@/utils/authHelper'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 
 // --- INITIALIZE STORES ---
@@ -21,8 +19,6 @@ const router = useRouter()
 const route = useRoute()
 const modalStore = useModalStore()
 const isInitializing = ref(true)
-const isLoggedIn = useLoginHint()
-const authStore = useAuthStore()
 
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
@@ -83,24 +79,7 @@ async function initPage() {
 
 // --- MOUNT PAGE ---
 onMounted(async () => {
-  
-  //start with initializing set to true so page starts on loading
-
-  if(!isLoggedIn.value){ //if there is no hint, show login form
-    isInitializing.value = false 
-  }
-  else{
-
-      // 1. Force the store to finish its network/hint verification routine completely
-      var result = await authStore.verifyAuthoring()
-
-      if(result){
-      // 2. Hand control over to the store's computed workflow state
-      isInitializing.value = false
-      }
-  
-  }
-
+ 
   await initPage();
 })
 
@@ -124,42 +103,7 @@ onUnmounted(() => {
 
 <template>
 
-  <template v-if=isInitializing>
-     <div class="loader" role="status" aria-label="Loading tales">
-  <p class="loader__dot"></p>
-</div>
-  </template>
-  
-  <template v-else-if="!isLoggedIn || !authStore.hasAccessToken">
-
-      <PageStatusMessage 
-        title="Login Required!" 
-        message="It appears you are not logged in or have been logged out. Login or register to continue."
-        icon="warning"
-        :is-standalone="true"
-      >
-        <template #actions>
-          <button class="btn btn--primary"  @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
-        </template>
-
-      </PageStatusMessage>
-
-  </template>
-
-  <template v-else-if="authStore.writerStatus === 'None'">
-      <PageStatusMessage 
-        title="Account Is Unauthorized!" 
-        message="Your account is not currently authorized to publish tales. Upgrade now. It is free and easy."
-        icon="warning"
-        :is-standalone="true"
-      >
-        <template #actions>
-          <button class="btn btn--primary"  @click="modalStore.push('CreateTale', 'Create Tale')">Continue</button>
-        </template>
-      </PageStatusMessage>
-  </template>
-   
-  <template v-else-if="isLoading">
+  <template v-if="isLoading">
 
     <div class="loader" role="status" aria-label="Loading tales">
       <p class="loader__dot"></p>

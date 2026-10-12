@@ -17,13 +17,13 @@ interface Props {
 const props = defineProps<Props>()
 
 // --- VISUAL ROUTING AND MODAL EMULATORS ---
-async function handleModalUpdate(type: string, title: string) {
+async function handleModalUpdate(type: string, title: string, headerType: string = 'standard') {
   // 1. Tell the store: "This is the tale we are working on right now"
   taleStore.setActiveTale(props.tale);
 
   // 2. Launch the modal. The component doesn't need to await a response anymore!
   console.log(`Launching modal type: ${type} for active tale context.`);
-   modalStore.push(type, title); 
+   modalStore.push(type, title, headerType); 
 }
 
 </script>
@@ -94,7 +94,7 @@ async function handleModalUpdate(type: string, title: string) {
             <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTalePhoto', 'Update Tale Photo')">
               Photo
             </button>
-            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleDetail', 'Update Tale Detail')">
+            <button class="btn btn--primary"  @click="handleModalUpdate('UpdateTaleDetail', 'Update Tale Detail', 'editor')">
               Detail
             </button>
           </template>

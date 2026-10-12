@@ -2,6 +2,9 @@
 
 .auth-card{
   width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+ 
 
   &__header{
 
@@ -10,6 +13,7 @@
     justify-content: flex-start;
     margin-bottom: 1rem;
     row-gap:0.75rem;
+    position:relative;
 
     &--logo {
       width: 40px;
@@ -18,6 +22,7 @@
 
     &--title {
       font-size: 2.25rem;
+      line-height:1;
       font-weight: 400;
       color: #1f1f1f;
     }
@@ -26,7 +31,18 @@
       font-size: 0.9rem;
       color: #444746;
     }
+
+    .help-icon-btn{
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: @link-color;
+       &:hover { color: @link-alt-color; }
+       font-size: 0.85rem;
+    }
+
   }
+
 
   &__form{
     width: 100%;
@@ -54,35 +70,69 @@
     }
   }
 
+  &--show-password {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0.5rem;
+        z-index: 100;
+      
+        height: auto;
+        cursor: pointer;
+
+        &:hover::before {
+          color: var(--hover-color);
+        }
+      }
+
   &--group {
     display: flex;
     flex-direction: column;
     margin-bottom: 1.25rem;
 
+      &.has-password {
+      position: relative;
+    }
+
     &:last-child { margin-bottom: 0; }
+  }
+
+  &--error{
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
   }
   
     &--input {
       width: 100%;
-      padding: 0.85rem 1rem;
+      padding: 0 0.9rem;
+      height: 3.2rem;
       border: 1px solid #a0aec0;
       border-radius: 8px;
       font-size: 1rem;
-      &:focus { border-color: #0070f3; outline: none; }
+      box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
+      &:focus { border-color: @link-color; outline: none; }
     }
 
+    &--password-wrapper{
+      position:relative;
+
+      & .auth-card__form--input{
+        padding-right: 3.2rem;
+      }
+    }
 
   &--action {
     width: 100%;
-    padding: 0.9rem;
-    background-color: #0070f3;
+    padding: 0 0.9rem;
+    height: 3.2rem;
+    background-color: @link-color;
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    &:hover { background-color: #005bb5; }
+    &:hover { background-color: @link-alt-color; }
     &:disabled { opacity: 0.6; cursor: not-allowed; }
   }
 
@@ -95,16 +145,11 @@
     color: #475467;
     margin-top: 1.25rem;
 
-    & a {
-      background: none;
-      border: none;
-      color: #0b57d0;
-      font-weight: 600;
-      padding: 0;
-      cursor: pointer;
+    & a, & button {
+      color: @link-color;
 
       &:hover {
-        text-decoration: underline;
+        color:@link-alt-color;
       }
     }
   }
@@ -112,6 +157,19 @@
 
   &__captcha{
     margin-bottom: 1.25rem;
+
+    
+  &--error {
+    font-size: 0.9rem;
+    color: #4a5568;
+
+    & button{
+      color: @link-color;
+      &:hover { color: @link-alt-color; }
+      display: inline;
+    }
+  }
+
   }
 
   
@@ -163,7 +221,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 0.5rem 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid #e2e8f0;
 
     &--box {

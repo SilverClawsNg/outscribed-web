@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modalStore'
-import Authenticate from '../components/AuthenticationControllerComponent.vue'
+import Login from '../components/LoginComponent.vue'
 import { useEngagement } from '@/composables/useEngagement';
 const modalStore = useModalStore()
 const { resumePendingAction } = useEngagement();

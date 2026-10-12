@@ -3,6 +3,7 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import FormLayout from '@/layouts/FormLayout.vue'
 import { checkIsLoggedIn } from '@/utils/authHelper'
 import { useModalStore } from '@/stores/modalStore'
+import PlainLayout from '@/layouts/PlainLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,48 +73,7 @@ const router = createRouter({
           component: () => import('@/features/tales/views/TaleDraftsView.vue'),
           meta: { requiresAuth: true, authContext: 'create_tales' }
         },
-        {
-          path: 'insights', // Renders at outscribed.com/insights
-          name: 'InsightLists',
-          component: () => import('@/features/insights/views/InsightListsView.vue'),
-        },
-        {
-          path: 'insights/my/:relationType', 
-          name: 'MyInsightLists',
-          component: () => import('@/features/insights/views/InsightListsView.vue'),
-          meta: { requiresAuth: true, authContext: 'my_insights' }
-        },
-        {
-          path: 'insights/:creatorUsername/:relationType', 
-          name: 'UserInsightLists',
-          component: () => import('@/features/insights/views/InsightListsView.vue')
-        },
-        {
-          path: 'insight/archives/insightId', 
-          name: 'ArchivedInsightDetail',
-          component: () => import('@/features/insights/views/InsightDetailView.vue'),
-          meta: { requiresAuth: true, authContext: 'archived_insights' }
-        },
-         {
-          path: 'insights/editor', // Renders at outscribed.com/insights/editor
-          name: 'InsightDrafts',
-          component: () => import('@/features/insights/views/InsightDraftsView.vue'),
-          meta: { requiresAuth: true, authContext: 'create_insights' }
-        },
-         {
-          // Matches: /insight/01KTZD9M
-          path: '/insight/:insightId([A-Z0-9]{26})',
-          name: 'InsightDetailById',
-          component: () => import('@/features/insights/views/InsightDetailView.vue'),
-          props: true
-        },
-        {
-          // Matches: /insight/celesteaurora AND /insight/celesteaurora/01KTZD9M/the-art-of-the-deal
-          path: '/insight/:username/:insightId?/:insightTitle?',
-          name: 'InsightDetail',
-          component: () => import('@/features/insights/views/InsightDetailView.vue'),
-          props: true // Automatically forwards params into the component as props
-        },
+      
         {
           path: 'comments', // Renders at outscribed.com/comments
           name: 'CommentLists',
@@ -172,6 +132,11 @@ const router = createRouter({
           path: 'tags', // Renders at outscribed.com/tags
           name: 'Tags',
           component: () => import('@/features/global/views/TagListsView.vue')
+        },
+        {
+          path: '/oauth-callback',
+          name: 'oauth-callback',
+          component: () => import('@/features/authentication/views/OAuthCallbackView.vue')
         }
       ]
     },
@@ -201,7 +166,32 @@ const router = createRouter({
           component: () => import('@/features/authentication/views/ResetView.vue')
         }
       ]
+    },
+     {
+      // --- PLAIN LAYOUT FOR 404S, REDIRECTS, ETC. ---
+      path: '/',
+      component: PlainLayout,
+      children: [
+        {
+          path: '/oauth-callback',
+          name: 'oauth-callback',
+          component: () => import('@/features/authentication/views/OAuthCallbackView.vue')
+        }
+      ]
+    },
+     {
+      // --- PLAIN LAYOUT FOR 404S, REDIRECTS, ETC. ---
+      path: '/:pathMatch(.*)*',
+      component: () => import('@/layouts/PlainLayout.vue'),
+      children: [
+        {
+          path: '',
+          name: 'not-found',
+          component: () => import('@/features/global/views/NotFoundView.vue')
+        }
+      ]
     }
+
   ],
 
   // Automatically scroll to the top on page navigation

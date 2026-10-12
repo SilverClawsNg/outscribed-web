@@ -1,6 +1,5 @@
 import type { ContentType, ActivityType, Category, Country, WriterStatus } from '@/utils/enumHelper' // 🎯 Import your clean semantics
 import { type TaleListDto } from '@/features/tales/types/TalesTypes' // 🎯 Import your clean semantics
-import { type InsightListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
 import type { CreatorDto } from '@/features/identity/types/IdentityTypes'
 
 export interface TimelineDto {
@@ -30,7 +29,6 @@ export interface GetTimelineResponse {
 // Helper type for response
 export interface GetHomeContentsResponse {
   tales: TaleListDto[];
-  insights: InsightListDto[];
   tags: TagListDto[];
   categories: CategoryMetricsDto[];
   countries: CountryMetricsDto[];

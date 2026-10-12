@@ -83,9 +83,6 @@ const contentPath = 'tale'
          <template v-if="!isHomepage">
          <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.commentsCount) }}</span> Comments</p>
 
-        <p v-if="tale.insightsCount !== undefined" class="content-card__stat">
-          <span>{{ formatCounts(tale.insightsCount) }}</span> Insights
-        </p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.viewsCount) }}</span> Views</p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.upvotesCount) }}</span> Upvotes</p>
         <p class="content-card__stat"><span>{{ formatCounts(tale.engagement.favoritesCount) }}</span> Saves</p>

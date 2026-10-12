@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed, nextTick } from 'vue'
 
+export type ModalHeaderType = 'standard' | 'editor'
+
 export interface ModalInstance {
   id: string
   type: string
   title: string
+  headerType?: ModalHeaderType
   payload?: any
   isEntering: boolean
   isLeaving: boolean
@@ -30,6 +33,7 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
   type: string, 
   title: string, 
   payload: any = null, 
+  headerType: ModalHeaderType = 'standard',
   waitForResult = false, // 🎯 Default inverted to match Vue's state model
   onSuccessCallback?: () => Promise<void> | void
 ): Promise<boolean> {
@@ -75,7 +79,7 @@ function replace(
   onSuccessCallback?: () => Promise<void> | void
 ): Promise<boolean> {
   if (modalStack.value.length === 0) {
-    return push(type, title, payload, false, onSuccessCallback);
+    return push(type, title, payload, 'standard', false, onSuccessCallback);
   }
 
   const newModal: ModalInstance = {

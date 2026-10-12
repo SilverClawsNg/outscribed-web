@@ -2,8 +2,6 @@ import type { Country, Category, TaleStatus, VoteType, ContentType } from '@/uti
 import { type Engageable, createDefaultUiState, type CommentPageListDto } from '@/features/engagements/types/EngagementTypes' // 🎯 Import your clean semantics
 import { reactive } from 'vue';
 import { type CreatorDto } from '@/features/identity/types/IdentityTypes' // 🎯 Import your clean semantics
-import { type InsightLatestListDto } from '@/features/insights/types/InsightsTypes' // 🎯 Import your clean semantics
-
 import type{  TagDto} from '@/features/global/types/GlobalTypes' // 🎯 Import your clean semantics
 
 /**
@@ -75,7 +73,6 @@ export interface TaleListDto {
   readingTime: number;
   summary: string;
   photo: string;
-  insightsCount: number;
   country: Country;
   category: Category;
   isVisible: boolean;
@@ -208,7 +205,6 @@ export function initializeTaleListEngagement(rawTale: any): TaleListDto {
       favoritesCount: rawTale.favoritesCount || 0,
       sharesCount: rawTale.sharesCount || 0,
       flagsCount: rawTale.flagsCount || 0,
-      insightsCount: rawTale.insightsCount || 0,
       
       // 🔒 Phase 1 Personalization Defaults (Overwritten during Auth check sync)
       isFavorite: false,
@@ -268,7 +264,6 @@ export function hydrateTaleEngagement(targetEngagement: Engageable, stats: Engag
     downvotesCount: stats.downvotesCount ?? 0,
     favoritesCount: stats.favoritesCount ?? 0,
     flagsCount: stats.flagsCount ?? 0,
-    insightsCount: stats.insightsCount ?? 0
 
   });
 }
@@ -285,7 +280,6 @@ export interface TaleStatDto {
 }
 
 export interface GetTalePageEnrichmentResponse {
-  insights: InsightLatestListDto[];
       comments: CommentPageListDto[];
       stats: Engageable;
 }

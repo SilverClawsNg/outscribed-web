@@ -17,13 +17,6 @@ const modalStore = useModalStore()
 
      <header class="page-header">
         <h1>Frequently Asked Questions</h1>
-          <button 
-        type="button" 
-        class="btn btn--secondary"  
-        @click="modalStore.push('AskQuestion', 'Ask a Question')"
-      >
-      Ask a Question
-      </button>
     </header>
  
   <template v-if="faqData.length > 0">

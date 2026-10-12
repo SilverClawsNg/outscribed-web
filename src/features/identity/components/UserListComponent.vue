@@ -78,9 +78,7 @@ onMounted(async () => {
           <p class="user-card__stat-item">
             <span class="user-card__stat-value">{{ formatCounts(user.talesCount) }}</span> Tales
           </p>
-          <p class="user-card__stat-item">
-            <span class="user-card__stat-value">{{ formatCounts(user.engagement.insightsCount) }}</span> Insights
-          </p>
+         
           <p class="user-card__stat-item">
             <span class="user-card__stat-value">{{ formatCounts(user.engagement.commentsCount) }}</span> Comments
           </p>

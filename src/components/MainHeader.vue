@@ -172,14 +172,12 @@ onMounted(() => {
           <router-link to="/writers" class="main-header__editorial-link" @click="isMenuOpen = false">Meet the Writers</router-link>
           <router-link to="/faqs" class="main-header__editorial-link" @click="isMenuOpen = false">Learn More About OutScribed</router-link>
           <router-link to="/search" class="main-header__editorial-link main-header__search-trigger" @click="isMenuOpen = false">
-            <SvgIcons name="search" :size="20" />
-            <span>Search</span>
+            Search OutScribed
           </router-link>
         </nav>
 
         <!-- Mobile Accordion Content (Slots A & E mirrored on Mobile Expand) -->
         <div class="main-header__mobile-account-group">
-          <div class="main-header__mobile-section-label">Account</div>
            <template v-if="isLoggedIn">
             <router-link to="/profile" class="main-header__mobile-link" @click="isMenuOpen = false">
               <SvgIcons name="user" /> Profile
@@ -189,20 +187,24 @@ onMounted(() => {
             </router-link>
           </template>
           <template v-else>
-            <router-link to="/login"  class="main-header__mobile-link" @click="isMenuOpen = false">Log In</router-link>
-            <router-link to="/register"  class="main-header__mobile-link main-header__mobile-link--highlight" @click="isMenuOpen = false">Sign Up For Free</router-link>
+            <router-link to="/login"  class="main-header__mobile-link" @click="isMenuOpen = false">
+              <SvgIcons name="user" /> Log In
+            </router-link>
+            <router-link to="/register"  class="main-header__mobile-link main-header__mobile-link--highlight" @click="isMenuOpen = false">
+             <SvgIcons name="archive" />  Sign Up For Free
+            </router-link>
           </template>
         </div>
 
         <div class="main-header__mobile-studio-group">
            <button class="main-header__mobile-cta-btn" @click="modalStore.push('CreateTale', 'Create Tale')">
-               <span>Create a Draft</span>
+              <SvgIcons name="edit" /> Create Draft
             </button>
           <router-link to="/drafts" class="main-header__mobile-link" @click="isMenuOpen = false">
             <SvgIcons name="archive" /> Saved Drafts
           </router-link>
           <router-link v-if="isLoggedIn" to="/logout" class="main-header__mobile-link main-header__mobile-link--logout" @click="isMenuOpen = false">
-            Logout
+           <SvgIcons name="padlock" /> Logout
           </router-link>
         </div>
         </div>

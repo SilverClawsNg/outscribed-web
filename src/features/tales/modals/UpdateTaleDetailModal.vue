@@ -1,10 +1,10 @@
 <script setup lang="ts">
-
 // --- IMPORTS ---
-import { ref, onBeforeMount, watch, computed } from 'vue'
+import { ref, onBeforeMount, onMounted, watch, computed } from 'vue'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
+import SvgIcons from '@/components/SvgIcons.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateDetailRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
@@ -12,6 +12,7 @@ import { useModalStore } from '@/stores/modalStore'
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
 const modalStore = useModalStore()
+const isMounted = ref(false)
 
 // --- DEFINE FORM DATA ---
 const formData = ref<UpdateDetailRequest>({
@@ -19,82 +20,64 @@ const formData = ref<UpdateDetailRequest>({
    detail: ''
 })
 
-// --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
-onBeforeMount(() => {
+onMounted(() => {
+  isMounted.value = true
+})
 
+// --- SET GUARD FOR NULL DETAILS / INITIALIZE FORM DATA ---
+onBeforeMount(() => {
   if (!taleStore.activeTale) {
-    // 1. Lock down the form immediately to block accidental click updates
     lockSubmission.value = true
-    
-    // 2. Pass a friendly, descriptive error straight down to your message layout
     setError({
       title: "Content Unavailable",
       detail: "Unable to load current tale details. Refresh page and try again",
-      status: 204 // Standard missing resource code
+      status: 204
     })
-    
-    return // 🛑 Stop initialization; do not attempt to read properties of null
+    return
   }
 
- // --- INITIALIZE FORM DATA FROM STORE ---
   formData.value.taleId = taleStore.activeTale.taleId
   formData.value.detail = taleStore.activeTale.detail ?? ''
   resetProgress()
-
 })
 
-// Helper to extract visible text without rendering HTML elements
+// Helper to extract visible plain text
 function getPlainText(html: string): string {
   if (!html) return ''
   const doc = new DOMParser().parseFromString(html, 'text/html')
-  // textContent extracts visible text and converts block tags to natural text
   return doc.body.textContent || ''
 }
 
-// 1. Visible plain text extracted reactively
 const plainTextDetail = computed(() => getPlainText(formData.value.detail))
-
-// 2. Character length based on what the user actually sees
 const detailLength = computed(() => plainTextDetail.value.trim().length)
 
 // --- UI TRANSACTION STATES ---
 const lockSubmission = ref(false)
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 
-// 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
 
-// 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
-
-const detailText = formData.value.detail || '';
-
+  const detailText = formData.value.detail || ''
   return {
-  
-    detail: detailText === '' || detailText.length < 512 || detailText.length > 65535
+    detail: detailText === '' || detailLength.value < 512 || detailLength.value > 65535
       ? 'Detail must be between 512 and 65535 characters'
       : ''
   }
 })
 
-// 3. Form is valid if all computed error fields are empty strings
 const isFormValid = computed(() => {
   return Object.values(validationErrors.value).every(error => error === '')
 })
 
-// --- 4. The centralized warning to ensures the to warning is in sync with the form field warnings ---
-// It monitors form health and automatically dictates top-level notification state
 watch(
   [isFormValid, formSubmitted], 
   ([isValid, submitted]) => {
-    // Don't disturb the user if they haven't tried to submit yet
     if (!submitted) return
 
     if (!isValid) {
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
-      // Clear warning and clean up state immediately when compliance is met
-      // 🎯 Only reset if we are clearing a warning!
       if (progressState.value.type === 'Warning') {
         resetProgress()
       }
@@ -104,82 +87,98 @@ watch(
 )
 
 async function handleFormSubmission() {
-
-  // 1. Tell the ecosystem the user has initiated an action
   formSubmitted.value = true
-
-  // 2. Pure, clean execution guard. The watcher has already handled the UI text alerts!
   if (!isFormValid.value) return
 
   startLoading()
 
-const { success, error } = await taleStore.updateTaleDetails(formData.value!)
+  const { success, error } = await taleStore.updateTaleDetails(formData.value!)
 
-  if(!success){
-
-    if(error){
-      if(error.title = 'Blank Response'){
+  if (!success) {
+    if (error) {
+      if (error.title === 'Blank Response') {
         lockSubmission.value = true
       }
-    setError(error)
-    } else{
-          setWarning('An unknown error occured. Refresh page and try again')
+      setError(error)
+    } else {
+      setWarning('An unknown error occurred. Refresh page and try again')
     }
-  } else{
- 
-    // Close down the active overlay panel instance securely
+  } else {
     modalStore.pop()
-  
   }
-  
 }
 </script>
 
 <template>
+  <div class="form-container">
+    <FormProgress :progress="progressState" />
 
-     <div class="form-container">
+    <!-- 🎯 Teleport Submit Action directly into Editor Modal Header -->
+    <Teleport 
+      v-if="isMounted && modalStore.activeModal?.id" 
+      :to="`#modal-header-submit-${modalStore.activeModal.id}`"
+    >
+      <button 
+        type="button" 
+        class="btn-header-submit"  
+        @click="handleFormSubmission"
+        :disabled="progressState.type === 'Loading' || lockSubmission"
+        title="Update Tale"
+      >
+        <SvgIcons name="edit" />
+        <span>{{ progressState.type === 'Loading' ? 'Saving...' : 'Update' }}</span>
+      </button>
+    </Teleport>
 
-   <FormProgress :progress="progressState" />
-
-    <form>
-
+    <form @submit.prevent="handleFormSubmission">
       <RichTextEditor 
-              id="editor"
-              v-model="formData.detail" 
-            />
+        id="editor"
+        v-model="formData.detail" 
+      />
          
-              <div class="form-errors">
-            <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
-            {{ validationErrors.detail }}
-          </span>
-            <span 
-            v-else
-            class="character-counter"
-            :class="{ 
-              'is-warning': detailLength > 64000 && detailLength <= 65535,
-              'is-over-limit': detailLength < 512 || detailLength > 65535 
-            }"
-          >
-            {{ detailLength }}/65535
-          </span>
-        </div>
-        <div class="button-holder">
-          <button 
-            type="button" 
-            class="btn btn--secondary"  
-            @click="handleFormSubmission"
-            :disabled="progressState.type === 'Loading' || lockSubmission"
-          >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
-          </button>
-        </div>
-       
+      <div class="form-errors">
+        <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
+          {{ validationErrors.detail }}
+        </span>
+        <span 
+          v-else
+          class="character-counter"
+          :class="{ 
+            'is-warning': detailLength > 64000 && detailLength <= 65535,
+            'is-over-limit': detailLength < 512 || detailLength > 65535 
+          }"
+        >
+          {{ detailLength }}/65535
+        </span>
+      </div>
     </form>
-    
   </div>
-
 </template>
 
 <style scoped>
 @import "@/assets/css/form-container-editor.less";
+
+.btn-header-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background-color: var(--color-primary, #0f172a);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary-hover, #1e293b);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
 </style>

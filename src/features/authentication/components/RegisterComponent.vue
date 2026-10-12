@@ -8,12 +8,21 @@ import FormProgress from '@/components/FormProgress.vue'
 import { APIError } from '@/api/apiTypes'
 import { isValidEmail } from '@/utils/validators'
 import SvgIcons from '@/components/SvgIcons.vue'
+import HelpIcon from '@/components/HelpIcon.vue'
 
-const emit = defineEmits<{ (e: 'success', data?: any): void }>();
+const emit = defineEmits<{
+  (e: 'success'): void;
+  (e: 'logIn'): void
+}>();
+
+const props = defineProps<{
+    isPage?: boolean
+    message?: string
+}>()
+
 const authStore = useAuthenticationStore();
 
 const step = ref<'register' | 'selection' | 'verify'>('register');
-const isLoading = ref(false);
 const isResend = ref(false);
 let pollInterval: number | null = null;
 
@@ -31,7 +40,6 @@ const tokenbits = ref<string[]>(['', '', '', '', '', ''])
 let timerInterval: number | null = null
 const countdownTimer = ref(0)
 const canResendToken = ref(false)
-const MAX_POLLS = 20 // 20 attempts * 3 seconds = 60 seconds total
 const maxTimeoutMs = 60000 // 60 seconds deadline
 const startTime = ref<number>(0)
 const isPolling = ref(false)
@@ -47,7 +55,6 @@ const isSendTokenFormLoading = ref(false)
 const isVerifyTokenFormLoading = ref(false)
 
 const { progressState, startLoading, setSuccess, setError, setWarning, resetProgress } = useFormProgress()
-
 
 function handleCaptchaSuccess(token: string) {
   captchaToken.value = token
@@ -138,9 +145,10 @@ async function handleReserve() {
     captchaToken: captchaToken.value
   })
 
-  isReserveAccountFormLoading.value = false
-
   if (outcome.isFailure) {
+
+    isReserveAccountFormLoading.value = false
+
     if (outcome.error?.title === 'Captcha Error') {
       captchaErrorMessage.value = outcome.error.detail ?? 'Captcha validation failed on server. Please re-verify.'
       handleCaptchaError()
@@ -153,6 +161,7 @@ async function handleReserve() {
   verificationId.value = outcome.value
   step.value = 'selection';
   resetProgress()
+ 
 }
 
 const sendTokenFormValidationErrors = computed(() => {
@@ -188,26 +197,27 @@ watch(
 async function handleSendToken() {
 
   isSendTokenFormLoading.value = true
-  isResend.value = true
   startLoading()
 
   const outcome = await authStore.sendToken({
       emailAddress: emailAddress.value,
-      verificationId: verificationId.value ?? '',
+      verificationId: verificationId.value,
       type: 1,
-      isResend: isResend.value,
-      CaptchaToken: captchaToken.value
+      isResend: isResend.value
     });
 
-  if (outcome.isFailure) {
     isSendTokenFormLoading.value = false
+
+  if (outcome.isFailure) {
     setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred. Refresh page and try again.'))
-    }
+  } else{
+      startResendTimer()
+      inputs.value[0]?.focus()
+      step.value = 'verify';
+      resetProgress()
+  }
   
-    startResendTimer()
-    inputs.value[0]?.focus()
-    step.value = 'verify';
-    resetProgress()
+  
 }
 
 function handleInput(e: Event, index: number) {
@@ -283,10 +293,11 @@ async function handleVerifyToken() {
   isVerifyTokenFormLoading.value = true;
   startLoading()
 
-  const outcome = await authStore.verifyAccount({
+  const outcome = await authStore.registerToken({
       username: username.value,
       password: password.value,
       token: tokenbits.value.join(''),
+      verificationId: verificationId.value
     });
 
   if (outcome.isFailure) {
@@ -316,7 +327,7 @@ function startResendTimer() {
 
 function handleResendRequest() {
   if (timerInterval) clearInterval(timerInterval)
-  
+   isResend.value = true;
   step.value = 'selection';
   resetProgress()
 }
@@ -344,20 +355,20 @@ async function executePoll() {
 
   // Timeout Check
   if (Date.now() - startTime.value > maxTimeoutMs) {
-    isPolling.value = false
+      stopPolling()
     setError(new APIError(408, 'Verification Timeout', 'Verification timed out. Please refresh and try again.'))
     return
   }
 
   try {
-    const outcome = await authStore.verifyAccount({
+    const outcome = await authStore.registerOAuth({
       username: username.value,
       password: password.value,
       verificationId: verificationId.value
     })
 
     if (outcome.isFailure) {
-      isPolling.value = false
+      stopPolling()
       setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred.'))
       return
     }
@@ -374,7 +385,7 @@ async function executePoll() {
     }
 
   } catch (err) {
-    isPolling.value = false
+    stopPolling()
     console.error('Polling error:', err)
     setError(new APIError(0, 'Network Error', 'A connection error occurred. Please try again.'))
   }
@@ -382,6 +393,7 @@ async function executePoll() {
 
 function startPolling() {
   isPolling.value = true
+   startLoading()
   startTime.value = Date.now()
   executePoll()
 }
@@ -392,8 +404,8 @@ function stopPolling() {
     pollingTimer.value = null
   }
   isPolling.value = false
+  resetProgress()
 }
-
 
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval)
@@ -407,11 +419,12 @@ onUnmounted(() => {
     <div class="auth-card">
 
     <div class="auth-card__header">
-        <div class="auth-card__header--logo">
+        <div v-if="isPage" class="auth-card__header--logo">
          <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
         </div>
         <h1 class="auth-card__header--title">Sign Up</h1>
-        <p class="auth-card__header--subtitle">to contribute inspiring tales & insights</p>
+      <p class="auth-card__header--subtitle">{{ message }}</p>
+        <HelpIcon topic="CreateAccount" />
       </div>
 
       <FormProgress :progress="progressState" />
@@ -431,17 +444,33 @@ onUnmounted(() => {
           pattern="[a-zA-Z0-9_]+"
           required
         />
+          <p v-if="reserveAccountFormSubmitted && reserveAccountFormValidationErrors.username" class="auth-card__form--error">
+        {{ reserveAccountFormValidationErrors.username }}
+         </p>
       </fieldset>
 
       <fieldset class="auth-card__form--group">
-        <label class="auth-card__form--label">Add a secret you would use with your username to access your account</label>
+        <label class="auth-card__form--label">
+          Add a secret you would use with your username to access your account. Try a sentence.</label>
+       <div class="auth-card__form--password-wrapper">
+         <button 
+          type="button" 
+          class="auth-card__form--show-password"
+          @click="passwordVisible = !passwordVisible"
+        >
+          👁️
+        </button>
         <input
           v-model="password"
           class="auth-card__form--input"
-          type="password"
+          :type="passwordVisible ? 'text' : 'password'" 
           placeholder="Password"
           required
         />
+       </div>
+        <p v-if="reserveAccountFormSubmitted && reserveAccountFormValidationErrors.password" class="auth-card__form--error">
+        {{ reserveAccountFormValidationErrors.password }}
+         </p>
       </fieldset>
 
       <div class="auth-card__divider"><span></span></div>
@@ -455,12 +484,11 @@ onUnmounted(() => {
       <div class="auth-card__captcha">
 
       <template v-if="captchaFailed">
-        <div class="captcha-error-box">
-          <p>{{ captchaErrorMessage || 'Security verification failed. Please try again.' }}</p>
-          <button type="button" class="btn btn--secondary btn--sm" @click="resetCaptcha">
-            Retry Security Check
-          </button>
-        </div>
+        <p class="auth-card__captcha--error">{{ captchaErrorMessage || 'Security check failed. Ensure you are connected to the Internet before trying again.' }}
+              <button type="button" @click="resetCaptcha">
+            retry security check
+          </button> or refresh page and try again.
+          </p>
       </template>
 
       <template v-else>
@@ -478,30 +506,36 @@ onUnmounted(() => {
       </button>
 
       <div class="auth-card__form--option">
-          <span>Already have an account?</span>
-           <RouterLink to="/login" title="Login">Log In</RouterLink>
+          <span>Already an OutScriber?</span>
+            <button type="button" @click="emit('logIn')" title="Login">Log In</button>
         </div>
 
     </form>
 
       </template>
-   
 
     <!-- STEP 2: Verify Email / Third-Party OAuth -->
       <template v-else-if="step === 'selection'">
-         <div class="auth-form">
-     
-        <label class="auth-card__form--label">
+        
+      <label class="auth-card__form--label">
         Congrats. Your account has been created. To ensure you can recover if you forget your password, you need to add an email address. This also activates your account.
       </label>
+
       <div class="auth-card__providers">
-        <button type="button" class="auth-card__providers--btn" @click="triggerOAuth('Google')">
+      
+        <button type="button" class="auth-card__providers--btn" 
+        :disabled="isPolling === true"
+        @click="triggerOAuth('Google')">
           <SvgIcons name="google" :size="30" /> Continue with Google (gmail)
         </button>
-        <button type="button" class="auth-card__providers--btn microsoft" @click="triggerOAuth('Microsoft')">
+        <button type="button" class="auth-card__providers--btn microsoft" 
+        :disabled="isPolling === true"
+        @click="triggerOAuth('Microsoft')">
           <SvgIcons name="microsoft" :size="30" /> Continue with Microsoft (hotmail, outlook, etc.)
         </button>
-        <button type="button" class="auth-card__providers--btn apple" @click="triggerOAuth('Apple')">
+        <button type="button" class="auth-card__providers--btn apple" 
+        :disabled="isPolling === true"
+        @click="triggerOAuth('Apple')">
           <SvgIcons name="apple" :size="30" /> Continue with Apple
         </button>
       </div>
@@ -510,6 +544,7 @@ onUnmounted(() => {
 
       <!-- Token Email Request -->
       <form @submit.prevent="handleSendToken"  class="auth-card__form">
+
         <fieldset class="auth-card__form--group">
           <label class="auth-card__form--label">You can optionally request a token via other email types</label>
           <input
@@ -519,20 +554,29 @@ onUnmounted(() => {
             placeholder="Email Address"
             required
           />
+            <p v-if="sendTokenFormSubmitted && sendTokenFormValidationErrors.email" class="auth-card__form--error">
+        {{ sendTokenFormValidationErrors.email }}
+         </p>
         </fieldset>
-        <button type="submit" class="auth-card__form--action" :disabled="isLoading">
-          Request Token
+
+        <button type="submit" class="auth-card__form--action" 
+        :disabled="isSendTokenFormLoading || isPolling === true">
+           {{ isSendTokenFormLoading ? 'Requesting...' : 'Request Token' }}
         </button>
       </form>
 
-    </div>
     </template>
-   
+    
      <template v-else-if="step === 'verify'" >
     <div class="auth-form">
      
-        
+   <!-- Verify Email / Token -->
   <form @submit.prevent="handleVerifyToken" class="otp-form">
+
+    <label class="auth-card__form--label">
+      Enter the token from your email. Ensure you check your spam before requesting a resend.
+    </label>
+
     <div class="auth-card__tokenbits">
       <input
         v-for="(_, index) in 6"
@@ -547,11 +591,15 @@ onUnmounted(() => {
         @input="handleInput($event, index)"
         @keydown="handleKeyDown($event, index)"
       />
+        <p v-if="verifyTokenFormSubmitted && verifyTokenFormValidationErrors.tokenbits" class="auth-card__form--error">
+        {{ verifyTokenFormValidationErrors.tokenbits }}
+         </p>
     </div>
 
        <button type="submit" class="auth-card__form--action" :disabled="isVerifyTokenFormLoading">
         {{ isVerifyTokenFormLoading ? 'Submitting...' : 'Verify Token' }}
       </button>
+
 
       <div class="auth-card__form--option">
           <span>Didn't receive the token?</span>
@@ -569,49 +617,10 @@ onUnmounted(() => {
     </div>
     </template>
 
-
-    </div>
+  </div>
 
 </template>
 
 <style scoped lang="less">
 @import "@/assets/css/auth-card.less";
-
-
-.captcha-wrapper {
-  position: relative;
-  text-align: center;
-  margin: 1.5rem 0;
-  border-top: 1px solid #e2e8f0;
-
-  .circle-node {
-    position: absolute;
-    top: -9px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    border: 1px solid #cbd5e0;
-  }
-
-  .captcha-label {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: #4a5568;
-  }
-
-  .captcha-box {
-    margin-top: 0.5rem;
-    background: #edf2f7;
-    padding: 1rem;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 1px solid #cbd5e0;
-  }
-}
-
 </style>

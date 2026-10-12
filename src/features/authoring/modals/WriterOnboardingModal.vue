@@ -9,6 +9,7 @@ import type { WriterOnboardingRequest } from '../types/AuthoringTypes'
 import { getValidCountry } from '@/utils/validators'
 import FormProgress from '@/components/FormProgress.vue'
 import HelpIcon from '@/components/HelpIcon.vue'
+import Login from '@/features/authentication/components/LoginComponent.vue'
 
 const authoringStore = useAuthoringStore()
 const modalStore = useModalStore()
@@ -20,7 +21,7 @@ const { progressState, startLoading, setSuccess, setWarning, setError, resetProg
 // Give it a strict type so your v-models benefit from IDE autocomplete
 const formData = ref<WriterOnboardingRequest>({
       confirm: false,
-      country: '-1'
+      //country: '-1'
 })
 
 onBeforeMount(() => {
@@ -35,7 +36,7 @@ const formSubmitted = ref(false)
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
 
-  const parsedCountry = getValidCountry(formData.value.country);
+  //const parsedCountry = getValidCountry(formData.value.country);
 
   return {
     structural: !authoringStore.structureAcknowledged
@@ -46,9 +47,7 @@ const validationErrors = computed(() => {
       ? 'Read & confirm the liability attestation' 
       : '',
 
-      country: !parsedCountry
-      ? 'Please select a country.' 
-      : ''
+     
   }
 })
 
@@ -117,34 +116,22 @@ async function handleFinalOnboardingSubmit() {
 
         <div class="form-header">
     
-         <h2>Unlock your creative dashboard workspace.</h2>
+         <h2>Before publishing your first tale on OutScribed, please acknowledge our structural guidelines and liability terms.</h2>
         <HelpIcon topic="OnboardWriter" />
     </div>
-  
+
 
   <FormProgress :progress="progressState" />
 
     <div class="form-container">
-
       
-      <fieldset :disabled="progressState.type === 'Loading'">
-         <select v-model="formData.country" class="form-field">
-            <option value="-1">-- select country --</option>
-            
-            <option v-for="item in CountrySelectItems" :key="item.value" :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
-      </fieldset>
-
-        <span v-if="formSubmitted && validationErrors.country" class="validation-message">
-        {{ validationErrors.country }}
-      </span>
-
-       <div class="ticks read-only-check" @click="modalStore.push('StructuralAttestation', 'Structure Attestation')">
+       <div class="ticks read-only-check">
         <input id="structure" type="checkbox" :checked="authoringStore.structureAcknowledged" disabled />
-        <label for="structure">I confirm that I have read and understood the OutScribed Story Structure
- guidelines. I will apply these principles when creating and publishing tales.</label>
+        <p>
+          I confirm that I have read and understood the  <label for="structure"  @click="modalStore.push('StructuralAttestation', 'Structure Attestation')">OutScribed Story Structure
+          guidelines. </label> I will apply these principles when creating and publishing tales.
+        </p>
+       
       </div>
               <span v-if="formSubmitted && validationErrors.structural" class="validation-message">
         {{ validationErrors.structural }}
