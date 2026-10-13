@@ -1,63 +1,28 @@
-<script setup lang="ts">
-import { useAuthoringStore } from '../stores/AuthoringStore'
-import { useModalStore } from '@/stores/modalStore'
-
-const authoringStore = useAuthoringStore()
-const modalStore = useModalStore()
-
-function handleAcknowledgeAndClose() {
-  // 🟢 Set the flag directly from this deep modal window context
-  authoringStore.liabilityAcknowledged = true
-  
-  // Pop this modal off the stack to return back to the main layout checklist
-  modalStore.pop()
-}
-</script>
-
 <template>
 
     <article class="water-onboarding">
-
         
-<h4 class="writer-onboarding__instruction">
-    Carefully read the following text and click on the "Continue" button at the bottom
-    of the page to proceed to the next step of your writer onboarding
-</h4>
-
+    <h4 class="writer-onboarding__instruction">
+    Writers' Representation &amp; Liability Terms
+    </h4>
 <ol class="writer-onboarding__items">
-    
-<li>
-    This section covers your liabilities as an OutScribed writer and includes;
- legal responsibilities, originality & attribution, comunity standards, 
- privacy & data use
-</li>
-<li>
-    I declare that I am the author and sole owner of the content I submit, or that I have secured all 
-    necessary permissions and licenses to publish it.
-</li>
-<li>
-    I acknowledge that I am solely responsible for the content, opinions, and narratives expressed in my Tales, 
-    Insights, and Comments and holds OutScribed harmless from any legal claims, 
-    liabilities, or expenses arising from my published content.
-</li>
-<li>
-    I understand that Outscribed is a platform for creative, issue-focused storytelling and not a venue for defamation, hate speech, or misinformation. 
-    I agree not to publish content that: targets individuals with false or malicious statements, incites violence or illegal activity, or
-deliberately misleads readers about facts (beyond the artistic framing of the Tale).
-</li>
-<li>
-    I accept that OutScribed relies on community moderation. I understand that my content may be automatically hidden 
-    if heavily flagged for violations, and that once engaged with by other users (via votes, comments, flags, or saves), 
-    editing is permanently disabled to preserve the integrity of the discussion (though I retain the right to add Addendums or Archive the content).
-</li>
+  <li>
+    This document outlines your legal responsibilities, copyright warranties, community standards, and data usage terms as an OutScribed author.
+  </li>
+  <li>
+    I declare that I am the sole author and copyright owner of all content I submit, or that I have secured all necessary rights, permissions, and licenses to publish it.
+  </li>
+  <li>
+    I acknowledge that I am solely responsible for the content, opinions, and narratives expressed in my Tales, Insights, and Comments, and I agree to hold OutScribed, its operators, and developers harmless from any legal claims, liabilities, or expenses arising from my published work.
+  </li>
+  <li>
+    I understand that OutScribed is a platform for creative, issue-focused storytelling and not a venue for personal defamation, hate speech, or malicious disinformation. I agree not to publish content that targets individuals with false statements or incites unlawful conduct.
+  </li>
+  <li>
+    I accept that OutScribed utilizes community moderation and immutable record-keeping. I understand that my content may be automatically hidden if flagged for policy violations, and that once other users interact with my Tale (via votes, comments, or saves), the core text is locked to preserve discussion integrity (while retaining my ability to publish Addendums or Archive the piece).
+  </li>
 </ol>
 
-<div class="writer-onboarding__actions">
-    <button class="btn btn--secondary"  @click="handleAcknowledgeAndClose">
-        Continue
-    </button>
-</div>
-  
     </article>
 
 </template>

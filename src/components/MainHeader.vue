@@ -10,9 +10,14 @@ const modalStore = useModalStore()
 const isLoggedIn = useLoginHint()
 const isMenuOpen = ref(false)
 
-
 function handleCreateDraftClick() {
-  if (!isLoggedIn.value) modalStore.push('CreateTale', 'Create Tale')
+  modalStore.push('CreateTale', 'Create Tale')
+  isMenuOpen.value = false;
+}
+
+function handleSearchClick() {
+  modalStore.push('Search', 'Search')
+  isMenuOpen.value = false;
 }
 
 // 2. Define your component inputs and outputs (Props & Emits)
@@ -141,7 +146,7 @@ onMounted(() => {
         </div>
 
         <!-- Slot D: Quick Write Icon (Mobile Right) -->
-          <button class="main-header__quick-write-btn" @click="modalStore.push('CreateTale', 'Create Tale')">
+          <button type="button" class="main-header__quick-write-btn" @click="handleCreateDraftClick">
              <SvgIcons name="edit" :size="20" />
           </button>
 
@@ -151,7 +156,7 @@ onMounted(() => {
            Saved Drafts
           </router-link>
          
-          <button class="btn btn--secondary" @click="modalStore.push('CreateTale', 'Create Tale')">
+          <button type="button" class="btn btn--secondary" @click="handleCreateDraftClick">
             Create a Draft
           </button>
         </div>
@@ -171,13 +176,16 @@ onMounted(() => {
           <router-link to="/tales" class="main-header__editorial-link" @click="isMenuOpen = false">Discover Tales</router-link>
           <router-link to="/writers" class="main-header__editorial-link" @click="isMenuOpen = false">Meet the Writers</router-link>
           <router-link to="/faqs" class="main-header__editorial-link" @click="isMenuOpen = false">Learn More About OutScribed</router-link>
-          <router-link to="/search" class="main-header__editorial-link main-header__search-trigger" @click="isMenuOpen = false">
+          <button type="button" class="main-header__editorial-link main-header__search-trigger" @click="handleSearchClick">
             Search OutScribed
-          </router-link>
+          </button>
         </nav>
+
+         
 
         <!-- Mobile Accordion Content (Slots A & E mirrored on Mobile Expand) -->
         <div class="main-header__mobile-account-group">
+          <div class="divider-multi"><span></span></div>
            <template v-if="isLoggedIn">
             <router-link to="/profile" class="main-header__mobile-link" @click="isMenuOpen = false">
               <SvgIcons name="user" /> Profile
@@ -194,13 +202,16 @@ onMounted(() => {
              <SvgIcons name="archive" />  Sign Up For Free
             </router-link>
           </template>
+          <div class="divider-multi"><span></span></div>
         </div>
 
+         
+
         <div class="main-header__mobile-studio-group">
-           <button class="main-header__mobile-cta-btn" @click="modalStore.push('CreateTale', 'Create Tale')">
+           <button type="button" class="main-header__mobile-cta-btn" @click="handleCreateDraftClick">
               <SvgIcons name="edit" /> Create Draft
             </button>
-          <router-link to="/drafts" class="main-header__mobile-link" @click="isMenuOpen = false">
+          <router-link to="/tales/editor" class="main-header__mobile-link" @click="isMenuOpen = false">
             <SvgIcons name="archive" /> Saved Drafts
           </router-link>
           <router-link v-if="isLoggedIn" to="/logout" class="main-header__mobile-link main-header__mobile-link--logout" @click="isMenuOpen = false">

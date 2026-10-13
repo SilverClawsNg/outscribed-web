@@ -1,0 +1,48 @@
+@import "variables.less";
+
+.legal-document {
+  width: @mid-width;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  color: var(--color-text-main, #212529);
+  line-height: 1.6;
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .last-updated {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #6c757d);
+    margin-bottom: 2rem;
+  }
+
+  h2, .modal-page-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-heading, #111);
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+    list-style:disc;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}

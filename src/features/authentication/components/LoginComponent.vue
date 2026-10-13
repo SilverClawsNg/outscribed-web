@@ -491,7 +491,7 @@ function handleKeyDown(e: KeyboardEvent, index: number) {
         </button>
       </div>
 
-       <div class="auth-card__divider"><span></span></div>
+       <div class="divider-multi"><span></span></div>
 
       <!-- Token Email Request -->
       <form @submit.prevent="handleSendToken"  class="auth-card__form">

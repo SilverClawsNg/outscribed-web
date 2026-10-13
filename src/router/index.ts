@@ -137,6 +137,41 @@ const router = createRouter({
           path: '/oauth-callback',
           name: 'oauth-callback',
           component: () => import('@/features/authentication/views/OAuthCallbackView.vue')
+        },
+        {
+          path: '/disclaimers',
+          name: 'disclaimer',
+          component: () => import('@/features/support/views/DisclaimerView.vue')
+        },
+        {
+          path: '/dmca-copyright-policies',
+          name: 'copyright',
+          component: () => import('@/features/support/views/CopyrightView.vue')
+        },
+        {
+          path: '/privacy-statement',
+          name: 'privacy',
+          component: () => import('@/features/support/views/PrivacyView.vue')
+        },
+        {
+          path: '/terms-of-use',
+          name: 'terms',
+          component: () => import('@/features/support/views/TermsOfUseView.vue')
+        },
+        {
+          path: '/writers-structural-guidelines',
+          name: 'structural',
+          component: () => import('@/features/support/views/StructuralView.vue')
+        },
+        {
+          path: '/writers-liability-guidelines',
+          name: 'liability',
+          component: () => import('@/features/support/views/LiabilityView.vue')
+        },
+        {
+          path: '/contact-us',
+          name: 'contact',
+          component: () => import('@/features/support/views/ContactView.vue')
         }
       ]
     },

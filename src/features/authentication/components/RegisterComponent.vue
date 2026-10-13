@@ -473,7 +473,7 @@ onUnmounted(() => {
          </p>
       </fieldset>
 
-      <div class="auth-card__divider"><span></span></div>
+      <div class="divider-multi"><span></span></div>
 
       <!-- Cloudflare Turnstile / Captcha Divider -->
 
@@ -540,7 +540,7 @@ onUnmounted(() => {
         </button>
       </div>
 
-       <div class="auth-card__divider"><span></span></div>
+       <div class="divider-multi"><span></span></div>
 
       <!-- Token Email Request -->
       <form @submit.prevent="handleSendToken"  class="auth-card__form">

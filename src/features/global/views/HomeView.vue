@@ -79,7 +79,7 @@ onUnmounted(() => {
    
     <div class="hero__content">
       <h3 class="hero__eyebrow">
-      When did you find out that...
+      The Facts, The Fiction, & Everything In-between
       </h3>
       
       <h1 class="hero__title">

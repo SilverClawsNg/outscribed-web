@@ -5,6 +5,7 @@ import { useModalStore } from '@/stores/modalStore'
 import MainHeader from '@/components/MainHeader.vue'
 import ModalContainer from '@/components/ModalContainer.vue'
 import Alert from '@/components/Alert.vue'; // 👈 Import alert store
+import MainFooter from '@/components/MainFooter.vue'
 
 const route = useRoute()
 const modalStore = useModalStore()
@@ -32,6 +33,8 @@ watch(() => route.path, () => modalStore.closeAll())
     <main class="main-layout" :class="currentHeaderClass">
       <RouterView />
     </main>
+
+    <MainFooter />
 
   </div>
 

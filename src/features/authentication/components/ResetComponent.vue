@@ -275,7 +275,7 @@ onUnmounted(() => {
         />
       </fieldset>
 
-      <div class="auth-card__divider"><span></span></div>
+      <div class="divider-multi"><span></span></div>
 
       <!-- Cloudflare Turnstile / Captcha Divider -->
 
