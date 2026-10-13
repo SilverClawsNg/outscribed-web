@@ -56,16 +56,18 @@
     font-style: italic;
     display:block;
     
-    & a {
+    & button {
       background: none;
       border: none;
-      color: #0b57d0;
+      color: @link-color;
+      text-decoration: underline;
       font-weight: 600;
       padding: 0;
       cursor: pointer;
 
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
+        color: @link-alt-color
       }
     }
   }

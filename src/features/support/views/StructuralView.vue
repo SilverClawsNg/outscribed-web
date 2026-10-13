@@ -23,7 +23,7 @@
     I understand that an OutScribed Tale's title must be compelling and descriptive without being deliberately misleading or sensationalized as clickbait.
   </li>
   <li>
-    I understand that an OutScribed Tale must include a Watchlist (Reality Check) section anchoring the narrative to one or more credible primary source articles covering the underlying event or policy.
+    I understand that an OutScribed Tale must include a Reality Check section anchoring the narrative to one or more credible primary source articles covering the underlying event or policy.
   </li>
   <li>
     I understand that an OutScribed Tale must maintain respectful language that encourages thoughtful debate rather than hate speech, targeted harassment, or gratuitous violence.

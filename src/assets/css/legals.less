@@ -4,8 +4,7 @@
   width: @mid-width;
   max-width: calc(100% - 20px);
   margin: 0 auto;
-  padding: 2rem 1.5rem;
-  color: var(--color-text-main, #212529);
+  padding-top: 3rem;
   line-height: 1.6;
 
   .page-title {
@@ -16,8 +15,8 @@
 
   .last-updated {
     font-size: 0.85rem;
-    color: var(--color-text-muted, #6c757d);
     margin-bottom: 2rem;
+    font-style:italic;
   }
 
   h2, .modal-page-heading {
@@ -25,21 +24,29 @@
     font-weight: 600;
     margin-top: 1.75rem;
     margin-bottom: 0.75rem;
-    color: var(--color-text-heading, #111);
   }
 
   p {
     margin-bottom: 1rem;
   }
 
-  ul {
+
+
+  ul, ol {
     margin-bottom: 1.25rem;
     padding-left: 1.5rem;
-    list-style:disc;
-
+    
     li {
       margin-bottom: 0.5rem;
     }
+  }
+
+  ul{
+    list-style:disc;
+  }
+
+   ol{
+    list-style:upper-roman;
   }
 
   strong {
