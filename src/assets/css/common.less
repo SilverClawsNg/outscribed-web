@@ -17,7 +17,16 @@ body {
   background-color: var(--background-color);
   position: relative;
   margin: 0;
-  padding-top: @body-top-offset; // Pushes standard document flow down cleanly
+  
+
+  @media @smallDevice {
+    padding-top: @body-top-offset-small; // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+    padding-top: @body-top-offset-large; // Pushes standard document flow down cleanly
+  }
+
 
   @media @phone {
     font-size: 90%;
@@ -35,13 +44,28 @@ body {
     font-size: 100%;
   }
 
+  
+  @media @smallDevice {
+
+    &::before{
+        height: @body-top-offset-small; // Pushes standard document flow down cleanly
+    }
+  }
+
+  @media @largeDevice {
+     &::before{
+        height: @body-top-offset-large; // Pushes standard document flow down cleanly
+    }
+  }
+
+
   &::before {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: @body-top-offset;
+    //height: @body-top-offset;
     z-index: 10000; // Above all application UI
     pointer-events: none;
     background: linear-gradient(
@@ -78,12 +102,13 @@ main {
     &.main-layout {
         padding-bottom: 3rem;
         min-height:100lvh;
-        @media @tablet, @largeDevice {
-            padding-top: calc(98px + @body-top-offset);
+
+        @media @largeDevice {
+            padding-top: calc(98px + @body-top-offset-large);
         }
 
-        @media @phone, @phablet {
-            padding-top: calc(56px + @body-top-offset);
+        @media @smallDevice {
+            padding-top: calc(56px + @body-top-offset-small);
         }
     }
 

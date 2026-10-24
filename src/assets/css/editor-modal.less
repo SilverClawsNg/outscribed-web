@@ -42,8 +42,16 @@
   overflow: hidden;
 
   &__brand-ribbon {
-    height: @body-top-offset;
+    //height: @body-top-offset;
     flex-shrink: 0;
+    
+  @media @smallDevice {
+    height: @body-top-offset-small; // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+    height: @body-top-offset-large; // Pushes standard document flow down cleanly
+  }
     background: linear-gradient(
       90deg,
       @logo-green 0%,

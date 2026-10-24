@@ -2,12 +2,21 @@
 
 .main-header {
   position: fixed;
-  top: @body-top-offset;
+  //top: @body-top-offset;
   z-index: 5000;
   background-color: var(--background-color);
   width: 100%;
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  
+  @media @smallDevice {
+    top: @body-top-offset-small; // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+    top: @body-top-offset-large; // Pushes standard document flow down cleanly
+  }
 
   /* Full-Bleed Top Bar Wrapper */
   &__utility-bar-wrapper {

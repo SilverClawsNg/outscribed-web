@@ -76,12 +76,28 @@ const taleStore = useTaleDraftStore()
    * ------------------------------------------------------------- */
   &__aside {
     position: fixed;
-    top: @body-top-offset;
+    //top: @body-top-offset;
+    
+  @media @smallDevice {
+    top: @body-top-offset-small; // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+    top: @body-top-offset-large; // Pushes standard document flow down cleanly
+  }
     /* Aligns to the left edge of the centered 1300px wrapper */
     left: max(0px, calc((100vw - @max-width) / 2));
    padding-bottom: 5rem;
-   height: calc(100vh - @body-top-offset);
-   height: calc(100dvh - @body-top-offset);
+
+   @media @smallDevice {
+       height: calc(100dvh - @body-top-offset-small);
+ // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+   height: calc(100vh - @body-top-offset-large);// Pushes standard document flow down cleanly
+  }
+   
     z-index: 1;
     border-right: 1px solid var(--border-color);
     background-color: var(--background-color);
@@ -127,9 +143,19 @@ const taleStore = useTaleDraftStore()
     flex: 0 0 50px;
     width: 50px;
     position: sticky;
-    top: @body-top-offset;
-    height: calc(100vh - @body-top-offset);
-    height: calc(100dvh - @body-top-offset);
+    //top: @body-top-offset;
+    
+  @media @smallDevice {
+    top: @body-top-offset-small; // Pushes standard document flow down cleanly
+    height: calc(100vh - @body-top-offset-small);
+  }
+
+  @media @largeDevice {
+    top: @body-top-offset-large; // Pushes standard document flow down cleanly
+    height: calc(100dvh - @body-top-offset-large);
+  }
+    
+    
     z-index: 3;
     display: flex;
     flex-direction: column;
@@ -156,7 +182,16 @@ const taleStore = useTaleDraftStore()
     height:auto;
     background-color: var(--background-color);
     position:relative;
-    padding-top: @body-top-offset;
+    //padding-top: @body-top-offset;
+
+    
+  @media @smallDevice {
+    padding-top: @body-top-offset-small; // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+    padding-top: @body-top-offset-large; // Pushes standard document flow down cleanly
+  }
   }
 
   /* =============================================================
