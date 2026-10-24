@@ -21,6 +21,13 @@ const formData = ref<UpdateAddendumRequest>({
 })
 
 
+// Moderated / Hidden statuses
+const notEngaged = computed(() => {
+  return !taleStore.activeTale?.hasEngagement
+})
+
+
+
 // Function to clone active tale into isolated local form state
 function populateFormFromStore() {
   if (!taleStore.activeTale) return
@@ -199,6 +206,36 @@ async function handleCommitAddendum() {
 
 <template>
 
+
+      <!-- 1. PRE-ACTION INVALID STATE NOTICE -->
+      <template v-if="notEngaged">
+        <PageStatusMessage
+          title="Action Not Available"
+          message="Your story has not been engaged by community so you can still directly update basic information and story details."
+          type="warning"
+          icon="warning"
+          :is-standalone="true"
+        >
+          <template #actions>
+            <button
+              class="btn btn--primary"
+              @click="taleStore.setCurrentMainView('basic')"
+            >
+              Basic
+            </button>
+              <button
+              class="btn btn--secondary"
+              @click="taleStore.setCurrentMainView('basic')"
+            >
+              Details
+            </button>
+          </template>
+          
+        </PageStatusMessage>
+      </template>
+
+  <template v-else>
+
     <div class="addendum-manager">
 
         <div class="addendum-manager__wrapper">
@@ -307,6 +344,8 @@ async function handleCommitAddendum() {
         
     </div>
     
+  </template>
+
 
 </template>
 
@@ -349,6 +388,11 @@ async function handleCommitAddendum() {
   flex-direction: column;
   gap: 1.25rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  @media @phone{
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+  }
 
   &:focus-within {
     border-color: @link-color;

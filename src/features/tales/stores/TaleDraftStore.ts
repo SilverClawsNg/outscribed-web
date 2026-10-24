@@ -409,6 +409,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       
       tales.value.unshift(newTaleDraft);
       activeTale.value = { ...newTaleDraft };
+      currentMainView.value = 'details';
       localStorage.setItem(`tale:draft:new:${outcome.value.id}`, JSON.stringify(newTaleDraft));
 
       return { success: true, error: null };

@@ -384,6 +384,11 @@ currentTag.value = tagId
   gap: 1.25rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
+   @media @phone{
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+  }
+
   &:focus-within {
     border-color: @link-color;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);

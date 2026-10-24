@@ -90,7 +90,7 @@ const taleStore = useTaleDraftStore()
    padding-bottom: 5rem;
 
    @media @smallDevice {
-       height: calc(100dvh - @body-top-offset-small);
+       height: calc(100lvh - @body-top-offset-small);
  // Pushes standard document flow down cleanly
   }
 
@@ -130,6 +130,7 @@ const taleStore = useTaleDraftStore()
     position: relative;
     margin-left: 380px; /* Leaves space for Fixed Aside when open */
     min-height: 100vh;
+    min-height: 100lvh;
     z-index: 2;
     background-color: var(--background-color);
     box-shadow: -4px 0 16px rgba(0, 0, 0, 0.04);
@@ -144,6 +145,11 @@ const taleStore = useTaleDraftStore()
     width: 50px;
     position: sticky;
     //top: @body-top-offset;
+
+      @media @phone{
+      flex: 0 0 40px;
+      width: 40px;
+    }
     
   @media @smallDevice {
     top: @body-top-offset-small; // Pushes standard document flow down cleanly
@@ -152,7 +158,7 @@ const taleStore = useTaleDraftStore()
 
   @media @largeDevice {
     top: @body-top-offset-large; // Pushes standard document flow down cleanly
-    height: calc(100dvh - @body-top-offset-large);
+    height: calc(100lvh - @body-top-offset-large);
   }
     
     
@@ -184,6 +190,9 @@ const taleStore = useTaleDraftStore()
     position:relative;
     //padding-top: @body-top-offset;
 
+      @media @phone{
+      max-width: calc(100vw - 40px);
+      }
     
   @media @smallDevice {
     padding-top: @body-top-offset-small; // Pushes standard document flow down cleanly
@@ -203,25 +212,50 @@ const taleStore = useTaleDraftStore()
     }
     
   /* Responsive Adjustments */
-  @media @smallDevice {
+  @media @phablet, @tablet {
    
 
     .editor-layout__canvas-container {
       margin-left: calc(100vw - 50px);
+      
+         
     }
   }
+
+   @media @phone {
+   
+
+    .editor-layout__canvas-container {
+      margin-left: calc(100vw - 40px);
+      
+         
+    }
+  }
+
   }
 
   /* Responsive Adjustments */
-  @media @smallDevice {
+  @media @phablet, @tablet {
     &__aside {
       left: 0;
       width: calc(100vw - 50px);
+      
     }
 
     &__canvas-container {
       margin-left: 0;
     }
   }
+
+    @media @phone{
+        &__aside {
+      left: 0;
+      width: calc(100vw - 40px);
+      
+    }
+     &__canvas-container {
+      margin-left: 0;
+    }
+      }
 }
 </style>

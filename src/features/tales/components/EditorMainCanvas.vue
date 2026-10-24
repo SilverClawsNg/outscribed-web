@@ -16,6 +16,7 @@ import TaleMetricsComponent from './TaleMetricsComponent.vue';
 import SnapshotListModal from '@/features/engagements/modals/SnapshotListModal.vue';
 
 const taleStore = useTaleDraftStore()
+const notPublished = computed(() => taleStore.activeTale?.status == 'Created')
 
 </script>
 
@@ -79,6 +80,35 @@ const taleStore = useTaleDraftStore()
 
     </template>
 
+      <template v-else-if="taleStore.currentMainView === 'metrics' && notPublished">
+
+          <PageStatusMessage
+          title="Action Not Available"
+          message="Daily metrics are available after your story has been published."
+          type="warning"
+          icon="warning"
+          :is-standalone="true"
+        >
+
+         <template #actions>
+            <button
+              class="btn btn--primary"
+              @click="taleStore.setCurrentMainView('preview')"
+            >
+              Preview
+            </button>
+              <button
+              class="btn btn--secondary"
+              @click="taleStore.setCurrentMainView('publish')"
+            >
+              Publish
+            </button>
+          </template>
+        
+        </PageStatusMessage>
+
+    </template>
+
       <template v-else-if="taleStore.currentMainView === 'metrics'">
 
         <div class="snapshot-container">
@@ -93,6 +123,7 @@ const taleStore = useTaleDraftStore()
         <SnapshotListModal :payload="taleStore.activeTale?.taleId" :is-editor="true"  />
 
         </div>
+
     </template>
 
       <template v-else>

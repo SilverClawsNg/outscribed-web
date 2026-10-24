@@ -13,6 +13,8 @@ const taleStore = useTaleDraftStore()
 const snapshotStore = useSnapshotStore();
 const snapshotFilterStore = useSnapshotFilterStore();
 
+
+
 // --- Component Reactive State ---
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
@@ -59,14 +61,6 @@ onUnmounted(() => {
   snapshotStore.reset();
 });
 
-
-
-
-
-
-
-
-
 const emit = defineEmits<{
   (e: 'openMobileModal', item: TaleSnapshotListDto): void
 }>()
@@ -94,6 +88,9 @@ onUnmounted(() => {
 </script>
 
 <template>
+
+
+
   <div class="table-container">
     <div class="table-responsive">
       <table class="tale-metrics-table">
