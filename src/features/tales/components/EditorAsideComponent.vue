@@ -58,17 +58,7 @@ async function initPage() {
   }
 
   // 3. Build the targeted API request endpoint string from those validated details
-  const cleanApiPath = taleFilterStore.buildApiPath(taleStore.baseRoute);
-  
-  // 4. Fetch from store
-  const outcome = await taleStore.loadTales(cleanApiPath)
-
-  if (!outcome) {
-       loadingError.value = taleStore.loadingError ?? new APIError(500, 'Unknown Error!', 'Unknown error occured while retrieving drafts. Refresh page and try again.')
-  }
-
-  // No matter the result, stop loading
-  isLoading.value = false
+  await loadTalesFromStore();
 }
 
 // --- MOUNT PAGE ---
@@ -83,7 +73,7 @@ watch(
   () => taleFilterStore.activeApiPath,
   async (newPath, oldPath) => {
     if (newPath === oldPath) return
-    await initPage()
+    await loadTalesFromStore()
   }
 )
 
@@ -92,6 +82,24 @@ onUnmounted(() => {
   taleStore.abort();
 });
 
+
+async function loadTalesFromStore() {
+
+  isLoading.value = true
+loadingError.value = null
+
+  const cleanApiPath = taleFilterStore.buildApiPath(taleStore.baseRoute);
+
+  // 4. Fetch from store
+  const outcome = await taleStore.loadTales(cleanApiPath);
+
+  if (!outcome) {
+    loadingError.value = taleStore.loadingError ?? new APIError(500, 'Unknown Error!', 'Unknown error occured while retrieving drafts. Refresh page and try again.');
+  }
+
+  // No matter the result, stop loading
+  isLoading.value = false;
+}
 
 function navigateToAside(section: AsideView) {
   taleStore.setCurrentAsideView(section);

@@ -98,7 +98,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
       currentMainView.value = section;
 
-        if(window.innerWidth < 991 && isAsideHidden.value == true) {
+        if(window.innerWidth < 992 && isAsideHidden.value == true) {
         isAsideHidden.value = false;
       } 
     }
@@ -266,7 +266,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
   // --- Store Actions ---
   async function loadTales(apiPathWithFilters: string): Promise<boolean> {
     
-    reset()
+    abort()
 
     try {
 
@@ -309,7 +309,9 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       currentAsideView.value = 'detail';
 
       // Smart view resolution based on completeness
-      if (!hasBasicInfo) {
+      if (activeTale.value && activeTale.value.status !== 'Created') {
+        currentMainView.value = 'preview';
+      } else if (!hasBasicInfo) {
         currentMainView.value = 'basic';
       } else {
         currentMainView.value = 'details';
