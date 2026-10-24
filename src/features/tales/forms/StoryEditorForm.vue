@@ -420,10 +420,10 @@ onBeforeUnmount(() => {
 
   .ql-formats {
     margin-right: 0.75rem;
-    margin-bottom: 0.75rem;
+    
 
     @media @phone{
-      display: block;
+      margin-bottom: 0.75rem;
     }
   }
 
