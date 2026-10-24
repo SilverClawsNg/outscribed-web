@@ -394,7 +394,9 @@ function handleKeyDown(e: KeyboardEvent, index: number) {
 
      <div class="auth-card__header">
         <div v-if="isPage" class="auth-card__header--logo">
-         <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
+           <router-link to="/" class="main-header__brand-link" title="OutScribed Home">
+               <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
+          </router-link>
         </div>
         <h1 class="auth-card__header--title">Log In</h1>
         <p class="auth-card__header--subtitle">{{ message }}</p>

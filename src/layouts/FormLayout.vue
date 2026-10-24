@@ -32,7 +32,9 @@ watch(() => route.path, () => modalStore.closeAll())
     
    <footer class="form-footer">
        <div class="footer-brand">
+          <router-link to="/" class="main-header__brand-link" title="OutScribed Home">
        <SvgIcons name="logo" class="brand-logo" :size="25" />
+          </router-link>
       </div>
       <div class="footer-links">
         <a href="/terms">Terms of Use</a>
