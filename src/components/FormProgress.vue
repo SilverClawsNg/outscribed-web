@@ -144,5 +144,5 @@ function handleLogin() {
 </template>
 
 <style lang="less" scoped>
-   @import "../assets/css/form-progress.less";
+   @import "@/assets/css/form-progress.less";
 </style>

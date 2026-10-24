@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { getAsync } from '@/api/apiGetServices';
 import { postAsync } from '@/api/apiPostServices';
 import { APIError } from '@/api/apiTypes.ts';
@@ -8,7 +8,7 @@ import { useAuthenticationStore } from '@/features/authentication/stores/Authent
 
 import type { 
   TaleDraftListDto, GetTaleDraftListResponse, CreateRequest, UpdateRequest, CreateResponse,
-  UpdateCountryRequest, UpdateSummaryRequest, UpdateDetailRequest, UpdateRealityCheckRequest, 
+  UpdateDetailRequest, UpdateRealityCheckRequest, 
   UpdatePhotoRequest, TagRequest, UntagRequest, ConfirmRequest, UpdateAddendumRequest
 } from '../types/TalesTypes.ts';
 import type { TaleStatus } from '@/utils/enumHelper.ts';

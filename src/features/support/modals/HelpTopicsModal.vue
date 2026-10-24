@@ -14,7 +14,7 @@ const props = defineProps({
      <template v-if="payload === 'CreateAccount'">
 
         <div class="topic-content rich-text">
-            <h4>Creating An OutScribed Account</h4>
+            <h2>Creating An OutScribed Account</h2>
             <p>Creating an account moves you from a casual reader to an active community member. An account allows you to publish Tales, join story discussions via comments, bookmark favorites, and support your favorite writers.</p><p><i>Note: To publish Tales, you will complete a quick, one-time writer setup from your dashboard after signing up!</i></p><p><strong>How Registration Works (Two Simple Steps):</strong></p><ul><li><strong>Step 1 (Set Your Credentials):</strong> Choose a unique username and a strong password on the sign-up page.</li><li><strong>Step 2 (Verify Your Identity):</strong> Choose how you want to complete your registration:<ul><li><strong>Social Sync (Fastest):</strong> Connect seamlessly with your existing <strong>Google</strong>, <strong>Microsoft</strong>, or <strong>Apple</strong> account for instant verification.</li><li><strong>Email Token:</strong> Receive a 6-digit verification code in your email inbox and enter it to activate your account.</li></ul></li></ul><p><strong>Troubleshooting & Tips:</strong></p><ul><li><strong>Bot Protection / CAPTCHA:</strong> We enforce automated security checks on registration to prevent spam accounts and protect community discussion. Simply check the verification box when prompted.</li><li><strong>\"Username Taken\":</strong> Usernames must be unique. Try adding numbers or adjusting the handle slightly.</li><li><strong>Missing Verification Code?</strong> Check your Spam or Junk folder. If it hasn't arrived, wait for the 90-second cooldown timer to expire and click <i>Resend Code</i>.</li><li><strong>Expired Code:</strong> Email verification tokens expire after 10 minutes for security reasons. Click to request a fresh token if yours has expired.</li><li><strong>\"Email Already Registered\":</strong> If your email is already tied to an account, use the <i>Log In</i> page or click <i>Forgot Password</i> to regain access.</li></ul>
           </div>
      </template>
@@ -22,7 +22,7 @@ const props = defineProps({
     <!-- Topic: Login -->
        <template v-else-if="payload === 'LoginAccount'">
          <div class="topic-content rich-text">
-      <h4>Logging Into Your Account</h4>
+      <h2>Logging Into Your Account</h2>
       <p>After creating an account with OutScribed, you can continue to access that account from any device by logging in with your registered username and password. </p> <p><i>Here are things to note:</i></p> <ul><li><strong>Staying Logged In:</strong> Once logged in, we will remember and keep you logged in for 6 weeks so you can continue enjoying a seamless experience on OutScribed. However if the device is not restricted to your use only then we advice that you always log out when you are done on OutScribed.</li><li><strong>Multiple Devices Login:</strong> You can stay logged in to as many as five (5) devices simultaneously so you can continue enjoying the OutScribed experience on your desktop, laptop, tablet, phablet, and phone all at the same time.</li><li><strong>Forgotten Password:</strong> Yes, losing a password happens to the best of us. While we cannot help you recover a teh same password because we do not store passwords in the same plain form as you entered it -for security purposes - we can help you create a new password. You can start the process by clicking on teh button labeled 'Forgotten password'. </li></ul>
     </div>
 
@@ -31,7 +31,7 @@ const props = defineProps({
     <!-- Topic: Resetting password -->
        <template v-else-if="payload === 'ResetPassword'">
           <div class="topic-content rich-text">
-      <h4>Resetting Lost Password</h4>
+      <h2>Resetting Lost Password</h2>
     <p>Because account security is our top priority, we never store passwords in plain text—everything is heavily encrypted. While we cannot retrieve your old password, you can set up a secure new one in a few quick steps.</p><p><strong>The 3-Step Password Reset Process:</strong></p><ul><li><strong>Step 1 (Request a Reset Token):</strong> Go to the <i>Forgot Password</i> page, enter the email address used during registration, and complete the security check box.</li><li><strong>Step 2 (Verify Token):</strong> Check your email inbox for a 6-digit security token and enter it into the verification box on the reset screen.</li><li><strong>Step 3 (Create New Password):</strong> Choose a fresh, strong password. Once confirmed, you will immediately regain access to your account!</li></ul><p><strong>Common Troubleshooting Tips:</strong></p><ul><li><strong>"Password Cannot Be Reused":</strong> To protect your account from data leaks, the system blocks reusing recent passwords. Pick a brand-new variation or passphrase.</li><li><strong>"No Reset Email Received":</strong> Check your Spam or Junk folder, and verify that you entered the exact email address associated with your account.</li><li><strong>"Invalid or Expired Token":</strong> Reset tokens are time-limited for security. If the code expired, restart the process to request a fresh token.</li></ul>
     </div>
 
@@ -40,7 +40,7 @@ const props = defineProps({
     <!-- Topic: Logging out account -->
        <template v-else-if="payload === 'LogoutAccount'">
           <div class="topic-content rich-text">
-            <h4>Logging out of Account</h4>
+            <h2>Logging out of Account</h2>
         <p>Once logged in, we can keep you logged in for as long as 60 days however if you are using a shared device like an office workstation then you are advised to always logout when you are done.</p><p><i>Here are things you should note:</i></p><ul><li><strong>Blanket Logout:</strong> When logging out, you have the option to choose to logout only the current device or a blanket termination of all active sessions across all devices.</li><li><strong>Clearing Caches:</strong> When you perform tasks such as creating tales, insights, or comments, we keep memory of such actions on the device you are currently using. This ensures that you do not lose your work due to network discrepancies. When logging out, you must choose whether to remove these memories or keep them. This decision strongly depends on whether you are using a shared device or not.</li></ul>      
         </div>
      </template>
@@ -48,48 +48,34 @@ const props = defineProps({
       <!-- Topic: Creating tale -->
        <template v-else-if="payload === 'CreateTale'">
           <div class="topic-content rich-text">
-            <h4>Managing Tales</h4>
+            <h2>Managing Tales</h2>
 <p>On OutScribed, transitioning your imagination into a captivating story is fluid. An unregistered visitor can register, complete writer onboarding, and start drafting a Tale in under 10 minutes!</p><p><strong>The Anatomy of a Tale:</strong></p><ul><li><strong>Title & Category:</strong> The headline hook and thematic grouping (Education, Politics, History, etc.). Both are required to initialize a draft.</li><li><strong>Summary:</strong> A short teaser that expands on the title without giving the story away.</li><li><strong>Country:</strong> Optional geographic tag pointing to the real-world setting.</li><li><strong>Cover Image:</strong> Optional Landscape image (750px by 562px recommended in <i>.jpeg</i>, <i>.png</i>, or <i>.webp</i>) accompanied by a short caption.</li><li><strong>Details:</strong> Rich-text editor supporting headers, lists, links, and text formatting.</li><li><strong>Watchlist:</strong> The real-world news or article links backing up your fiction (includes source title, URL, and summary).</li></ul><p><strong>Creating and Publishing Steps:</strong></p><ul><li><strong>Step 1 (Spin Your Draft):</strong> Click <i>OutScribe</i> in the top-right corner. All Tales start as private drafts.</li><li><strong>Step 2 (Update Attributes):</strong> Access your Tales editor from the top-left user menu to add your rich-text details, cover image, and Watchlist sources.</li><li><strong>Step 3 (Preview & Go Live):</strong> Preview your story, check the publication confirmation box, and release it to the community!</li></ul><p><strong>Post-Publication & Archiving Rules:</strong></p><p>Once a Tale receives community engagement (upvotes, comments, shares, etc.), direct editing and deletion are locked to preserve community integrity.</p><p><i>Need to make corrections? You can attach addendums for updates. Need to hide a story? You can self-archive it anytime, hiding it publicly while allowing past engagers to retain access (and you can un-archive it whenever you want).</i></p>        
 </div>
      </template>
-
+     
      <template v-else-if="payload === 'OnboardWriter'">
-      <div class="topic-content rich-text">
+  <div class="topic-content rich-text">
+    <p><strong>Writer Onboarding:</strong></p>
+    <p>Becoming an OutScribed writer takes just a moment! To activate your creator workspace, tick the acknowledgment checkbox below to confirm your agreement with our publishing and structural standards.</p>
 
-        
-<p><strong>3-Step Onboarding Process:</strong></p>
-<ul>
-  <li>
-    <strong>Step 1 (Select Your Location):</strong> Select the country you are publishing from using the location dropdown, then click <i>Confirm</i> to launch the guideline review windows.
-  </li>
-  <li>
-    <strong>Step 2 (Review Guidelines):</strong> Carefully read both review windows that open sequentially and click <strong>Continue</strong> at the bottom of each modal to proceed:
     <ul>
-      <li><i>OutScribed Story Structure Guidelines:</i> Confirms that your Tales are grounded in real-world data or trends, include a mandatory <strong>Reality Check</strong> section linking to credible sources, avoid clickbait, and maintain respectful language.</li>
-      <li><i>OutScribed Legal Responsibility Guidelines:</i> Covers content ownership, defamation policies, community moderation rules, and your sole legal liability as an author while holding OutScribed harmless.</li>
+      <li>
+        <strong>Story Structure & Publishing Guidelines:</strong> Covers grounding your Tales in real-world data, including the mandatory <i>Reality Check</i> section with credible sources, content ownership, defamation policies, and maintaining respectful narrative standards.
+      </li>
     </ul>
-  </li>
-  <li>
-    <strong>Step 3 (Final Confirmation):</strong> Check both required acknowledgment boxes on the main page:
-    <ul>
-      <li><i>I confirm that I have read and understood the OutScribed Story Structure guidelines. I will apply these principles when creating and publishing tales.</i></li>
-      <li><i>I confirm that I have read and understood the OutScribed Legal Responsibility guidelines. I will conform to these principles when creating and publishing tales.</i></li>
-    </ul>
-  </li>
-</ul>
 
-<p><strong>Getting Started:</strong></p>
-<p>Once you click <strong>Confirm Onboarding</strong>, your writer status is instantly activated! You can now access your creator workspace, crop cover media, and begin publishing your work to the community.</p>
+    <p>
+      <em>Note: We strongly advise clicking the link above to review the full details before proceeding. You can also access these guidelines anytime via the website footer menu.</em>
+    </p>
 
-      </div>
-    
-
-     </template>
-
+    <p><strong>Getting Started:</strong></p>
+    <p>Once you tick the checkbox and click <strong>Confirm Onboarding</strong>, your writer status is instantly activated! You will gain immediate access to your creator workspace to crop cover media, draft stories, and publish your work to the community.</p>
+  </div>
+</template>
       <!-- Topic: Tagging contents -->
        <template v-else-if="payload === 'TagContent'">
           <div class="topic-content rich-text">
-            <h4>Tagging Contents</h4>
+            <h2>Tagging Contents</h2>
 <p><strong>Tags</strong> help categorize your <i>Tales</i> and <i>Insights</i> so readers and legal researchers can easily discover your content across the platform.</p><p><i>Why Tagging Matters</i></p><p>Adding relevant tags directly increases your content's visibility in search results, watchlist feeds, and related story recommendations.</p><p><i>Tagging Guidelines & Format</i></p><ul><li><strong>Maximum Limit:</strong> You can add up to <strong>10 tags</strong> per submission and update them at any time.</li><li><strong>Optimal Length:</strong> Keep tags concise but explanatory—aim for <strong>2 words</strong> (maximum of 3 words). </li><li><strong>Keep Natural Spacing:</strong> Do not use single-word run-ons or hashtags (e.g., use <i>tenant rights</i> instead of <i>#tenantrights</i>).</li><li><strong>Avoid Generic Terms:</strong> Skip vague words like <i>law</i>, <i>news</i>, or <i>story</i>. Focus on specific legal statutes, concepts, or core themes (e.g., <i>constructive eviction</i>, <i>fair use</i>).</li></ul>
 </div>
      </template>
@@ -97,7 +83,7 @@ const props = defineProps({
       <!-- Topic: Tagging contents -->
        <template v-else-if="payload === 'CreateComment'">
           <div class="topic-content rich-text">
-            <h4>Managing Comments</h4>
+            <h2>Managing Comments</h2>
 <p><strong>Overview:</strong> Comments allow registered users to publish immediate, short reactions and discussions directly below published Tales and Insights. Unlike Tales and Insights, which start as private drafts, comments publish instantly upon submission.</p><p><strong>1. Account Requirement</strong></p><p>You must be registered and logged in to post, reply to, vote on, favorite, or report comments.</p><p><strong>2. Posting a Comment</strong></p><p>Navigate to any published Tale or Insight. Use the integrated rich-text editor below the content to compose your response. The editor supports standard formatting including <b>bold text</b>, <i>italics</i>, <u>underlines</u>, bulleted lists, and external hyperlinks.</p>
 <p><strong>3. Accessing Your Comment History</strong></p><p>To review, edit, or track performance metrics for your published comments:</p><ul><li>Click your <b>User Icon</b> in the top-left corner of the header.</li>  <li>Select <b>Comments</b> from the navigation menu.</li>  <li>Locate the specific comment and click <b>Update</b>.</li></ul><p><strong>4. Editing, Deleting, Archiving, and Addendums</strong></p><p>Your management options depend on whether other users have interacted with your comment:</p><ul>  <li><b>Unengaged Comments:</b> If no user has voted, favorited, reported, or replied to your comment, you retain full privileges to edit or permanently delete it.</li>  <li><b>Engaged Comments:</b> Once a comment receives engagement, direct editing and deletion are locked to preserve community discussion integrity. In this state, you may choose to:    <ul>      <li><b>Archive:</b> Restrict visibility so the comment is only viewable by you and the users who directly engaged with it.</li>      <li><b>Add Addendum:</b> Append a clarifying note or correction to the bottom of your original comment text.</li>
     </ul>  </li></ul><p><strong>5. Interacting with Other Comments</strong></p><p>When reading comments across the platform, you can:</p><ul>  <li><b>Reply:</b> Post a nested response to any comment. Clicking a comment thread automatically pulls and displays its full parent ancestry.</li>  <li><b>Vote:</b> Cast an agreement or disagreement vote on the comment’s content.</li>
@@ -108,7 +94,7 @@ const props = defineProps({
         <!-- Topic: Tagging contents -->
        <template v-else-if="payload === 'FlagContent'">
           <div class="topic-content rich-text">
-            <h4>Community Moderation</h4>
+            <h2>Community Moderation</h2>
 <p><strong>Overview:</strong> OutScribed operates a community-driven moderation system where readers help uphold platform safety. Users can flag Tales, Insights, and comments that violate community standards. Content flagged past a system threshold is automatically quarantined for administrative review.</p><p><strong>1. Account & Privacy Requirements</strong></p>
 <p>You must be registered and logged in to flag or report content. To protect user privacy and prevent retaliation, all reporting activity is strictly confidential—your identity is never made public or disclosed to content creators.</p><p><strong>2. Violation Categories</strong></p><p>When reporting a Tale, Insight, or comment, select the primary reason for your report:</p>
 <ul>  <li><b>Misinformation:</b> False or demonstrably misleading statements presented as fact.</li>  <li><b>Child Abuse & Exploitation:</b> Any depiction, encouraging, or facilitating of harm against minors.</li>  <li><b>Extreme Violence & Graphic Content:</b> Gratuitous violence, severe gore, or threats of physical harm.</li>  <li><b>Hate Speech:</b> Content promoting hatred, discrimination, or dehumanization against protected groups.</li>  <li><b>Sexual Exploitation & Harassment:</b> Non-consensual sexual content, targeted harassment, or abuse.</li>
@@ -120,7 +106,7 @@ const props = defineProps({
     <!-- Fallback / Default -->
        <template v-else>
            <div class="topic-content">
-      <h4>Help & Support</h4>
+      <h2>Help & Support</h2>
       <p>No specific details are available for this section yet.</p>
     </div>
      </template>

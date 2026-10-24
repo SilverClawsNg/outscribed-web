@@ -20,7 +20,6 @@ const props = defineProps<{
     message?: string
 }>()
 
-
 const authStore = useAuthenticationStore();
 
 // 1. Tracks whether the user has at least attempted to submit the form once
@@ -400,7 +399,7 @@ function handleKeyDown(e: KeyboardEvent, index: number) {
         </div>
         <h1 class="auth-card__header--title">Log In</h1>
         <p class="auth-card__header--subtitle">{{ message }}</p>
-        <HelpIcon topic="CreateAccount" />
+        <HelpIcon topic="LoginAccount" />
       </div>
 
     <!-- FORM 1: Standard Login -->

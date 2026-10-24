@@ -81,11 +81,11 @@ function executeSearch() {
    <div class="button-holder">
           <button 
             type="submit" 
-            class="btn btn--primary"  
+            class="btn btn--secondary"  
               :disabled="isLoading"
             :class="{ active:isLoading }"
           >
-            {{ isLoading ? 'Submitting...' : 'Search' }}
+            {{ isLoading ? 'Searching...' : 'Search' }}
           </button>
         </div>
     </form>

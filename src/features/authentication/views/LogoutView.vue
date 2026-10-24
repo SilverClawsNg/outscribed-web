@@ -43,11 +43,13 @@ function handleLogout() {
 
      <div class="auth-card__header">
         <div class="auth-card__header--logo">
-         <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
+          <router-link to="/" class="main-header__brand-link" title="OutScribed Home">
+               <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
+          </router-link>
         </div>
         <h1 class="auth-card__header--title">Log Out</h1>
         <p class="auth-card__header--subtitle">to clear account</p>
-        <HelpIcon topic="CreateAccount" />
+        <HelpIcon topic="LogoutAccount" />
       </div>
 
     <!-- FORM 1: Standard Login -->

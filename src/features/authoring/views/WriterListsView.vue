@@ -19,6 +19,7 @@ const router = useRouter()
 const route = useRoute()
 const modalStore = useModalStore()
 
+
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)

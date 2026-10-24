@@ -22,6 +22,7 @@ import WriterOnboardingModal from '@/features/authoring/modals/WriterOnboardingM
 import CreateTaleModal from '@/features/tales/modals/CreateTaleModal.vue'
 
 import TaleListFilterModal from '@/features/tales/modals/TaleListFilterModal.vue'
+import TaleStatsModal from '@/features/tales/modals/TaleStatsModal.vue'
 
 
 import ContentCommentsModal from '@/features/engagements/modals/ContentCommentsModal.vue'
@@ -76,6 +77,7 @@ const componentMap: Record<string, any> = {
     CreateTale: CreateTaleModal,
 
 TaleListFilter: TaleListFilterModal,
+TaleStats: TaleStatsModal,
 
 ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,

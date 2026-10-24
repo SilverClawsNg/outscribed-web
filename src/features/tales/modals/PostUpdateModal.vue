@@ -8,9 +8,8 @@ const taleStore = useTaleDraftStore()
 const activeTale = computed(() => taleStore.activeTale)
 const router = useRouter()
 
-const isPublished = computed(() => 
-  ['LaunchedByCreator', 'CertifiedByAdmin'].includes(activeTale.value?.status || '')
-)
+const isPublished = computed(() => activeTale.value?.status != 'Created')
+
 
 // Check section completeness
 const missingRequirements = computed(() => {
@@ -134,18 +133,28 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
 
     </template>
 
+    
+    <!-- STATE 4: UNPUBLISHED & NO PHOTO -->
+    <template v-else-if="isAllRequirementsMet && !isPublished && !taleStore.hasPhoto">
+
+      <p>
+        All required story sections are complete! Your tale is ready to go live. 
+        A cover photo is not required to publish a story but it helps add to the aesthestics and once your story is engaged, you may be unable to add later.
+      </p>
+    
+    </template>
+
     <!-- STATE 3: UNPUBLISHED & INCOMPLETE SECTIONS REMAIN -->
     <template v-else-if="isAllRequirementsMet && !isPublished">
 
       <p>
         All required story sections are complete! Your tale is ready to go live. 
-        Note that cover photo and tags are optional and not included in teh completion check but you may wish to add them.
+        Note that tags are optional and not included in the completion check but you may add them at any time you wish.
       </p>
     
     </template>
 
         </main>
-
         
            <!-- STATE 1: PUBLISHED STORY SUCCESS -->
     <template v-if="isPublished">
@@ -191,6 +200,29 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
 
       </footer>
 
+    </template>
+
+      <!-- STATE 4: UNPUBLISHED & NO PHOTO -->
+    <template v-else-if="isAllRequirementsMet && !isPublished && !taleStore.hasPhoto">
+
+       <footer class="studio-modal__footer">
+
+          <button
+            class="btn btn--primary"
+            @click="handleNextUpdate('photo')"
+          >
+            Preview Story
+          </button>
+
+          <button
+            class="btn btn--secondary"
+            @click="handleNextUpdate('publish')"
+          >
+            Publish Tale Now
+          </button>
+
+      </footer>
+    
     </template>
 
     <!-- STATE 3: UNPUBLISHED & INCOMPLETE SECTIONS REMAIN -->

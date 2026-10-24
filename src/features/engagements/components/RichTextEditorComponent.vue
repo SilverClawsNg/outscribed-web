@@ -8,6 +8,7 @@ import {
   destroyQuill
 } from '@/utils/quillHelper'
 import 'quill/dist/quill.snow.css'
+import HelpIcon from '@/components/HelpIcon.vue';
 
 const props = defineProps<{
   modelValue: string
@@ -80,12 +81,10 @@ onBeforeUnmount(() => {
 })
 
 </script>
-
 <template>
   <div class="comment-editor-container">
     <!-- STUCK TOOLBAR + INLINE SAVE HEADER -->
     <div class="comment-editor-toolbar-header">
-        
       <button
         type="button"
         class="btn btn--primary"
@@ -94,6 +93,7 @@ onBeforeUnmount(() => {
       >
         {{ isSubmitting ? 'Saving...' : 'Save' }}
       </button>
+
       <div ref="toolbarRef" class="ql-toolbar ql-snow custom-toolbar">
         <span class="ql-formats">
           <button class="ql-bold" title="Bold"></button>
@@ -101,15 +101,21 @@ onBeforeUnmount(() => {
           <button class="ql-underline" title="Underline"></button>
           <button class="ql-strike" title="Strikethrough"></button>
         </span>
+
         <span class="ql-formats">
           <button class="ql-list" value="ordered" title="Numbered List"></button>
           <button class="ql-list" value="bullet" title="Bullet List"></button>
         </span>
+
         <span class="ql-formats">
           <button class="ql-link" title="Insert Link"></button>
         </span>
-      </div>
 
+        <!-- Grouped inside ql-formats for consistent toolbar layout -->
+        <span class="ql-formats">
+          <HelpIcon topic="CreateComment" :use-icon="true" />
+        </span>
+      </div>
     </div>
 
     <!-- SCROLLABLE EDITOR CANVAS -->

@@ -7,7 +7,6 @@
  
 
   &__header{
-
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -24,12 +23,11 @@
       font-size: 2.25rem;
       line-height:1;
       font-weight: 400;
-      color: #1f1f1f;
     }
 
     &--subtitle {
       font-size: 0.9rem;
-      color: #444746;
+      color: var(--muted-text-color);
     }
 
     .help-icon-btn{
@@ -50,7 +48,7 @@
     font-size: 0.95rem;
     line-height: 1.25rem;
     margin-bottom: 0.5rem;
-    color: #2d3748;
+    color: var(--muted-text-color);
     font-weight: normal;
     font-style: italic;
     display:block;
@@ -107,10 +105,10 @@
       width: 100%;
       padding: 0 0.9rem;
       height: 3.2rem;
-      border: 1px solid #a0aec0;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       font-size: 1rem;
-      box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
+      box-shadow:var(--inset-box-shadow);
       &:focus { border-color: @link-color; outline: none; }
     }
 
@@ -127,13 +125,13 @@
     padding: 0 0.9rem;
     height: 3.2rem;
     background-color: @link-color;
-    color: white;
+    color:@white-color;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    &:hover { background-color: @link-alt-color; color: white; }
+    &:hover { background-color: @link-alt-color; color: @white-color; }
     &:disabled { opacity: 0.6; cursor: not-allowed; }
   }
 
@@ -141,9 +139,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     gap: 0.35rem;
     font-size: 0.875rem;
-    color: #475467;
+    color: var(--muted-text-color);
     margin-top: 1.25rem;
 
     & a, & button {
@@ -162,7 +161,7 @@
     
   &--error {
     font-size: 0.9rem;
-    color: #4a5568;
+    color: @red-color;
 
     & button{
       color: @link-color;
@@ -184,13 +183,13 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: white;
+    background: @white-color;
     font-size: 0.95rem;
     cursor: pointer;
     font-weight: normal;
-    &:hover { background: #f7fafc; }
+    &:hover { background-color: var(--light-background-color); color: @link-color; }
     img { width: 20px; height: 20px; }
   }
 }
@@ -203,7 +202,7 @@
     width: 100%;
     padding: 0.5rem 0;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-color);
 
     &--box {
       display: flex;
@@ -216,13 +215,13 @@
       text-align: center;
       color: var(--text-color);
       background-color: inherit;
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       outline: none;
 
       &:focus {
         border-color: var(--hover-color);
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+        box-shadow: var(--box-shadow);
       }
     }
   }

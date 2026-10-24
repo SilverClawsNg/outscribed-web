@@ -254,7 +254,7 @@ onUnmounted(() => {
         </div>
         <h1 class="auth-card__header--title">Reset </h1>
        <p class="auth-card__header--subtitle">{{ message }}</p>
-        <HelpIcon topic="CreateAccount" />
+        <HelpIcon topic="ResetPassword" />
     </div>
 
     <FormProgress :progress="progressState" />

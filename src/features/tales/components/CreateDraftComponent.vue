@@ -109,7 +109,7 @@ async function handleFormSubmission() {
             class="character-counter" 
             :class="{ 
               'is-warning': titleLength > 100 && titleLength <= 128,
-              'is-over-limit': titleLength > 128 
+              'is-over-limit': titleLength < 8 || titleLength > 128
             }"
           >
             {{ titleLength }}/128

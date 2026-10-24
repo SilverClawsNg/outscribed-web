@@ -258,7 +258,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
         <button 
               type="button"
               class="story-options__btn" 
-              @click="modalStore.push('TaleStats', 'Stats', tale)"
+              @click="modalStore.push('TaleStats', 'Tale Stats', tale)"
               title="Tale Metrics"
             >
               <span class="story-options__btn--dot"></span>
@@ -960,7 +960,7 @@ padding-top: 0.5rem;
     font-weight: 600;
 
      &:hover {
-          background-color: var(--light-background-color);
+          border-color: @link-color;
         }
       }
 

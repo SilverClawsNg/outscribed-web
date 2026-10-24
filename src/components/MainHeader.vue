@@ -114,7 +114,7 @@ onMounted(() => {
           <template v-if="isLoggedIn">
             <router-link to="/profile" class="main-header__utility-link">Profile</router-link>
             <span class="main-header__utility-divider">/</span>
-            <router-link to="/timeline" class="main-header__utility-link">Timeline</router-link>
+            <router-link to="/timelines" class="main-header__utility-link">Timeline</router-link>
             <span class="main-header__utility-divider">/</span>
             <router-link to="/logout" class="main-header__utility-link">logout</router-link>
           </template>
@@ -181,8 +181,6 @@ onMounted(() => {
           </button>
         </nav>
 
-         
-
         <!-- Mobile Accordion Content (Slots A & E mirrored on Mobile Expand) -->
         <div class="main-header__mobile-account-group">
           <div class="divider-multi"><span></span></div>
@@ -190,7 +188,7 @@ onMounted(() => {
             <router-link to="/profile" class="main-header__mobile-link" @click="isMenuOpen = false">
               <SvgIcons name="user" /> Profile
             </router-link>
-            <router-link to="/timeline" class="main-header__mobile-link" @click="isMenuOpen = false">
+            <router-link to="/timelines" class="main-header__mobile-link" @click="isMenuOpen = false">
               <SvgIcons name="clock" /> Timeline
             </router-link>
           </template>
