@@ -47,7 +47,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
    // Studio Navigation State
   const  currentAsideView = ref<AsideView>('list');
   const currentMainView =  ref<MainCanvasView>('details'); // Default to rich text editor
-  const isAsideCollapsed = ref<boolean>(false);
+  const isAsideHidden = ref<boolean>(false);
 
   const activeModalError = ref<APIError | null>(null)
 
@@ -83,18 +83,24 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
    // 2. Direct section navigation from anywhere (Strip, Detail Card, or Canvas)
    function toggleAside() {
-      if(isAsideCollapsed.value == true) {
-        isAsideCollapsed.value = false;
+      if(isAsideHidden.value == true) {
+        isAsideHidden.value = false;
       }
-      else if(isAsideCollapsed.value == false) {
-        isAsideCollapsed.value = true;
+      else if(isAsideHidden.value == false) {
+        isAsideHidden.value = true;
       }
     }
 
   // 2. Direct section navigation from anywhere (Strip, Detail Card, or Canvas)
+
    function setCurrentMainView(section: MainCanvasView) {
     if (isInitializing.value) return;
+
       currentMainView.value = section;
+
+        if(window.innerWidth < 991 && isAsideHidden.value == true) {
+        isAsideHidden.value = false;
+      } 
     }
 
     // 3. Aside view switcher (List, Filter, Create)
@@ -847,7 +853,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
   // 🎯 Cleaned return footprint exposing "create" precisely
   return {
     tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute, currentAsideView, currentMainView,
-    isAsideCollapsed, isInitializing, loadingError, activeModalError, activeSnapshotId, openSnapshotModal, closeSnapshotModal,
+    isAsideHidden, isInitializing, loadingError, activeModalError, activeSnapshotId, openSnapshotModal, closeSnapshotModal,
     openModal, closeModal, hasAddendum, isArchived, openPostUpdateModal, closePostUpdateModal, activePostUpdateSection,
     createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleBasic, 
     deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTalePhoto,

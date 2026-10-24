@@ -295,7 +295,7 @@ async function handleFormSubmission() {
 // Create New Draft Action
 async function handleCreateNewDraft() {
   taleStore.setCurrentAsideView('create')
-  taleStore.isAsideCollapsed = false // Ensures drawer opens cleanly on mobile viewports
+  taleStore.isAsideHidden = false // Ensures drawer opens cleanly on mobile viewports
 }
 
 // Return to Workspace Action

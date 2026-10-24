@@ -396,7 +396,7 @@ onBeforeUnmount(() => {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0;
   background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -410,7 +410,14 @@ onBeforeUnmount(() => {
 
   .ql-formats {
     margin-right: 0.75rem;
+    margin-bottom: 0.75rem;
+
+    @media @phone{
+      display: block;
+    }
   }
+
+
 }
 
 :deep(.ql-container.ql-snow) {

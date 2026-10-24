@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useTaleDraftStore } from '../stores/TaleDraftStore'
+import { useTaleDraftStore, type MainCanvasView } from '../stores/TaleDraftStore'
 import { TaleStatusClass, TaleStatusDescriptions } from '@/utils/descriptors';
 import type { TaleDraftListDto } from '../types/TalesTypes';
 import PageStatusMessage from '@/components/PageStatusMessage.vue';
@@ -10,6 +10,8 @@ import { toLongDate } from '@/utils/dateExtensions'
 const taleStore = useTaleDraftStore()
 // Assert the non-null type when safe behind v-if in the template
 const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
+
+
 
 </script>
 

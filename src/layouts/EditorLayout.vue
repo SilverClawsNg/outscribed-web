@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+
 import EditorAsideComponent from '@/features/tales/components/EditorAsideComponent.vue';
 import EditorMainCanvas from '@/features/tales/components/EditorMainCanvas.vue';
 import EditorStripComponent from '@/features/tales/components/EditorStripComponent.vue';
@@ -8,13 +10,15 @@ import ProblemDefinitionModal from '@/features/tales/modals/ProblemDefinitionMod
 import { useTaleDraftStore } from '@/features/tales/stores/TaleDraftStore'; 
 
 const taleStore = useTaleDraftStore()
+
 </script>
+
 <template>
 
   <div class="editor-workspace-wrapper">
 
-    <div class="editor-layout" :class="{ 'editor-layout--aside-collapsed': taleStore.isAsideCollapsed }">
-      
+<div class="editor-layout" :class="{ 'editor-layout--aside-hidden': taleStore.isAsideHidden }">
+
     <!-- In-Layout Modal -->
     <ProblemDefinitionModal />
     <PostUpdateModal />
@@ -90,7 +94,7 @@ const taleStore = useTaleDraftStore()
    padding-bottom: 5rem;
 
    @media @smallDevice {
-       height: calc(100lvh - @body-top-offset-small);
+       height: calc(100svh - @body-top-offset-small);
  // Pushes standard document flow down cleanly
   }
 
@@ -130,7 +134,7 @@ const taleStore = useTaleDraftStore()
     position: relative;
     margin-left: 380px; /* Leaves space for Fixed Aside when open */
     min-height: 100vh;
-    min-height: 100lvh;
+    min-height: 100svh;
     z-index: 2;
     background-color: var(--background-color);
     box-shadow: -4px 0 16px rgba(0, 0, 0, 0.04);
@@ -158,7 +162,7 @@ const taleStore = useTaleDraftStore()
 
   @media @largeDevice {
     top: @body-top-offset-large; // Pushes standard document flow down cleanly
-    height: calc(100lvh - @body-top-offset-large);
+    height: calc(100svh - @body-top-offset-large);
   }
     
     
@@ -206,7 +210,7 @@ const taleStore = useTaleDraftStore()
   /* =============================================================
    * COLLAPSED STATE (Canvas + Strip expand to full width)
    * ============================================================= */
-  &--aside-collapsed {
+  &--aside-hidden {
     .editor-layout__canvas-container {
       margin-left: 0; /* Slides smoothly over the Fixed Aside */
     }
