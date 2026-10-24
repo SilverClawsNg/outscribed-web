@@ -40,7 +40,6 @@ watch(() => route.path, () => modalStore.closeAll())
         <a href="/terms">Terms of Use</a>
         <a href="/privacy">Privacy</a>
         <a href="/disclaimers">Disclaimers</a>
-       
       </div>
       <div class="footer-copyright">
       Copyright@2026 All. Rights Reserved.

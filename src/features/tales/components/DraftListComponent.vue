@@ -47,7 +47,6 @@ const props = defineProps<Props>()
         <time class="draft-list-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
       </div>
 
-    
   </article>
 
 </template>

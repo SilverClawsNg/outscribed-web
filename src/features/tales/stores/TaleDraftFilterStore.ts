@@ -7,6 +7,13 @@ import {
 } from '@/utils/validators'; 
 
 export const useTaleDraftFilterStore = defineStore('taleDraftFilter', () => {
+
+  // The committed string that the List component actively watches
+  const activeApiPath = ref<string>('')
+
+  function setApiPath(baseRoute: string): void {
+    activeApiPath.value = buildApiPath(baseRoute)
+  }
   
   // State
 const sort = ref<string | null>(null)
@@ -172,7 +179,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, country, category, status, keyword, pointer, 
-    reset, rehydrate, getAsDictionary, buildApiPath
+    sort, country, category, status, keyword, pointer, activeApiPath,
+    reset, rehydrate, getAsDictionary, buildApiPath, setApiPath
   };
 });

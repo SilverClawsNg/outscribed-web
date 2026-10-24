@@ -4,26 +4,30 @@
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTaleDraftFilterStore } from '../stores/TaleDraftFilterStore'
-import { useModalStore } from '@/stores/modalStore'
 import { SortTypeSelectItems, CountrySelectItems, CategorySelectItems, TaleStatusSelectItems } from '@/utils/selectItemHelper'
+import { useTaleDraftStore } from '../stores/TaleDraftStore';
 
 const router = useRouter()
 const filterStore = useTaleDraftFilterStore()
-const modalStore = useModalStore()
+const taleStore = useTaleDraftStore();
 
 function resetFilters() {
   filterStore.reset()
 }
 
-function applyFilter() {
-  // 🔗 Vue Router handles translating the filter state straight to the browser url parameters footprint
-  router.push({
+async function applyFilter() {
+  // 1. Silently update the browser URL for bookmarking support
+  await router.replace({
     path: router.currentRoute.value.path,
-    query: filterStore.getAsDictionary() // Generates a clean object removing all "-1" or null entries
+    query: filterStore.getAsDictionary()
   })
 
-  // Dismiss modal window from presentation tree tracking index safely
-  modalStore.pop()
+  // 2. EXPLICIT TRIGGER: Update the committed active path state
+  filterStore.setApiPath(taleStore.baseRoute)
+
+  // 2. Switch the aside view back to list. 
+  // The List component will automatically react, build the query, and fetch.
+  taleStore.setCurrentAsideView('list')
 }
 
 </script>

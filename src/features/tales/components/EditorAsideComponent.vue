@@ -38,6 +38,9 @@ async function initPage() {
   // 1. Hydrate and check if the incoming URL string was pristine
   const { isClean } = taleFilterStore.rehydrate(route.query);
 
+    console.log(`The route is ${route.query} `)
+
+
   // 2. 🛑 INTERCEPT TRASH: If parameters were stripped, update browser bar and halt!
   if (!isClean) {
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')
@@ -73,13 +76,13 @@ onMounted(async () => {
   await initPage();
 })
 
+// --- REACTIVE WATCHER: Watches the generated API path string ---
+// Whenever filters apply and change the parameters, the built path changes, 
+// automatically triggering a fresh fetch without code duplication!
 watch(
-  () => route.fullPath,
+  () => taleFilterStore.activeApiPath,
   async (newPath, oldPath) => {
-    if (newPath === oldPath || isInitializing.value) return
-
-    loadingError.value = null
-
+    if (newPath === oldPath) return
     await initPage()
   }
 )
