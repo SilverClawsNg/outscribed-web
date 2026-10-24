@@ -133,12 +133,22 @@ const taleStore = useTaleDraftStore()
     flex: 1 1 auto;
     position: relative;
     margin-left: 380px; /* Leaves space for Fixed Aside when open */
-    min-height: 100vh;
-    min-height: 100svh;
+    //min-height: 100vh;
+    //min-height: 100svh;
     z-index: 2;
     background-color: var(--background-color);
     box-shadow: -4px 0 16px rgba(0, 0, 0, 0.04);
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    
+  @media @smallDevice {
+    min-height: calc(100svh - @body-top-offset-small);
+  }
+
+  @media @largeDevice {
+    min-height: calc(100vh - @body-top-offset-large);
+  }
+    
   }
 
   /* -------------------------------------------------------------
@@ -157,12 +167,12 @@ const taleStore = useTaleDraftStore()
     
   @media @smallDevice {
     top: @body-top-offset-small; // Pushes standard document flow down cleanly
-    height: calc(100vh - @body-top-offset-small);
+    height: calc(100svh - @body-top-offset-small);
   }
 
   @media @largeDevice {
     top: @body-top-offset-large; // Pushes standard document flow down cleanly
-    height: calc(100svh - @body-top-offset-large);
+    height: calc(100vh - @body-top-offset-large);
   }
     
     

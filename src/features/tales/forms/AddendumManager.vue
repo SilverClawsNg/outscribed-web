@@ -5,6 +5,7 @@ import FormProgress from '@/components/FormProgress.vue'
 import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateAddendumRequest } from '../types/TalesTypes'
 import { useRouter } from 'vue-router'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 const taleStore = useTaleDraftStore()
 const router = useRouter()
