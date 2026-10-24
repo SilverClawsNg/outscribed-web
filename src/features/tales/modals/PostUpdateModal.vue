@@ -165,13 +165,13 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
             class="btn btn--primary"
             @click="handleNextUpdate('preview')"
           >
-            Preview Story
+            Preview
           </button>
           <button
             class="btn btn--secondary"
             @click="router.push(`/tale/${activeTale?.slug}`)"
           >
-            View Live Story
+            Live
           </button>
 
       </footer>
@@ -188,14 +188,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
             class="btn btn--primary"
             @click="handleNextUpdate(nextIncompleteSection.section)"
           >
-            Continue to {{ nextIncompleteSection.label.split(' ')[0] }}
+            {{ nextIncompleteSection.label.split(' ')[0] }}
           </button>
 
           <button
             class="btn btn--secondary"
             @click="handleNextUpdate('details')"
           >
-            Preview Story
+            Preview
           </button>
 
       </footer>
@@ -211,14 +211,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
             class="btn btn--primary"
             @click="handleNextUpdate('photo')"
           >
-            Preview Story
+            Photo
           </button>
 
           <button
             class="btn btn--secondary"
             @click="handleNextUpdate('publish')"
           >
-            Publish Tale Now
+            Publish
           </button>
 
       </footer>
@@ -234,14 +234,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
             class="btn btn--primary"
             @click="handleNextUpdate('preview')"
           >
-            Preview Story
+            Preview
           </button>
 
           <button
             class="btn btn--secondary"
             @click="handleNextUpdate('publish')"
           >
-            Publish Tale Now
+            Publish
           </button>
 
       </footer>

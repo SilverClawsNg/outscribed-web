@@ -181,7 +181,7 @@ const taleStore = useTaleDraftStore()
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--background-color);
-    border-right: 1px solid var(--border-color);
+    
 
     &.is-disabled {
       pointer-events: none; /* Prevents all clicks, hovers, and focus events */
@@ -201,6 +201,7 @@ const taleStore = useTaleDraftStore()
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
+    border-left: 1px solid var(--border-color);
     position:relative;
     //padding-top: @body-top-offset;
 

@@ -196,9 +196,7 @@
     margin-bottom: 2rem;
 
     h1 {
-      font-family: @font-heading;
-      font-size: @text-2xl;
-      font-weight: 800;
+      font-size: clamp(1.3rem, 5vw, 2.2rem);
       margin: 0 0 0.5rem 0;
       letter-spacing: -0.02em;
     }
@@ -213,9 +211,7 @@
   margin-bottom: 2.5rem;
 
   h2 {
-    font-family: @font-heading;
-    font-size: @text-lg;
-    font-weight: 700;
+    font-size: clamp(1.1rem, 5vw, 1.5em);
     margin: 0 0 0.75rem 0;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 0.5rem;
@@ -249,8 +245,7 @@
   padding: 1.25rem;
 
   h3 {
-    font-family: @font-heading;
-    font-weight: 700;
+   font-size: clamp(1.05rem, 5vw, 1.3em);
     margin: 0 0 0.5rem 0;
   }
 
@@ -278,8 +273,7 @@
   margin: 1rem 0;
 
   dt {
-    font-family: @font-heading;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--muted-text-color);
 
     &::after {
@@ -316,13 +310,13 @@
     padding: 0.85rem 1rem 0.85rem 1.25rem;
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
-    border-left: 4px solid @link-color; // Navy step bar
+    border-left-width: 4px; // Navy step bar
     border-radius: 6px;
     line-height: 1.5;
 
     strong {
       display: block;
-      font-family: @font-heading;
+      font-weight:600;
       margin-bottom: 0.25rem;
     }
   }
