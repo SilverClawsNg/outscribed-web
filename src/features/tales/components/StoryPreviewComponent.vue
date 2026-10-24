@@ -10,57 +10,54 @@ const taleStore = useTaleDraftStore()
 const tale = computed(() => taleStore.activeTale as TaleDraftListDto);
 
 const summaryText = computed(() => 
- tale.value?.summary || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  tale.value?.summary || 'Draft a compelling 2 to 3 sentence hook here. Imagine you are whispering an untold alternative perspective to a curious stranger—tease the systemic twist or historical pivot of your tale without giving away the entire narrative arc.'
 )
-
 const defaultFormattedProse = `
-  <h1>What in a heading is it that the men must come into town before the dusk walks back</h1>
+  <h1>The Day the Protocol Shifted: A Chronicle of What-Ifs</h1>
   
-  <p>Personal development can you send me an invite?, for fast track upstream selling. New economy feed the algorithm, what do you feel you would bring to the table if you were hired for this position, yet everyone thinks the soup tastes. We need to crystallize a plan translating our vision of having a market leading platform, for level the playing field proceduralize a better understanding of usage can aid in prioritizing future efforts.</p>
+  <p>Every Tale on OutScribed begins with a spark of reality, projecting a trend or historical pivot to its logical extreme. Use this opening paragraph to establish your scene, ground your characters, and introduce the alternative timeline your readers are stepping into.</p>
 
-  <h2>Section I: Deciphering the Digital Signals</h2>
+  <h2>Section I: Deciphering the Rules of Engagement</h2>
   
-  <p>High touch client I'll book a meeting so we can solution this before the sprint is over. I just wanted to give you a heads-up. High touch client drive awareness to increase engagement win-win-win baseline service as core &amp; innovations as power makes our brand. You better eat a <strong>reality sandwich</strong> before you walk back in that boardroom let's put a pin in that.</p>
+  <p>As you build your narrative, take advantage of rich formatting to guide your reader's eye. You can emphasize key terminology using <strong>bold text</strong> for core arguments, or <em>italics</em> when highlighting subtle internal shifts in perspective.</p>
 
-  <p>Translating our vision of having a market leading platform requires absolute alignment across all operational slices. <em>Baseline root-and-branch review</em>, but marketing, illustration baseline the procedure and samepage your department synergistic actionables.</p>
+  <p>Ensure your narrative remains structured and easy to digest by breaking dense blocks of exposition into clean, readable sections. <em>Root-and-branch clarity</em> keeps your audience engaged from the first sentence to the last.</p>
 
   <blockquote>
-    "Streamline granularity, but how much bandwidth do you have, nor organic growth, but imagineer, nor can we jump on a zoom. Draft policy proposal sorry I was triple muted agile, nor granularity."
+    "Use blockquotes to spotlight pivotal dialogue, simulated policy statements, or satirical decrees that capture the ideological heartbeat of your alternate reality."
   </blockquote>
 
-  <h2>Section II: Tactical Execution &amp; Community Directives</h2>
+  <h2>Section II: Tactical Execution &amp; Editorial Directives</h2>
 
-  <p>Pro-sumer software. Up the flagpole bazooka that run it past the boss jump right in and banzai attack will they won't they its all greek to me unless they bother until the end of time maybe vis a vis too many cooks over the line where.</p>
+  <p>When outlining sequential events, step-by-step administrative reforms, or multi-phased alternate histories, ordered lists provide immediate structural clarity:</p>
 
   <ol>
-    <li><strong>Initial Discovery:</strong> This vendor is incompetent green technology and climate change. We can't hear you digital literacy drill down, yet can you run this by clearance?</li>
-    <li><strong>Framework Formalization:</strong> Prairie dogging if you could do that, that would be great. Bob called an all-hands this afternoon overcome key issues to meet key milestones.</li>
-    <li><strong>Operational Rollout:</strong> Three-martini lunch can we jump on a zoom, nor donuts in the break room, or UX cloud strategy, for agile, and finance.</li>
+    <li><strong>Initial Discovery:</strong> Introduce the inciting incident or policy trigger that sets your alternate reality into motion.</li>
+    <li><strong>Framework Formalization:</strong> Dramatize how institutions, leaders, or ordinary citizens react to the emerging systemic shift.</li>
+    <li><strong>Operational Rollout:</strong> Illustrate the long-term consequences, proving how fiction can illuminate real-world facts.</li>
   </ol>
 
-  <p>Shelfware roll back strategy pixel pushing. Vec. No scraps hit the floor let's circle back to that. Cross functional teams enable out of the box brainstorming translating our vision of having a market leading platform. <u>Underlined emphasis</u> and <s>deprecated structural points</s> help maintain editorial clarity.</p>
+  <p>You can also use unranked breakdowns to explore parallel implications, such as cultural adaptations, economic ripple effects, or behavioral transformations. <u>Underlined text</u> can highlight critical mandates, while <s>strikethroughs</s> can playfully demonstrate abandoned bureaucratic policies.</p>
 
   <ul>
-    <li>Unranked operational vector for audience engagement models.</li>
-    <li>Quantitative assessment of debate sparks and perspective shifts.</li>
+    <li>Unranked operational vectors for tracking societal adaptation models.</li>
+    <li>Quantitative narrative assessments of debate sparks and perspective shifts.</li>
     <li>Asynchronous synchronization across distributed editorial channels.</li>
   </ul>
 `
-
-const storyProseHtml = computed(() => {
-  const rawDetail = tale.value?.detail?.trim()
-  return rawDetail && rawDetail !== '<p><br></p>' ? rawDetail : defaultFormattedProse
-})
-
 // Reality Check fallbacks
 const realityCheckTitle = computed(() => 
-  'Donald Trump was not impeached in his second tenure'
+  'The Constitutional Mechanics of Impeachment Precedents'
 )
 
 const realityCheckSummary = computed(() => 
   tale.value?.realityCheckSummary?.trim() || 
-  'This vendor is incompetent green technology and climate change. We can\'t hear you digital literacy drill down, yet can you run this by clearance?'
+  'Every OutScribed Tale must be anchored in verifiable truth. Use this Reality Check section to link credible news sources, legal statutes, or historical data that inspired your alternate-reality narrative.'
 )
+const storyProseHtml = computed(() => {
+  const rawDetail = tale.value?.detail?.trim()
+  return rawDetail && rawDetail !== '<p><br></p>' ? rawDetail : defaultFormattedProse
+})
 
 // Supply placeholder values when draft fields are empty
 const preparedPhoto = computed(() => tale.value.photo || '***placeholder***')

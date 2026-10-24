@@ -146,6 +146,11 @@ const modalStore = useModalStore()
             </button>
             <div class="reality-check__footer--line" aria-hidden="true"></div>
           </div>
+          <p v-else class="reality-check__footer--placeholder"></p>
+
+
+
+
         </div>
 
       </section>
@@ -197,7 +202,7 @@ const modalStore = useModalStore()
     }
      
     &__summary {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 5vw, 1.2rem);
       margin-bottom: 2rem;
       text-align: center;
       color: var(--muted-text-color);
@@ -363,7 +368,7 @@ const modalStore = useModalStore()
 
     &--line {
       flex: 1;
-      height: 1px;
+      height: 2px;
       background-color: @logo-red;
     }
 
@@ -396,7 +401,15 @@ const modalStore = useModalStore()
     
   }
 }
+
+  &--placeholder{
+    height: 2px;
+    background-color: @logo-red;
   }
+
+
+  }
+
 
   
 }
