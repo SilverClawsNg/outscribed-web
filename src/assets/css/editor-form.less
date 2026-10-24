@@ -16,11 +16,23 @@
     height: 56px;
     position: sticky;
     top: 0;
+
+     @media @smallDevice {
+       top: @body-top-offset-small;
+ // Pushes standard document flow down cleanly
+  }
+
+  @media @largeDevice {
+   top: @body-top-offset-large;// Pushes standard document flow down cleanly
+  }
+
     z-index: 10;
     //backdrop-filter: blur(8px);
     //border-bottom: 1px solid var(--border-color);
     background-color: var(--background-color);
      box-shadow: var(--box-shadow);
+
+     
   }
  
 

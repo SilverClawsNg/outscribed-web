@@ -74,10 +74,10 @@ const taleStore = useTaleDraftStore()
   width: 100%;
   min-height: 100vh;
   
-
   /* -------------------------------------------------------------
    * 1. ASIDE PANEL (Fixed relative to max-width wrapper)
    * ------------------------------------------------------------- */
+
   &__aside {
     position: fixed;
     //top: @body-top-offset;
