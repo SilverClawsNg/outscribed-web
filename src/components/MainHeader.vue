@@ -152,12 +152,12 @@ onMounted(() => {
 
         <!-- Slot E: Studio Actions & Draft CTA (Desktop Right) -->
         <div class="main-header__studio-slot">
-           <router-link to="/tales/editor" class="main-header__utility-link">
+           <router-link to="/editor" class="main-header__utility-link">
            Saved Drafts
           </router-link>
          
           <button type="button" class="btn btn--secondary" @click="handleCreateDraftClick">
-            Create a Draft
+            OutScribe
           </button>
         </div>
    
@@ -211,7 +211,7 @@ onMounted(() => {
            <button type="button" class="main-header__mobile-cta-btn" @click="handleCreateDraftClick">
               <SvgIcons name="edit" /> Create Draft
             </button>
-          <router-link to="/tales/editor" class="main-header__mobile-link" @click="isMenuOpen = false">
+          <router-link to="/editor" class="main-header__mobile-link" @click="isMenuOpen = false">
             <SvgIcons name="archive" /> Saved Drafts
           </router-link>
           <router-link v-if="isLoggedIn" to="/logout" class="main-header__mobile-link main-header__mobile-link--logout" @click="isMenuOpen = false">

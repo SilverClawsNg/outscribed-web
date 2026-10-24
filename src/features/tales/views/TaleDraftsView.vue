@@ -6,7 +6,7 @@ import { useTaleDraftStore } from '../stores/TaleDraftStore';
 import { useTaleDraftFilterStore } from '../stores/TaleDraftFilterStore'; 
 import { useRouter, useRoute } from 'vue-router'
 import { APIError } from '@/api/apiTypes.ts'
-import TaleDraftComponent from '../components/TaleDraftComponent.vue'
+import TaleDraftComponent from '../components/DraftListComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
@@ -67,10 +67,10 @@ async function initPage() {
   const cleanApiPath = taleFilterStore.buildApiPath(taleStore.baseRoute);
   
   // 3. Fetch from store
-  const { success, error } = await taleStore.loadTales(cleanApiPath)
+  const outcome = await taleStore.loadTales(cleanApiPath)
 
-  if (!success) {
-       loadingError.value = error ?? new APIError(500, 'Unknown Error!', 'Unknown error occured while retrieving drafts. Refresh page and try again.')
+  if (!outcome) {
+       loadingError.value = taleStore.loadingError ?? new APIError(500, 'Unknown Error!', 'Unknown error occured while retrieving drafts. Refresh page and try again.')
   }
 
   // No matter the result, stop loading
@@ -141,14 +141,12 @@ onUnmounted(() => {
 
     <template v-if="wasCleaned">
 
-        <div class="container">
         <PageStatusMessage 
               title="Invalid Filters Removed!" 
               message="Some filter values in the URL were invalid and removed. We are showing the best matching results. Use the filter button above to filter correctly."
               icon="warning" 
               :is-bordered="true"
             />
-     </div>
    
 
     </template>
@@ -162,14 +160,10 @@ onUnmounted(() => {
         @load-more="taleStore.loadMoreTales"
         @retry="taleStore.loadMoreTales">
 
-        <div class="container">
-
-       <TaleDraftComponent 
+         <TaleDraftComponent 
         v-for="tale in taleStore.tales" 
         :key="tale.taleId" 
         :tale="tale"/>
- 
-      </div>
 
        </InfiniteScroller>
 

@@ -9,18 +9,17 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateCommentRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
 import HelpIcon from '@/components/HelpIcon.vue'
+import RichTextEditorComponent from '../components/RichTextEditorComponent.vue'
 
 // --- INITIALIZE STORES ---
 const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
 
 // --- DEFINE FORM DATA ---
-const formData = ref<UpdateCommentRequest>({
-   commentId: '',
-   detail: '',
-   contentid: '',
-   contentType: null
-   
+
+
+const formData = ref({
+  detail: ''
 })
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
@@ -40,8 +39,9 @@ onBeforeMount(() => {
     return // 🛑 Stop initialization; do not attempt to read properties of null
   }
 
+console.log(`comment is ${draftStore.activeComment.detail}`)
+
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.commentId = draftStore.activeComment.commentId
   formData.value.detail = draftStore.activeComment.detail ?? ''
   resetProgress()
 
@@ -107,12 +107,12 @@ async function handleFormSubmission() {
 
   startLoading()
 
-const { success, error } = await draftStore.updateCommentDetails(formData.value!)
+const { success, error } = await draftStore.updateCommentDetails(formData.value.detail)
 
   if(!success){
 
     if(error){
-      if(error.title = 'Blank Response'){
+      if(error.title === 'Blank Response'){
         lockSubmission.value = true
       }
     setError(error)
@@ -130,48 +130,95 @@ const { success, error } = await draftStore.updateCommentDetails(formData.value!
 </script>
 
 <template>
+    
+ <div class="comment-modal-shell">
 
-     <div class="form-container">
+    <!-- 2. FORM PROGRESS (Loading Gif / Backend Error Message) -->
+    <FormProgress :progress="progressState" />
 
-   <FormProgress :progress="progressState" />
+    <!-- 3. MAIN FORM BODY -->
+    <form class="comment-modal-form" @submit.prevent="handleFormSubmission">
+      <!-- RICH TEXT EDITOR (Embedded Toolbar + Save) -->
+      <RichTextEditorComponent
+        v-model="formData.detail"
+        :is-submitting="progressState.type === 'Loading'"
+        @save="handleFormSubmission"
+      />
 
-    <form>
+      <!-- 4. BOTTOM CHARACTER COUNTER & VALIDATION MESSAGE -->
+      <div class="form-counter-bar">
+        <span v-if="formSubmitted && validationErrors" class="validation-message">
+          {{ validationErrors.detail }}
+        </span>
+        <span v-else class="spacer"></span>
 
-      <RichTextEditor 
-              id="editor"
-              v-model="formData.detail" 
-            />
-              <div class="form-errors">
-            <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
-            {{ validationErrors.detail }}
-          </span>
-            <span 
-            v-else
-            class="character-counter"
+        <span
+          class="character-counter"
             :class="{ 
-              'is-warning': detailLength > 4000 || detailLength <= 4096,
+              'is-warning': detailLength > 4000 && detailLength <= 4096,
               'is-over-limit': detailLength < 48 || detailLength > 4096 
             }"
-          >
-            {{ detailLength }}/4096
-          </span>
-        </div>
-        <div class="button-holder">
-          <button 
-            type="button" 
-            class="btn btn--secondary"  
-            @click="handleFormSubmission"
-            :disabled="progressState.type === 'Loading' || lockSubmission"
-          >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Update' }}
-          </button>
-        </div>
+        >
+          {{ detailLength.toLocaleString() }}/4096
+        </span>
+      </div>
     </form>
-    
   </div>
 
 </template>
 
-<style scoped>
-@import "@/assets/css/form-container-editor.less";
+<style lang="less" scoped>
+@import "@/assets/css/variables.less";
+
+.comment-modal-shell {
+  width: 100%;
+  overflow: hidden;
+
+  .comment-modal-form {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .form-counter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      position: relative;
+
+       .validation-message {
+          font-size: 0.85rem;
+          line-height:1.1rem;
+          color: @fatal-color;
+        }
+        
+    .character-counter {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted-text-color);
+      pointer-events: none; // Allows clicks to pass through to the input
+      font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
+
+      &.is-warning {
+        color: @warning-color; // Amber when getting close
+      }
+
+      &.is-over-limit {
+        color: @fatal-color; // Red when exceeded
+        font-weight: 700;
+      }
+    }
+
+
+      .spacer {
+        flex: 1;
+      }
+
+    }
+  }
+}
 </style>

@@ -52,7 +52,7 @@ export const useCommentListStore = defineStore('commentList', () => {
   }
 
     
-  // Sets the target insight before a modal opens
+  // Sets the target comment before a modal opens
   function setBaseRoute(apiUrl: any) {
     // We clone it using spread operator so the user doesn't alter 
     // the background list until they actually hit 'Save'
@@ -62,7 +62,7 @@ export const useCommentListStore = defineStore('commentList', () => {
   // --- Core Actions ---
 
   /**
-   * 1. LoadComments (Initial setup for a Tale or Insight comment list)
+   * 1. LoadComments (Initial setup for a Tale or comment list)
    */
 
   async function loadComments(apiPathWithFilters: string, isAuthorized: boolean) : Promise<{ success: boolean; error: APIError | null }>{
@@ -172,7 +172,7 @@ async function loadMoreComments() {
 
               // 1. Filter out duplicates and immediately shape the raw inputs into valid DTO structures
                   const freshItems = outcome.value.comments
-                    .filter((t: any) => !existingIds.has(t.insightId))
+                    .filter((t: any) => !existingIds.has(t.commentId))
                     .map((item: any) => initializeCommentPageListEngagement(item));
           
         comments.value.push(...freshItems);

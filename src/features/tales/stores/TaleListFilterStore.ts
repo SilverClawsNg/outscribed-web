@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { 
-  getValidCountry, getValidCategory, getValidSortType, getValidVoteType
+  getValidCountry, getValidCategory, getValidSortType, getValidReactionType
 } from '@/utils/validators'; 
 import { getStoredAnchor, type TypeLabel } from '@/utils/anchorStorage';
 
@@ -23,7 +23,7 @@ export const useTaleListFilterStore = defineStore('taleListFilter', () => {
 
 const country = ref<string | null>(null)
 const category = ref<string | null>(null)
-const votetype = ref<string | null>(null)
+const reactiontype = ref<string | null>(null)
 const isactive = ref<string | null>(null);
 
   const tag = ref<string | null>(null);
@@ -45,7 +45,7 @@ const isactive = ref<string | null>(null);
     sort.value = '-1'
     country.value = '-1'
     category.value = '-1'
-    votetype.value = '-1'
+    reactiontype.value = '-1'
     isactive.value = ''
 
     keyword.value = '';
@@ -85,10 +85,10 @@ if(queryParameters.category){
   
 }
 
-if(queryParameters.votetype){
+if(queryParameters.reactiontype){
    // 🎯 Parse & Validate Activity
-    const validatedVote = getValidVoteType(queryParameters.votetype)
-    votetype.value = validatedVote || null
+    const validatedVote = getValidReactionType(queryParameters.reactiontype)
+    reactiontype.value = validatedVote || null
     if(!validatedVote) wasClean = false
 }
 
@@ -126,7 +126,7 @@ function getAsDictionary(): Record<string, string> {
     username: username.value,
       country: country.value,
       category: category.value,
-      votetype: votetype.value,
+      reactiontype: reactiontype.value,
       isactive: isactive.value,
       keyword: keyword.value,
       tag: tag.value,
@@ -177,8 +177,8 @@ function getAsDictionary(): Record<string, string> {
     if (category.value && category.value !== '-1') 
       urlParams.append('category', category.value);
 
-    if (votetype.value && votetype.value !== '-1') 
-      urlParams.append('votetype', votetype.value);
+    if (reactiontype.value && reactiontype.value !== '-1') 
+      urlParams.append('reactiontype', reactiontype.value);
 
      if (isactive.value && isactive.value.trim() !== '') 
       urlParams.append('isactive', isactive.value);
@@ -216,7 +216,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, country, category, votetype, username, tag, isactive, keyword, pointer, activeType, activeTypeLabel,
+    sort, country, category, reactiontype, username, tag, isactive, keyword, pointer, activeType, activeTypeLabel,
     reset, rehydrate, getAsDictionary, buildApiPath, setActiveType
   };
 });

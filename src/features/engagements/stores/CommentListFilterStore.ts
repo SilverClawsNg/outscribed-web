@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { 
-   getValidContentType, getValidSortType, getValidVoteType
+   getValidContentType, getValidSortType, getValidReactionType
 } from '@/utils/validators'; 
 import { type TypeLabel } from '@/utils/anchorStorage';
 
@@ -21,7 +21,7 @@ export const useCommentListFilterStore = defineStore('commentListFilter', () => 
 // State
 const username = ref<string | null>(null)
 const contenttype = ref<string | null>(null)
-const votetype = ref<string | null>(null)
+const reactiontype = ref<string | null>(null)
 
 const keyword = ref<string | null>(null);
 const sort = ref<string | null>(null)
@@ -42,7 +42,7 @@ const isactive = ref<string | null>(null);
     username.value = ''
     isactive.value=''
     contenttype.value = '-1'
-    votetype.value = '-1'
+    reactiontype.value = '-1'
 
     keyword.value = '';
     pointer.value = '1';
@@ -81,10 +81,10 @@ if(queryParameters.keyword){
 }
 
 
-if(queryParameters.votetype){
+if(queryParameters.reactiontype){
    // 🎯 Parse & Validate Activity
-    const validatedVote = getValidVoteType(queryParameters.votetype)
-    votetype.value = validatedVote || null
+    const validatedVote = getValidReactionType(queryParameters.reactiontype)
+    reactiontype.value = validatedVote || null
     if(!validatedVote) wasClean = false
 }
 
@@ -108,7 +108,7 @@ function getAsDictionary(): Record<string, string> {
   const rawValues: Record<string, any> = {
       username: username.value,
       contenttype: contenttype.value,
-      votetype: votetype.value,
+      reactiontype: reactiontype.value,
       isactive: isactive.value,
       keyword: keyword.value,
       sort: sort.value,
@@ -158,8 +158,8 @@ function getAsDictionary(): Record<string, string> {
     if (username.value && username.value.trim() !== '') 
       urlParams.append('username', username.value);
 
-    if (votetype.value && votetype.value !== '-1') 
-      urlParams.append('votetype', votetype.value);
+    if (reactiontype.value && reactiontype.value !== '-1') 
+      urlParams.append('reactiontype', reactiontype.value);
 
       if (isactive.value && isactive.value.trim() !== '') 
       urlParams.append('isactive', isactive.value);
@@ -191,7 +191,7 @@ function getAsDictionary(): Record<string, string> {
   }
 
   return {
-    sort, username, contenttype, keyword, pointer, activeType, activeTypeLabel, isactive, votetype,
+    sort, username, contenttype, keyword, pointer, activeType, activeTypeLabel, isactive, reactiontype,
     reset, rehydrate, getAsDictionary, buildApiPath, setActiveType
   };
 });

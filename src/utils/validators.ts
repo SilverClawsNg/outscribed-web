@@ -1,9 +1,9 @@
 import type{ Country, Category, SortType, ContentType, TaleStatus, ActivityType, GeneralSortType,
-  VoteType, InsightStatus, CommentStatus, FlagType, LimitedContentType
+  ReactionType, CommentStatus, FlagType, LimitedContentType
  } from '@/utils/enumHelper'
 import { CountryDescriptions,  CategoryDescriptions, SortTypeDescriptions, ContentTypeDescriptions,
-  TaleStatusDescriptions, ActivityTypeDescriptions, GeneralSortTypeDescriptions, VoteTypeDescriptions,
-  InsightStatusDescriptions, CommentStatusDescriptions, FlagTypeDescriptions,
+  TaleStatusDescriptions, ActivityTypeDescriptions, GeneralSortTypeDescriptions, ReactionTypeDescriptions,
+  CommentStatusDescriptions, FlagTypeDescriptions,
   LimitedContentTypeDescriptions
  } from '@/utils/descriptors'
 
@@ -64,20 +64,6 @@ export function getValidTaleStatus(code: string | null | undefined): TaleStatus 
   // Returns 'Account' (PascalCase) even if the browser sent 'account' (lowercase)
   return matchedKey || null
 }
-
-// 🌟 FIX: Find the correct PascalCase value case-insensitively
-export function getValidInsightStatus(code: string | null | undefined): InsightStatus | null {
-  if (!code || code === '-1') return null
-
-  const keys = Object.keys(InsightStatusDescriptions) as InsightStatus[]
-  
-  // Look for the element where the lowercase strings align perfectly
-  const matchedKey = keys.find(key => key.toLowerCase() === code.toLowerCase())
-  
-  // Returns 'Account' (PascalCase) even if the browser sent 'account' (lowercase)
-  return matchedKey || null
-}
-
 
 // 🌟 FIX: Find the correct PascalCase value case-insensitively
 export function getValidCommentStatus(code: string | null | undefined): CommentStatus | null {
@@ -146,10 +132,10 @@ export function getValidCountry(code: string | null | undefined): Country | null
 }
 
 // 🌟 FIX: Find the correct PascalCase value case-insensitively
-export function getValidVoteType(code: string | null | undefined): VoteType | null {
+export function getValidReactionType(code: string | null | undefined): ReactionType | null {
   if (!code || code === '-1') return null
 
-  const keys = Object.keys(VoteTypeDescriptions) as VoteType[]
+  const keys = Object.keys(ReactionTypeDescriptions) as ReactionType[]
   
   // Look for the element where the lowercase strings align perfectly
   const matchedKey = keys.find(key => key.toLowerCase() === code.toLowerCase())

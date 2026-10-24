@@ -218,14 +218,17 @@
         /* Body */
 
 
+        & .editor-modal-body,
         & .modal-body {
             height: calc(100lvh - 50px);
             width: 100%;
             margin: 0 auto;
             overflow-y: auto;
-            padding: 20px 0 120px 0;
             scrollbar-color: rgb(136,136,136);
             scrollbar-width: thin;
+            width: @mid-width;
+            max-width: calc(100% - 20px);
+            margin: 0 auto;
 
             &::-webkit-scrollbar {
                 width: 10px;
@@ -247,6 +250,10 @@
             &::-webkit-scrollbar-thumb:active {
                 background-color: rgb(68,68,68);
             }
+        }
+
+        & .modal-body{
+            padding: 20px 0 120px 0;
         }
 
         & .inner-modal-body {
@@ -273,6 +280,60 @@
             }
 
         }
+
+        
+
+            
+    & .modal-footer-editor {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--background-color);
+        border-top: 1px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 10;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+
+        .editor-footer-toolbar {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .editor-footer-submit {
+            width: 100%;
+
+            :deep(.btn-footer-submit) {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--color-primary, #0f172a);
+            color: #ffffff;
+            border: none;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background-color: var(--color-primary-hover, #1e293b);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            }
+        }
+    }
+
     }
 }
     /*#endregion */

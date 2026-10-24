@@ -1,5 +1,4 @@
 @import "variables.less";
-
 .profile-details {
   margin: 0 auto;
   position: relative;
@@ -7,38 +6,38 @@
   max-width: calc(100% - 20px);
   padding-top: 2rem;
 
+
+  &__bio {
+    width: 100%;
+    margin-bottom: 1.5rem;
+
+    &-empty {
+      font-style: italic;
+    }
+  }
+}
+
+.profile-header{
+  margin-bottom: 1.25rem;
+  text-align: center;
+  
   &__title {
-    font-size: 1.2rem;
+    
     margin-bottom: 0.25rem;
-    text-align: center;
   }
 
   &__username {
-    margin-bottom: 0.25rem;
-    text-align: center;
-
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
   }
 
-  &__metadata {
-    height: auto;
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    column-gap: 0.25rem;
-    text-align: center;
+   &__date {
+    color: var(--muted-text-color);
     margin-bottom: 0.25rem;
-
-    @media @smallDevice {
-      font-size: 0.85rem;
-    }
-
-    @media @largeDevice {
-      font-size: 0.9rem;
-    }
   }
-
+  
   &__country {
     margin-bottom: 1.5rem;
     text-align: center;
@@ -47,15 +46,16 @@
       font-size: smaller;
     }
   }
+  
+}
 
-  &__image {
-    height: auto;
-    width: 100%;
+.profile-image {
     display: flex;
     justify-content: center;
+    width: 100%;
     margin-bottom: 0.5rem;
 
-    &-wrapper {
+    &__wrapper {
       width: 150px;
       height: 150px;
       border-radius: 100%;
@@ -64,10 +64,9 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      margin-bottom: 1.5em;
+      margin-bottom: 0.5em;
     }
-  }
-
+    
   &__avatar-placeholder {
     width: 120px;
     height: 120px;
@@ -81,217 +80,253 @@
     border: 3px solid var(--native-background-color);
     z-index: 2;
   }
+}
 
-  &__bio {
-    width: 100%;
-    height: auto;
-    margin-bottom: 1.5rem;
-  }
-
-  &__actions {
-    height: auto;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-around;
-    margin-bottom: 1.5rem;
-    gap: 0.25rem;
-    flex-wrap: wrap;
-
-    @media @smallDevice {
-      font-size: 0.8rem;
-    }
-
-    @media @largeDevice {
-      font-size: 0.9rem;
-    }
-  }
-
-  &__action-btn {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    gap: 0.25rem;
-
-    &:hover {
-      color: var(--hover-color);
-
-      svg.stroked path {
-        stroke: var(--hover-color);
-      }
-    }
-  }
-
-  &__stats-body {
-    height: auto;
-    width: 100%;
-    margin-bottom: 1.5rem;
-    gap: 0.5rem;
+ .profile-metadata {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 0.25rem;
+    margin-bottom: 1.25rem;
 
-  &__follow-links {
-    height: auto;
-    width: 100%;
-    margin-bottom: 1.5rem;
-    gap: 0.5rem;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  &__link-btn {
-    width: 100%;
-    height: auto;
-    padding: 0.75rem 0;
-    border-radius: 4px;
-    display: flex;
-    text-align: center;
-    text-transform: capitalize;
-
-    &--vertical {
+    &__item{
+      display: flex;
       flex-direction: column;
-    }
-    
-    &--horizontal{
-      .profile-details__link-field {
-        margin-left: 0.5rem;
+      align-items:center;
+      justify-content: center;
+
+      &--label{
+        font-size: 1.1rem;
+      }
+
+      &--value{
+        font-size: 0.9rem;
+        font-weight: 600;
       }
     }
   }
 
-  &__link-field {
-    font-size: 0.85rem;
-    font-weight: normal;
+
+/* Follow Stats Component */
+.follow-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.25rem;
+
+  
+}
+
+/* Quick Action Updates Grid */
+.profile-actions {
+   display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  & .btn.btn--secondary {
+    padding: 0.5rem;
+    border-radius: 6px;
+    justify-content: space-between;
+    height: auto;
   }
 
-  &__link-value {
-    font-size: 1.5rem;
-  }
-
-  &__stats {
-    margin-bottom: 1rem;
-
-    &-header {
-      height: 40px;
-      width: 100%;
-      margin-bottom: 0.5rem;
+  &__label {
+    & h3 {
+      text-transform: uppercase;
+      font-size: 0.8rem;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       column-gap: 0.25rem;
+    }
+
+    & p {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+/* Activity Box Tabs Component */
+.activity-box {
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+
+  &__header {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0.5rem;
+
+    & h2 {
+      text-transform: uppercase;
     }
   }
 
-  &__contacts{
-    //margin-top: 1rem;
-    width: 100%;
+  &__tabs {
+    display: flex;
+    justify-content: space-around;
+    column-gap: 0.5rem;
+    //border-bottom: 1px solid var(--border-color);
+    padding: 0 1rem;
   }
 
-  &__contact-item {
-    //border: 1px solid var(--text-color);
+  &__tab {
+    border: 1px solid transparent;
+    border-bottom: none;
+    text-align: center;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px 6px 0 0;
+    width: 50%;
+    cursor: pointer;
+    font-size:0.8rem;
+    text-transform:uppercase;
+
+    &--active {
+      background-color: var(--light-background-color);
+      pointer-events:none;
+    }
+
+    &:hover {
+      background-color: var(--light-background-color);
+    }
+  }
+
+  &__content {
+    position: relative;
+    background-color: var(--light-background-color);
+    border-radius: 6px;
+  }
+
+  &__panel {
+    display: none;
+    padding: 0.5rem;
+
+    &--active {
+      display: block;
+    }
+  }
+
+  & .btn.btn--primary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    height:2.5rem;
+    border:0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:hover{
+      border: 1px solid var(--thick-border-color);
+    }
+
+
+  }
+}
+
+/* Social Contacts List Component */
+.profile-contacts {
+  width: 100%;
+
+  &__item {
     padding: 1rem 0;
-    //margin-bottom: 0.5rem;
-    //border-radius: 4px;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    //border: 1px solid var(--link-color);
     width: 100%;
   }
 
-/* Column 1: Icon Badge (40px desktop, scaled for mobile) */
-&__contact-icon {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-  
-
-  @media @phone {
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
-  }
-
-  & svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 2px;
-    
+  &__icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
 
     @media @phone {
-      width: 18px;
-      height: 18px;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+    }
+
+    & svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2px;
+
+      @media @phone {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    /* Platform Color Definitions */
+    &--facebook { background: @facebook-color; }
+    &--linkedin { background: @linkedin-color; }
+    &--whatsapp { background: @whatsapp-color; }
+    &--email { background: @email-color; }
+    &--telephone { background: @phone-color; }
+    &--website { background: @website-color; }
+    &--instagram { background: @instagram-color; }
+
+    /* Theme Adaptive Platforms */
+    &--twitter {
+      background: var(--x-background-color, @twitter-color);
+      color: var(--x-color, #ffffff);
+    }
+
+    &--tiktok {
+      background: var(--tiktok-background-color, #000000);
+      color: var(--tiktok-color, #ffffff);
     }
   }
 
-  /* Specific Platform Fills */
-  &--twitter { background: @twitter-color; }
-  &--facebook { background: @facebook-color; }
-  &--linkedin { background: @linkedin-color; }
-  &--whatsapp { background: @whatsapp-color; }
-  &--email { background: @email-color; }
-  &--telephone { background: @phone-color; }
-  &--website { background: @website-color; }
-  &--instagram { background: @instagram-color; }
-
-  /* Theme-adaptive monochrome platforms */
-  &--twitter {
-    background: var(--x-background-color);
-    color: var(--x-color);
+  &__content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
   }
 
-  &--tiktok {
-    background: var(--tiktok-background-color);
-    color: var(--tiktok-color);
-  }
-}
-
-/* Column 2: Text Layout */
-&__contact-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 0; /* Prevents text overflow breaks */
-
-}
-
-  &__contact-label {
+  &__label {
     font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1.1;
-    border-bottom: 2px dotted var(--border-color);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
-     margin-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
 
-     &--twitter { color: @twitter-color; }
-      &--facebook { color: @facebook-color; }
-      &--linkedin { color: @linkedin-color; }
-      &--whatsapp { color: @whatsapp-color; }
-      &--email { color: @email-color; }
-      &--telephone { color: @phone-color; }
-      &--website { color: @website-color; }
-      &--instagram { color: @instagram-color; }
+    &--facebook { color: @facebook-color; }
+    &--linkedin { color: @linkedin-color; }
+    &--whatsapp { color: @whatsapp-color; }
+    &--email { color: @email-color; }
+    &--telephone { color: @phone-color; }
+    &--website { color: @website-color; }
+    &--instagram { color: @instagram-color; }
 
-      /* Theme-adaptive monochrome platforms */
-      &--twitter {
-        color: var(--x-background-color);
-      }
+    &--twitter {
+      color: var(--x-background-color, @twitter-color);
+    }
 
-      &--tiktok {
-        color: var(--tiktok-background-color);
-      }
+    &--tiktok {
+      color: var(--tiktok-background-color, #000000);
+    }
   }
 
-  &__contact-value {
+  &__value {
     font-size: 0.9rem;
     font-weight: 500;
     white-space: nowrap;
@@ -299,45 +334,41 @@
     text-overflow: ellipsis;
   }
 
-/* Column 3: Edit Action Button */
-&__contact-action {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border-radius: 4px;
-  background-color: @link-color;
-  color: var(--background-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  @media @phone {
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
-  }
-
- 
-
-  &:hover {
-    background-color: @link-alt-color;
-  
-     & button{
-      color: var(--background-color);
-  }
-  }
-
-  & svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 2px;
-    
+  &__action {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 4px;
+    color: var(--muted-link-color);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 
     @media @phone {
-      width: 18px;
-      height: 18px;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+    }
+
+    &:hover {
+      background-color: var(--light-background-color);
+
+      & button {
+        color: @link-color;
+      }
+    }
+
+    & svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2px;
+
+      @media @phone {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
-}
 }

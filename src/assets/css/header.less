@@ -2,7 +2,7 @@
 
 .main-header {
   position: fixed;
-  top: 0;
+  top: @body-top-offset;
   z-index: 5000;
   background-color: var(--background-color);
   width: 100%;
@@ -246,6 +246,7 @@ background-color: var(--background-color);
     font-weight: 500;
     text-decoration: none;
     transition: color 0.15s ease;
+     color:  var(--text-color);
 
     &:hover { color: @link-color }
 

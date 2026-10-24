@@ -108,19 +108,7 @@ onMounted(async () => {
         </RouterLink>
       </dd>
     </dl>
-   
-    <dl>
-      <dt>Insights</dt>
-      <dd>{{ tageDetail.insightsCounter }}
-         <RouterLink 
-          :to="`/insights?tag=${tageDetail.slug}`" 
-          title="View Insights"
-        >
-          View Insights
-        </RouterLink>
-      </dd>
-    </dl>
-   
+ 
   </template>
 
 <template v-else>

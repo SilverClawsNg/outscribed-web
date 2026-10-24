@@ -2,9 +2,9 @@
 
 .btn {
     width: auto;
-    font-weight: 700;
+    font-weight: 600;
     transition: all 0.25s ease;
-    height: 3rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,24 +32,17 @@
         }
     }
 
-    @media @phone, @phablet {
-        font-size: 0.85rem;
-    }
-
-    @media @tablet, @largeDevice {
-        font-size: 0.9rem;
-    }
-
     &--primary {
         background-color: inherit;
-        border-color: var(--text-color);
-        color:  var(--text-color);
+        background-color: var(--background-color);
+        border-color: var(--border-color);
+        color:  var(--muted-link-color);
        
         &:hover {
             color: @link-color;
-            border-color:  var(--link-color);
+            background-color: var(--light-background-color);
         }
-        
+       
     }
 
     &--secondary {
@@ -59,10 +52,28 @@
 
         &:hover {
             background-color: @link-alt-color;
-            color: var(--background-color);
+            color:@white-color;
         }
 
     }
+
+    &--warning {
+    background-color: @warning-color;
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+      background-color: @warning-hover-color;
+    }
+  }
+
+  &--danger {
+    background-color: @danger-color;
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+      background-color: @danger-hover-color;
+    }
+  }
 
     &--contrast {
        background-color: @black-color;

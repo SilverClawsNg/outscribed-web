@@ -30,7 +30,7 @@ a {
     text-decoration: none;
     outline: none;
     user-select: none;
-    color: var(--text-color);
+    color: var(--muted-text-color);
     cursor: pointer;
 
 
@@ -38,7 +38,11 @@ a {
         font-weight: 600;
 
         &:hover {
-            color:  var(--link-color);
+            color:  @link-color;
+        }
+
+         &.active {
+            color:  var(--text-color);
         }
     }
 
@@ -80,10 +84,20 @@ button {
     line-height: inherit;
     font-size: inherit;
     font-weight: 600;
+       color: var(--muted-text-color);
+
+
+        &:not(.btn) {
+        font-weight: 600;
 
         &:hover {
-             color:  var(--link-color);
+            color:  @link-color;
         }
+
+         &.active {
+            color:  var(--text-color);
+        }
+    }
 
     &:disabled {
         cursor: not-allowed;

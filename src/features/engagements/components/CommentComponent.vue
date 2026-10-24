@@ -9,6 +9,12 @@ import { useEngagement } from '@/composables/useEngagement';
 import { formatCounts } from '@/utils/stringHelpers'
 import { toRelativeTime } from '@/utils/dateExtensions'
 import { useContentCommentsStore } from '../stores/ContentCommentsStore';
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
+
+const modalStore = useModalStore();
+const engage = useEngagement()
+const contentStore = useContentCommentsStore();
+const authStore = useAuthenticationStore()
 
 const props = withDefaults(defineProps<{
   comment: CommentListDto;
@@ -18,9 +24,21 @@ const props = withDefaults(defineProps<{
   isFocus: false, isAncestor: false
 });
 
-const modalStore = useModalStore();
-const engage = useEngagement()
-const contentStore = useContentCommentsStore();
+const emit = defineEmits<{
+  (e: 'edit', comment: CommentListDto): void
+}>()
+
+// 1. Direct Ownership Check
+const isOwner = computed(() => {
+  return authStore.userId === props.comment.commentatorId
+})
+
+// 2. Status Permission Check
+const canEdit = computed(() => {
+  if (!isOwner.value) return false
+  const status = props.comment.status
+  return status === 'Active' || status === 'CertifiedByAdmin'
+})
 
   // 2. Reactive Component States
 const isExpanded = ref<boolean>(false);
@@ -100,6 +118,16 @@ function returnAncestor() {
         </button>
         <span class="divider divider--circle"></span>
         <time class="comment-inline-card__date">{{ toRelativeTime(comment.commentedAt) }}</time>
+        <span class="divider divider--circle"></span>
+        <button
+        v-if="canEdit"
+        type="button"
+        class="btn-icon"
+        title="Edit comment"
+        @click="emit('edit', comment)"
+      >
+        <SvgIcons name="edit" :size="16" />
+      </button>
       </div>
 
       <!-- More Actions / Stats Trigger -->
@@ -194,14 +222,15 @@ function returnAncestor() {
       
     </section>
 
+
     <!-- 4. Engagement Actions (Upvote, Downvote, Reply, Favorite) -->
     <footer class="comment-inline-card__actions">
        <button 
           type="button"
-          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myVote === 'Upvote' }]" 
+          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myReaction === 'Upvote' }]" 
           title="Upvote"
           :disabled="uiMeta.isVoteDisabled"
-          @click="engage.vote(comment.engagement, 'Upvote')"
+          @click="engage.react(comment.engagement, 'Upvote')"
         >
           <SvgIcons name="upvote" />
           <span>{{ formatCounts(comment.engagement?.upvotesCount) }}</span>
@@ -209,10 +238,10 @@ function returnAncestor() {
 
         <button 
           type="button"
-          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myVote === 'Downvote' }]" 
+          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myReaction === 'Downvote' }]" 
           title="Downvote"
           :disabled="uiMeta.isVoteDisabled"
-          @click="engage.vote(comment.engagement, 'Downvote')"
+          @click="engage.react(comment.engagement, 'Downvote')"
         >
           <SvgIcons name="downvote" />
           <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>

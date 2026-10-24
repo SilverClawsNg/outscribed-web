@@ -1,8 +1,8 @@
 @font-family: "Gotham", sans-serif;
 @font-family: 'Trebuchet MS';
-/*@font-family: 'Palatino Linotype';*/
+@font-family: 'Palatino Linotype';
 @font-family: "Cormorant Garamond";
-@font-family: TNYAdobeCaslonPro, Times New Roman, Times, serif;
+
 
 @font-family: Rubik, Rubik-bold-fallback, Arial, sans-serif;
 @font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -11,8 +11,46 @@
 @font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 @font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
 
+@font-family: TNYAdobeCaslonPro, Times New Roman, Times, serif;
+@font-family-heading: IrvinHeadingPro, Helvetica Neue, Helvetica, Arial, sans-serif;
+@font-family: TNYAdobeCaslonPro, Times New Roman, Times, serif;
+
+@font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
 @base-font-size: 15px;
 @base-line-height: 1.4rem;
+
+
+
+
+
+
+// 1. Font Family Stacks
+@font-heading: SF Pro Display, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+@font-body: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+@font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+// 2. Base Rem Ratios (Default Browser Base = 16px)
+// 100% = 16px = 1rem | 93.75% = 15px = 1rem | 106.25% = 17px = 1rem
+@html-font-scale-desktop: 100%;    // 1rem = 16px
+@html-font-scale-mobile: 93.75%;  // 1rem = 15px (Slightly tighter for narrow mobile screens)
+
+// 3. Editorial Text Scale (Applied in rems)
+@text-xs:    0.75rem;   // ~12px
+@text-sm:    0.875rem;  // ~14px
+@text-base:  1rem;      // ~16px (UI & Form Inputs)
+@text-prose: 1.1875rem; // ~19px (Long-form reading measure for story body)
+@text-lg:    1.25rem;   // ~20px
+@text-xl:    1.5rem;    // ~24px
+@text-2xl:   2rem;      // ~32px
+@text-title: 2.5rem;    // ~40px (Story Title)
+
+// 4. Line Heights
+@line-height-tight: 1.2;
+@line-height-ui:    1.5;
+@line-height-prose: 1.75; // Generous tracking for 750px prose reading
+
+@body-top-offset: 5px;
 
 @white-color: #FFFFFF;
 @black-color: #09080D;
@@ -28,19 +66,22 @@
 
 @link-color: #9ECEE5;
 
-@link-color: #0068d0;
-@link-alt-color: #003E79; 
+@link-color: #4f39f6;
+@link-alt-color: #432dd7; 
+
 
 @red-color: #C9153A;
 @red-alt-color: #DB3D5C;
 
-@danger-color: #F44336;
+@danger-color: #dc2626;
 
-@danger-color: #F8D7DA;
 @warning-color: #d97706;
 @success-color: #D4EDD9;
 @info-color: #D1ECF1;
 @fatal-color: #F44336;
+
+@warning-hover-color: #b45309;
+@danger-hover-color: #b91c1c;
 
 @twitter-color: #1da1f2;
 @facebook-color: #1877f2;
@@ -59,22 +100,38 @@
 @logo-yellow: #ffcc00; // Warm golden base ribbon
 
 
+// --- Success (Green) ---
+@success-background-color:      #d1e7dd; // Ultra-light green background
+@success-border-color:  #badbcc; // Light green border
+@success-text-color:    #0f5132; // Deep green text (for contrast)
+
+// --- Danger / Error (Red) ---
+@danger-background-color:       #f8d7da; // Ultra-light red background
+@danger-border-color:   #f5c2c7; // Light red border
+@danger-text-color:     #842029; // Deep red text (for contrast)
+
+// --- Warning (Yellow) ---
+@warning-background-color:      #fff3cd; // Ultra-light yellow background
+@warning-border-color:  #ffecb5; // Light yellow border
+@warning-text-color:    #664d03; // Deep yellow/brown text (for contrast)
+
+
 @box-shadow: 0 0 8px rgba(0,123,255,0.25);
 
-@phone:   ~"only screen and (max-width: 599px)";
-@phablet: ~"only screen and (min-width: 600px) and (max-width: 767px)";
-@tablet:  ~"only screen and (min-width: 768px) and (max-width: 991px)";
-@laptop:  ~"only screen and (min-width: 992px) and (max-width: 1279px)";
+@phone:   ~"only screen and (max-width: 599.99px)";
+@phablet: ~"only screen and (min-width: 600px) and (max-width: 767.99px)";
+@tablet:  ~"only screen and (min-width: 768px) and (max-width: 991.99px)";
+@laptop:  ~"only screen and (min-width: 992px) and (max-width: 1279.99px)";
 @desktop: ~"only screen and (min-width: 1280px)";
 
-@smallDevice: ~ "only screen and (max-width : 991px)";
+@smallDevice: ~ "only screen and (max-width : 991.99px)";
 @largeDevice: ~ "only screen and (min-width : 992px)";
 
-@smallDevice: ~ "only screen and (max-width : 767px)";
-@largeDevice: ~ "only screen and (min-width : 768px)";
+//@smallDevice: ~ "only screen and (max-width : 767px)";
+//@largeDevice: ~ "only screen and (min-width : 768px)";
 
 @shadow-color: rgba(0, 0, 0, 0.1);
-@max-width: 1300px;
+@max-width: 1920px;
 @mid-width: 750px;
 @min-width: 450px;
 

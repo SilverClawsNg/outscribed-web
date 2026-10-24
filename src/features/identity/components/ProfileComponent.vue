@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { AccountStatusDescriptions, CountryDescriptions, AccountStatusClass } from '@/utils/descriptors'
 import { type ContactType } from '@/utils/enumHelper.ts'
@@ -13,6 +14,8 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 const profileStore = useProfileStore() // 💡 Instantiate Store
 const profile = computed(() => profileStore.profile!)
+
+const activeActivityTab = ref<string>('tale')
 
 import { useModalStore } from '@/stores/modalStore'
 const modalStore = useModalStore()
@@ -133,10 +136,9 @@ function handleEditContactClick(platform: ContactType) {
 </script>
 
 <template>
-
-  <div class="profile-details">
-   
-      <div class="content-status">
+<div class="profile-details">
+  <!-- Status Badge -->
+   <div class="content-status">
       <span class="content-status__label">Status</span>
       <span 
         class="content-status__value" 
@@ -146,208 +148,248 @@ function handleEditContactClick(platform: ContactType) {
       </span>
     </div>
 
-    <h1 class="profile-details__title">{{ profile.title }}</h1>
-    <h2 class="at profile-details__username">{{ profile.username }}</h2>
-
-    <div class="profile-details__metadata">
-      Joined {{ toShortDate(profile.registeredAt) }}
     
-      <span class="divider divider--circle"></span>
-      {{ formatCounts(profile.viewsCount) }} Views
-    </div>
+  <!-- Photo Update Component -->
+  <UpdateProfilePhotoComponent :payload="profile" @completed="handleRefresh" />
 
-    <template v-if="profile.country">
-       <p class="profile-details__country">
-      <i>OutScribing from </i>{{ CountryDescriptions[profile.country] }}
-       </p>
+    <header class="profile-header">
+
+      <!-- Main Info -->
+      <h1 class="profile-header__username at">{{ profile.username }}</h1>
+      <h2 v-if="profile.title" class="profile-header__title">{{ profile.title }}</h2>
+
+      <time class="profile-header__date">Joined {{ toShortDate(profile.registeredAt) }}</time>
+
+      <p v-if="profile.country" class="profile-header__country">
+        <i>OutScribing from </i>{{ CountryDescriptions[profile.country] }}
+      </p>
+
+    </header>
+
+  <!-- Follow Statistics Bar -->
+  <div class="profile-metadata">
+    <RouterLink to="/users/my/follows" class="profile-metadata__item" title="Following">
+      <span class="profile-metadata__item--value">{{ formatCounts(profile.followsCount) }}</span>
+      <span class="profile-metadata__item--label">Following</span>
+    </RouterLink>
+
+    <RouterLink to="/users/my/followers" class="profile-metadata__item" title="Followers">
+      <span class="profile-metadata__item--value">{{ formatCounts(profile.followersCount) }}</span>
+      <span class="profile-metadata__item--label">Followers</span>
+    </RouterLink>
+
+    <div class="profile-metadata__item" title="Profile Views">
+      <span class="profile-metadata__item--value">{{ formatCounts(profile.viewsCount) }}</span>
+      <span class="profile-metadata__item--label">Views</span>
+    </div>
+   
+  </div>
+
+  <!-- User Bio -->
+  <div class="profile-details__bio">
+    <template v-if="profile.bio">
+      {{ profile.bio }}
     </template>
+    <template v-else>
+      <p class="profile-details__bio-empty">No bio found!</p>
+    </template>
+  </div>
 
-    <UpdateProfilePhotoComponent :payload="profile" @completed="handleRefresh" />
+  <!-- Quick Action Buttons -->
+  <div class="profile-actions">
+    <button 
+      type="button" 
+      class="btn btn--secondary btn--has-icon"
+      @click="modalStore.push('UpdateProfile', 'Update Profile')"
+    >
+      <div class="profile-actions__label">
+        <h3>Update</h3>
+        <p>Profile</p>
+      </div>
+      <SvgIcons name="user" :size="20" />
+    </button>
 
-       <div class="profile-details__bio">
-                     <template v-if="profile.bio">
-                {{ profile.bio }}
-                </template>
-                <template v-else>
-                    <p class="shared__no-content">
-              No bio found!
-          </p>
-            </template>
-                    </div>
+    <button 
+      type="button" 
+      class="btn btn--secondary btn--has-icon"
+      @click="modalStore.push('ChangePassword', 'Change Password')"
+    >
+      <div class="profile-actions__label">
+        <h3>Change</h3>
+        <p>Password</p>
+      </div>
+      <SvgIcons name="padlock" :size="20" />
+    </button>
 
-    <div class="profile-details__actions">
-      <button class="profile-details__action-btn" @click="modalStore.push('UpdateProfile', 'Update Profile')">
-         <SvgIcons name="user" /> Update profile
+    <button 
+      type="button" 
+      class="btn btn--secondary btn--has-icon"
+      @click="modalStore.push('Archive', 'Archive Profile')"
+    >
+      <div class="profile-actions__label">
+        <h3>Archive</h3>
+        <p>Account</p>
+      </div>
+      <SvgIcons name="archive" :size="20" />
+    </button>
+  </div>
+
+  <!-- Activity Tabs & Lists -->
+  <div class="activity-box">
+   
+
+    <!-- Tab Navigation -->
+    <div class="activity-box__tabs">
+      <button 
+        type="button" 
+        class="activity-box__tab"
+        :class="{ 'activity-box__tab--active': activeActivityTab === 'tale' }"
+        @click="activeActivityTab = 'tale'"
+      >
+        Tales
       </button>
-      <button class="profile-details__action-btn" @click="modalStore.push('ChangePassword', 'Change Password')">
-        <SvgIcons name="padlock" />  Change password
+      <button 
+        type="button" 
+        class="activity-box__tab"
+        :class="{ 'activity-box__tab--active': activeActivityTab === 'comment' }"
+        @click="activeActivityTab = 'comment'"
+      >
+        Comments
       </button>
-       <button class="profile-details__action-btn" @click="modalStore.push('Archive', 'Archive Profile')">
-        <SvgIcons name="archive" />  Archive profile
-      </button>
     </div>
 
-                <WriterStats
-                  :username="profile.username"
-                  :tales-count="profile.talesCount"
-                  :insights-count="profile.insightsCount"
-                  :comments-count="profile.commentsCount"
-                  :has-margin="true"
-                />
-
-     <div class="profile-details__follow-links">
-      <RouterLink to="/users/my/follows" class="btn btn--primary profile-details__link-btn profile-details__link-btn--horizontal" title="Following">
-        <span class="profile-details__link-value">{{ formatCounts(profile.followsCount) }}</span> 
-        <span class="profile-details__link-field">Following</span>
-      </RouterLink>
-      <RouterLink to="/users/my/followers" class="btn btn--primary profile-details__link-btn profile-details__link-btn--horizontal" title="Followers">
-        <span class="profile-details__link-value">{{ formatCounts(profile.followersCount) }}</span> 
-        <span class="profile-details__link-field">Followers</span>
-      </RouterLink>
-    </div>
-
-    <div class="profile-details__stats">
-      <h4 class="profile-details__stats-header">
-        <SvgIcons name="bookmark" />  Saves
-      </h4>
-      <div class="profile-details__stats-body">
-        <RouterLink to="/tales/my/saves" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Upvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.taleFavoritesCount) }}</span> 
-          <span class="profile-details__link-field">Tales</span>
+    <!-- Activity Content Area -->
+    <div class="activity-box__content">
+      <!-- Tales Activity Panel -->
+      <div 
+        class="activity-box__panel"
+        :class="{ 'activity-box__panel--active': activeActivityTab === 'tale' }"
+      >
+        <RouterLink :to="`/tales?username=${profile.username}`" class="btn btn--primary" title="Tales">
+          <span class="activity-box__label">Published</span>
+          <span class="activity-box__value">{{ formatCounts(profile.talesCount) }}</span>
         </RouterLink>
-        <RouterLink to="/insights/my/saves" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Upvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.insightFavoritesCount) }}</span> 
-          <span class="profile-details__link-field">Insights</span>
+
+        <RouterLink to="/tales/my/saves" class="btn btn--primary" title="Tales Saved">
+          <span class="activity-box__label">Saved</span>
+          <span class="activity-box__value">{{ formatCounts(profile.taleFavoritesCount) }}</span>
         </RouterLink>
-        <RouterLink to="/comments/my/saves" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Comments">
-          <span class="profile-details__link-value">{{ formatCounts(profile.commentFavoritesCount) }}</span> 
-          <span class="profile-details__link-field">Comments</span>
+
+        <RouterLink to="/tales/my/shares" class="btn btn--primary" title="Tales Shares">
+          <span class="activity-box__label">Shared</span>
+          <span class="activity-box__value">{{ formatCounts(profile.taleSharesCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/tales/my/flags" class="btn btn--primary" title="Tales Upvotes">
+          <span class="activity-box__label">Reported</span>
+          <span class="activity-box__value">{{ formatCounts(profile.taleFlagsCount) }}</span>
+        </RouterLink>
+
+        <div class="divider-multi divider-multi--thick"><span></span></div>
+
+        <RouterLink to="/tales/my/reactions?reactiontype=TransformedPerspective" class="btn btn--primary" title="Tales Transformed Perspective">
+          <span class="activity-box__label">Transformed Perspective</span>
+          <span class="activity-box__value">{{ formatCounts(profile.transformedPerspectivesCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/tales/my/reactions?reactiontype=ExposesReality" class="btn btn--primary" title="Tales Exposes Realities">
+          <span class="activity-box__label">Exposes Realities</span>
+          <span class="activity-box__value">{{ formatCounts(profile.exposesRealitiesCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/tales/my/reactions?reactiontype=SparksDebate" class="btn btn--primary" title="Tales Sparks Debates">
+          <span class="activity-box__label">Sparks Debates</span>
+          <span class="activity-box__value">{{ formatCounts(profile.sparksDebatesCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/tales/my/reactions?reactiontype=MissedCriticalContext" class="btn btn--primary" title="Tales Missed Critical Contexts">
+          <span class="activity-box__label">Missed Critical Contexts</span>
+          <span class="activity-box__value">{{ formatCounts(profile.missedCriticalContextsCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/tales/my/reactions?reactiontype=LacksRealWorldRelevance" class="btn btn--primary" title="Tales Lacks Real World Relevance">
+          <span class="activity-box__label">Lacks Real World Relevance</span>
+          <span class="activity-box__value">{{ formatCounts(profile.lacksRealWorldRelevancesCount) }}</span>
+        </RouterLink>
+      </div>
+
+      <!-- Comments Activity Panel -->
+      <div 
+        class="activity-box__panel"
+        :class="{ 'activity-box__panel--active': activeActivityTab === 'comment' }"
+      >
+        <RouterLink :to="`/comments?username=${profile.username}`" class="btn btn--primary" title="Comments">
+          <span class="activity-box__label">Published</span>
+          <span class="activity-box__value">{{ formatCounts(profile.commentsCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/comments/my/saves" class="btn btn--primary" title="Comments Saved">
+          <span class="activity-box__label">Saved</span>
+          <span class="activity-box__value">{{ formatCounts(profile.commentFavoritesCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/comments/my/flags" class="btn btn--primary" title="Comments Reported">
+          <span class="activity-box__label">Reported</span>
+          <span class="activity-box__value">{{ formatCounts(profile.commentFlagsCount) }}</span>
+        </RouterLink>
+
+        <div class="divider-multi divider-multi--thick"><span></span></div>
+
+        <RouterLink to="/comments/my/votes?reactiontype=Upvote" class="btn btn--primary" title="Comments Upvoted">
+          <span class="activity-box__label">Upvoted</span>
+          <span class="activity-box__value">{{ formatCounts(profile.commentUpvotesCount) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/comments/my/votes?reactiontype=Downvote" class="btn btn--primary" title="Comments Downvoted">
+          <span class="activity-box__label">Downvoted</span>
+          <span class="activity-box__value">{{ formatCounts(profile.commentDownvotesCount) }}</span>
         </RouterLink>
       </div>
     </div>
+  </div>
 
-    <div class="profile-details__stats">
-      <h4 class="profile-details__stats-header">
-         <SvgIcons name="upvote" />  Upvotes 
-      </h4>
-      <div class="profile-details__stats-body">
-        <RouterLink to="/tales/my/votes?votetype=Upvote" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Upvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.taleUpvotesCount) }}</span> 
-          <span class="profile-details__link-field">Tales</span>
-        </RouterLink>
-        <RouterLink to="/insights/my/votes?votetype=Upvote" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Upvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.insightUpvotesCount) }}</span> 
-          <span class="profile-details__link-field">Insights</span>
-        </RouterLink>
-        <RouterLink to="/comments/my/votes?votetype=Upvote" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Comments">
-          <span class="profile-details__link-value">{{ formatCounts(profile.commentUpvotesCount) }}</span> 
-          <span class="profile-details__link-field">Comments</span>
-        </RouterLink>
-      </div>
-    </div>
+  <!-- Contacts List -->
+  <div class="profile-contacts" aria-label="Social and email contacts">
 
-    <div class="profile-details__stats">
-      <h4 class="profile-details__stats-header">
-         <SvgIcons name="downvote" />  Downvotes 
-      </h4>
-      <div class="profile-details__stats-body">
-        <RouterLink to="/tales/my/votes?votetype=Downvote" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Downvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.taleDownvotesCount) }}</span> 
-          <span class="profile-details__link-field">Tales</span>
-        </RouterLink>
-        <RouterLink to="/insights/my/votes?votetype=Downvote" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Downvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.insightDownvotesCount) }}</span> 
-          <span class="profile-details__link-field">Insights</span>
-        </RouterLink>
-        <RouterLink to="/comments/my/votes?votetype=Downvote" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Comments">
-          <span class="profile-details__link-value">{{ formatCounts(profile.commentDownvotesCount) }}</span> 
-          <span class="profile-details__link-field">Comments</span>
-        </RouterLink>
-      </div>
-    </div>
-
-    <div class="profile-details__stats">
-      <h4 class="profile-details__stats-header">
-        <SvgIcons name="flag" />  Flags
-      </h4>
-      <div class="profile-details__stats-body">
-        <RouterLink to="/tales/my/flags" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Upvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.taleFlagsCount) }}</span> 
-          <span class="profile-details__link-field">Tales</span>
-        </RouterLink>
-        <RouterLink to="/insights/my/flags" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Upvotes">
-          <span class="profile-details__link-value">{{ formatCounts(profile.insightFlagsCount) }}</span> 
-          <span class="profile-details__link-field">Insights</span>
-        </RouterLink>
-        <RouterLink to="/comments/my/flags" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Comments">
-          <span class="profile-details__link-value">{{ formatCounts(profile.commentFlagsCount) }}</span> 
-          <span class="profile-details__link-field">Comments</span>
-        </RouterLink>
-      </div>
-    </div>
-
-    <div class="profile-details__stats">
-      <h4 class="profile-details__stats-header">
-        <SvgIcons name="share" />  Shares
-      </h4>
-      <div class="profile-details__stats-body">
-        <RouterLink to="/tales/my/shares" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Shares">
-          <span class="profile-details__link-value">{{ formatCounts(profile.taleSharesCount) }}</span> 
-          <span class="profile-details__link-field">Tales</span>
-        </RouterLink>
-        <RouterLink to="/insights/my/shares" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Shares">
-          <span class="profile-details__link-value">{{ formatCounts(profile.insightSharesCount) }}</span> 
-          <span class="profile-details__link-field">Insights</span>
-        </RouterLink>
-      </div>
-    </div>
-
-   <div class="profile-details__contacts" aria-label="Social and email contacts">
-  
     <div 
       v-for="item in contactDisplayList" 
       :key="item.type" 
-      class="profile-details__contact-item"
+      class="profile-contacts__item"
     >
-
-    <div class="profile-details__contact-icon" :class="`profile-details__contact-icon--${item.type.toLowerCase()}`">
-      <SvgIcons :name="item.icon" /> 
-    </div>
-
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label" :class="`profile-details__contact-label--${item.type.toLowerCase()}`">
-      {{ item.label }}
+      <div 
+        class="profile-contacts__icon" 
+        :class="`profile-contacts__icon--${item.type.toLowerCase()}`"
+      >
+        <SvgIcons :name="item.icon" /> 
       </div>
-        <div class="profile-details__contact-value">
-      
-      <!-- Active Contact Present -->
-      <template v-if="item.value">
-        <p class="profile-details__contact-definition">
-          <span v-if="item.prefix">{{ item.prefix }}</span>
-          <a :href="item.link" target="_blank" rel="noopener noreferrer">{{ item.value }}</a>
-        </p>
-      </template>
 
-      <!-- Empty State -->
-      <template v-else>
-      <p  class="profile-details__no-contact">No {{ item.label }} Added!</p>
-      </template>
-
+      <div class="profile-contacts__content">
+        <div 
+          class="profile-contacts__label" 
+          :class="`profile-contacts__label--${item.type.toLowerCase()}`"
+        >
+          {{ item.label }}
+        </div>
+        
+        <div class="profile-contacts__value">
+          <p v-if="item.value" class="profile-contacts__definition">
+            <span v-if="item.prefix">{{ item.prefix }}</span>
+            <a :href="item.link" target="_blank" rel="noopener noreferrer">{{ item.value }}</a>
+          </p>
+          <p v-else class="profile-contacts__empty">
+            No {{ item.label }} Added!
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="profile-details__contact-action">
+      <div class="profile-contacts__action">
         <button :aria-label="`Edit ${item.label}`" @click="handleEditContactClick(item.type)">
           <SvgIcons name="edit" />
         </button>
+      </div>
     </div>
-
   </div>
-
 </div>
-
-  </div>
-  
 </template>
 
 <style lang="less" scoped>

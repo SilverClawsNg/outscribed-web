@@ -4,12 +4,13 @@ import { getAsync } from '@/api/apiGetServices';
 import { postAsync } from '@/api/apiPostServices';
 import { APIError } from '@/api/apiTypes.ts';
 import { useDraftCommentsFilterStore } from './DraftCommentsFilterStore.ts';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
 import { useContentCommentsStore } from '../stores/ContentCommentsStore.ts';
 
 import type { 
   CommentListDto, GetContentCommentsResponse, CreateCommentRequest, CommentCreatedResponse,
-  UpdateDetailRequest, ConfirmRequest, UpdateAddendumRequest, ActiveContentContext, ReplyCommentRequest
+  UpdateDetailRequest, ConfirmRequest, UpdateAddendumRequest, ActiveContentContext, ReplyCommentRequest,
+  UpdateCommentRequest
 } from '../types/EngagementTypes';
 
 import {initializeCommentListEngagement} from '../types/EngagementTypes.ts';
@@ -20,7 +21,7 @@ export const useDraftCommentsStore = defineStore('draftComments', () => {
   // State
   const comments = ref<CommentListDto[]>([]);
   const activeComment = ref<CommentListDto | null>(null);
-  const authStore = useAuthStore();
+  const authStore = useAuthenticationStore();
   const filterStore = useDraftCommentsFilterStore();
   const contentStore = useContentCommentsStore();
 
@@ -377,37 +378,73 @@ async function replyComment(detail: string)
     };
   }
 }
-
-  async function updateCommentDetails(payload: UpdateDetailRequest) {
-    
-    try {
-      const outcome = await postAsync<{ detail: string }>('/api/comments/detail', payload, true);
-      
-      if (outcome.isFailure) {
-        return { success: false, error: outcome.error };
+async function updateCommentDetails(detail: string): Promise<{ success: boolean; error: APIError | null }> {
+  try {
+    // 1. Guard against missing active selection
+    if (!activeComment.value) {
+      return {
+        success: false,
+        error: new APIError(
+          400,
+          'Bad Request',
+          'No comment was found to update. Refresh page before retrying.',
+          'Server.Missing_Active_Comment'
+        )
       }
+    }
 
-      if (!outcome.value || !outcome.value.detail) {
-        const error = new APIError(500, 'Blank Response', 'Request may have succeeded but server response blank. Refresh page before retrying', 'Server.Blank_Response');
-        return { success: false, error: error };
-      } 
+    const payload: UpdateCommentRequest = {
+      contentid: activeComment.value.contentId ?? '',
+      contentType: activeComment.value.contentType ?? 'Tale',
+      commentId: activeComment.value.commentId ?? '',
+      detail: detail
+    }
 
-      const index = comments.value.findIndex(t => t.commentId === payload.commentId);
-      if (index !== -1) {
-        const comment = comments.value[index];
-        if (comment) {
-          comment.detail = outcome.value.detail;
-          comment.lastUpdatedAt = new Date().toISOString();
-        }
-        localStorage.setItem(`comment:draft:update:${payload.commentId}`, JSON.stringify(comments.value[index]));
+    // 2. Dispatch network update
+    const outcome = await postAsync<{ detail: string }>('/api/commenting/update', payload, true)
+
+    if (outcome.isFailure) {
+      return { success: false, error: outcome.error }
+    }
+
+    if (!outcome.value || !outcome.value.detail) {
+      const error = new APIError(
+        500,
+        'Blank Response',
+        'Request may have succeeded but server response was blank. Refresh page before retrying.',
+        'Server.Blank_Response'
+      )
+      return { success: false, error: error }
+    }
+
+    const updatedDetail = outcome.value.detail
+    const nowIso = new Date().toISOString()
+
+    // 3. Update Store Local Array (User's Comments cache)
+    const index = comments.value.findIndex(t => t.commentId === payload.commentId)
+    if (index !== -1) {
+      const comment = comments.value[index]
+      if (comment) {
+        comment.detail = updatedDetail
+        comment.lastUpdatedAt = nowIso
+        localStorage.setItem(`comment:draft:update:${payload.commentId}`, JSON.stringify(comment))
       }
+    }
 
-      activeComment.value = null;
-      return { success: true, error: null };
-    } catch (err: any) {
-      return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
+    // 4. Update Store Active Comment (Used by callers awaiting resolution)
+    if (activeComment.value) {
+      activeComment.value.detail = updatedDetail
+      activeComment.value.lastUpdatedAt = nowIso
+    }
+
+    return { success: true, error: null }
+  } catch (err: any) {
+    return {
+      success: false,
+      error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.')
     }
   }
+}
 
   async function deleteComment(payload: ConfirmRequest) {
     try {

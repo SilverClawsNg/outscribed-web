@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { ref, onBeforeMount} from 'vue';
 import { useModalStore } from '@/stores/modalStore';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore';
-import { type TaleDraftListDto } from '../types/TalesTypes';
-import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
+import { toShortDate } from '@/utils/dateExtensions'
 import { calculateReadingTime } from '@/utils/readingTimeHelper';
 import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
 import { mediaHelper } from '@/utils/mediaHelper'
-import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
+import { formatAddendum } from '@/utils/stringHelpers'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
-import SvgIcons from '@/components/SvgIcons.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // 2. State & Store Injections
 const modalStore = useModalStore();
-const authStore = useAuthStore();
+const authStore = useAuthenticationStore();
 const showExternalLink = ref<boolean>(false);
 const taleStore = useTaleDraftStore()
 
@@ -254,6 +252,6 @@ onBeforeMount(() => {
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/content-details.less";
+@import "@/assets/css/story-details.less";
 @import "@/assets/css/rich-text.less";
 </style>

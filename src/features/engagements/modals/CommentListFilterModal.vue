@@ -121,8 +121,8 @@ const typeSelected = computed({
                 type="radio" 
                 id="Upvote" 
                 value="Upvote" 
-                name="votetype" 
-                v-model="filterStore.votetype"
+                name="reactiontype" 
+                v-model="filterStore.reactiontype"
               />
               <label for="Upvote">Only Upvotes</label>
             </p>
@@ -131,8 +131,8 @@ const typeSelected = computed({
                 type="radio" 
                 id="Downvote" 
                 value="Downvote" 
-                name="votetype" 
-                v-model="filterStore.votetype"
+                name="reactiontype" 
+                v-model="filterStore.reactiontype"
               />
               <label for="Downvote">Only Downvotes</label>
             </p>

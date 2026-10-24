@@ -4,57 +4,31 @@
   position: relative;
   width: 100%;
   height: auto;
-padding: 1.5rem 0;
+  padding: 1.5rem 0;
+  border-bottom: 2px solid var(--border-color);
   
-  // --- Profile / Header Left Column ---
-  &__profile {
-    width: @min-width;
-    max-width: calc(100% - 20px);
-     margin: 0 auto 1.25rem auto;
-  }
-
-  &__username {
-    font-size: clamp(1.2rem, 3vw + 1rem, 1.5rem);
-    line-height: 1.3;
-    margin-bottom: 0.5rem;
-    text-align: center;
-  }
-
-  // --- Metadata Row ---
-  &__meta {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    column-gap: 1rem;
-    row-gap: 0.25rem;
-    flex-wrap: wrap;
-  }
-
-  &__meta-item {
+  &__header {
     display: flex;
     align-items: center;
-    column-gap: 0.35rem;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
   }
 
-  // --- Quick Actions Row ---
-  &__actions {
-    width: 100%;
+  &__title {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1.25rem;
-    margin-bottom: 1rem;
+    column-gap: 0.25rem;
+    font-size: 1.25rem;
+
+      @media @phone{
+      font-size: 1rem;
+    }
+
+    & time{
+      font-size: 0.95rem;
+    }
   }
-
-  &__action-btn {
-    display: inline-flex;
-    align-items: center;
-    column-gap: 0.35rem;
-    font-size: 0.875rem;
-
-  }
-
+   
+  
 
 }

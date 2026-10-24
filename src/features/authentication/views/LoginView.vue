@@ -25,9 +25,7 @@ const CONTEXT_MESSAGES: Record<string, {message: string }> = {
   my_tales: {
     message: 'to view your tales engagements'
   },
-  my_insights: {
-    message: 'to view your insights engagements'
-  },
+ 
    my_comments: {
     message: 'to view your comments engagements'
   },
@@ -37,18 +35,14 @@ const CONTEXT_MESSAGES: Record<string, {message: string }> = {
   create_tales: {
     message: 'to create and update your tales'
   },
-  create_insights: {
-    message: 'to create and update your insights'
-  },
+ 
   create_comments: {
     message: 'to create and update your comments'
   },
   archived_tales: {
     message: 'to view archived tales'
   },
-  archived_insights: {
-    message: 'to view archived insights'
-  },
+  
   session_expired: {
     message: 'Your session has timed out. Please sign in again to save your current work.'
   },

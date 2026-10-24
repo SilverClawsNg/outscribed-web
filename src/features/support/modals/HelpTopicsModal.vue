@@ -53,14 +53,6 @@ const props = defineProps({
 </div>
      </template>
 
-      <!-- Topic: Creating insight -->
-       <template v-else-if="payload === 'CreateInsight'">
-          <div class="topic-content rich-text">
-            <h4>Managing Insights</h4>
-<p>While Tales use creative fiction to throw light on facts, Insights focus those issues straight onto their real-life legal and social implications for the ordinary person. Insights are always anchored directly to an existing Tale.</p><p><strong>The Anatomy of an Insight:</strong></p><ul><li><strong>Title & Category:</strong> The headline hook and category grouping. Category defaults to the parent Tale's category, but can be changed. Both are required to initialize a draft.</li><li><strong>Summary:</strong> A short teaser expanding on the title.</li><li><strong>Country:</strong> Optional tag identifying the real-world geographic setting.</li><li><strong>Cover Image:</strong> Landscape image (750px by 562px recommended in <i>.jpeg</i>, <i>.png</i>, or <i>.webp</i>) with a short caption.</li><li><strong>Details:</strong> Rich-text analysis supporting headers, lists, links, and formatting.</li></ul><p><strong>4-Step Creation and Launching Process:</strong></p><ul><li><strong>Step 1 (Find Your Inspiring Tale):</strong> Browse the platform to find the Tale addressing the issues you want to analyze.</li><li><strong>Step 2 (Spin the Insight Draft):</strong> Click <i>Write An Insight</i> directly on that Tale's details page. Provide a title to save your draft. (No extra writer onboarding required!)</li><li><strong>Step 3 (Update Attributes):</strong> Open your Insights editor from the top-left user menu to add your rich-text details, cover image, and country setting.</li><li><strong>Step 4 (Preview & Go Live):</strong> Preview your piece, check the publish box, and launch your Insight to the world!</li></ul><p><strong>Post-Publication & Archiving Rules:</strong></p><p>Once an Insight receives community engagement (upvotes, comments, shares, etc.), direct editing and deletion are locked to preserve community integrity.</p><p><i>Need to make corrections? Attach addendums for updates. Need to hide a piece? Self-archive it anytime to hide it publicly while allowing past engagers to retain access (and un-archive it whenever you want).</i></p>
-</div>
-     </template>
-
      <template v-else-if="payload === 'OnboardWriter'">
       <div class="topic-content rich-text">
 

@@ -1,7 +1,7 @@
 import axios, { AxiosError, type AxiosRequestConfig, type InternalAxiosRequestConfig } from 'axios'
 import axiosRetry from 'axios-retry'
 import { APIError } from '../api/apiTypes'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -66,7 +66,7 @@ apiClient.interceptors.request.use(
 
     // CRYPTOGRAPHIC ACCESS TOKEN INJECTION
     if (config.meta?.requiresAuth) {
-      const authStore = useAuthStore()
+      const authStore = useAuthenticationStore()
       const tokenResult = await authStore.getAccessToken()
       
       if (tokenResult.status === 200 && tokenResult.token) {

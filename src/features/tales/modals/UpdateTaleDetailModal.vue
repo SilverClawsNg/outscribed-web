@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// --- IMPORTS ---
-import { ref, onBeforeMount, onMounted, watch, computed } from 'vue'
+import { ref, onBeforeMount, onMounted, watch, computed, nextTick } from 'vue'
 import { useTaleDraftStore } from '../stores/TaleDraftStore'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
@@ -9,22 +8,26 @@ import { useFormProgress } from '@/composables/useFormProgress'
 import type { UpdateDetailRequest } from '../types/TalesTypes'
 import { useModalStore } from '@/stores/modalStore'
 
-// --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore()
 const modalStore = useModalStore()
 const isMounted = ref(false)
 
-// --- DEFINE FORM DATA ---
 const formData = ref<UpdateDetailRequest>({
    taleId: '',
    detail: ''
 })
 
-onMounted(() => {
+const props = defineProps<{
+  modalWindowId: string
+  payload?: any
+}>()
+
+onMounted(async () => {
+  await nextTick()
+  await nextTick()
   isMounted.value = true
 })
 
-// --- SET GUARD FOR NULL DETAILS / INITIALIZE FORM DATA ---
 onBeforeMount(() => {
   if (!taleStore.activeTale) {
     lockSubmission.value = true
@@ -41,7 +44,6 @@ onBeforeMount(() => {
   resetProgress()
 })
 
-// Helper to extract visible plain text
 function getPlainText(html: string): string {
   if (!html) return ''
   const doc = new DOMParser().parseFromString(html, 'text/html')
@@ -51,7 +53,6 @@ function getPlainText(html: string): string {
 const plainTextDetail = computed(() => getPlainText(formData.value.detail))
 const detailLength = computed(() => plainTextDetail.value.trim().length)
 
-// --- UI TRANSACTION STATES ---
 const lockSubmission = ref(false)
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 
@@ -87,6 +88,7 @@ watch(
 )
 
 async function handleFormSubmission() {
+
   formSubmitted.value = true
   if (!isFormValid.value) return
 
@@ -110,33 +112,20 @@ async function handleFormSubmission() {
 </script>
 
 <template>
-  <div class="form-container">
+  
+  <div class="modal-editor-layout">
+    <!-- 1. Top Progress / Alert Bar (Always visible) -->
     <FormProgress :progress="progressState" />
 
-    <!-- 🎯 Teleport Submit Action directly into Editor Modal Header -->
-    <Teleport 
-      v-if="isMounted && modalStore.activeModal?.id" 
-      :to="`#modal-header-submit-${modalStore.activeModal.id}`"
-    >
-      <button 
-        type="button" 
-        class="btn-header-submit"  
-        @click="handleFormSubmission"
-        :disabled="progressState.type === 'Loading' || lockSubmission"
-        title="Update Tale"
-      >
-        <SvgIcons name="edit" />
-        <span>{{ progressState.type === 'Loading' ? 'Saving...' : 'Update' }}</span>
-      </button>
-    </Teleport>
-
-    <form @submit.prevent="handleFormSubmission">
+    <!-- 2. Form & Editor Area -->
+    <form class="editor-form" @submit.prevent="handleFormSubmission">
       <RichTextEditor 
         id="editor"
         v-model="formData.detail" 
       />
-         
-      <div class="form-errors">
+          
+      <!-- 3. Character Counter & Validation Messages -->
+      <div class="form-counter-bar">
         <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
           {{ validationErrors.detail }}
         </span>
@@ -151,34 +140,21 @@ async function handleFormSubmission() {
           {{ detailLength }}/65535
         </span>
       </div>
+
+      <!-- 4. Pinned Full-Width Action Button -->
+      <div class="form-action-bar">
+        <button 
+          type="submit" 
+          class="btn-submit"  
+          :disabled="progressState.type === 'Loading' || lockSubmission"
+        >
+          <SvgIcons name="edit" />
+          <span>{{ progressState.type === 'Loading' ? 'Saving...' : 'Update Tale' }}</span>
+        </button>
+      </div>
     </form>
   </div>
 </template>
-
 <style scoped>
 @import "@/assets/css/form-container-editor.less";
-
-.btn-header-submit {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  background-color: var(--color-primary, #0f172a);
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background-color: var(--color-primary-hover, #1e293b);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
 </style>

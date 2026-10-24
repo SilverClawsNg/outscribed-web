@@ -1,18 +1,18 @@
-import { ref, reactive } from 'vue';
-import type { VoteType } from '@/utils/enumHelper';
+import { ref } from 'vue';
+import type { ReactionType } from '@/utils/enumHelper';
 import { 
-  createDefaultUiState, 
   type Engageable, 
-  type VoteRequest, 
   type FavoriteRequest,
   type EngagementResponse,
-  type FlagRequest
+  type FlagRequest,
+  type EngagementState,
+  type ReactionRequest
 } from '@/features/engagements/types/EngagementTypes';
 import { useAlert } from '@/composables/useAlert';
 import { postAsync } from '@/api/apiPostServices';
 import { APIError } from '@/api/apiTypes';
 import { useModalStore } from '@/stores/modalStore'; // Import your modal store
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'; // Import your modal store
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'; // Import your modal store
 
 // Global task registry tracking running timeouts across component instances
 const activeTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -24,7 +24,7 @@ const successMessage = ref('');
 
 export function useEngagement() {
   const alert = useAlert();
-  const authStore = useAuthStore();
+  const authStore = useAuthenticationStore();
   const modalStore = useModalStore();
  
   /**
@@ -68,155 +68,209 @@ export function useEngagement() {
   /**
    * Main Upvote / Downvote Execution Thread
    */
-  async function vote(engageable: Engageable, clickedVote: VoteType) {
-    // Intercept unauthenticated users
-    if (!requireAuth(() => vote(engageable, clickedVote))) return;
+  
+// Map reaction type to its counter property on Engageable
+const REACTION_COUNTER_MAP: Record<Exclude<ReactionType, 'None'>, keyof Engageable> = {
+  Upvote: 'upvotesCount',
+  Downvote: 'downvotesCount',
+  TransformedPerspective: 'transformedPerspectivesCount',
+  ExposesReality: 'exposesRealitiesCount',
+  SparksDebate: 'sparksDebatesCount',
+  MissedCriticalContext: 'missedCriticalContextsCount',
+  LacksRealWorldRelevance: 'lacksRealWorldRelevancesCount'
+};
 
-    const ui = engageable.uiState;
-    const key = `vote:${engageable.contentId}`;
+// Map reaction type to its snapshot property on EngagementState
+const REACTION_SNAPSHOT_MAP: Record<Exclude<ReactionType, 'None'>, keyof EngagementState> = {
+  Upvote: 'snapshotUpvotes',
+  Downvote: 'snapshotDownvotes',
+  TransformedPerspective: 'snapshotTransformedPerspectives',
+  ExposesReality: 'snapshotExposesRealities',
+  SparksDebate: 'snapshotSparksDebates',
+  MissedCriticalContext: 'snapshotMissedCriticalContexts',
+  LacksRealWorldRelevance: 'snapshotLacksRealWorldRelevancess'
+};
 
-    if (hasOverVoted(engageable, key)) return;
+// User feedback messaging labels
+const REACTION_LABEL_MAP: Record<Exclude<ReactionType, 'None'>, string> = {
+  Upvote: 'upvoted',
+  Downvote: 'downvoted',
+  TransformedPerspective: 'marked as "Transformed Perspective"',
+  ExposesReality: 'marked as "Exposes Reality"',
+  SparksDebate: 'marked as "Sparks Debate"',
+  MissedCriticalContext: 'marked as "Missed Critical Context"',
+  LacksRealWorldRelevance: 'marked as "Lacks Real-World Relevance"'
+};
 
-    const now = Date.now();
+function decrementCount(engageable: Engageable, reaction: ReactionType) {
+  if (reaction === 'None') return;
+  const propKey = REACTION_COUNTER_MAP[reaction];
+  if (propKey && typeof engageable[propKey] === 'number') {
+    (engageable[propKey] as number) = Math.max(0, (engageable[propKey] as number) - 1);
+  }
+}
 
-    // Snapshot the pristine state on the very first click of a burst cycle
-    if (ui.voteClicks === 0) {
-      ui.snapshotVote = engageable.myVote;
-      ui.snapshotUpvotes = engageable.upvotesCount;
-      ui.snapshotDownvotes = engageable.downvotesCount;
-      ui.firstVoteClick = clickedVote;
-      ui.lastVoteClick = now;
-    }
+function incrementCount(engageable: Engageable, reaction: ReactionType) {
+  if (reaction === 'None') return;
+  const propKey = REACTION_COUNTER_MAP[reaction];
+  if (propKey && typeof engageable[propKey] === 'number') {
+    (engageable[propKey] as number)++;
+  }
+}
 
-    ui.voteClicks++;
+function applyOptimisticReaction(engageable: Engageable, clicked: ReactionType) {
+  const previous = engageable.myReaction;
+  const typeLabel = engageable.contentType.toLowerCase();
+
+  // 1. Deselecting active reaction
+  if (previous === clicked) {
+    decrementCount(engageable, previous);
+    engageable.myReaction = 'None';
+    successMessage.value = `Your reaction on this ${typeLabel} was removed.`;
+    return;
+  }
+
+  // 2. Switching reaction
+  if (previous !== 'None') {
+    decrementCount(engageable, previous);
+  }
+
+  incrementCount(engageable, clicked);
+  engageable.myReaction = clicked;
+
+  const actionText = REACTION_LABEL_MAP[clicked as Exclude<ReactionType, 'None'>] || 'reacted to';
+  successMessage.value = `You ${actionText} this ${typeLabel} — thanks for your feedback!`;
+}
+
+function rollbackReaction(engageable: Engageable) {
+  const ui = engageable.uiState;
+  if (!ui) return;
+
+  engageable.myReaction = ui.snapshotReaction;
+
+  // Restore all individual reaction counters from snapshot fields
+  (Object.keys(REACTION_COUNTER_MAP) as Exclude<ReactionType, 'None'>[]).forEach(reaction => {
+    const counterKey = REACTION_COUNTER_MAP[reaction];
+    const snapshotKey = REACTION_SNAPSHOT_MAP[reaction];
     
-    // 1. Apply Optimistic Mutative UI State Instantly
-    applyOptimisticVote(engageable, clickedVote);
+    if (counterKey in engageable && snapshotKey in ui) {
+      (engageable[counterKey] as number) = ui[snapshotKey] as number;
+    }
+  });
+}
 
-    const elapsed = ui.lastVoteClick ? now - ui.lastVoteClick : 0;
+function hasOverReacted(engageable: Engageable, key: string): boolean {
+  const ui = engageable.uiState;
 
-    // Double Click Quick-Correction Check
-    if (ui.voteClicks === 2 && elapsed < 800) {
-      ui.nextVoteClick = clickedVote;
+  if (ui.reactionClicks < 15) return false;
 
-      if (ui.firstVoteClick === ui.nextVoteClick) {
+  cancelScheduledJob(key);
+  rollbackReaction(engageable);
+
+  alert.set('Too many clicks detected. Buttons disabled. Refresh and try again.', 'Warning');
+  return true;
+}
+
+async function scheduleReactionDispatch(engageable: Engageable, key: string) {
+  const timer = setTimeout(async () => {
+    const ui = engageable.uiState;
+
+    if (engageable.myReaction === ui?.snapshotReaction) return;
+    if (hasOverReacted(engageable, key)) return;
+
+    try {
+      const payload: ReactionRequest = {
+        contentId: engageable.contentId,
+        contentType: engageable.contentType,
+        type: engageable.myReaction
+      };
+
+      const endpoint = engageable.contentType.toLowerCase() === 'tale'
+        ? '/api/reactions/tale'
+        : '/api/reactions/comment';
+
+      const outcome = await postAsync<EngagementResponse>(endpoint, payload, true);
+
+      if (outcome.isFailure) {
         cancelScheduledJob(key);
-        return;
+        rollbackReaction(engageable);
+        alert.set('Server error occurred. Reaction failed. Rolling back.', 'Warning');
       } else {
+        ui.reactionClicks = 0;
         cancelScheduledJob(key);
-        scheduleVoteDispatch(engageable, key);
-        ui.lastVoteClick = now;
-        return;
-      }
-    }
+        alert.set(successMessage.value, 'Success');
 
-    // Subsequent updates processing
-    if (elapsed < 800) {
+        if (outcome.value) {
+          Object.assign(engageable, outcome.value);
+          const typeLabel = engageable.contentType.toLowerCase();
+          localStorage.removeItem(`${typeLabel}:anchor:reactions`);
+        }
+      }
+    } catch (err: any) {
       cancelScheduledJob(key);
+      rollbackReaction(engageable);
+      alert.set('Unknown error occurred. Reaction failed. Rolling back.', 'Warning');
+      ui.reactionClicks = 0;
     }
-    scheduleVoteDispatch(engageable, key);
+  }, 800);
+
+  activeTimers.set(key, timer);
+}
+
+// Main reaction entry point inside useEngagement
+async function react(engageable: Engageable, clickedReaction: ReactionType) {
+  if (!requireAuth(() => react(engageable, clickedReaction))) return;
+
+  const ui = engageable.uiState;
+  const key = `reaction:${engageable.contentId}`;
+
+  if (hasOverReacted(engageable, key)) return;
+
+  const now = Date.now();
+
+  // Snapshot pristine state on the very first click of a burst cycle
+  if (ui.reactionClicks === 0) {
+    ui.snapshotReaction = engageable.myReaction;
+    ui.snapshotUpvotes = engageable.upvotesCount;
+    ui.snapshotDownvotes = engageable.downvotesCount;
+    ui.snapshotTransformedPerspectives = engageable.transformedPerspectivesCount;
+    ui.snapshotExposesRealities = engageable.exposesRealitiesCount;
+    ui.snapshotSparksDebates = engageable.sparksDebatesCount;
+    ui.snapshotMissedCriticalContexts = engageable.missedCriticalContextsCount;
+    ui.snapshotLacksRealWorldRelevancess = engageable.lacksRealWorldRelevancesCount;
+
+    ui.firstVoteClick = clickedReaction;
     ui.lastVoteClick = now;
   }
 
-  function hasOverVoted(engageable: Engageable, key: string) {
-    const ui = engageable.uiState!;
+  ui.reactionClicks++;
 
-    if (ui.voteClicks < 15) return false;
-    
+  applyOptimisticReaction(engageable, clickedReaction);
+
+  const elapsed = ui.lastVoteClick ? now - ui.lastVoteClick : 0;
+
+  // Quick double-click correction window check
+  if (ui.reactionClicks === 2 && elapsed < 800) {
+    ui.nextVoteClick = clickedReaction;
+
+    if (ui.firstVoteClick === ui.nextVoteClick) {
+      cancelScheduledJob(key);
+      return;
+    } else {
+      cancelScheduledJob(key);
+      scheduleReactionDispatch(engageable, key);
+      ui.lastVoteClick = now;
+      return;
+    }
+  }
+
+  if (elapsed < 800) {
     cancelScheduledJob(key);
-    rollbackVote(engageable);
-  
-    alert.set(
-      "Too many clicks detected. Buttons disabled. Refresh and try again",
-      'Warning'
-    );
-
-    return true;
   }
 
-  function applyOptimisticVote(engageable: Engageable, clicked: VoteType) {
-    const previous = engageable.myVote;
-
-    if (previous === clicked) {
-      if (previous === 'Upvote') engageable.upvotesCount = Math.max(0, engageable.upvotesCount - 1);
-      if (previous === 'Downvote') engageable.downvotesCount = Math.max(0, engageable.downvotesCount - 1);
-      engageable.myVote = 'None';
-      successMessage.value = `Your vote on this ${engageable.contentType.toLowerCase()} was removed.`;
-    }
-
-    if (previous === 'None') {
-      if (clicked === 'Upvote') engageable.upvotesCount++;
-      if (clicked === 'Downvote') engageable.downvotesCount++;
-      engageable.myVote = clicked;
-    } else if (previous === 'Upvote' && clicked === 'Downvote') {
-      engageable.upvotesCount = Math.max(0, engageable.upvotesCount - 1);
-      engageable.downvotesCount++;
-      engageable.myVote = 'Downvote';
-    } else if (previous === 'Downvote' && clicked === 'Upvote') {
-      engageable.downvotesCount = Math.max(0, engageable.downvotesCount - 1);
-      engageable.upvotesCount++;
-      engageable.myVote = 'Upvote';
-    }
-
-    const typeLabel = engageable.contentType.toLowerCase();
-    if (engageable.myVote === 'Upvote') {
-      successMessage.value = `You upvoted this ${typeLabel} — thanks for your feedback!`;
-    } else if (engageable.myVote === 'Downvote') {
-      successMessage.value = `You downvoted this ${typeLabel} — your opinion has been recorded.`;
-    }
-  }
-
-  function rollbackVote(engageable: Engageable) {
-    const ui = engageable.uiState;
-    if (ui) {
-      engageable.myVote = ui.snapshotVote;
-      engageable.upvotesCount = ui.snapshotUpvotes;
-      engageable.downvotesCount = ui.snapshotDownvotes;
-    }
-  }
-
-  async function scheduleVoteDispatch(engageable: Engageable, key: string) {
-    const timer = setTimeout(async () => {
-      const ui = engageable.uiState!;
-      
-      if (engageable.myVote === ui?.snapshotVote) return;
-      if (hasOverVoted(engageable, key)) return;
-
-      try {
-        const formData: VoteRequest = {
-          contentId: engageable.contentId,
-          contentType: engageable.contentType,
-          type: engageable.myVote
-        };
-
-        const outcome = await postAsync<EngagementResponse>('/api/voting', formData, true);
-
-        if (outcome.isFailure) {
-          cancelScheduledJob(key);
-          rollbackVote(engageable);
-          alert.set("Server error occured. Vote failed. Rolling back.", 'Warning');
-        } else {
-          ui.voteClicks = 0;
-          cancelScheduledJob(key);
-          alert.set(successMessage.value, 'Success');
-
-          if (outcome.value) {
-            Object.assign(engageable, outcome.value);
-            const typeLabel = engageable.contentType.toLowerCase();
-            localStorage.removeItem(`${typeLabel}:anchor:votes`);
-          }
-        }
-      } catch (err: any) {
-        cancelScheduledJob(key);
-        rollbackVote(engageable);
-        alert.set("Unknown error occured. Vote failed. Rolling back.", 'Warning');
-        ui.voteClicks = 0;
-      } 
-    }, 800);
-
-    activeTimers.set(key, timer);
-  }
-
+  scheduleReactionDispatch(engageable, key);
+  ui.lastVoteClick = now;
+}
   /**
    * Bookmark / Favorite Engagement Execution Pipeline
    */
@@ -313,7 +367,7 @@ export function useEngagement() {
         cancelScheduledJob(key);
         rollbackFavorite(engageable);
         alert.set("Unknown error occured. Save failed. Rolling back.", 'Warning');
-        ui.voteClicks = 0;
+        ui.favoriteClicks = 0;
       } 
     }, 800);
 
@@ -382,7 +436,7 @@ export function useEngagement() {
   }
 
   return {
-    vote,
+    react,
     favorite,
     flag,
     resumePendingAction,

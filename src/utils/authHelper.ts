@@ -46,24 +46,36 @@ if (typeof window !== 'undefined') {
   })
   }
 
-   export function clearByPatterns(patterns: string[]): void {
-    if (!patterns || patterns.length === 0) return
+/**
+ * Removes localStorage entries whose keys start with
+ * any of the provided prefixes (case-insensitive).
+ */
+export function clearByPatterns(patterns: string[]): void {
+    if (!patterns?.length) return;
 
     try {
-      const keys = Object.keys(localStorage)
-      let evictionCount = 0
+        const keys = Object.keys(localStorage);
 
-      keys.forEach((key) => {
-        const matchesPattern = patterns.some((pattern) => key.includes(pattern))
-        
-        if (matchesPattern) {
-          localStorage.removeItem(key)
-          evictionCount++
+        const regexes = patterns.map(
+            (pattern) =>
+                new RegExp(
+                    `^${pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`,
+                    'i'
+                )
+        );
+
+        let removed = 0;
+
+        for (const key of keys) {
+            if (regexes.some((regex) => regex.test(key))) {
+                console.log('Removing:', key);
+                localStorage.removeItem(key);
+                removed++;
+            }
         }
-      })
 
-      console.log(`[Storage Service]: Purged ${evictionCount} stale draft files from cache context.`)
+        console.log(`Removed ${removed} localStorage entries.`);
     } catch (error) {
-      console.error('[Storage Service]: Failed to execute pattern eviction sequence.', error)
+        console.error('Error clearing storage:', error);
     }
-  }
+}

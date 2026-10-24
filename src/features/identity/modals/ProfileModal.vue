@@ -22,6 +22,7 @@ const props = defineProps<{
 }>()
 
 const targetAccountId = computed(() => props.payload as string)
+const activeActivityTab = ref<string>('tale')
 
 // Ephemeral component-driven state
 const isLoading = ref(true)
@@ -78,12 +79,12 @@ onUnmounted(() => {
 
 </script>
 
-<template>
+  <template>
 
      <template v-if="isLoading">
-     <div class="loader" role="status" aria-label="Loading profile">
-  <p class="loader__dot"></p>
-</div>
+      <div class="loader" role="status" aria-label="Loading profile">
+      <p class="loader__dot"></p>
+      </div>
     </template>
    
   <template v-else-if="loadingError">
@@ -106,111 +107,162 @@ onUnmounted(() => {
       
         <div class="profile-details">
 
-            <h1 class="profile-details__title">{{ profileStore.profile.title }}</h1>
-            <h2 class="at profile-details__username">{{ profileStore.profile.username }}</h2>
-
-             <div class="profile-details__metadata">
-            Joined {{ toShortDate(profileStore.profile.registeredAt) }}
-            <span class="divider divider--circle"></span>
-            {{ formatCounts(profileStore.profile.viewsCount) }} Views
-            </div>
-
-             <template v-if="profileStore.profile.country">
-              <p class="profile-details__country">
-                <i class="profile-details__country-label">OutScribing from </i>
-                {{ CountryDescriptions[profileStore.profile.country] }}
-              </p>
-            </template>
-
-             <figure class="profile-details__image">
-              <div class="profile-details__image-wrapper">
+             <figure class="profile-image">
+              <div class="profile-image__wrapper">
                 <template v-if="profileStore.profile.photo">
                   <img 
                     :src="mediaHelper.getUrl(profileStore.profile.photo, 'profiles')" 
                     :alt="profileStore.profile.username" 
-                    class="profile-details__avatar"
+                    class="profile-image__avatar"
                   />
                 </template>
                 <template v-else>
-                  <SvgIcons name="user" class="profile-details__avatar-placeholder" />
+                  <SvgIcons name="user" class="profile-iamge__avatar-placeholder" />
                 </template>
               </div>
             </figure>
 
-               <div class="profile-details__bio">
+           <header class="profile-header">
+            <h1 class="at profile-header__username">{{ profileStore.profile.username }}</h1>
+            <h2 class="profile-header__title">{{ profileStore.profile.title }}</h2>
+            <time class="profile-header__date">Joined {{ toShortDate(profileStore.profile.registeredAt) }}</time>
+
+              <template v-if="profileStore.profile.country">
+              <p class="profile-header__country">
+                <i class="profile-header__country-label">OutScribing from </i>
+                {{ CountryDescriptions[profileStore.profile.country] }}
+              </p>
+            </template>
+            </header>
+
+            
+  <!-- Follow Statistics Bar -->
+  <div class="profile-metadata">
+    <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="profile-metadata__item" title="Following">
+      <span class="profile-metadata__item--value">{{ formatCounts(profileStore.profile.followsCount) }}</span>
+      <span class="profile-metadata__item--label">Following</span>
+    </RouterLink>
+
+    <RouterLink to="/users/my/followers" class="profile-metadata__item" title="Followers">
+      <span class="profile-metadata__item--value">{{ formatCounts(profileStore.profile.followersCount) }}</span>
+      <span class="profile-metadata__item--label">Followers</span>
+    </RouterLink>
+
+    <div class="profile-metadata__item" title="Profile Views">
+      <span class="profile-metadata__item--value">{{ formatCounts(profileStore.profile.viewsCount) }}</span>
+      <span class="profile-metadata__item--label">Views</span>
+    </div>
+   
+  </div>
+
+   <div class="profile-details__bio">
                   <template v-if="profileStore.profile.bio">
                     {{ profileStore.profile.bio }}
                   </template>
                 </div>
-                          
-              <div class="profile-details__actions">
-                <button 
-                  @click="engage.favorite(profileStore.profile.user.engagement)"
+
+                
+  <!-- Quick Action Buttons -->
+  <div class="follow-btn">
+    <button 
+      type="button" 
+      @click="engage.favorite(profileStore.profile.user.engagement)"
                   :title="profileStore.profile.user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
                   :disabled="uiMeta.isFavoriteDisabled"
-                  class="profile-details__action-btn"
-                >
-                  <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
-                </button>
-              </div>
+                  class="btn btn--secondary btn--has-icon"
+    >
+     {{ uiMeta.favoriteAltText }}
+      <SvgIcons name="bookmark" :size="20" />
+    </button>
 
-                <WriterStats
-                  :username="profileStore.profile.username"
-                  :tales-count="profileStore.profile.talesCount"
-                  :insights-count="profileStore.profile.insightsCount"
-                  :comments-count="profileStore.profile.commentsCount"
-                  :has-margin="true"
-                />
+  </div>
 
+  <!-- Activity Tabs & Lists -->
+  <div class="activity-box">
+  
+    <!-- Tab Navigation -->
+    <div class="activity-box__tabs">
+      <button 
+        type="button" 
+        class="activity-box__tab"
+        :class="{ 'activity-box__tab--active': activeActivityTab === 'tale' }"
+        @click="activeActivityTab = 'tale'"
+      >
+        Tales
+      </button>
+      <button 
+        type="button" 
+        class="activity-box__tab"
+        :class="{ 'activity-box__tab--active': activeActivityTab === 'comment' }"
+        @click="activeActivityTab = 'comment'"
+      >
+        Comments
+      </button>
+    </div>
 
-       <div class="profile-details__follow-links">
-        <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--horizontal" title="Following">
-          <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.followsCount) }}</span> 
-          <span class="profile-details__link-field">Following</span>
+           
+    <!-- Activity Content Area -->
+    <div class="activity-box__content">
+      <!-- Tales Activity Panel -->
+      <div 
+        class="activity-box__panel"
+        :class="{ 'activity-box__panel--active': activeActivityTab === 'tale' }"
+      >
+        <RouterLink :to="`/tales?username=${profileStore.profile.username}`" class="btn btn--primary" title="Tales">
+          <span class="activity-box__label">Published</span>
+          <span class="activity-box__value">{{ formatCounts(profileStore.profile.talesCount) }}</span>
         </RouterLink>
-        <RouterLink :to="`/users/${profileStore.profile.username}/followers`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--horizontal" title="Followers">
-          <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.followersCount) }}</span> 
-          <span class="profile-details__link-field">Followers</span>
+
+        <div class="divider-multi divider-multi--thick"><span></span></div>
+
+        <RouterLink :to="`/tales/${profileStore.profile.username}/reactions`" class="btn btn--primary" title="Tales Transformed Perspective">
+          <span class="activity-box__label">Recommended</span>
+          <span class="activity-box__value">{{ formatCounts(profileStore.profile.transformedPerspectivesCount) }}</span>
         </RouterLink>
+
       </div>
 
-    <div class="profile-details__stats">
-        <h4 class="profile-details__stats-header">
-          <SvgIcons name="upvote" /> Upvotes 
-        </h4>
-        <div class="profile-details__stats-body">
-          <RouterLink :to="`/tales/${profileStore.profile.username}/upvotes`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Tales Upvotes">
-            <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.taleUpvotesCount) }}</span> 
-            <span class="profile-details__link-field">Tales</span>
-          </RouterLink>
-          <RouterLink :to="`/insights/${profileStore.profile.username}/upvotes`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Insights Upvotes">
-            <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.insightUpvotesCount) }}</span> 
-            <span class="profile-details__link-field">Insights</span>
-          </RouterLink>
-          <RouterLink :to="`/comments/${profileStore.profile.username}/upvotes`" class="btn btn--primary profile-details__link-btn profile-details__link-btn--vertical" title="Comments">
-            <span class="profile-details__link-value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span> 
-            <span class="profile-details__link-field">Comments</span>
-          </RouterLink>
-        </div>
+      <!-- Comments Activity Panel -->
+      <div 
+        class="activity-box__panel"
+        :class="{ 'activity-box__panel--active': activeActivityTab === 'comment' }"
+      >
+        <RouterLink :to="`/comments?username=${profileStore.profile.username}`" class="btn btn--primary" title="Comments">
+          <span class="activity-box__label">Published</span>
+          <span class="activity-box__value">{{ formatCounts(profileStore.profile.commentsCount) }}</span>
+        </RouterLink>
+
+        <div class="divider-multi divider-multi--thick"><span></span></div>
+
+        <RouterLink :to="`/comments/${profileStore.profile.username}/reactions`" class="btn btn--primary" title="Comments Upvoted">
+          <span class="activity-box__label">Recommended</span>
+          <span class="activity-box__value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span>
+        </RouterLink>
+
       </div>
-    
-     <div class="profile-details__contacts" aria-label="Social and email contacts">
+
+    </div>
+
+  </div>
+
+     
+     <div class="profile-contacts" aria-label="Social and email contacts">
       
   <!-- Facebook -->
-  <div v-if="profileStore.facebook" class="profile-details__contact-item">
+  <div v-if="profileStore.facebook" class="profile-contacts__item">
     
-    <div class="profile-details__contact-icon profile-details__contact-icon--facebook">
+    <div class="profile-contacts__icon profile-contacts__icon--facebook">
       <SvgIcons name="facebook" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--facebook">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--facebook">
       Facebook
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
          <span>https://facebook.com/</span>
       <a :href="`profileStore.facebookLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.facebook }}
@@ -223,20 +275,20 @@ onUnmounted(() => {
   </div>
 
   <!-- Twitter / X -->
-  <div v-if="profileStore.twitter" class="profile-details__contact-item">
+  <div v-if="profileStore.twitter" class="profile-contacts__item">
      
-    <div class="profile-details__contact-icon profile-details__contact-icon--twitter">
+    <div class="profile-contacts__icon profile-contacts__icon--twitter">
       <SvgIcons name="twitter" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--twitter">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--twitter">
       X
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
           <span>https://x.com/</span>
       <a :href="`profileStore.twitterLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.twitter }}
@@ -248,20 +300,20 @@ onUnmounted(() => {
   </div>
 
   <!-- LinkedIn -->
-  <div v-if="profileStore.linkedin" class="profile-details__contact-item">
+  <div v-if="profileStore.linkedin" class="profile-contacts__item">
      
-    <div class="profile-details__contact-icon profile-details__contact-icon--linkedin">
+    <div class="profile-contacts__icon profile-contacts__icon--linkedin">
       <SvgIcons name="linkedin" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--linkedin">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--linkedin">
       LinkedIn
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
           <span>https://linkedin.com/in/</span>
       <a :href="`profileStore.linkedinLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.linkedin }}
@@ -274,20 +326,20 @@ onUnmounted(() => {
   </div>
 
   <!-- Instagram -->
-  <div v-if="profileStore.instagram" class="profile-details__contact-item">
+  <div v-if="profileStore.instagram" class="profile-contacts__item">
      
-    <div class="profile-details__contact-icon profile-details__contact-icon--instagram">
+    <div class="profile-contacts__icon profile-contacts__icon--instagram">
       <SvgIcons name="instagram" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--instagram">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--instagram">
       Instagram
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
         <span>https://instagram.com/</span>
       <a :href="`profileStore.instagramLink`" target="_blank" rel="noopener noreferrer">
         {{ profileStore.instagram }}
@@ -300,17 +352,17 @@ onUnmounted(() => {
   </div>
 
   <!-- WhatsApp -->
-<div v-if="profileStore.whatsapp" class="profile-details__contact-item">
-  <div class="profile-details__contact-icon profile-details__contact-icon--whatsapp">
+<div v-if="profileStore.whatsapp" class="profile-contacts__item">
+  <div class="profile-contacts__icon profile-contacts__icon--whatsapp">
     <SvgIcons name="whatsapp" />
   </div>
 
-  <div class="profile-details__contact-content">
-    <div class="profile-details__contact-label profile-details__contact-label--whatsapp">
+  <div class="profile-contacts__content">
+    <div class="profile-contacts__label profile-contacts__label--whatsapp">
       WhatsApp
     </div>
-    <div class="profile-details__contact-value">
-      <p class="profile-details__contact-definition">
+    <div class="profile-contacts__value">
+      <p class="profile-contacts__definition">
         <span>wa.me/</span>
         <a :href="`https://wa.me/${profileStore.whatsapp}`" target="_blank" rel="noopener noreferrer">
           {{ profileStore.whatsapp }}
@@ -321,17 +373,17 @@ onUnmounted(() => {
 </div>
 
 <!-- TikTok -->
-<div v-if="profileStore.tiktok" class="profile-details__contact-item">
-  <div class="profile-details__contact-icon profile-details__contact-icon--tiktok">
+<div v-if="profileStore.tiktok" class="profile-contacts__item">
+  <div class="profile-contacts__icon profile-contacts__icon--tiktok">
     <SvgIcons name="tiktok" />
   </div>
 
-  <div class="profile-details__contact-content">
-    <div class="profile-details__contact-label profile-details__contact-label--tiktok">
+  <div class="profile-contacts__content">
+    <div class="profile-contacts__label profile-contacts__label--tiktok">
       TikTok
     </div>
-    <div class="profile-details__contact-value">
-      <p class="profile-details__contact-definition">
+    <div class="profile-contacts__value">
+      <p class="profile-contacts__definition">
         <span>tiktok.com/@</span>
         <a :href="`https://tiktok.com/@${profileStore.tiktok}`" target="_blank" rel="noopener noreferrer">
           {{ profileStore.tiktok }}
@@ -342,20 +394,20 @@ onUnmounted(() => {
 </div>
 
   <!-- Email -->
-  <div v-if="profileStore.email" class="profile-details__contact-item">
+  <div v-if="profileStore.email" class="profile-contacts__item">
      
-    <div class="profile-details__contact-icon profile-details__contact-icon--email">
+    <div class="profile-contacts__icon profile-contacts__icon--email">
       <SvgIcons name="email" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--email">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--email">
       Email Address
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
          <a :href="`mailto:${profileStore.email}`">{{ profileStore.email }}</a>
         </p>
 
@@ -365,20 +417,20 @@ onUnmounted(() => {
   </div>
 
   <!-- Phone -->
-  <div v-if="profileStore.telephone" class="profile-details__contact-item">
+  <div v-if="profileStore.telephone" class="profile-contacts__item">
      
-    <div class="profile-details__contact-icon profile-details__contact-icon--telephone">
+    <div class="profile-contacts__icon profile-contacts__icon--telephone">
       <SvgIcons name="telephone" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--telephone">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--telephone">
       Phone Number
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
          <a :href="`tel:${profileStore.telephone}`">{{ profileStore.telephone }}</a>
         </p>
 
@@ -388,20 +440,20 @@ onUnmounted(() => {
   </div>
 
   <!-- Website -->
-  <div v-if="profileStore.website" class="profile-details__contact-item">
+  <div v-if="profileStore.website" class="profile-contacts__item">
      
-    <div class="profile-details__contact-icon profile-details__contact-icon--website">
+    <div class="profile-contacts__icon profile-contacts__icon--website">
       <SvgIcons name="website" /> 
     </div>
 
-    <div class="profile-details__contact-content">
-      <div class="profile-details__contact-label profile-details__contact-label--website">
+    <div class="profile-contacts__content">
+      <div class="profile-contacts__label profile-contacts__label--website">
       Website
       </div>
-        <div class="profile-details__contact-value">
+        <div class="profile-contacts__value">
       
       <!-- Active Contact Present -->
-    <p class="profile-details__contact-definition">
+    <p class="profile-contacts__definition">
           <a :href="profileStore.website" target="_blank" rel="noopener noreferrer">
         {{ profileStore.website }}
       </a>

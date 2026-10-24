@@ -31,7 +31,7 @@ export const useContentVotesStore = defineStore('contentVotes', () => {
     baseRoute.value = apiUrl;
   }
   /**
-   * 1. LoadVotes (Initial setup for a Tale or Insight vote list)
+   * 1. LoadVotes (Initial setup for a Tale or vote list)
    */
 
   async function loadVotes(apiPathWithFilters: string) : Promise<{ success: boolean; error: APIError | null }>{

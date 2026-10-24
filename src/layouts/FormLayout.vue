@@ -19,9 +19,9 @@ watch(() => route.path, () => modalStore.closeAll())
   
   <div class="form-page">
 
-     <div class="form-page__pattern" aria-hidden="true"></div>
-    <div class="form-page__fade form-page__fade--bottom" aria-hidden="true"></div>
-    <div class="form-page__fade form-page__fade--top" aria-hidden="true"></div>
+     <div class="page__pattern" aria-hidden="true"></div>
+    <div class="page__fade page__fade--bottom" aria-hidden="true"></div>
+    <div class="page__fade page__fade--top" aria-hidden="true"></div>
  
     <main class="form-layout">
 

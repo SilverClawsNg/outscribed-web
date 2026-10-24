@@ -168,9 +168,9 @@ function buildAncestorChains(source: SourceContentDto, focus: CommentListDto, an
             comment.engagement.isFavorite = favSet.has(comment.commentId);
             comment.engagement.hasFlagged = flagSet.has(comment.commentId);
             
-            if (upSet.has(comment.commentId)) comment.engagement.myVote = 'Upvote';
-            else if (downSet.has(comment.commentId)) comment.engagement.myVote = 'Downvote';
-            else comment.engagement.myVote = 'None';
+            if (upSet.has(comment.commentId)) comment.engagement.myReaction = 'Upvote';
+            else if (downSet.has(comment.commentId)) comment.engagement.myReaction = 'Downvote';
+            else comment.engagement.myReaction = 'None';
 }
 
           });

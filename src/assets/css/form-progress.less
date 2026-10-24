@@ -1,43 +1,114 @@
 @import "variables.less";
 
-.form-loader {
-    width: 100%;
+.form-alert {
+  position: relative;
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid transparent;
+  font-family: @font-heading;
+  transition: all 0.2s ease;
+
+  // Horizontal flex layout for 750px editor canvas that wraps on small screens
+  &__content--row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  &__loader{
+     width: 100%;
+    height: auto;
+    z-index: 998;
     display: flex;
     justify-content: center;
-    align-items:center;
-    height: 2.5rem;
-     margin: 0.5rem;
+    align-items:flex-start;
+    padding: 1rem 0 2rem 0;
+
+  }
+
+  &__text-group {
+    flex: 1 1 300px; // Gives room for text on 750px measure while wrapping on mobile
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    font-weight: 700;
+    margin: 0;
+    line-height: @line-height-tight;
+  }
+
+  &__message {
+    font-size: @text-sm;
+    line-height: @line-height-ui;
+    margin: 0;
+  }
+
+  &__actions {
+    flex-shrink: 0; // Prevents button from squishing on tight viewports
+  }
+
+  // --------------------------------------------------------------------------
+  // COLOR THEMES (TINTED BACKGROUNDS + ACCENT BORDERS)
+  // --------------------------------------------------------------------------
+
+  &--success {
+    background-color: @success-background-color;
+    border-left-color: @success-text-color;
+    color: @success-text-color;
+  }
+
+  &--warning {
+     background-color: @warning-background-color;
+    border-left-color: @warning-text-color;
+    color: @warning-text-color;
+  }
+
+  &--error {
+    background-color: @danger-background-color;
+    border-left-color: @danger-text-color;
+    color: @danger-text-color;
+  }
+
+
+  &--boxed {
+    border: 1px solid var(--border-color);
+    border-left-width: 4px;
+  }
 }
 
-.form-loader-dots-container{
-    margin: 1.5rem;
-}
+// ----------------------------------------------------------------------------
+// PLAIN WHITE BUTTON WITH BLACK TEXT FOR TINTED ALERTS
+// ----------------------------------------------------------------------------
+.btn--alert-action {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  padding: 0.4rem 0.85rem;
+  font-size: @text-xs;
+  font-weight: 600;
+  font-family: @font-heading;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 
-.form-message-contents {
-    padding: 1rem 0;
-    font-size: 0.9rem;
-    line-height: 1rem;
-    margin-bottom:1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px dotted var(--border-color);
-    padding-top: 0.5rem;
-    border-top: 2px dotted var(--border-color);
+  &:hover {
+    background-color: #f8fafc;
+    border-color: rgba(15, 23, 42, 0.3);
+  }
 
-    & h3 {
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
+  &:active {
+    transform: translateY(1px);
+  }
 
-    & button {
-        margin-top: 0.5rem;
-        color: @link-color;
-
-        &:hover{color: @link-alt-color};
-    }
-}
-
-.form-message-icon {
-    font-size: 0.9rem;
-    margin-right: 2px;
-    border: none;
+  &:focus-visible {
+    outline: 2px solid #0f172a;
+    outline-offset: 2px;
+  }
 }

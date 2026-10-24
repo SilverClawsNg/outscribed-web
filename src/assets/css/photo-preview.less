@@ -28,9 +28,7 @@
     & label {
         cursor: pointer;
         display: block;
-
-        &.small {
-            width: 150px;
+   width: 150px;
             height: 150px;
             position: relative;
             background-color: var(--light-background-color);
@@ -38,7 +36,7 @@
 
             & img {
                 border-radius: 100%;
-                border: 3px solid var(--native-background-color);
+                border: 3px solid var(--light-background-color);
             }
 
             .edit-badge {
@@ -63,21 +61,6 @@
                     transition: transform 0.2s ease-in-out;
                 }
             }
-        }
-
-        &.large {
-            border-radius: 8px;
-            max-width: 100%;
-            width: 750px;
-            aspect-ratio: 5 / 3;
-            height: auto;
-            border-radius: 8px;
-            background-color: var(--native-background-color);
-
-            & img {
-                border-radius: 8px;
-            }
-        }
 
         input[type="file"] {
             display: none;

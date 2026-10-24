@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import {type GetFavoriteIdsResponse } from '@/features/engagements/types/EngagementTypes.ts'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
 import { APIError } from '@/api/apiTypes.ts'
 import { useWriterListFilterStore } from './WriterListFilterStore.ts'
 
@@ -16,7 +16,7 @@ class HashSetOrSet extends Set<string> {}
 
 export const useWriterListStore = defineStore('writerList', () => {
   
-  const authStore = useAuthStore();
+  const authStore = useAuthenticationStore();
   const filterStore = useWriterListFilterStore()
   const isLoggedIn = useLoginHint()
 

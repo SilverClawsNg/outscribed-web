@@ -1,20 +1,60 @@
 @import "variables.less";
 
-html, body {
-    font-family: @font-family;
-    height: auto;
-    word-wrap: break-word;
-    width: 100%;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-size: @base-font-size;
-    line-height: @base-line-height;
+html {
+  // Sets root base size cleanly without breaking browser user zoom settings
+  font-size:1rem;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-gutter: stable;
 }
 
-html {
-    scrollbar-gutter: stable;
+body {
+  font-family: @font-family; // UI defaults to clean sans-serif
+  line-height: @line-height-ui;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  position: relative;
+  margin: 0;
+  padding-top: @body-top-offset; // Pushes standard document flow down cleanly
+
+  @media @phone {
+    font-size: 90%;
+  }
+
+  @media @phablet {
+    font-size: 92%;
+  }
+
+  @media @tablet {
+    font-size: 95%;
+  }
+
+  @media @largeDevice {
+    font-size: 100%;
+  }
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: @body-top-offset;
+    z-index: 10000; // Above all application UI
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      @logo-green 0%,
+      @logo-red 25%,
+      @logo-purple 50%,
+      @logo-orange 75%,
+      @logo-yellow 100%
+    );
+  }
 }
+
 
 body.modal-open {
     overflow: hidden;
@@ -37,12 +77,13 @@ main {
 
     &.main-layout {
         padding-bottom: 3rem;
+        min-height:100lvh;
         @media @tablet, @largeDevice {
-            padding-top: 96px;
+            padding-top: calc(98px + @body-top-offset);
         }
 
         @media @phone, @phablet {
-            padding-top: 56px;
+            padding-top: calc(56px + @body-top-offset);
         }
     }
 
@@ -70,13 +111,13 @@ main {
 footer.site-footer {
   background-color: var(--background-color);
   background-color: var(--light-background-color);
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--thick-border-color);
   padding: 2.5rem 0;
   font-size: 0.9rem;
  
 
   .footer-container {
-    width: @max-width;
+    width: @mid-width;
   max-width: calc(100% - 20px);
   margin: 0 auto;
   }
@@ -204,71 +245,6 @@ footer.site-footer {
     z-index: 999;
     padding-bottom: 4rem;
 
-    
-.form-page__pattern {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    /* Layer 1: Top wash gradient fading downward from header */
-    linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
-
-    /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
-    repeating-linear-gradient(
-      90deg,
-      transparent 0px,
-      transparent 48px,
-      var(--grid-green) 48px,
-      var(--grid-green) 49px,
-
-      transparent 49px,
-      transparent 97px,
-      var(--grid-red) 97px,
-      var(--grid-red) 98px,
-
-      transparent 98px,
-      transparent 146px,
-      var(--grid-purple) 146px,
-      var(--grid-purple) 147px,
-
-      transparent 147px,
-      transparent 195px,
-      var(--grid-orange) 195px,
-      var(--grid-orange) 196px,
-
-      transparent 196px,
-      transparent 244px,
-      var(--grid-yellow) 244px,
-      var(--grid-yellow) 245px
-    );
-}
-
-
-.form-page__fade {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.form-page__fade--bottom {
-  bottom: 0;
-  height: 5rem; /* Provides a smooth 100px transition into page content */
-  background: var(--hero-fade-bottom);
-}
-
-.form-page__fade--top {
-  top: 0;
-  height: 5rem;
-  background: linear-gradient(
-    0deg,
-    rgba(23, 21, 25, 0) 0%,
-    var(--background-color) 100%
-  );
-}
-
 
     @media @smallDevice {
         padding-top: 2rem;
@@ -328,6 +304,147 @@ footer.site-footer {
     }
     }
 }
+
+
+/* ==========================================================================
+   Editor
+   ========================================================================== */
+
+
+.editor-layouts {
+  display: flex;
+  width: 100vw;
+  height: auto;
+  background-color: var(--background-color);
+
+
+  &__aside {
+    flex: 0 0 35%;
+    min-width: 300px;
+    max-width: 450px;
+    height: 100%;
+    border-right: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    @media @smallDevice {
+      position: fixed;
+      left: 50px; /* Offset by Action Strip width */
+      top: 0;
+      width: calc(100vw - 50px);
+      max-width: none;
+      z-index: 20;
+    }
+  }
+
+  &__canvas {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  &__strip{
+    flex: 0 0 50px;
+    width: 50px;
+    /* Lock strip to total viewport height */
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+    border-right: 1px solid var(--border-color);
+      box-shadow: var(--box-shadow);
+      position:relative;
+      z-index:100;
+  }
+
+  /* Collapsed Aside State */
+  &--aside-collapsed {
+    .editor-layout__aside {
+      margin-left: -35%;
+
+      @media (max-width: 768px) {
+        margin-left: 0;
+        transform: translateX(-100%);
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   Patterns
+   ========================================================================== */
+
+    
+.page__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* Layer 1: Top wash gradient fading downward from header */
+    linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
+
+    /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 48px,
+      var(--grid-green) 48px,
+      var(--grid-green) 49px,
+
+      transparent 49px,
+      transparent 97px,
+      var(--grid-red) 97px,
+      var(--grid-red) 98px,
+
+      transparent 98px,
+      transparent 146px,
+      var(--grid-purple) 146px,
+      var(--grid-purple) 147px,
+
+      transparent 147px,
+      transparent 195px,
+      var(--grid-orange) 195px,
+      var(--grid-orange) 196px,
+
+      transparent 196px,
+      transparent 244px,
+      var(--grid-yellow) 244px,
+      var(--grid-yellow) 245px
+    );
+}
+
+
+.page__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.page__fade--bottom {
+  bottom: 0;
+  height: 5rem; /* Provides a smooth 100px transition into page content */
+  background: var(--hero-fade-bottom);
+}
+
+.page__fade--top {
+  top: 0;
+  height: 5rem;
+  background: linear-gradient(
+    0deg,
+    rgba(23, 21, 25, 0) 0%,
+    var(--background-color) 100%
+  );
+}
+
 
 
 /* ==========================================================================
@@ -556,6 +673,7 @@ h1.logo {
         font-weight: 600;
         color: var(--text-color);
         content: "\0040";
+        vertical-align: middle;
     }
 
     &:hover {
@@ -777,7 +895,7 @@ h1.logo {
       text-align: center;
       margin: 0.5rem 0;
       border-top: 1px solid var(--border-color);
-      margin:1.25rem 0;
+      margin:1rem 0;
 
       & span {
         position: absolute;
@@ -789,6 +907,14 @@ h1.logo {
         border-radius: 50%;
         background: var(--background-color);
         border: 1px solid var(--border-color);
+      }
+
+      &--thick{
+        border-top: 1px solid var(--thick-border-color);
+
+        & span{
+          border: 1px solid var(--thick-border-color);
+        }
       }
     }
 

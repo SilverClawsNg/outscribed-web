@@ -1,10 +1,15 @@
-import type { ContentType, ActivityType, Category, AccountStatus, ContactType, Country, TaleStatus, InsightStatus,
-SortType, GeneralSortType, VoteType, CommentStatus, LimitedContentType, FlagType
+import type { ContentType, ActivityType, Category, AccountStatus, ContactType, Country, TaleStatus, 
+SortType, GeneralSortType, ReactionType, CommentStatus, LimitedContentType, FlagType
  } from '@/utils/enumHelper'
   
-  export const VoteTypeDescriptions: Record<VoteType, string> = {
+  export const ReactionTypeDescriptions: Record<ReactionType, string> = {
   Upvote: 'Upvote',
   Downvote: 'Downvote',
+  TransformedPerspective: 'Transformed my perspective',
+  ExposesReality: 'Exposes crucial realities',
+  SparksDebate: 'Sparks necessary debate',
+  MissedCriticalContext: 'Missed critical context',
+  LacksRealWorldRelevance: 'Lacks real-world relevance',
   None: 'None'
 } as const;
 
@@ -65,29 +70,6 @@ export const CommentStatusClass: Record<CommentStatus, string> = {
   LaunchedToArchivedByCreator: 'Active -> Archived By Me',
   CertifiedToArchivedByCreator: 'Archived'
 } as const;
-
-  export const InsightStatusDescriptions: Record<InsightStatus, string> = {
-  Created: 'Created',
-  LaunchedByCreator: 'Published',
-  HiddenByModeration: 'Hidden',
-  HiddenByAdmin: 'Suspended',
-  CertifiedByAdmin: 'Certified',
-  ArchivedByAdmin: 'Archived By Admin',
-  LaunchedToArchivedByCreator: 'Active -> Archived By Me',
-  CertifiedToArchivedByCreator: 'Certified -> Archived By me'
-} as const;
-
-export const InsightStatusClass: Record<InsightStatus, string> = {
-  Created: 'info',
-  LaunchedByCreator: 'info',
-  HiddenByModeration: 'warning',
-  HiddenByAdmin: 'warning',
-  CertifiedByAdmin: 'info',
-  ArchivedByAdmin: 'danger',
-  LaunchedToArchivedByCreator: 'danger',
-  CertifiedToArchivedByCreator: 'danger'
-} as const;
-
 
   export const ContactTypeDescriptions: Record<ContactType, string> = {
   Email: 'Email',
@@ -193,7 +175,6 @@ export const CategorySummaries: Record<Category, string> = {
 export const ContentTypeDescriptions: Record<ContentType, string> = {
   Account: 'Account',
   Tale: 'Tales',
-  Insight: 'Insights',
   Comment: 'Comments',
   Authoring : 'Authoring',
   Role : 'Roles',
@@ -202,8 +183,7 @@ export const ContentTypeDescriptions: Record<ContentType, string> = {
 
 
 export const LimitedContentTypeDescriptions: Record<LimitedContentType, string> = {
-  Tale: 'Tales',
-  Insight: 'Insights'
+  Tale: 'Tales'
  
 } as const;
 
@@ -271,28 +251,6 @@ export const ActivityTypeDescriptions: Record<ActivityType, string> = {
    TaleUntagged_Tale : 'Tale Untagged',
    TaleCertified_Tale : 'Tale Certified',
    TaleMilestoned_Tale : 'Tale Milestoned',
-
-  // Insight
-   InsightCreated_Insight : 'Insight Created',
-   InsightLaunched_Insight : 'Insight Published',
-   InsightLaunched : 'Insight Published',
-   InsightUpdated_Insight : 'Insight Updated',
-   InsightSelfArchived_Insight : 'Insight Self Archived',
-   InsightSelfUnarchived_Insight : 'Insight Self Unarchived',
-   InsightSummaryUpdated_Insight : 'Insight Summary Updated',
-   InsightDetailUpdated_Insight : 'Insight Details Updated',
-   InsightCountryUpdated_Insight : 'Insight Country Updated',
-   InsightPhotoUpdated_Insight : 'Insight Photo Updated',
-   InsightArchived_Insight : 'Insight Admin Archived',
-   InsightAddendumUpdated_Insight : 'Insight Addendum Updated',
-   InsightTagged_Insight : 'Insight Tagged',
-   InsightUntagged_Insight : 'Insight Untagged',
-   InsightSelfDeleted_Insight : 'Insight Deleted',
-   InsightCertified_Insight : 'Insight Certfiied',
-   InsightSuspended_Insight : 'Insight Admin Suspended',
-   InsightModerated_Insight : 'Insight Community Suspended',
-   InsightMilestoned_Insight : 'Insight Milestoned',
-   InsightHasEngagement_Insight: 'Insight Engaged',
 
   // Comment
    Commented_Comment : 'Commented',

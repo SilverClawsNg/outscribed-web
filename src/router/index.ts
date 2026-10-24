@@ -4,6 +4,7 @@ import FormLayout from '@/layouts/FormLayout.vue'
 import { checkIsLoggedIn } from '@/utils/authHelper'
 import { useModalStore } from '@/stores/modalStore'
 import PlainLayout from '@/layouts/PlainLayout.vue'
+import EditorLayout from '@/layouts/EditorLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,12 +68,7 @@ const router = createRouter({
           component: () => import('@/features/tales/views/TaleDetailView.vue'),
           meta: { requiresAuth: true, authContext: 'archived_tales' }
         },
-         {
-          path: 'tales/editor', // Renders at outscribed.com/tales/editor
-          name: 'TaleDrafts',
-          component: () => import('@/features/tales/views/TaleDraftsView.vue'),
-          meta: { requiresAuth: true, authContext: 'create_tales' }
-        },
+         
       
         {
           path: 'comments', // Renders at outscribed.com/comments
@@ -188,7 +184,7 @@ const router = createRouter({
         {
           path: 'logout', // Renders at outscribed.com/logout
           name: 'logout',
-          component: () => import('@/features/gatekeeper/views/LogoutView.vue')
+          component: () => import('@/features/authentication/views/LogoutView.vue')
         },
         {
           path: 'login', // Renders at outscribed.com/login
@@ -208,7 +204,7 @@ const router = createRouter({
       component: PlainLayout,
       children: [
         {
-          path: '/oauth-callback',
+          path: 'oauth-callback',
           name: 'oauth-callback',
           component: () => import('@/features/authentication/views/OAuthCallbackView.vue')
         }
@@ -217,12 +213,25 @@ const router = createRouter({
      {
       // --- PLAIN LAYOUT FOR 404S, REDIRECTS, ETC. ---
       path: '/:pathMatch(.*)*',
-      component: () => import('@/layouts/PlainLayout.vue'),
+     component: PlainLayout,
       children: [
         {
           path: '',
           name: 'not-found',
           component: () => import('@/features/global/views/NotFoundView.vue')
+        }
+      ]
+    },
+     {
+      // --- Tale Editor ---
+      path: '/',
+     component: EditorLayout,
+      children: [
+        {
+          path: 'editor',
+          name: 'editor',
+          component: () => import('@/features/tales/views/TaleDraftsView.vue'),
+          meta: { requiresAuth: true, authContext: 'create_tales' }
         }
       ]
     }

@@ -7,7 +7,7 @@ import { getAsync } from '@/api/apiGetServices'
 import {postAsync } from '@/api/apiPostServices'
 import type{UserListDto, GetUserListResponse} from '../types/IdentityTypes.ts';
 import {initializeUserListEngagement} from '../types/IdentityTypes.ts';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
 import { useLoginHint } from '@/utils/authHelper'
 import { useUserListFilterStore } from './UserListFilterStore.ts'
 

@@ -40,8 +40,6 @@ const redirectMessage = computed(() => {
     : '';
 });
 
-
-
 const redirectUrl = computed(() => {
   if (!isRedirecting.value) return '';
   // Encodes parameters cleanly into standard URL Query layouts (?username=...)
@@ -112,17 +110,22 @@ onMounted(async () => {
 
   await initPage();
  
+if(taleStore.tale){
+
+
     // 1. Instantly fire enrichment hydration pass in the background
     taleStore.enrichTale();
 
     // 2. Schedule a "True View" conversion event after a 5 second delay
     taleStore.recordView();
+}
+
 
 })
 
 // inside your HomeView.vue
 onUnmounted(() => {
-  taleStore.abort()
+  taleStore.reset()
 });
 
 </script>

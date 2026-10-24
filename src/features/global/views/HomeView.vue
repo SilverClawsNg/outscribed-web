@@ -88,7 +88,7 @@ onUnmounted(() => {
       
       <h2 class="hero__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
-                  reframe the present, and sculpt new futures.
+                  reframe the present, and sculpt futures.
       </h2>
 
       <div class="hero__cta">
@@ -134,13 +134,13 @@ onUnmounted(() => {
 
   <template v-else>
    
+       <template v-if="homepageStore.tales && homepageStore.tales.length > 0">
+
     <header class="page-header">
     <h1>Recent Tales</h1>
       <RouterLink to="/tales" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
     </header>
     
-       <template v-if="homepageStore.tales && homepageStore.tales.length > 0">
-
          <div class="container">
 
             <TaleListComponent 
@@ -154,25 +154,12 @@ onUnmounted(() => {
 
   </template>
 
-    <template v-else>
 
-        <div class="container">
-
-     <PageStatusMessage 
-              title="Error Getting Tales!" 
-              message="We encountered an error while retreiving recent tales."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-  </template>
+       <template v-if="homepageStore.categories && homepageStore.categories.length > 0">
 
         <header class="page-header">
        <h1>Categories Leaderboard</h1>
     </header>
-
-       <template v-if="homepageStore.categories && homepageStore.categories.length > 0">
 
          <div class="container">
 
@@ -188,27 +175,13 @@ onUnmounted(() => {
     
   </template>
 
-    <template v-else>
-
-         <div class="container">
-
-        <PageStatusMessage 
-              title="Error Getting Categories!" 
-              message="We encountered an error while retreiving categories leaderboard."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-      </template>
+       <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
 
        <header class="page-header">
       <h1>Trending Tags</h1>
       <RouterLink to="/tags" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
     </header>
     
-       <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
-
          <div class="container">
 
             <TagComponent 
@@ -221,27 +194,13 @@ onUnmounted(() => {
     
   </template>
 
-   <template v-else>
+         <template v-if="homepageStore.countries && homepageStore.countries.length > 0">
 
-         <div class="container">
-
-        <PageStatusMessage 
-              title="Error Getting Tags!" 
-              message="We encountered an error while retreiving trending tags."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-      </template>
-  
         <header class="page-header">
        <h1>Country Leaderboard</h1>
       <RouterLink to="/country/metrics" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
     </header>
       
-         <template v-if="homepageStore.countries && homepageStore.countries.length > 0">
-
         <div class="container">
 
            <CountryComponent 
@@ -255,27 +214,13 @@ onUnmounted(() => {
     
   </template>
 
-    <template v-else>
+         <template v-if="homepageStore.prolificWriters && homepageStore.prolificWriters.length > 0">
 
-         <div class="container">
-
-        <PageStatusMessage 
-              title="Error Getting Countries!" 
-              message="We encountered an error while retreiving countries leaderboard."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-      </template>
-      
         <header class="page-header">
        <h1>Writer Leaderboard</h1>
       <RouterLink to="/writers" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
     </header>
       
-         <template v-if="homepageStore.prolificWriters && homepageStore.prolificWriters.length > 0">
-
         <div class="container">
 
          <template v-for="(writer, index) in homepageStore.prolificWriters" :key="writer?.creator?.accountId || index">
@@ -291,28 +236,12 @@ onUnmounted(() => {
     
   </template>
 
-   <template v-else>
-
-         <div class="container">
-
-        <PageStatusMessage 
-              title="Error Getting Top Writers!" 
-              message="We encountered an error while retreiving writers leaderboard."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-      </template>
-      
+         <template v-if="homepageStore.newWriters && homepageStore.newWriters.length > 0">
+        
         <header class="page-header">
        <h1>And Introducing...</h1>
     </header>
-  
 
-         <template v-if="homepageStore.newWriters && homepageStore.newWriters.length > 0">
-
-        
         <div class="container">
 
          <!-- New Writers (Unranked - index omitted) -->
@@ -326,24 +255,9 @@ onUnmounted(() => {
         </div>
 
         <!--<div class="page-closure"></div>-->
-
     
   </template>
 
-   <template v-else>
-
-         <div class="container">
-
-        <PageStatusMessage 
-              title="Error Getting New Writers!" 
-              message="We encountered an error while retreiving new writers."
-              icon="inbox" 
-              :is-bordered="true"
-            />
-        </div>
-
-      </template>
-      
   </template>
 
 </template>

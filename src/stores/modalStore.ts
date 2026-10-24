@@ -29,6 +29,7 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
   /**
    * Pushes a new modal onto the stack and returns a Promise if waitForResult is true
    */
+  
  function push(
   type: string, 
   title: string, 
@@ -53,6 +54,7 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
     type,
     title,
     payload,
+    headerType,
     isEntering: true,
     isLeaving: false,
     resolve: resolver,
@@ -65,6 +67,39 @@ const activeModal = computed(() => modalStack.value.length > 0 ? modalStack.valu
   if (!waitForResult) {
     return Promise.resolve(true)
   }
+  
+  return completionPromise
+}
+
+  /**
+   * Pushes a new modal onto the stack and returns a Promise if waitForResult is true
+   */
+ function editor(
+  type: string, 
+  title: string, 
+) {
+  
+  if (stackDepth.value === 0) {
+    lockBodyScroll()
+  }
+
+  let resolver: (value: boolean) => void = () => {}
+  
+  const completionPromise = new Promise<boolean>((resolve) => {
+    resolver = resolve
+  })
+
+  const newModal: ModalInstance = {
+    id: crypto.randomUUID(),
+    type,
+    title,
+    headerType:'editor',
+    isEntering: true,
+    isLeaving: false,
+  }
+
+  modalStack.value.unshift(newModal)
+
   
   return completionPromise
 }
@@ -238,6 +273,7 @@ function isPreviousModal(modalType: string): boolean {
     stackDepth,
     replace,
     push,
+    editor,
     pop,
     cancel,
     closeAll,

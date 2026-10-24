@@ -1,0 +1,202 @@
+@import "variables.less";
+
+.editorial-canvas {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--background-color);
+   
+
+  /* Sticky Action Header across canvas top */
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 0.5rem;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    //backdrop-filter: blur(8px);
+    //border-bottom: 1px solid var(--border-color);
+    background-color: var(--background-color);
+     box-shadow: var(--box-shadow);
+  }
+ 
+
+  &__badge {
+    font-size: 1.2rem;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+}
+
+.editorial-form {
+  display: flex;
+  flex-direction: column;
+  width: @mid-width;
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+    padding: 3rem 0 6rem 0;
+    position:relative;
+
+   ::placeholder {
+    
+    letter-spacing: 0.55px;
+    font-style:italic;
+    color: var(--muted-link-color);
+    opacity: 1;
+    font-weight: normal;
+  }
+
+  /* -------------------------------------------------------------
+   * 1. BORDERLESS TITLE
+   * ------------------------------------------------------------- */
+ 
+  /* Centered 750px Article Container */
+  
+  /* -------------------------------------------------------------
+   * 2. SIDE-BY-SIDE METADATA ROW
+   * ------------------------------------------------------------- */
+  &__meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1.25rem 0;
+  }
+
+  .meta-field {
+    display: flex;
+    width: 50%;
+    
+
+    & select {
+     
+      width: 100%;
+      text-align:center;
+    }
+
+  }
+
+  /* -------------------------------------------------------------
+   * 3. BORDERLESS SUMMARY
+   * ------------------------------------------------------------- */
+  
+   & textarea,
+   & input,
+   & select {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    color: var(--text-color);
+    background-color: transparent !important;
+    border: none;
+    outline: none;
+    opacity: 1;
+    z-index: 1;
+    padding: 0;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+     font-size: 1.1rem;
+  line-height: 1.5; 
+   
+    &:disabled {
+      color: var(--muted-text-color);
+      background-color: transparent !important;
+      cursor: not-allowed;
+    }
+
+    &:focus,
+    &:active {
+      color: var(--muted-text-color);
+      background-color: transparent !important;
+      outline: none !important;
+    }
+
+    // Autofill override to prevent background flashing
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-transition-delay: 5000s;
+      -webkit-transition: color 5000s ease-out, background-color 5000s ease-out;
+      transition: background-color 5000s ease-in-out 0s;
+      -webkit-text-fill-color: var(--text-color) !important;
+    }
+  }
+
+  & textarea {
+    resize: none;
+    overflow: hidden;
+    //font-family: var(--font-body, system-ui, -apple-system, sans-serif);
+    //font-size: 1.1rem; /* ~20px lead text */
+    //line-height: 1.4;
+
+    &::placeholder {
+       font-size: 1.1rem; /* ~20px lead text */
+    }
+  }
+
+  
+
+  &__row{
+    margin-bottom: 0.5rem;
+    position: relative;
+
+    &--offset{
+        margin-top: 1rem;
+    }
+  }
+
+  &__field-footer{
+   padding-right: 3.5rem;
+   height: 3rem;
+   position:relative;
+  }
+
+   &__validation-message {
+    font-size: 0.85rem;
+    line-height:1.1rem;
+    background-color: var(--text-color);
+    color: var(--background-color);
+    border-radius: 50px;
+    padding: 1rem 0.6rem;
+    max-width: 350px;
+    text-align:center;
+  }
+  
+    &__character-counter {
+      position: absolute;
+      right: 0.25rem;
+      bottom: 0.25rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted-text-color);
+      pointer-events: none; // Allows clicks to pass through to the input
+      font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
+
+      &.is-warning {
+        color: @warning-color; // Amber when getting close
+      }
+
+      &.is-over-limit {
+        color: @fatal-color; // Red when exceeded
+        font-weight: 700;
+      }
+    }
+
+    
+  
+/* -------------------------------------------------------------
+ * STICKY TOOLBAR (Alt Background Color)
+ * ------------------------------------------------------------- */
+ 
+
+  
+
+
+}

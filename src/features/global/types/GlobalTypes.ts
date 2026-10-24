@@ -41,26 +41,22 @@ export interface TagListDto {
     date: string,
     name: string,
     slug: string,
-    insightsCounter: number,
     talesCounter: number,
 }
 
 export interface CategoryMetricsDto {
     category: Category,
-    insightsCounter: number,
     talesCounter: number,
 }
 
 export interface CountryMetricsDto {
     country: Country,
-    insightsCounter: number,
     talesCounter: number,
 }
 
 export interface WriterStatsDto {
     creator: CreatorDto
     onboardedAt: string
-    country: Country
 }
 
 export interface TagDetailDto {
@@ -69,7 +65,6 @@ export interface TagDetailDto {
     lastUpdatedAt: string,
     name: string,
     slug: string,
-    insightsCounter: number,
     talesCounter: number,
     totalCounts: number
 }

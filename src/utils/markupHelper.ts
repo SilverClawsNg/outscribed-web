@@ -11,7 +11,7 @@ export function sanitizeHtml(value: string | null | undefined): string {
   return DOMPurify.sanitize(value, {
     ALLOWED_TAGS: [
       'p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'i', 'a',
-      'h1', 'blockquote', 'span'
+      'h1', 'h2', 'blockquote', 'span'
     ],
       ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
       FORBID_TAGS: ['script', 'style', 'iframe', 'form', 'input'],

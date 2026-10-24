@@ -3,8 +3,8 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps<{
   imageSource: string | null
-  targetWidth: number  // e.g., 250 for profiles, 750 for tales/insights
-  targetHeight: number // e.g., 250 for profiles, 562 for tales/insights
+  targetWidth: number  // e.g., 250 for profiles, 750 for tales
+  targetHeight: number // e.g., 250 for profiles, 562 for tales
   aspectRatioLabel?: string
 }>()
 

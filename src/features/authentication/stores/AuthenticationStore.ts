@@ -20,7 +20,6 @@ import type { AuthenticationSessionResponse, LoginRequest, ReserveResponse,
 export const useAuthenticationStore = defineStore('authStore', () => {
 
     // --- Initialize Variables ---
-
      const accessToken = ref<string | null>(null)
      const expiryDate = ref<Date | null>(null)
      const userId = ref<string | null>(null)
@@ -242,21 +241,13 @@ export const useAuthenticationStore = defineStore('authStore', () => {
         // 2. Account Switch or New Registration: Full Purge
         console.log(`[Storage] Purging storage for new session (${currentOwner || 'none'} -> ${canonicalNewUser})`);
         
-        clearByPatterns([
-            // 1. Purge all offline draft contents
-            'tale:draft', 
-            'insight:draft', 
-            'comment:draft',
-
-            // 2. Purge all pagination anchors (covers base, favorites, upvotes, flags, etc.)
-            'tale:anchor', 
-            'insight:anchor', 
-            'comment:anchor',
-            'timeline:anchor',
-
-            // 3. Purge user network anchors
-            'user:anchor'
-        ]);
+          clearByPatterns([
+                'tale:',
+                'comment:',
+                'timeline:',
+                'user:',
+                'OutScribed:' // Guarantees system/owner state keys are evicted
+            ]);
 
         localStorage.setItem('OutScribed:owner', canonicalNewUser);
     }
@@ -405,30 +396,19 @@ export const useAuthenticationStore = defineStore('authStore', () => {
         apiClient.post('/api/logout', payload, {
         meta: { requiresAuth: false } 
         }).catch(err => console.error('[Auth Store]: Remote session revocation drop failure:', err))
-        
+
         // 2. Clear the persistent user hint from disk and reactive memory
         unsetAccessToken() // Clears state, disk tracking, and signals helper [cite: 71]
-        if(logoutData.flushCache){
-
         if (flushCache) {
-        clearByPatterns([
-            // 1. Purge all offline draft contents
-            'tale:draft', 
-            'insight:draft', 
-            'comment:draft',
-
-            // 2. Purge all pagination anchors (covers base, favorites, upvotes, flags, etc.)
-            'tale:anchor', 
-            'insight:anchor', 
-            'comment:anchor',
-            'timeline:anchor',
-
-            // 3. Purge user network anchors
-            'user:anchor'
-        ]);
-        }
-        }
-
+            clearByPatterns([
+                'tale:',
+                'comment:',
+                'timeline:',
+                'user:',
+                'OutScribed:' // Guarantees system/owner state keys are evicted
+            ]);
+            }
+       
     }
 
     // --- Set writer active - After onboarding in authoring ---

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, onBeforeMount } from 'vue'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
 import { useModalStore } from '@/stores/modalStore'
 import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
@@ -25,7 +25,7 @@ const router = useRouter()
 
 function redirectToEditor() {
   modalStore.pop()
-  router.push(`/tales/editor`)
+  router.push(`/editor`)
 }
 
 // 🎯 LOCAL NAVIGATION CIRCUIT: Manages modal internal view state
@@ -63,7 +63,7 @@ const formData = ref<CreateRequest>({
 })
 
 const taleStore = useTaleDraftStore()
-const authStore = useAuthStore()
+const authStore = useAuthenticationStore()
 const modalStore = useModalStore()
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
 

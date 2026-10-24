@@ -32,6 +32,7 @@
     }
   }
 
+
   fieldset {
   
     position: relative;
@@ -221,11 +222,10 @@
   }
 
   select.form-field {
-    height: 2rem; // Increased slightly to prevent container truncation
+    height: 3rem; // Increased slightly to prevent container truncation
     cursor: pointer;
     vertical-align: middle;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 0 0.6rem;
     border-radius:99999px;
 
     option {
@@ -257,6 +257,12 @@
     //color: var(--muted-text-color);
     color: #AEAEAE;
     opacity: 1;
+  }
+
+  .field-group{
+    display: flex;
+    width: 100%;
+    column-gap: 0.5rem;
   }
 
   label {
@@ -495,7 +501,4 @@
 
   
 }
-
-
- 
 

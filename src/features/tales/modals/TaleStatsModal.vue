@@ -112,12 +112,12 @@ function createComment() {
     </dl>
 
     <dl>
-      <dt>Upvotes</dt>
+      <dt>Transformed My Perspectives</dt>
       <dd>
-        {{ formatCounts(tale.engagement.upvotesCount) }}
+        {{ formatCounts(tale.engagement.transformedPerspectivesCount) }}
         <button 
-          :disabled="tale.engagement.upvotesCount === 0 && tale.engagement.downvotesCount === 0" 
-          @click="modalStore.push('ContentVotes', 'Tale Upvotes', tale.taleId)"
+          :disabled="tale.engagement.transformedPerspectivesCount === 0" 
+          @click="modalStore.push('ContentVotes', 'Tale Recommendations', tale.taleId)"
         >
           View Votes
         </button>
@@ -125,9 +125,30 @@ function createComment() {
     </dl>
 
     <dl>
-      <dt>Downvotes</dt>
+      <dt>Exposes Crucial Realities</dt>
       <dd>
-        {{ formatCounts(tale.engagement.downvotesCount) }}
+        {{ formatCounts(tale.engagement.exposesRealitiesCount) }}
+      </dd>
+    </dl>
+
+      <dl>
+      <dt>Sparks Necessary Debates</dt>
+      <dd>
+        {{ formatCounts(tale.engagement.sparksDebatesCount) }}
+      </dd>
+    </dl>
+
+      <dl>
+      <dt>Missed Critical Context</dt>
+      <dd>
+        {{ formatCounts(tale.engagement.missedCriticalContextsCount) }}
+      </dd>
+    </dl>
+
+      <dl>
+      <dt>Lacks Real World Relevance</dt>
+      <dd>
+        {{ formatCounts(tale.engagement.lacksRealWorldRelevancesCount) }}
       </dd>
     </dl>
 

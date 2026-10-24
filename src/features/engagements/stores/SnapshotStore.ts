@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { APIError } from '@/api/apiTypes';
-import type {SnapshotDetailDto, SnapshotListDto, GetSnapshotListResponse} from '../types/EngagementTypes'
+import type {SnapshotDetailDto, SnapshotListDto, GetSnapshotListResponse, GetTaleSnapshotListResponse, TaleSnapshotListDto} from '../types/EngagementTypes'
 import { getAsync } from '@/api/apiGetServices'
 import { useSnapshotFilterStore } from '../stores/SnapshotFilterStore'; 
 
@@ -13,7 +13,10 @@ export const useSnapshotStore = defineStore('snapshotStore', () => {
    // State
   const snapshots = ref<SnapshotListDto[]>([]);
   const snapshot = ref<SnapshotDetailDto | null>(null);
-    const filterStore = useSnapshotFilterStore()
+  const filterStore = useSnapshotFilterStore()
+
+  
+  const taleSnapshots = ref<TaleSnapshotListDto[]>([]);
 
    // Loading and Tracking flags matching your C# states
   const isFetchingMore = ref<boolean>(false);
@@ -179,15 +182,125 @@ export const useSnapshotStore = defineStore('snapshotStore', () => {
     }
   }
 
+  // 1. Initial Load Path
+  async function loadTaleSnapshots(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+
+    try {
+
+       reset()
+
+        // Spawn a fresh controller instance for this specific execution pass
+          feedController = new AbortController();
+
+      // Note: Assuming getAsync is part of your API client layer
+      const outcome = await getAsync<GetTaleSnapshotListResponse>(apiPathWithFilters, true, {} as GetTaleSnapshotListResponse,
+        feedController.signal
+      );
+
+      // Consideration 1: Check if any error and immediately return to caller
+      if (outcome.isFailure) {
+        return { success: false, error: outcome.error || null };
+      }
+      
+      // Consideration 2: Reconcile updates if data was retrieved
+      if (outcome.isSuccess && outcome.value?.snapshots?.length) {
+
+        // Commit clean data to store state
+        hasNext.value = outcome.value.hasNext;
+        pointer.value = outcome.value.pointer;
+        anchor.value = outcome.value.anchor;
+
+        taleSnapshots.value = outcome.value.snapshots;
+
+      } 
+
+      // Success! The caller handles toggling its loading state and grabbing data from the store reactively.
+      return { success: true, error: null };
+
+    } catch (err: any) {
+      // Fail-safe catch-all wrapper
+      return { 
+        success: false, 
+        error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') 
+      };
+    }
+  }
+
+  // 2. Infinite Scroll Path (LoadMore)
+  async function loadMoreTaleSnapshots() {
+
+    if (isFetchingMore.value || !hasNext.value) return;
+
+    isFetchingMore.value = true;
+
+    try {
+
+        // Spawn a fresh controller instance for this specific execution pass
+        feedController = new AbortController();
+
+        const nextPageUrl = filterStore.buildApiPath(baseRoute.value, pointer.value, anchor.value)
+
+        const outcome = await getAsync<GetTaleSnapshotListResponse>(nextPageUrl, true, {} as GetTaleSnapshotListResponse,
+          feedController.signal
+        )
+
+    if (outcome.isFailure) {
+          if (outcome.error) {
+            loadMoreError.value = outcome.error
+          }
+            else{
+                loadMoreError.value = new APIError(
+                    500,
+                    'Unknown Error!',
+                    'Unknown error occured while retrieving snapshot. Refresh page and try again.'
+                );
+            }
+
+            return
+        }
+
+    // Consideration 2: Reconcile updates if data was retrieved
+         if (outcome.isSuccess && outcome.value?.snapshots?.length) {
+          // Reconcile updates against incoming block (handles slower message brokers)
+          
+          // Commit clean data to store state
+          hasNext.value = outcome.value.hasNext;
+          pointer.value = outcome.value.pointer;
+          
+          // Filter duplicates already caught by state or top navigation creations
+          const existingIds = new HashSetOrSet(snapshots.value.map(t => t.id));
+          // 1. Filter out duplicates and immediately shape the raw inputs into valid DTO structures
+          const freshItems = outcome.value.snapshots
+            .filter((t: any) => !existingIds.has(t.id));
+
+           taleSnapshots.value.push(...freshItems);
+      
+        } else{ 
+          // stop infinite scrolling by setting has next to false
+          hasNext.value = false
+          pointer.value ='-1'
+        }
+       
+        } catch (err) {
+            console.error("Handled gracefully:", err)
+          }finally {
+          isFetchingMore.value = false;
+        }
+
+  }
+
   // 3. Reset State
  function reset() {
     snapshots.value = [];
     snapshot.value = null;
+    taleSnapshots.value = [];
     pointer.value = '1';
     hasNext.value = false;
     anchor.value = null;
     isFetchingMore.value = false;
     loadMoreError.value = null;
+
+    abort()
   }
 
    // 4. Sets the target tale before a modal opens
@@ -207,8 +320,8 @@ export const useSnapshotStore = defineStore('snapshotStore', () => {
       
   }
    return {
-    snapshots, snapshot, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute, viewedRows,
-    setBaseRoute, loadSnapshots, loadMoreSnapshots, loadSnapshot, reset, abort
+    snapshots, snapshot, isFetchingMore, loadMoreError,hasNext, pointer, baseRoute, viewedRows, taleSnapshots,
+    setBaseRoute, loadSnapshots, loadMoreSnapshots, loadSnapshot, reset, loadTaleSnapshots, loadMoreTaleSnapshots
   };
 
 });

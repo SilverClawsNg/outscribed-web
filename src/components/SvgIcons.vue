@@ -6,6 +6,8 @@ export type IconName =
   | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow'
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
   | 'whatsapp' | 'telephone' | 'website' | 'filter' | 'google' | 'microsoft' | 'apple' | 'menu'
+  | 'delete' | 'publish' | 'help' | 'metadata' | 'details' | 'lock' | 'trash' | 'addendum' | 'close'
+  | 'checkbox' | 'chain' | 'live' |'preview'
 
 const props = defineProps<{
   name: IconName
@@ -236,14 +238,15 @@ const icons: Record<IconName, IconConfig> = {
       { d: 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' }
     ]
   },
-  placeholder: {
-    viewBox: '0 0 64 64',
+    placeholder: {
+    viewBox: '0 0 24 24',
     fill: 'none',
     stroke: 'currentColor',
     strokeWidth: 1,
     paths: [
-      { d: 'M60,0H4C1.789,0,0,1.789,0,4v56c0,2.211,1.789,4,4,4h56c2.211,0,4-1.789,4-4V4C64,1.789,62.211,0,60,0z M8,8h48v32.688l-9.113-9.113c-1.562-1.559-4.094-1.559-5.656,0L16.805,56H8V8z' },
-      { type: 'circle', cx: 24, cy: 24, r: 8, fill: 'currentColor' }
+      { d: 'M3 3h18v18H3z', rx: 2 },
+      { type: 'circle', cx: 8.5, cy: 8.5, r: 1.5, fill: 'currentColor' },
+      { d: 'M21 15l-5-5L5 21' }
     ]
   },
   'back-arrow': {
@@ -455,9 +458,155 @@ const icons: Record<IconName, IconConfig> = {
     fill: 'none',
     stroke: 'currentColor',
     strokeWidth: 1,
-    paths: [{ d: "M1 2.5h14v1H1v-1Zm0 5h14v1H1v-1Zm14 5H1v1h14v-1Z" }]
+    paths: [{ d: "M1 3h14v0.5H1v-0.5Zm0 5h14v0.5H1v-0.5Zm14 5H1v0.5h14v-0.5Z" }]
   },
-  
+  publish: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+      paths: [
+      { d: "M22 2L11 13" },
+      { d: "M22 2L15 22L11 13L2 9L22 2Z" }
+    ]
+  },
+  delete: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { type: 'circle', cx:12, cy:12, r:10 },
+      { type: 'line', x1:4.93, y1:4.93, x2:19.07, y2:19.07 },
+      { type: 'line', x1:19.07, y1:4.93, x2:4.93, y2:19.07 }
+    ]
+  },
+   help: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { type: 'circle', cx:12, cy:12, r:10 },
+      {d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" },
+      { type: 'circle', cx:12, cy:17, r:0.75 }
+    ]
+  },
+    details: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" },
+      { type: 'polyline', points: '14 2 14 8 20 8' },
+      {d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" },
+      { type: 'line', x1:16, y1:13, x2:8, y2:13 },
+      { type: 'line', x1:16, y1:17, x2:8, y2:17 }
+    ]
+  },
+  metadata: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { type: 'rect', x:4, y:3, width:16, height:18, rx:2 },
+      { type: 'line', x1:8, y1:7, x2:16, y2:7 },
+      { type: 'line', x1:8, y1:11, x2:16, y2:11 },
+      { type: 'line', x1:8, y1:15, x2:12, y2:15 }
+    ]
+  },
+   lock: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { type: 'rect', x:3, y:11, width:18, height:11, rx:2, ry:2 },
+      { d: "M7 11V7a5 5 0 0 1 10 0v4" },
+      { type: 'circle', cx:12, cy:16, r:1 }
+    ]
+  },
+  trash: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { d: "M3 6h18" },
+      { d: "M8 6V4h8v2" },
+      { d: "M19 6l-1 14H6L5 6" },
+      { d: "M10 11v6" },
+      { d: "M14 11v6" }
+    ]
+  },
+   addendum: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" },
+      { d: "M14 2v6h6" },
+      { d: "M12 13v6" },
+      { d: "M9 16h6" }
+    ]
+  },
+   close: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { type: 'line', x1:18, y1:6, x2:6, y2:18 },
+     { type: 'line', x1:6, y1:6, x2:18, y2:18 }
+    ]
+  },
+   checkbox: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 3,
+     paths: [
+      { type: 'polyline', points:"20 6 9 17 4 12" }
+    ]
+  },
+    chain: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 3,
+     paths: [
+      { d: "M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11 5" },
+      { d: "M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 1 0 7.07 7.07L13 19" }
+    ]
+  },
+    live: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+     paths: [
+      { type: 'rect', x:2, y:3, width:20, height:14, rx:2, ry:2 },
+      { type: 'line', x1:8, y1:21, x2:16, y2:21 },
+      { type: 'line', x1:12, y1:17, x2:12, y2:21 },
+      { d: "M18 8l3 3m0 0l-3 3m3-3H13" }
+    ]
+  },
+ preview: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { type: 'rect', x: 2, y: 3, width: 20, height: 14, rx: 2, ry: 2 },
+      { type: 'line', x1: 8, y1: 21, x2: 16, y2: 21 },
+      { type: 'line', x1: 12, y1: 17, x2: 12, y2: 21 },
+      // Arrow head at X=3 (left frame edge), tail extending to X=11
+      { d: 'M6 8l-3 3m0 0l3 3m-3-3h8' }
+    ]
+  },
 }
 </script>
 <template>

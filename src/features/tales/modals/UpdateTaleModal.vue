@@ -19,7 +19,9 @@ const modalStore = useModalStore()
 const formData = ref<UpdateRequest>({
    taleId: '',
    title: '',
-   category: '-1'
+   category: '-1',
+   country: '-1',
+   summary: ''
 })
 
 

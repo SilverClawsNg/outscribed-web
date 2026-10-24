@@ -22,29 +22,27 @@ export interface GetMyProfileResponse {
   moderationScore : number
   contacts : ContactDto[]
   
-  insightsCount : number
   talesCount : number
   commentsCount : number
   viewsCount : number
+
+  transformedPerspectivesCount : number
+  exposesRealitiesCount : number
+  sparksDebatesCount : number
+  missedCriticalContextsCount : number
+  lacksRealWorldRelevancesCount : number
   
-  taleUpvotesCount : number
-  insightUpvotesCount : number
   commentUpvotesCount : number
-  taleDownvotesCount : number
-  insightDownvotesCount : number
   commentDownvotesCount : number
 
   taleFlagsCount : number
-  insightFlagsCount : number
   commentFlagsCount : number
   
   favoritersCount : number
   taleFavoritesCount : number
-  insightFavoritesCount : number
   commentFavoritesCount : number
   
   taleSharesCount : number
-  insightSharesCount : number
   followersCount : number
   followsCount : number
   favoritesCount : number
@@ -72,7 +70,6 @@ export interface CreatorDto {
   accountId: string
     username: string; 
     talesCount: number
-  insightsCount: number
   commentsCount: number
     engagement: Engageable | any
 }
@@ -94,13 +91,11 @@ export interface GetUserProfileResponse {
   country : Country | null
   contacts : ContactDto[]
   
-  insightsCount : number
   talesCount : number
   commentsCount : number
   viewsCount : number
   
-  taleUpvotesCount : number
-  insightUpvotesCount : number
+   transformedPerspectivesCount : number
   commentUpvotesCount : number
   
   followersCount : number
@@ -183,7 +178,6 @@ export function initializeUserListEngagement(rawAccount: any): UserListDto {
       contentType: 'Account',
       favoritesCount: rawAccount.followersCount || 0,
       commentsCount: rawAccount.commentsCount || 0,
-      insightsCount: rawAccount.insightsCount || 0,
       isFavorite: false,
       isEngagementLoaded: false,
       

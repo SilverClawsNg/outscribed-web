@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, onBeforeMount } from 'vue'
 
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
 import { useModalStore } from '@/stores/modalStore'
 import { useFormProgress } from '@/composables/useFormProgress'
 import FormProgress from '@/components/FormProgress.vue'
 import { APIError } from '@/api/apiTypes'
 import type { ChangePasswordRequest } from '../types/IdentityTypes'
 
-const authStore = useAuthStore()
+const authStore = useAuthenticationStore()
 const modalStore = useModalStore()
 
 // 🎯 1. INITIALIZE LOCAL FORM DATA CONTAINER

@@ -1,4 +1,4 @@
-import type { VoteType } from '@/utils/enumHelper'
+import type { ReactionType } from '@/utils/enumHelper'
 
 
 

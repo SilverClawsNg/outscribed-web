@@ -8,60 +8,102 @@
    padding: 1rem 0;
 }
 
-
 .table-responsive {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; // Sleek scrollbar for Firefox
+  scrollbar-color: var(--border-color) transparent;
+
+  // Custom subtle scrollbar for WebKit browsers
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 3px;
+  }
+
+  table {
     width: 100%;
-    overflow-x: auto; // The magic line for horizontal scrolling
-    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
-    max-width: 100%;
-  
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        white-space: nowrap; // Prevents text from wrapping, forcing the scroll
-        border-top: 1px solid var(--border-color);
+    border-collapse: collapse;
+    white-space: nowrap;
+    text-align: left;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+
+    thead {
+      tr {
+        height: 48px;
         border-bottom: 1px solid var(--border-color);
-                text-align: left;
+      }
 
-        thead {
-
-            & tr {
-                border-bottom: 1px solid var(--border-color);
-                height: 60px;
-
-            }
-
-            th {
-                font-size: 0.9rem;
-                font-weight: 600;
-                position: sticky;
-                top: 0;
-                z-index: 10;
-            }
-        }
-
-        tbody {
-
-            tr {
-                border-bottom: 1px solid var(--border-color);
-                transition: background-color 0.2s ease;
-                cursor: pointer;
-                height: 60px;
-
-                &[role="button"]:hover,
-                &:focus-visible {
-                    background-color: var(--native-background-color);
-                }
-
-                &.viewed {
-                    background-color: var(--native-background-color);
-                }
-
-                td {
-                    padding: 15px 15px 15px 0;
-                    font-size: 0.9rem;
-                }
-            }
-        }
+      th {
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-color);
+        padding: 0 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: var(--background-color); // Prevents text bleed on sticky scroll
+      }
     }
+
+    tbody {
+      tr {
+        height: 56px;
+        border-bottom: 1px solid var(--border-color);
+        transition: background-color 0.15s ease, color 0.15s ease;
+        outline: none;
+
+        // Interactive States
+        &[role="button"],
+        &.is-clickable {
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--light-background-color);
+            color:@link-color;
+          }
+        }
+
+        // Keyboard Focus State
+        &:focus-visible {
+          outline: 2px solid @logo-purple;
+          outline-offset: -2px;
+          background-color: var(--light-background-color);
+        }
+
+        // Viewed / Visited Row State
+        &.viewed {
+          background-color: var(--light-background-color);
+          c
+          
+          td {
+            color: var(--muted-text-color);
+          }
+        }
+
+        td {
+          padding: 0.85rem 1rem;
+          color: var(--text-color);
+          vertical-align: middle;
+
+          // Target specific numeric columns if needed
+          &.col-numeric {
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
 }

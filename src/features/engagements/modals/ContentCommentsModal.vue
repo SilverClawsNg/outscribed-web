@@ -8,6 +8,7 @@ import { type GeneralSortType } from '@/utils/enumHelper.ts'
 import { GeneralSortTypeDescriptions } from '@/utils/descriptors'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import Comment from '../components/CommentComponent.vue'
+import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
 
 import { useModalStore } from '@/stores/modalStore';
 import {type CommentListDto, 
@@ -17,6 +18,7 @@ import {type CommentListDto,
 
 const commentsStore = useContentCommentsStore();
 const activeContent = computed(() => commentsStore.activeContent);
+const commentDraftsStore = useDraftCommentsStore();
 
 const baseRoute = computed(() => `api/comments/content/${activeContent.value?.id}`)
 
@@ -174,6 +176,30 @@ async function openAdvancedFilter() {
   }
 }
 
+async function handleEditComment(comment: CommentListDto) {
+  // 1. Set active comment in store
+  commentDraftsStore.setActiveComment(comment)
+
+  // 2. Open modal & wait for user action resolution
+  const wasSuccess = await modalStore.push(
+    'UpdateComment',
+    'Update Comment',
+    null,
+    'standard',
+    true // 🎯 waitForResult = true
+  )
+
+  // 3. Directly sync caller list upon successful modal save & resolve
+  if (wasSuccess && commentDraftsStore.activeComment) {
+    const updated = commentDraftsStore.activeComment
+    const index = comments.value.findIndex(c => c.commentId === updated.commentId)
+    if (index !== -1) {
+      comments.value[index] = { ...comments.value[index], ...updated }
+    }
+   
+  }
+}
+
 onMounted(async () => {
   // Clean & simple: Zero modal stack manipulation required!
   await loadData();
@@ -213,7 +239,11 @@ onMounted(async () => {
       </h3>
 
       <article v-if="activeContent.pinnedComment" class="comments-container__pinned">
-        <Comment :comment="activeContent.pinnedComment" :content="activeContent" :is-focus="false" />
+        <Comment 
+        :comment="activeContent.pinnedComment" 
+        :content="activeContent" 
+        :is-focus="false"
+        @edit="handleEditComment" />
       </article>
 
     </div>
@@ -287,6 +317,7 @@ onMounted(async () => {
           v-for="comment in (activeContent.pinnedComment ? comments.filter(c => c.commentId !== activeContent?.pinnedComment?.commentId) : comments)" 
          :key="comment.commentId" 
         :comment="comment"
+        @edit="handleEditComment"
         />
  
        </InfiniteScroller>

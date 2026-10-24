@@ -11,6 +11,7 @@ import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
 import { useLoginHint } from '@/utils/authHelper'
 import HelpIcon from '@/components/HelpIcon.vue'
+import RichTextEditorComponent from '../components/RichTextEditorComponent.vue';
 
 // 📥 Modal context payload passed on activation
 
@@ -18,7 +19,7 @@ const formData = ref({
    detail: ''
 })
 
-const commentsStore = useDraftCommentsStore();
+const commentDraftsStore = useDraftCommentsStore();
 const contentStore = useContentCommentsStore();
 const modalStore = useModalStore();
 
@@ -96,7 +97,7 @@ async function handleFormSubmission() {
 
   startLoading();
 
-  const { success, error} = await commentsStore.replyComment(
+  const { success, error} = await commentDraftsStore.replyComment(
     formData.value.detail
   );
 
@@ -133,46 +134,43 @@ async function handleFormSubmission() {
   
   <template v-else>
 
-     <div class="form-container">
+    
+ <div class="comment-modal-shell">
+  
 
-   <FormProgress :progress="progressState" />
+    <!-- 2. FORM PROGRESS (Loading Gif / Backend Error Message) -->
+    <FormProgress :progress="progressState" />
 
-    <form>
+    <!-- 3. MAIN FORM BODY -->
+    <form class="comment-modal-form" @submit.prevent="handleFormSubmission">
+      <!-- RICH TEXT EDITOR (Embedded Toolbar + Save) -->
+      <RichTextEditorComponent
+        v-model="formData.detail"
+        :is-submitting="progressState.type === 'Loading'"
+        
+        @save="handleFormSubmission"
+      />
 
-      <RichTextEditor 
-              id="editor"
-              v-model="formData.detail" 
-            />
+      <!-- 4. BOTTOM CHARACTER COUNTER & VALIDATION MESSAGE -->
+      <div class="form-counter-bar">
+        <span v-if="formSubmitted && validationErrors" class="validation-message">
+          {{ validationErrors.detail }}
+        </span>
+        <span v-else class="spacer"></span>
 
-              <div class="form-errors">
-            <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
-            {{ validationErrors.detail }}
-          </span>
-            <span 
-            v-else
-            class="character-counter"
+        <span
+          class="character-counter"
             :class="{ 
               'is-warning': detailLength > 4000 && detailLength <= 4096,
               'is-over-limit': detailLength < 48 || detailLength > 4096 
             }"
-          >
-            {{ detailLength }}/4096
-          </span>
-        </div>
-        <div class="button-holder">
-          <button 
-            type="button" 
-            class="btn btn--secondary"  
-            @click="handleFormSubmission"
-            :disabled="progressState.type === 'Loading'"
-          >
-            {{ progressState.type === 'Loading' ? 'Submitting...' : 'Reply' }}
-          </button>
-        </div>
-       
+        >
+          {{ detailLength.toLocaleString() }}/4096
+        </span>
+      </div>
     </form>
-    
   </div>
+
 
 </template>
 
@@ -180,4 +178,59 @@ async function handleFormSubmission() {
 
 <style lang="less" scoped>
 @import "@/assets/css/form-container-editor.less";
+
+
+.comment-modal-shell {
+  width: 100%;
+  overflow: hidden;
+
+
+  .comment-modal-form {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .form-counter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      position: relative;
+
+       .validation-message {
+          font-size: 0.85rem;
+          line-height:1.1rem;
+          color: @fatal-color;
+        }
+
+        
+    .character-counter {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted-text-color);
+      pointer-events: none; // Allows clicks to pass through to the input
+      font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
+
+      &.is-warning {
+        color: @warning-color; // Amber when getting close
+      }
+
+      &.is-over-limit {
+        color: @fatal-color; // Red when exceeded
+        font-weight: 700;
+      }
+    }
+
+
+      .spacer {
+        flex: 1;
+      }
+
+    }
+  }
+}
 </style>

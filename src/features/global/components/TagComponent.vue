@@ -49,16 +49,6 @@ const props = defineProps<Props>()
           <span class="tag-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
-          <span class="divider divider--line"></span>
-
-        <RouterLink 
-          :to="`/insights?tag=${tag.slug}`" 
-          class="tag-card__metric-link" 
-          title="Filter Insights"
-        >
-          <span class="tag-card__metric-value">{{ formatCounts(tag.insightsCounter) }}</span>
-          <span class="tag-card__metric-label">Insights&rarr;</span>
-        </RouterLink>
       </div>
   </article>
 </template>

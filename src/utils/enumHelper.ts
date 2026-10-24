@@ -1,16 +1,20 @@
 // src/types/semantics.ts
 
 // 🎯 Content Type Semantics
-export type VoteType = 
+export type ReactionType = 
   'Upvote' 
   | 'Downvote' 
+  | 'TransformedPerspective'
+  | 'ExposesReality' 
+  | 'SparksDebate'
+  | 'MissedCriticalContext' 
+  | 'LacksRealWorldRelevance'
   | 'None'
   
 // 🎯 Content Type Semantics
 export type ContentType = 
   'Account' 
   | 'Tale' 
-  | 'Insight' 
   | 'Comment'
   | 'Authoring'
   | 'Role'
@@ -26,7 +30,6 @@ export type ContentType =
 // 🎯 Content Type Semantics
 export type LimitedContentType = 
   'Tale' 
-  | 'Insight' 
   
 // 🎯 Activity Type Semantics
   export type ActivityType =
@@ -85,29 +88,6 @@ export type LimitedContentType =
    | 'TaleCertified_Tale'
    | 'TaleMilestoned_Tale'
    | 'TaleUpdated_Tale'
-
-  // Insight
-   | 'InsightCreated_Insight'
-   | 'InsightLaunched_Insight'
-   | 'InsightLaunched'
-   | 'InsightUpdated_Insight'
-   | 'InsightSelfArchived_Insight'
-   | 'InsightSelfUnarchived_Insight'
-   | 'InsightSummaryUpdated_Insight'
-   | 'InsightDetailUpdated_Insight'
-   | 'InsightCountryUpdated_Insight'
-   | 'InsightPhotoUpdated_Insight'
-   | 'InsightArchived_Insight'
-   | 'InsightAddendumUpdated_Insight'
-   | 'InsightTagged_Insight'
-   | 'InsightUntagged_Insight'
-   | 'InsightSelfDeleted_Insight'
-   | 'InsightCertified_Insight'
-   | 'InsightSuspended_Insight'
-   | 'InsightModerated_Insight'
-   | 'InsightMilestoned_Insight'
-   | 'InsightHasEngagement_Insight'
-   | 'InsightUpdated_Insight'
 
   // Comment
    | 'Commented_Comment'
@@ -408,16 +388,6 @@ export type SortType =
   | 'MostRecent'
   | 'LeastRecent'
  
-
-export type InsightStatus =
-  | 'Created'
-  | 'LaunchedByCreator'
-  | 'HiddenByModeration'
-  | 'HiddenByAdmin'
-  | 'CertifiedByAdmin'
-  | 'ArchivedByAdmin'
-  | 'LaunchedToArchivedByCreator'
-  | 'CertifiedToArchivedByCreator'
 
   
 export type CommentStatus =

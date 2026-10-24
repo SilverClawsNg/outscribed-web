@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onBeforeMount } from 'vue'
 import { useAuthoringStore } from '../stores/AuthoringStore'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
 import { useModalStore } from '@/stores/modalStore'
 import { CountrySelectItems } from '@/utils/selectItemHelper'
 import { useFormProgress } from '@/composables/useFormProgress'
@@ -13,7 +13,7 @@ import Login from '@/features/authentication/components/LoginComponent.vue'
 
 const authoringStore = useAuthoringStore()
 const modalStore = useModalStore()
-const authStore = useAuthStore()
+const authStore = useAuthenticationStore()
 
 const { progressState, startLoading, setSuccess, setWarning, setError, resetProgress } = useFormProgress()
 

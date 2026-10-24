@@ -10,6 +10,7 @@ import InfiniteScroller from '@/components/InfiniteScroller.vue';
 import Comment from '../components/CommentComponent.vue';
 import { useModalStore } from '@/stores/modalStore';
 import { type CommentListDto } from '../types/EngagementTypes.ts';
+import { useDraftCommentsStore } from '../stores/DraftCommentsStore';
 
 // --- DEFINE FORM DATA ---
 
@@ -19,6 +20,7 @@ class HashSetOrSet extends Set<string> {}
 const commentsStore = useContentCommentsStore();
 const commentFilterStore = useContentCommentsFilterStore();
 const modalStore = useModalStore();
+const commentDraftsStore = useDraftCommentsStore();
 
 const activeContent = computed(() => commentsStore.activeContent);
 const activeComment = ref<CommentListDto | null>(null);
@@ -142,6 +144,31 @@ async function openAdvancedFilter() {
   }
 }
 
+
+async function handleEditComment(comment: CommentListDto) {
+  // 1. Set active comment in store
+  commentDraftsStore.setActiveComment(comment)
+
+  // 2. Open modal & wait for user action resolution
+  const wasSuccess = await modalStore.push(
+    'UpdateComment',
+    'Update Comment',
+    null,
+    'standard',
+    true // 🎯 waitForResult = true
+  )
+
+  // 3. Directly sync caller list upon successful modal save & resolve
+  if (wasSuccess && commentDraftsStore.activeComment) {
+    const updated = commentDraftsStore.activeComment
+    const index = comments.value.findIndex(c => c.commentId === updated.commentId)
+    if (index !== -1) {
+      comments.value[index] = { ...comments.value[index], ...updated }
+    }
+   
+  }
+}
+
 onMounted(async () => {
 
 // 🎯 Consume transitional context handed off by store
@@ -195,11 +222,15 @@ onMounted(async () => {
             v-for="comment in ancestors" 
             :is-ancestor="true"
             :key="comment.commentId" 
-            :comment="comment" />
+            :comment="comment" 
+            @edit="handleEditComment" />
 
       </template>
 
-       <Comment :comment="activeComment"  :is-focus="true" />
+       <Comment 
+       :comment="activeComment"  
+       :is-focus="true"
+       @edit="handleEditComment" />
 
       </div>
 
@@ -283,6 +314,7 @@ onMounted(async () => {
           v-for="comment in (activeComment.pinnedReply ? comments.filter(c => c.commentId !== activeComment?.pinnedReply?.commentId) : comments)" 
           :key="comment.commentId" 
           :comment="comment" 
+          @edit="handleEditComment"
         />
  
        </InfiniteScroller>

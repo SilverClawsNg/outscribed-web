@@ -13,7 +13,7 @@
     I declare that I am the sole author and copyright owner of all content I submit, or that I have secured all necessary rights, permissions, and licenses to publish it.
   </li>
   <li>
-    I acknowledge that I am solely responsible for the content, opinions, and narratives expressed in my Tales, Insights, and Comments, and I agree to hold OutScribed, its operators, and developers harmless from any legal claims, liabilities, or expenses arising from my published work.
+    I acknowledge that I am solely responsible for the content, opinions, and narratives expressed in my Tales and Comments, and I agree to hold OutScribed, its operators, and developers harmless from any legal claims, liabilities, or expenses arising from my published work.
   </li>
   <li>
     I understand that OutScribed is a platform for creative, issue-focused storytelling and not a venue for personal defamation, hate speech, or malicious disinformation. I agree not to publish content that targets individuals with false statements or incites unlawful conduct.

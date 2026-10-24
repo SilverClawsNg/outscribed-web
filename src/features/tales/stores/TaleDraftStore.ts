@@ -4,37 +4,159 @@ import { getAsync } from '@/api/apiGetServices';
 import { postAsync } from '@/api/apiPostServices';
 import { APIError } from '@/api/apiTypes.ts';
 import { useTaleDraftFilterStore } from '../stores/TaleDraftFilterStore';
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore.ts';
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
 
 import type { 
   TaleDraftListDto, GetTaleDraftListResponse, CreateRequest, UpdateRequest, CreateResponse,
   UpdateCountryRequest, UpdateSummaryRequest, UpdateDetailRequest, UpdateRealityCheckRequest, 
   UpdatePhotoRequest, TagRequest, UntagRequest, ConfirmRequest, UpdateAddendumRequest
 } from '../types/TalesTypes.ts';
+import type { TaleStatus } from '@/utils/enumHelper.ts';
 
 class HashSetOrSet extends Set<string> {}
+
+// Supported Main Canvas sections
+export type MainCanvasView = 'details' | 'basic' | 'reality' | 'publish' | 'metrics' | 'delete'  
+| 'photo' | 'tags' | 'archive' | 'unarchive' | 'preview' | 'addendum' | 'help'
+
+// Supported Aside panel views
+export type AsideView = 'list' | 'filter' | 'create' | 'detail'
 
 export const useTaleDraftStore = defineStore('taleDraft', () => {
   
   // State
   const tales = ref<TaleDraftListDto[]>([]);
   const activeTale = ref<TaleDraftListDto | null>(null);
-  const authStore = useAuthStore();
+  const authStore = useAuthenticationStore();
   const filterStore = useTaleDraftFilterStore();
+  const isInitializing = ref(true)
+  const loadingError = ref<APIError | null>(null)
 
   // Loading and Tracking flags
   const isFetchingMore = ref<boolean>(false);
   const hasNext = ref<boolean>(false);
   const pointer = ref<string | null>('1');
   const anchor = ref<string | null>(null);
-   const baseRoute = ref<string>('api/tales/drafts'); 
+  const baseRoute = ref<string>('api/tales/drafts'); 
   const loadMoreError = ref<APIError | null>(null);
 
   // Keys for LocalStorage references
   const NEW_DRAFT_PREFIX = 'tale:draft:new:';
   const UPDATE_DRAFT_PREFIX = 'tale:draft:update:';
 
+   // Studio Navigation State
+  const  currentAsideView = ref<AsideView>('list');
+  const currentMainView =  ref<MainCanvasView>('details'); // Default to rich text editor
+  const isAsideCollapsed = ref<boolean>(false);
+
+  const activeModalError = ref<APIError | null>(null)
+
+  function openModal(errorPayload: APIError) {
+    activeModalError.value = errorPayload
+  }
+
+  function closeModal() {
+    activeModalError.value = null
+  }
+
+  // NEW: Post-Update Modal State
+  const activePostUpdateSection = ref<MainCanvasView | null>(null)
+
+  function openPostUpdateModal(section: MainCanvasView) {
+    activePostUpdateSection.value = section
+  }
+
+  function closePostUpdateModal() {
+    activePostUpdateSection.value = null
+  }
+
+ // Snapshot Detail Modal ID State
+  const activeSnapshotId = ref<string | null>(null)
+
+  function openSnapshotModal(id: string) {
+    activeSnapshotId.value = id
+  }
+
+  function closeSnapshotModal() {
+    activeSnapshotId.value = null
+  }
+
+   // 2. Direct section navigation from anywhere (Strip, Detail Card, or Canvas)
+   function toggleAside() {
+      if(isAsideCollapsed.value == true) {
+        isAsideCollapsed.value = false;
+      }
+      else if(isAsideCollapsed.value == false) {
+        isAsideCollapsed.value = true;
+      }
+    }
+
+  // 2. Direct section navigation from anywhere (Strip, Detail Card, or Canvas)
+   function setCurrentMainView(section: MainCanvasView) {
+    if (isInitializing.value) return;
+      currentMainView.value = section;
+    }
+
+    // 3. Aside view switcher (List, Filter, Create)
+    function setCurrentAsideView(view: AsideView) {
+      currentAsideView.value = view
+    };
+
   let feedController: AbortController | null = null;
+
+   function hasBasicInfo() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.title?.trim() && 
+        activeTale.value?.country && 
+        activeTale.value?.category && 
+        activeTale.value?.summary?.trim()
+      )
+  }
+
+  function hasPhoto() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.photo
+      )
+  }
+
+  function hasDetails() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.detail
+      )
+  }
+
+  function hasTags() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.tags && activeTale.value?.tags.length > 0
+      )
+  }
+
+   function hasRealityCheck() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.realityCheckTitle && 
+        activeTale.value?.summary
+      )
+  }
+ 
+  function hasAddendum() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.addendum
+      )
+  }
+
+  
+  function isArchived() {
+    if (!activeTale.value) return false;
+    return Boolean(
+        activeTale.value?.status == 'CertifiedToArchivedByCreator' || activeTale.value?.status == 'LaunchedToArchivedByCreator'
+      )
+  }
 
   // --- Local Storage Utility Helpers ---
   const getLocalStorageKeys = (prefix: string): string[] => {
@@ -62,6 +184,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     let hasAdded = false;
 
     for (const ghost of ghostNewDrafts) {
+      if (ghost.creatorId !== authStore.userId) continue;
       if (tales.value.some(t => t.taleId === ghost.taleId)) {
         localStorage.removeItem(`${NEW_DRAFT_PREFIX}${ghost.taleId}`);
         console.log('🚀 [Tale Draft Store]: Removing tale from local storage...');
@@ -82,6 +205,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     const processedItems = [...incomingItems];
 
     for (const ghost of ghostUpdatedDrafts) {
+      if (ghost.creatorId !== authStore.userId) continue;
       const targetIndex = processedItems.findIndex(t => t.taleId === ghost.taleId);
       if (targetIndex !== -1) {
         const serverItem = processedItems[targetIndex];
@@ -111,13 +235,18 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
   function setActiveTale(tale: any) {
     activeTale.value = { ...tale };
-  }
 
+      // Smart view resolution based on completeness
+      if (!hasBasicInfo) {
+        currentMainView.value = 'basic';
+      } else {
+        currentMainView.value = 'details';
+      }
+  }
   
   function clearActiveTale() {
     activeTale.value = null;
   }
-
 
   async function syncActiveTaleChanges() {
     if (!activeTale.value) return;
@@ -129,8 +258,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
   }
 
   // --- Store Actions ---
-
-  async function loadTales(apiPathWithFilters: string): Promise<{ success: boolean; error: APIError | null }> {
+  async function loadTales(apiPathWithFilters: string): Promise<boolean> {
     
     reset()
 
@@ -141,8 +269,9 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       // 1. Read stored anchor for initial fetch (if available)
       const outcome = await getAsync<GetTaleDraftListResponse>(apiPathWithFilters, true, {} as GetTaleDraftListResponse, feedController.signal);
       
-      if (outcome.isFailure) {
-        return { success: false, error: outcome.error || null };
+    if (outcome.isFailure) {
+        loadingError.value = outcome.error || new APIError(500, 'Error Loading Drafts', 'Failed to retrieve drafts from server.')
+        return false;
       }
       
       if (outcome.isSuccess && outcome.value?.tales?.length) {
@@ -165,12 +294,33 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
    
 
       await reconcileNewDrafts();
-      return { success: true, error: null };
+
+      // 3. SET TOPMOST DRAFT & INITIAL ACTIVE VIEW
+    if (tales.value.length > 0) {
+      const topmostTale = tales.value[0];
+
+      if(topmostTale) activeTale.value = { ...topmostTale };
+      currentAsideView.value = 'detail';
+
+      // Smart view resolution based on completeness
+      if (!hasBasicInfo) {
+        currentMainView.value = 'basic';
+      } else {
+        currentMainView.value = 'details';
+      }
+
+    } else {
+      activeTale.value = null;
+      currentAsideView.value = 'list';
+    } 
+
+      return true;
     } catch (err: any) {
-      return { 
-        success: false, 
-        error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') 
-      };
+     const errorObj = err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.')
+      loadingError.value = errorObj
+      return false;
+    }finally{
+      isInitializing.value = false
     }
   }
 
@@ -214,6 +364,9 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
   // Unified creation logic matching CreateTaleModal.vue expectation
   async function createTale(payload: CreateRequest) {
+
+    isInitializing.value = true
+
     try {
       const outcome = await postAsync<CreateResponse>('/api/tales/create', payload, true);
       
@@ -255,6 +408,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       };
       
       tales.value.unshift(newTaleDraft);
+      activeTale.value = { ...newTaleDraft };
       localStorage.setItem(`tale:draft:new:${outcome.value.id}`, JSON.stringify(newTaleDraft));
 
       return { success: true, error: null };
@@ -263,11 +417,16 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         success: false, 
         error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') 
       };
-    }
+    }finally {
+    // Release loading mask once activeTale is ready in canvas
+    isInitializing.value = false
+  }
   }
 
   async function updateTaleDetails(payload: UpdateDetailRequest) {
+
     try {
+
       const outcome = await postAsync<{ detail: string }>('/api/tales/detail', payload, true);
       
       if (outcome.isFailure) {
@@ -279,41 +438,25 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         return { success: false, error: error };
       } 
 
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
           tale.detail = outcome.value.detail;
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-      activeTale.value = null;
-      return { success: true, error: null };
-    } catch (err: any) {
-      return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
+              // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+        activeTale.value.detail = outcome.value.detail;
+      activeTale.value.lastUpdatedAt = nowIso
     }
-  }
 
-  async function updateTaleCountry(payload: UpdateCountryRequest) {
-    try {
-      const outcome = await postAsync('/api/tales/country', payload, true);
-      if (outcome.isFailure) return { success: false, error: outcome.error };
-
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale && payload.country != '-1') {
-          tale.country = payload.country;
-          tale.lastUpdatedAt = new Date().toISOString();
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
-        localStorage.removeItem('tale:anchor:drafts');
-      }
-
-      activeTale.value = null;
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -325,41 +468,31 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/basic', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale && payload.category != '-1') {
-          tale.title = payload.title;
-          tale.category = payload.category;
-          tale.lastUpdatedAt = new Date().toISOString();
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
-        localStorage.removeItem('tale:anchor:drafts');
-      }
 
-      activeTale.value = null;
-      return { success: true, error: null };
-    } catch (err: any) {
-      return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
-    }
-  }
-
-  async function updateTaleSummary(payload: UpdateSummaryRequest) {
-    try {
-      const outcome = await postAsync('/api/tales/summary', payload, true);
-      if (outcome.isFailure) return { success: false, error: outcome.error };
-
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
+          tale.title = payload.title;
+          if(payload.category != '-1') tale.category = payload.category;
+          if(payload.country != '-1') tale.country = payload.country;
           tale.summary = payload.summary;
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
-      activeTale.value = null;
+
+           // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+        activeTale.value.title = payload.title;
+          if(payload.category != '-1') activeTale.value.category = payload.category;
+          if(payload.country != '-1') activeTale.value.country = payload.country;
+          activeTale.value.summary = payload.summary;
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -376,7 +509,10 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         return { success: false, error: error };
       } 
 
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+
+
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
@@ -388,7 +524,13 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-      activeTale.value = null;
+        // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+        activeTale.value.photo = outcome.value.photoUrl;
+          activeTale.value.photoCaption = payload.caption;
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -400,7 +542,9 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/realitycheck', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
@@ -408,13 +552,21 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
           tale.realityCheckSummary = payload.summary;
           tale.realityCheckUrl = payload.sourceUrl;
           tale.realityCheckSource = payload.source;
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-      activeTale.value = null;
+    // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+        activeTale.value.realityCheckTitle = payload.title;
+          activeTale.value.realityCheckSummary = payload.summary;
+          activeTale.value.realityCheckUrl = payload.sourceUrl;
+          activeTale.value.realityCheckSource = payload.source;
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -431,17 +583,27 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         return { success: false, error: error };
       } 
 
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
           if (!tale.tags) tale.tags = [];
           tale.tags.unshift({ tagId: outcome.value.tagId, name: payload.name });
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
+
+                  // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+        if (!activeTale.value.tags) activeTale.value.tags = [];
+          activeTale.value.tags.unshift({ tagId: outcome.value.tagId, name: payload.name });
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -454,16 +616,30 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/untag', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+
       if (index !== -1) {
         const tale = tales.value[index];
+       
         if (tale && tale.tags) {
-          tale.tags.splice(index, 1);
-          tale.lastUpdatedAt = new Date().toISOString();
+          const tagIndex = tale.tags.findIndex(t => t.tagId === payload.tagId);
+          if (tagIndex !== -1) tale.tags.splice(tagIndex, 1);
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
+
+                // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+      if(activeTale.value.tags){
+           const tagIndex = activeTale.value.tags.findIndex(t => t.tagId === payload.tagId);
+          if (tagIndex !== -1) activeTale.value.tags.splice(tagIndex, 1);
+          activeTale.value.lastUpdatedAt = nowIso
+      }
+     
+    }
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -511,18 +687,25 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/launch', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
           tale.status = 'LaunchedByCreator';
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-      activeTale.value = null;
+             // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+      activeTale.value.status = 'LaunchedByCreator';
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -534,22 +717,31 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/user/archive', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+      let newStatus: TaleStatus = 'LaunchedToArchivedByCreator';
+
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
           if (tale.status === 'LaunchedByCreator') {
-            tale.status = 'LaunchedToArchivedByCreator';
+            newStatus = 'LaunchedToArchivedByCreator';
           } else if (tale.status === 'CertifiedByAdmin') {
-            tale.status = 'CertifiedToArchivedByCreator';
+            newStatus = 'CertifiedToArchivedByCreator';
           }
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
+          tale.status = newStatus
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-      activeTale.value = null;
+             // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+      activeTale.value.status = newStatus
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -561,22 +753,32 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/user/unarchive', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+
+      let newStatus: TaleStatus = 'LaunchedToArchivedByCreator';
+
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
           if (tale.status === 'LaunchedToArchivedByCreator') {
-            tale.status = 'LaunchedByCreator';
+            newStatus = 'LaunchedByCreator';
           } else if (tale.status === 'CertifiedToArchivedByCreator') {
-            tale.status = 'CertifiedByAdmin';
+            newStatus = 'CertifiedByAdmin';
           }
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
+          tale.status = newStatus
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-      activeTale.value = null;
+           // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+      activeTale.value.status = newStatus
+      activeTale.value.lastUpdatedAt = nowIso
+    }
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -588,17 +790,24 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/addendum', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
+      const nowIso = new Date().toISOString()
       const index = tales.value.findIndex(t => t.taleId === payload.taleId);
       if (index !== -1) {
         const tale = tales.value[index];
         if (tale) {
           tale.addendum = payload.addendum;
-          tale.lastUpdatedAt = new Date().toISOString();
+          tale.lastUpdatedAt = nowIso;
         }
         localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
         localStorage.removeItem('tale:anchor:drafts');
       }
-      activeTale.value = null;
+
+        // 4. Update Store Active Tale  (Used by callers awaiting resolution)
+    if (activeTale.value) {
+      activeTale.value.addendum = payload.addendum
+      activeTale.value.addendumDate = nowIso
+      activeTale.value.lastUpdatedAt = nowIso
+    }
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -619,6 +828,8 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
      loadMoreError.value = null;
      baseRoute.value = 'api/tales/drafts';
      isFetchingMore.value = false;
+     isInitializing.value = true;
+     loadingError.value = null;
 
   }
 
@@ -634,9 +845,12 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
   // 🎯 Cleaned return footprint exposing "create" precisely
   return {
-    tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
-    createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleCountry, updateTaleBasic, 
-    deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTaleSummary, updateTalePhoto,
-    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, abort, CannotPublish
+    tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute, currentAsideView, currentMainView,
+    isAsideCollapsed, isInitializing, loadingError, activeModalError, activeSnapshotId, openSnapshotModal, closeSnapshotModal,
+    openModal, closeModal, hasAddendum, isArchived, openPostUpdateModal, closePostUpdateModal, activePostUpdateSection,
+    createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleBasic, 
+    deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTalePhoto,
+    clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, abort, CannotPublish, hasBasicInfo,
+    hasDetails, hasTags, hasRealityCheck, hasPhoto, setCurrentMainView, setCurrentAsideView, toggleAside
   };
 });

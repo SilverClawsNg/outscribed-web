@@ -76,17 +76,6 @@ const props = defineProps<Props>()
           <span class="country-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
-          <span class="divider divider--line"></span>
-
-        <RouterLink 
-          :to="`/insights?country=${country.country}`" 
-          class="country-card__metric-link" 
-          :class="{ 'disabled': country.insightsCounter === 0 }"
-          title="Filter Insights"
-        >
-          <span class="country-card__metric-value">{{ formatCounts(country.insightsCounter) }}</span>
-          <span class="country-card__metric-label">Insights&rarr;</span>
-        </RouterLink>
       </div>
   </article>
 </template>

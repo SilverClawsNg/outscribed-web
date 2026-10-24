@@ -11,7 +11,7 @@ defineProps<{
   isStandalone?: boolean
 }>()
 
-export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive' | 'fail' | 'shield';
+export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive' | 'fail' | 'shield' | 'lock';
 
 </script>
 
@@ -39,8 +39,11 @@ export type IconName = 'check' | 'broken-chain' | 'inbox' |'warning' | 'archive'
     <div class="page-status-message__body">
       <h1 v-if="title" class="page-status-message__title">{{ title }}</h1>
       <p v-if="message" class="page-status-message__text">{{ message }}</p>
-
-      <div v-if="$slots.actions" class="page-status-message__actions">
+      
+       <div v-if="$slots.desc" class="page-status-message__description">
+        <slot name="desc" />
+      </div>
+       <div v-if="$slots.actions" class="page-status-message__actions">
         <slot name="actions" />
       </div>
     </div>

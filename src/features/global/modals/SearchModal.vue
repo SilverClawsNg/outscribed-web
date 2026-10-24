@@ -11,7 +11,6 @@ const contentType = ref('tales') // Default targeted search domain
 
 const searchTargets = [
   { label: 'Tales', value: 'tales', routeName: 'TaleLists' },
-  { label: 'Insights', value: 'insights', routeName: 'InsightLists' },
   { label: 'Comments', value: 'comments', routeName: 'CommentLists' },
   { label: 'Writers', value: 'writers', routeName: 'WriterLists' }
 ]

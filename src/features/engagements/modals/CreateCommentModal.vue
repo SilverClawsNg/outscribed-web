@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, onBeforeMount } from 'vue'
+import { ref, onMounted, computed, watch, onBeforeMount, nextTick } from 'vue'
 import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
-import { useContentCommentsStore } from '../stores/ContentCommentsStore'
 import { useModalStore } from '@/stores/modalStore'
-import type { ActiveContentContext } from '../types/EngagementTypes'
 import { useFormProgress } from '@/composables/useFormProgress'
 import PageStatusMessage from '@/components/PageStatusMessage.vue' 
-import RichTextEditor from '@/components/RichTextEditor.vue'
 import FormProgress from '@/components/FormProgress.vue'
-import SvgIcons from '@/components/SvgIcons.vue'
 import { useLoginHint } from '@/utils/authHelper'
+import RichTextEditorComponent from '../components/RichTextEditorComponent.vue'
 
 // --- DEFINE PROPS & STORES ---
 const props = defineProps<{
-  payload: unknown // Arrives untouched as raw payload from container
+  payload?: any
 }>()
 
-const content = computed(() => props.payload as ActiveContentContext)
+onMounted(async () => {
+  await nextTick()
+  isMounted.value = true
+})
+
 
 const commentsStore = useDraftCommentsStore()
-const contentStore = useContentCommentsStore()
 const modalStore = useModalStore()
 const isLoggedIn = useLoginHint()
 
@@ -39,17 +39,15 @@ onBeforeMount(() => {
 onMounted(() => {
   isMounted.value = true
 })
-
 // Helper to extract visible plain text
 function getPlainText(html: string): string {
   if (!html) return ''
   const doc = new DOMParser().parseFromString(html, 'text/html')
-  return doc.body.textContent || ''
+  return (doc.body.textContent || '').replace(/\u00a0/g, ' ')
 }
 
 const plainTextDetail = computed(() => getPlainText(formData.value.detail))
 const detailLength = computed(() => plainTextDetail.value.trim().length)
-
 // --- VALIDATION LOGIC ---
 const formSubmitted = ref(false)
 
@@ -126,78 +124,106 @@ async function handleFormSubmission() {
       </template>
     </PageStatusMessage>
   </template>
+
   
   <template v-else>
-    <div class="form-container">
-      <FormProgress :progress="progressState" />
 
-      <!-- 🎯 Teleport Submit Button to Header Submit Slot -->
-      <Teleport 
-        v-if="isMounted && modalStore.activeModal?.id" 
-        :to="`#modal-header-submit-${modalStore.activeModal.id}`"
-      >
-        <button 
-          type="button" 
-          class="btn-header-submit"  
-          @click="handleFormSubmission"
-          :disabled="progressState.type === 'Loading'"
-          title="Submit Comment"
-        >
-          <SvgIcons name="edit" />
-          <span>{{ progressState.type === 'Loading' ? 'Submitting...' : 'Comment' }}</span>
-        </button>
-      </Teleport>
+    
+ <div class="comment-modal-shell">
+  
 
-      <form @submit.prevent="handleFormSubmission">
-        <RichTextEditor 
-          id="editor"
-          v-model="formData.detail" 
-        />
+    <!-- 2. FORM PROGRESS (Loading Gif / Backend Error Message) -->
+    <FormProgress :progress="progressState" />
 
-        <div class="form-errors">
-          <span v-if="formSubmitted && validationErrors.detail" class="validation-message">
-            {{ validationErrors.detail }}
-          </span>
-          <span 
-            v-else
-            class="character-counter"
+    <!-- 3. MAIN FORM BODY -->
+    <form class="comment-modal-form" @submit.prevent="handleFormSubmission">
+      <!-- RICH TEXT EDITOR (Embedded Toolbar + Save) -->
+      <RichTextEditorComponent
+        v-model="formData.detail"
+        :is-submitting="progressState.type === 'Loading'"
+        
+        @save="handleFormSubmission"
+      />
+
+      <!-- 4. BOTTOM CHARACTER COUNTER & VALIDATION MESSAGE -->
+      <div class="form-counter-bar">
+        <span v-if="formSubmitted && validationErrors" class="validation-message">
+          {{ validationErrors.detail }}
+        </span>
+        <span v-else class="spacer"></span>
+
+        <span
+          class="character-counter"
             :class="{ 
               'is-warning': detailLength > 4000 && detailLength <= 4096,
               'is-over-limit': detailLength < 48 || detailLength > 4096 
             }"
-          >
-            {{ detailLength }}/4096
-          </span>
-        </div>
-      </form>
-    </div>
-  </template>
+        >
+          {{ detailLength.toLocaleString() }}/4096
+        </span>
+      </div>
+    </form>
+  </div>
+
+</template>
+
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/form-container-editor.less";
+@import "@/assets/css/variables.less";
 
-.btn-header-submit {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  background-color: var(--color-primary, #0f172a);
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  font-size: 0.8125rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 
-  &:hover:not(:disabled) {
-    background-color: var(--color-primary-hover, #1e293b);
-  }
+.comment-modal-shell {
+  width: 100%;
+  overflow: hidden;
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+
+  .comment-modal-form {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .form-counter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.5rem;
+      margin-top: 0.5rem;
+      position: relative;
+
+       .validation-message {
+          font-size: 0.85rem;
+          line-height:1.1rem;
+          color: @fatal-color;
+        }
+
+        
+    .character-counter {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted-text-color);
+      pointer-events: none; // Allows clicks to pass through to the input
+      font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
+
+      &.is-warning {
+        color: @warning-color; // Amber when getting close
+      }
+
+      &.is-over-limit {
+        color: @fatal-color; // Red when exceeded
+        font-weight: 700;
+      }
+    }
+
+
+      .spacer {
+        flex: 1;
+      }
+
+    }
   }
 }
 </style>

@@ -12,6 +12,7 @@ import { CountryDescriptions } from '@/utils/descriptors'
 import Content from '@/components/Content.vue'
 import WriterStats from '@/components/WriterStats.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
+import { formatCounts } from '@/utils/stringHelpers'
 
 // Setup Shared Store Hooks
 const modalStore = useModalStore()
@@ -33,58 +34,61 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
   
   <article class="writer-card">
     <!-- Writer Identity & Profile Section -->
-    <header class="writer-card__profile">
-      <h1 class="writer-card__username">
+    <header class="writer-card__header">
+
+      <div class="writer-card__title">
         <button 
           type="button" 
-          class="writer-card__profile-btn" 
+          class="writer-card__username" 
           title="Creator Profile" 
           @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)"
         >
           @{{ writer.creator.username }}
         </button>
-      </h1>
-      <div class="writer-card__meta">
-        <span class="writer-card__meta-item">
-          <SvgIcons name="clock" /> Onboarded {{ toShortDate(writer.onboardedAt) }}
-        </span>
-        <span class="writer-card__meta-item">
-          <SvgIcons name="globe" />   
-          <RouterLink :to="`/writers?country=${writer.country}`" class="writer-card__meta-link">
-            {{ CountryDescriptions[writer.country] }}
-          </RouterLink>
-        </span>
+        <span class="divider divider--circle"></span>
+
+          <time>{{ toShortDate(writer.onboardedAt) }}</time>
       </div>
 
-      <div class="writer-card__actions">
         <button 
           type="button" 
-          class="writer-card__action-btn" 
-          title="Creator Profile" 
-          @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)"
-        >
-          <SvgIcons name="user" /> Profile
-        </button>
-
-        <button 
-          type="button" 
-          class="writer-card__action-btn"
+          class="btn btn--secondary"
           :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
           :disabled="uiMeta.isFavoriteDisabled"
           @click="engage.favorite(writer.creator.engagement)"
         >
-          <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
+         {{ uiMeta.favoriteAltText }}
         </button>
-      </div>
-
-       <WriterStats 
-            :username="writer.creator.username"
-            :tales-count="writer.creator.talesCount"
-            :insights-count="writer.creator.insightsCount"
-            :comments-count="writer.creator.commentsCount"
-          />
 
     </header>
+
+    
+    <div class="writer-card__metric">
+      <RouterLink 
+        :to="`/tales?username=${writer.creator.username}`" 
+        class="writer-card__metric-link" 
+         :class="{ 'disabled': writer.creator.talesCount === 0 }"
+        title="Filter Tales"
+      >
+        <span class="writer-card__metric-value"> {{ formatCounts(writer.creator.talesCount) }}</span>
+        <span class="writer-card__metric-label"> Tales&rarr;</span>
+      </RouterLink>
+
+      <span class="divider divider--line"></span>
+
+      <RouterLink 
+        :to="`/comments?username=${writer.creator.username}`" 
+        class="writer-card__metric-link" 
+        :class="{ 'disabled': writer.creator.commentsCount === 0 }"
+        title="Filter Comments"
+      >
+        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.commentsCount) }}</span>
+        <span class="writer-card__metric-label"> Comments&rarr;</span>
+      </RouterLink>
+
+    </div>
+
+  <div class="divider-multi"><span></span></div>
 
     <!-- Writer's Latest Featured Content -->
   
@@ -119,4 +123,9 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
 <style lang="less" scoped>
 @import "@/assets/css/writer-card.less";
+
+.content-x-card {
+padding: 0;
+border-bottom:0;
+}
 </style>

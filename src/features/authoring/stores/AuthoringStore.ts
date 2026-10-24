@@ -1,12 +1,12 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useAuthStore } from '@/features/gatekeeper/stores/gatekeeperStore'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
 import type { WriterOnboardingRequest } from '../types/AuthoringTypes'
 import { postAsync } from '@/api/apiPostServices'
 import { APIError } from '@/api/apiTypes'
 
 export const useAuthoringStore = defineStore('authoring', () => {
-  const authStore = useAuthStore()
+  const authStore = useAuthenticationStore()
 
   // 🎯 CORE ONBOARDING TRANSIENT VARIABLES
   const structureAcknowledged = ref(false)

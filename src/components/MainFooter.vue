@@ -30,14 +30,14 @@ const modalStore = useModalStore()
         
         </div>
 
-        <div class="disclaimer-block">
+      <!--   <div class="disclaimer-block">
           <p>
             <strong>Editorial &amp; Satire Disclaimer:</strong> OutScribed features a mix of commentary, structural legal analysis, and allegorical fiction. Portions of content on this platform utilize alternate-reality narratives and artistic license to illuminate real-world legal principles. Unless explicitly designated as factual reporting, stories should be understood as fictional commentary rather than literal statements of fact.
           </p>
-        </div>
+        </div> -->
       </div>
 
-    <div class="divider-multi"><span></span></div>
+    <div class="divider-multi divider-multi--thick"><span></span></div>
 
       <!-- Navigation Columns -->
       <div class="footer-nav">
@@ -57,7 +57,7 @@ const modalStore = useModalStore()
              <template v-if="isLoggedIn">
                 <li><router-link to="/profile" class="main-header__utility-link">Profile</router-link></li>
                 <li><router-link to="/timeline" class="main-header__utility-link">Timeline</router-link></li>
-                 <li><router-link to="/tales/editor">Saved Drafts</router-link></li>
+                 <li><router-link to="/editor">Saved Drafts</router-link></li>
             <li><router-link to="/logout">Log Out</router-link></li>
           </template>
           <template v-else>
@@ -90,8 +90,7 @@ const modalStore = useModalStore()
         </div>
       </div>
 
-         <div class="divider-multi"><span></span></div>
-
+         <div class="divider-multi divider-multi--thick"><span></span></div>
 
       <!-- Bottom Bar: Copyright -->
       <div class="footer-bottom">

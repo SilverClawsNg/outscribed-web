@@ -1,4 +1,4 @@
-import type { Country, Category, TaleStatus, VoteType, ContentType } from '@/utils/enumHelper' // 🎯 Import your clean semantics
+import type { Country, Category, TaleStatus, ReactionType, ContentType } from '@/utils/enumHelper' // 🎯 Import your clean semantics
 import { type Engageable, createDefaultUiState, type CommentPageListDto } from '@/features/engagements/types/EngagementTypes' // 🎯 Import your clean semantics
 import { reactive } from 'vue';
 import { type CreatorDto } from '@/features/identity/types/IdentityTypes' // 🎯 Import your clean semantics
@@ -79,7 +79,6 @@ export interface TaleListDto {
   engagement: Engageable
 }
 
-
 export interface TaleDetailDto {
   taleId: string;
   createdAt: string;
@@ -96,7 +95,6 @@ export interface TaleDetailDto {
   category: Category;
   status: TaleStatus,
   tags: TagDto[];
-  insightscount: number;
   readingTime: number;
   isArchived: boolean;
   realityCheckTitle: string;
@@ -126,7 +124,9 @@ export interface CreateTalePayload {
 export interface UpdateRequest {
   taleId: string;
   title: string;
+  summary: string;
   category: Category | '-1';
+  country: Country | '-1';
 }
 
 export interface UpdateCountryRequest {
@@ -183,7 +183,7 @@ export interface GetTaleDetailPersonalizeResponse {
  hasFlagged: boolean;
   isFavorite: boolean;
   iscreatorFavorite: boolean;
-  myVote: VoteType;
+  myReaction: ReactionType;
 }
 
 export function initializeTaleListEngagement(rawTale: any): TaleListDto {
@@ -201,6 +201,11 @@ export function initializeTaleListEngagement(rawTale: any): TaleListDto {
       viewsCount: rawTale.viewsCount || 0,
       upvotesCount:rawTale.upvotesCount || 0,
       downvotesCount: rawTale.downvotesCount || 0,
+      transformedPerspectivesCount: rawTale.transformedPerspectivesCount || 0,
+      exposesRealitiesCount: rawTale.exposesRealitiesCount || 0,
+      sparksDebatesCount: rawTale.sparksDebatesCount || 0,
+      missedCriticalContextsCount: rawTale.missedCriticalContextsCount || 0,
+      lacksRealWorldRelevancesCount: rawTale.lacksRealWorldRelevancesCount || 0,
       commentsCount: rawTale.commentsCount || 0,
       favoritesCount: rawTale.favoritesCount || 0,
       sharesCount: rawTale.sharesCount || 0,
@@ -209,7 +214,7 @@ export function initializeTaleListEngagement(rawTale: any): TaleListDto {
       // 🔒 Phase 1 Personalization Defaults (Overwritten during Auth check sync)
       isFavorite: false,
       hasFlagged: false,
-      myVote: 'None', // 🎯 Establishes 'Upvote' | 'Downvote' | 'None' baseline
+      myReaction: 'None', // 🎯 Establishes 'Upvote' | 'Downvote' | 'None' baseline
 
       isEngagementLoaded: false,
 
@@ -234,14 +239,18 @@ export function initializeTaleDetailEngagement(rawTale: any): TaleDetailDto {
       commentsCount: 0,
       upvotesCount: 0,
       downvotesCount: 0,
+      transformedPerspectivesCount: 0,
+      exposesRealitiesCount: 0,
+      sparksDebatesCount: 0,
+      missedCriticalContextsCount: 0,
+      lacksRealWorldRelevancesCount: 0,
       favoritesCount: 0,
       flagsCount: 0,
-      insightsCount: 0,
       
       // 🔒 Phase 1 Personalization Defaults
       isFavorite: false,
       hasFlagged: false,
-      myVote: 'None', 
+      myReaction: 'None', 
 
       isEngagementLoaded: false,
       
@@ -275,7 +284,6 @@ export interface TaleStatDto {
       commentsCount: 0;
       favoritesCount: 0;
       sharesCount: 0;
-      insightsCount: 0;
       flagsCount: 0;
 }
 

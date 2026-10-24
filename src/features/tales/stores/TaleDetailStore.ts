@@ -34,6 +34,8 @@ async function loadTale(taleId: string): Promise<{ success: boolean; error: APIE
 
   try {
 
+ console.log(`loading outside tale: ${taleId}`);
+
     reset()
 
       // Spawn a fresh controller instance for this specific execution pass
@@ -41,6 +43,8 @@ async function loadTale(taleId: string): Promise<{ success: boolean; error: APIE
 
     // Note: Assuming getAsync is part of your API client layer
     const outcome = await getAsync<TaleDetailDto>(`api/tales/${taleId}`, false, {} as TaleDetailDto, feedController.signal);
+
+     console.log(`loading inside tale: ${taleId}`);
 
     // Consideration 1: Check if any error and immediately return to caller
     if (outcome.isFailure) {
@@ -177,7 +181,7 @@ async function loadArchivedTale(taleId: string): Promise<{ success: boolean; err
            
             tale.value.engagement.isFavorite = outcome.value.isFavorite
             tale.value.engagement.hasFlagged = outcome.value.hasFlagged
-            tale.value.engagement.myVote = outcome.value.myVote
+            tale.value.engagement.myReaction = outcome.value.myReaction
 
             tale.value.creator.engagement.isFavorite = outcome.value.iscreatorFavorite
           }
@@ -209,6 +213,8 @@ async function loadArchivedTale(taleId: string): Promise<{ success: boolean; err
   }
 
   async function enrichTale() {
+
+          console.warn(`tHere is a tale inside store: enrichment: ${tale.value?.taleId}`);
 
  
       try {
@@ -331,12 +337,11 @@ async function recordView() {
       console.log('[Store]: Requests successfully canceled via recordController.');
     }
 
-    reset()
   }
 
   return {
     tale, hasLoadedEnrichment, latestComments, loadTale, loadArchivedTale, enrichTale, 
-    recordView, abort
+    recordView, reset
   };
 
 });

@@ -1,0 +1,206 @@
+@import "variables.less";
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* Absolute Container Bound to EditorLayout */
+.studio-modal-backdrop {
+ position: fixed; // Locks relative to browser viewport, unaffected by scroll height
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--modal-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  @media @phone {
+    padding: 2rem;
+  }
+}
+
+.studio-modal {
+  position: relative;
+  width: @mid-width;
+  max-width: calc(100vw - 20px);
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__brand-ribbon {
+    height: @body-top-offset;
+    flex-shrink: 0;
+    background: linear-gradient(
+      90deg,
+      @logo-green 0%,
+      @logo-red 25%,
+      @logo-purple 50%,
+      @logo-orange 75%,
+      @logo-yellow 100%
+    );
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    flex-shrink: 0;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    height:100%;
+    flex-wrap:wrap;
+    gap: 0.25rem;
+  }
+
+  &__badge {
+    font-weight: 600;
+    padding: 0.75rem 0.625rem;
+    border-radius: 4px;
+
+    &--success{
+       background-color: @success-background-color;
+      border: 1px solid @success-border-color;
+      color: @success-text-color;
+    }
+
+    &--danger{
+       background-color: @danger-background-color;
+      border: 1px solid @danger-border-color;
+      color: @danger-text-color;
+    }
+
+    &--warning{
+       background-color: @warning-background-color;
+      border: 1px solid @warning-border-color;
+      color: @warning-text-color;
+    }
+  }
+
+ 
+
+  &__title {
+    font-family: @font-heading;
+    font-size: @text-xl;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    color: var(--muted-text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: var(--light-background-color);
+      color: var(--text-color);
+    }
+  }
+
+  &__body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    overflow-y: auto;
+
+    @media @phone, @phablet {
+      padding: 2rem;
+    }
+  }
+
+  &__message {
+    font-family: @font-heading;
+    font-size: @text-base;
+    line-height: @line-height-ui;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+
+    &--sub{
+      font-style: italic;
+    }
+  }
+
+  &__section-label {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    font-weight:600;
+
+     &--success{
+       background-color: @success-background-color;
+      border: 1px solid @success-border-color;
+      color: @success-text-color;
+    }
+
+    &--danger{
+       background-color: @danger-background-color;
+      border: 1px solid @danger-border-color;
+      color: @danger-text-color;
+    }
+
+    &--warning{
+       background-color: @warning-background-color;
+      border: 1px solid @warning-border-color;
+      color: @warning-text-color;
+    }
+  }
+
+  &__definition-card {
+   
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+
+    &--success{
+       background-color: @success-background-color;
+      border: 1px solid @success-border-color;
+      color: @success-text-color;
+    }
+
+    &--danger{
+       background-color: @danger-background-color;
+      border: 1px solid @danger-border-color;
+      color: @danger-text-color;
+    }
+
+    &--warning{
+       background-color: @warning-background-color;
+      border: 1px solid @warning-border-color;
+      color: @warning-text-color;
+    }
+  }
+
+  &__footer{
+    border-top: 1px solid var(--border-color);
+    padding: 1.25rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    column-gap: 0.5rem;
+
+  }
+}

@@ -56,7 +56,7 @@ export const useHomeStore = defineStore('homeStore', () => {
         prolificWriters.value = outcome.value.prolificWriters || [];
         newWriters.value = outcome.value.newWriters || [];
 
-        // Map Tales & Insights
+        // Map Tales 
         tales.value = (outcome.value.tales || []).map((item: any) => initializeTaleListEngagement(item));
         
         // Map Prolific Writers (Preserve WriterStatsDto wrapper & initialize nested creator)

@@ -29,8 +29,8 @@ export const TimelineActivityDispatcher = (
     return t.payload?.[key] || t[key]?.toString() || '0'
   }
 
-  // --- 1. ROUTED LINKS HELPERS (Tales / Insights) ---
-  const renderContentLink = (type: 'tale' | 'insight' | 'tag', slugKey: string = 'Slug', titleKey: string = 'Title') => {
+  // --- 1. ROUTED LINKS HELPERS (Tales ) ---
+  const renderContentLink = (type: 'tale' | 'tag', slugKey: string = 'Slug', titleKey: string = 'Title') => {
     return h(
       RouterLink, 
       { to: `/${type}/${getVal(slugKey)}`, class: 'timeline-link' }, 
@@ -46,7 +46,7 @@ export const TimelineActivityDispatcher = (
   return key in FlagTypeDescriptions;
 }
 
-const renderCategoryLink = (type: 'tales' | 'insights', rawCategory: string) => {
+const renderCategoryLink = (type: 'tales', rawCategory: string) => {
 
   if (!rawCategory) return '';
 
@@ -139,7 +139,7 @@ const renderProfileModalTrigger = (idKey: string, displayLabel: string) => {
     return h('p', `A moderation penalty has been applied to your account. Your current score is: ${getVal('ModerationScore')}. Note that accounts are automatically hidden at multiples of 3 moderation scores.`)
   }
   if (act === 'AccountMilestoned_Account') {
-    return h('p', `Your account reached a new milestone. Details: Engagement Score: ${getVal('EngagementScore')}, Total profile views: ${getVal('ViewsCount')}, Authenticated profile views: ${getVal('AuthViewsCount')}, Tales published: ${getVal('TalesCount')}, Insights published: ${getVal('InsightsCount')}, Comments: ${getVal('CommentsCount')}.`)
+    return h('p', `Your account reached a new milestone. Details: Engagement Score: ${getVal('EngagementScore')}, Total profile views: ${getVal('ViewsCount')}, Authenticated profile views: ${getVal('AuthViewsCount')}, Tales published: ${getVal('TalesCount')}, Comments: ${getVal('CommentsCount')}.`)
   }
   if (act === 'AccountSelfArchived_Account') {
     return h('p', `You successfully archived your account. Your profile would no longer be visible to other users.`)
@@ -238,7 +238,6 @@ if (act === 'TaleLaunched') {
     return h('p', ['Your tale, ', renderContentLink('tale'), ` has reached a new milestone. 
       Authenticated Views: ${getCount('AuthViewsCount')}, 
       Total Views: ${getCount('ViewsCount')}, 
-      Insights: ${getCount('InsightsCount')}, 
       Comments: ${getCount('CommentsCount')}, 
       Replies: ${getCount('RepliesCount')}, 
       Saves: ${getCount('FavoritesCount')}, 
@@ -249,65 +248,6 @@ if (act === 'TaleLaunched') {
       Total Engagement Score: ${getCount('EngagementScore')}.`])
   }
 
-
-  // INSIGHTS INTERPOLATION ENGINES
-  if (act === 'InsightCreated_Insight' || act === 'InsightLaunched_Insight') {
-      const rawCategory = getVal('Category'); // e.g., 'PoliticsGovernance'
-    const actionText = act === 'InsightCreated_Insight' ? 'created a new insight, ' : 'published a new insight, '
-    return h('p', [
-      `You ${actionText}`, 
-      renderContentLink('insight'), 
-      ` in the category, `, 
-      renderCategoryLink('insights', rawCategory),
-    '.'
-    ])
-  }
-
-if (act === 'InsightLaunched') {
-  const rawCategory = getVal('Category'); // e.g., 'PoliticsGovernance'
-
-  return h('p', [
-    renderModalTrigger('Profile', 'User Profile', getVal('AccountId'), getVal('Username')),
-    ' published a new insight, ',
-    renderContentLink('insight'),
-    ' in the category, ',
-    // Render the category link
-    renderCategoryLink('insights', rawCategory),
-    '.'
-  ]);
-}
-  if (act === 'InsightUpdated_Insight') return h('p', ['You updated the basic details of your insight, ', renderContentLink('insight')])
-  if (act === 'InsightSummaryUpdated_Insight') return h('p', ['You updated the summary of your insight, ', renderContentLink('insight')])
-  if (act === 'InsightDetailUpdated_Insight') return h('p', ['You updated the detail of your insight, ', renderContentLink('insight')])
-  if (act === 'InsightCountryUpdated_Insight') return h('p', ['You updated the target country of your insight, ', renderContentLink('insight')])
-  if (act === 'InsightPhotoUpdated_Insight') return h('p', ['You updated the central image of your insight, ', renderContentLink('insight')])
-  if (act === 'InsightSelfDeleted_Insight') return h('p', `You deleted your insight, ${getVal('Title')}.`)
-  if (act === 'InsightArchived_Insight') return h('p', `Your insight, ${getVal('Title')} has been archived due to community guideline violations.`)
-  if (act === 'InsightAddendumUpdated_Insight') return h('p', ['You added an addendum to your insight, ', renderContentLink('insight')])
-  if (act === 'InsightTagged_Insight' || act === 'InsightUntagged_Insight') {
-    const connection = act === 'InsightTagged_Insight' ? 'to' : 'from'
-    const verb = act === 'InsightTagged_Insight' ? 'added a new tag, ' : 'removed the tag, '
-    return h('p', [
-      `You ${verb}`, renderContentLink('tag', 'TagSlug', 'TagName'), ` ${connection} your insight, `, renderContentLink('insight')
-    ])
-  }
-  if (act === 'InsightSuspended_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was placed under administrative review.'])
-  if (act === 'InsightModerated_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was flagged by community moderation and placed under review.'])
-  if (act === 'InsightCertified_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was reviewed and certified for public viewership.'])
-  if (act === 'InsightHasEngagement_Insight') return h('p', ['Your insight, ', renderContentLink('insight'), ' was engaged by the community and may no longer be directly updated or deleted.'])
-  if (act === 'InsightMilestoned_Insight') {
-    return h('p', ['Your insight, ', renderContentLink('insight'), ` has reached a new milestone. 
-      Authenticated Views: ${getCount('AuthViewsCount')}, 
-      Total Views: ${getCount('ViewsCount')}, 
-      Comments: ${getCount('CommentsCount')}, 
-      Replies: ${getCount('RepliesCount')}, 
-      Saves: ${getCount('FavoritesCount')}, 
-      Upvotes: ${getCount('UpvotesCount')}, 
-      Downvotes: ${getCount('DownvotesCount')}, 
-      Flags: ${getCount('FlagsCount')}, 
-      Shares: ${getCount('SharesCount')}, 
-      Total Engagement Score: ${getCount('EngagementScore')}.`])
-  }
 
   // --- 4. COMMENTS AND ENGAGEMENT THREAD ENGINES ---
   if (act === 'Commented_Comment') {
@@ -358,7 +298,7 @@ if (act === 'InsightLaunched') {
    
     return h('p', [
       `You saved the ${targetType}, `,
-      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      targetType == 'tale' ? renderContentLink('tale') : 
       renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
       ` to your favorites folder.`
     ])
@@ -373,7 +313,7 @@ if (act === 'InsightLaunched') {
    
     return h('p', [
       `You reported the ${targetType}, `,
-      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      targetType == 'tale' ? renderContentLink('tale') :
       renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub'))),
       ` for violation '${label}'.`
     ])
@@ -385,7 +325,7 @@ if (act === 'InsightLaunched') {
    
     return h('p', [
       `You shared the ${targetType}, `,
-      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      targetType == 'tale' ? renderContentLink('tale') :
       renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub')))
     ])
   }
@@ -397,7 +337,7 @@ if (act === 'InsightLaunched') {
    
     return h('p', [
       `You ${actionType} the ${targetType}, `,
-      targetType == 'tale' ? renderContentLink('tale') : targetType == 'insight' ? renderContentLink('insight') :
+      targetType == 'tale' ? renderContentLink('tale') :
       renderModalTrigger('CommentThread', 'Thread', getVal('CommentId'), (getVal('Stub')))
     ])
   }

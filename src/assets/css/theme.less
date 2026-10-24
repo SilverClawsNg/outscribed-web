@@ -8,14 +8,19 @@
         --background-color:#F0F0F0;
         --background-color: @white-color;
 
+        --light-background-color: #e1ebf7;
+
         --text-color: @black-color;
+        --muted-text-color:  lighten(@black-color, 25%);
         --hover-color: lighten(@black-color, 10%);
         --alt-hover-color: darken(@white-color, 25%);
 
         --background-hover-color: darken(@white-color, 5%);
         --alt-background-hover-color: lighten(@black-color, 10%);
 
+--muted-link-color: #64748b;
 
+--editor-link-color:#3b5f88;
 
         --header-bg: #ffffff;
   --header-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -24,7 +29,6 @@
   --hero-top-wash: rgba(0, 0, 0, 0.035);   /* Subtle depth tone starting below header */
   --hero-grid-color: rgba(150, 150, 150, 0.12); /* Grid line color */
   --hero-fade-bottom: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-
 
 
   --grid-green:  rgba(5, 166, 96, 0.15);
@@ -42,13 +46,15 @@
 
 
         --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        --heavy-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         --box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
-        --muted-text-color: #7A7979;
+        //--muted-text-color: #7A7979;
         --border-color: #86868b;
         --border-color: #E5E5E5;
+        --thick-border-color: #97b2dd;
        
         --date-text-color: #4B4A4A;
-        --modal-background-color: rgba(0, 0, 0, 0.08);
+        --modal-background-color: rgba(1, 5, 13, 0.08);
         --contrast-background-color: @black-color;
         --contrast-text-color: @white-color;
     }
@@ -62,12 +68,19 @@
         //--background-color: #09080D;
         --background-color: #01050d;
 
+        --muted-link-color: #94A3B8;
+
+        --editor-link-color:#496a9e;
+        --editor-link-color:#65738d;
+
         --native-background-color: @black-color;
         --light-background-color: #040c1c;
 
         --box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+        --heavy-box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
          //--box-shadow: rgba(255, 255, 255, 0.1) 0px 2px 4px 0px;
         --text-color: @white-color;
+         --muted-text-color: darken(@white-color, 25%);
         --hover-color: darken(@white-color, 25%);
         --alt-hover-color: lighten(@black-color, 10%);
 
@@ -96,9 +109,10 @@
 
 
 
-        --muted-text-color: #666666;
+        //--muted-text-color: #666666;
         --border-color: #a7aab0;
         --border-color: #0e1a32;
+        --thick-border-color: #445373;
         --date-text-color: #AAA7B4;
         --modal-background-color: rgba(255, 255, 255, 0.08);
         --contrast-background-color: @white-color;

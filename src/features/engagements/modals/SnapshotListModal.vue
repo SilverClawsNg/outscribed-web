@@ -11,13 +11,21 @@ import { APIError } from '@/api/apiTypes';
 import { useModalStore } from '@/stores/modalStore'
 import { toShortDate } from '@/utils/dateExtensions'
 import { useRouter, useRoute } from 'vue-router'
+import { useTaleDraftStore, type MainCanvasView } from '@/features/tales/stores/TaleDraftStore'; 
 
-const props = defineProps<{
-  payload: unknown // Arrives untouched as the raw string AccountId from your container
-}>()
+const props = withDefaults(
+  defineProps<{
+    payload: unknown // Raw AccountId / StoryId string
+    isEditor?: boolean // Disambiguates Studio Editor usage
+  }>(),
+  {
+    isEditor: false
+  }
+)
 
 const contentid = computed(() => props.payload as string)
 
+const taleStore = useTaleDraftStore()
 const snapshotStore = useSnapshotStore();
 const snapshotFilterStore = useSnapshotFilterStore();
 
@@ -75,21 +83,30 @@ onMounted(async () => {
 
 // inside your HomeView.vue
 onUnmounted(() => {
-  snapshotStore.abort();
+  snapshotStore.reset();
 });
 
 
-const openModal = (id: string) => {
-  snapshotStore.viewedRows.add(id);
-  modalStore.push('SnapshotDetail', 'Snapshot Details', id)
-};
+const openModal = (id: any) => {
+  snapshotStore.viewedRows.add(id)
+
+  if (props.isEditor) {
+    // Editor context: Use in-layout TaleDraftStore modal state
+    console.log(`This is inside teh snapshot modal ${id}`)
+
+   taleStore.openSnapshotModal(id)
+  } else {
+    // Global context: Push to standard global modal stack
+    modalStore.push('SnapshotDetail', 'Snapshot Details', id)
+  }
+}
 
 const handleKeyPress = (event: KeyboardEvent, item: any) => {
   if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    openModal(item.id);
+    event.preventDefault()
+    openModal(item)
   }
-};
+}
 
 </script>
 

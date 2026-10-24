@@ -12,7 +12,7 @@ const props = withDefaults(
     creatorId: string
     creatorUsername: string
     createdAt: string
-    contentType: 'tale' | 'insight' | string
+    contentType: 'tale' | string
     summary: string
     isBordered?: boolean
   }>(),

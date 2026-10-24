@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 
 // 1. Structural Imports - Forms & Modals mapped precisely to your architectural directories
-import AuthenticateModal from '@/features/gatekeeper/modals/AuthenticateModal.vue'
-import ResetModal from '@/features/gatekeeper/modals/ResetModal.vue'
+import LoginModal from '@/features/authentication/modals/LoginModal.vue'
+import RegisterModal from '@/features/authentication/modals/RegisterModal.vue'
+import ResetModal from '@/features/authentication/modals/ResetModal.vue'
+
 import UpdateContactModal from '@/features/identity/modals/UpdateContactModal.vue'
 import UpdateProfileModal from '@/features/identity/modals/UpdateProfileModal.vue'
 import ChangePasswordModal from '@/features/identity/modals/ChangePasswordModal.vue'
@@ -18,22 +20,9 @@ import StructuralAttestationModal from '@/features/authoring/modals/StructuralAt
 import LiabilityAttestationModal from '@/features/authoring/modals/LiabilityAttestationModal.vue'
 import WriterOnboardingModal from '@/features/authoring/modals/WriterOnboardingModal.vue'
 import CreateTaleModal from '@/features/tales/modals/CreateTaleModal.vue'
-import UpdateTaleDetailModal from '@/features/tales/modals/UpdateTaleDetailModal.vue'
-import UpdateTaleModal from '@/features/tales/modals/UpdateTaleModal.vue'
-import UpdateTaleCountryModal from '@/features/tales/modals/UpdateTaleCountryModal.vue'
-import UpdateTaleRealityCheckModal from '@/features/tales/modals/UpdateTaleRealityCheckModal.vue'
-import UpdateTaleSummaryModal from '@/features/tales/modals/UpdateTaleSummaryModal.vue'
-import UpdateTaleTagsModal from '@/features/tales/modals/UpdateTaleTagsModal.vue'
-import UpdateTaleAddendumModal from '@/features/tales/modals/UpdateTaleAddendumModal.vue'
-import UpdateTalePhotoModal from '@/features/tales/modals/UpdateTalePhotoModal.vue'
-import LaunchTaleModal from '@/features/tales/modals/LaunchTaleModal.vue'
-import DeleteTaleModal from '@/features/tales/modals/DeleteTaleModal.vue'
-import ArchiveTaleModal from '@/features/tales/modals/ArchiveTaleModal.vue'
-import UnarchiveTaleModal from '@/features/tales/modals/UnarchiveTaleModal.vue'
-import TaleDraftFilterModal from '@/features/tales/modals/TaleDraftFilterModal.vue'
+
 import TaleListFilterModal from '@/features/tales/modals/TaleListFilterModal.vue'
-import TaleStatsModal from '@/features/tales/modals/TaleStatsModal.vue'
-import TalePreviewModal from '@/features/tales/modals/TalePreviewModal.vue'
+
 
 import ContentCommentsModal from '@/features/engagements/modals/ContentCommentsModal.vue'
 import CreateCommentModal from '@/features/engagements/modals/CreateCommentModal.vue'
@@ -73,7 +62,8 @@ const isExpandModal = ref(false)
 
 // 2. Dynamic Component Dictionary Map (Replaces the large C# @switch block)
 const componentMap: Record<string, any> = {
-  Authenticate: AuthenticateModal,
+  Login: LoginModal,
+  Register: RegisterModal,
   ResetPassword: ResetModal,
   UpdateContact: UpdateContactModal,
   UpdateProfile: UpdateProfileModal,
@@ -84,23 +74,9 @@ const componentMap: Record<string, any> = {
   LiabilityAttestation: LiabilityAttestationModal,
   WriterOnboarding: WriterOnboardingModal,
     CreateTale: CreateTaleModal,
-  UpdateTaleDetail: UpdateTaleDetailModal,
-  UpdateTale: UpdateTaleModal,
-  UpdateTaleSummary: UpdateTaleSummaryModal,
-  UpdateTaleCountry: UpdateTaleCountryModal,
-  UpdateTaleRealityCheck: UpdateTaleRealityCheckModal,
-UpdateTaleTags: UpdateTaleTagsModal,
-UpdateTaleAddendum: UpdateTaleAddendumModal,
-UpdateTalePhoto: UpdateTalePhotoModal,
-LaunchTale : LaunchTaleModal,
-DeleteTale: DeleteTaleModal,
-ArchiveTale: ArchiveTaleModal,
-UnarchiveTale: UnarchiveTaleModal,
-TaleDraftFilter: TaleDraftFilterModal,
+
 TaleListFilter: TaleListFilterModal,
-TaleStats: TaleStatsModal,
-TalePreview: TalePreviewModal,
- 
+
 ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,
 CommentListFilter: CommentListFilterModal,
@@ -133,8 +109,8 @@ UserListFilter: UserListFilterModal
 
 // Helper getter to deliver the raw payload directly without flattening
 function getComponentProps(windowItem: any) {
-  // Always returns a stable, consistent root prop wrapper
   return {
+    modalWindowId: windowItem.id,
     payload: windowItem.payload ?? null
   }
 }
@@ -152,6 +128,12 @@ async function onAnimationEnd(windowItem: any) {
     modalStore.remove(windowItem)
   }
 }
+
+// Explicit State Interfaces
+export interface ModalComponentState {
+  isSubmitting: boolean
+}
+
 </script>
 
 <template>
@@ -178,8 +160,8 @@ async function onAnimationEnd(windowItem: any) {
           @animationend="onAnimationEnd(windowItem)"
         >
           
-          <!-- 🎯 1. STANDARD HEADER LAYOUT -->
-          <div v-if="windowItem.headerType !== 'editor'" class="modal-header">
+          <!-- UNIFIED HEADER -->
+          <div class="modal-header">
             <div class="inner-modal-header">
               <button class="close" @click="modalStore.closeAll()">
                 &larr;
@@ -201,45 +183,39 @@ async function onAnimationEnd(windowItem: any) {
             </div>
           </div>
 
-          <!-- 🎯 2. RICH TEXT EDITOR HEADER LAYOUT -->
-          <div v-else class="modal-header modal-header--editor">
-            <div class="inner-modal-header inner-modal-header--editor">
-              <!-- Quick Close All -->
-              <button class="close-btn" @click="modalStore.cancel()" title="Close">
-                 <!--<SvgIcons name="close" />  -->
-                 X
-              </button>
-
-              <!-- Dynamic Mount Container for Quill Snow Formatting Bar -->
-              <div 
-                :id="`modal-header-toolbar-${windowItem.id}`" 
-                class="editor-toolbar-slot"
-              ></div>
-
-              <!-- Mount Slot for Rich Text Submit Action -->
-              <div 
-                :id="`modal-header-submit-${windowItem.id}`" 
-                class="editor-submit-slot"
-              ></div>
-            </div>
-          </div>
-
           <!-- MODAL BODY -->
+
+          <template v-if="windowItem.headerType === 'editor'">
+
+              <div class="editor-modal-body">
+                <component 
+                  :is="componentMap[windowItem.type]" 
+                  v-bind="getComponentProps(windowItem)"
+                />
+            </div>
+          </template>
+
+          <template v-else>
+            
           <div class="modal-body">
             <div class="inner-modal-body">
-              <component 
-                :is="componentMap[windowItem.type] || componentMap['ModalError']"
-                v-bind="getComponentProps(windowItem)"
-                @success="windowItem.onSuccessCallback ? windowItem.onSuccessCallback() : null"
-              />
-              <p class="buffer"></p>
-            </div>
+            <component 
+              :is="componentMap[windowItem.type]" 
+              v-bind="getComponentProps(windowItem)"
+            />
+          </div>
           </div>
 
+          </template>
+
         </div>
+
       </template>
+
     </div>
+
   </div>
+
 </template>
 
 <style lang="less" scoped>

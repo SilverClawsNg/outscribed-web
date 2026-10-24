@@ -184,7 +184,7 @@ async function handleFormSubmission() {
         :image-source="rawImageSource"
         :target-width="750"
         :target-height="562"
-        aspect-ratio-label="Insight Cover Photo (750 × 562)"
+        aspect-ratio-label="Tale Cover Photo (750 × 562)"
         @crop-complete="handleCropComplete"
         @cancel="showCropper = false"
       />

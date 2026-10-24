@@ -46,9 +46,9 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
     }"
   >
 
-    <div class="writer-card__header">
+    <header class="writer-card__header">
 
-      <h3 class="writer-card__title">
+      <div class="writer-card__title">
         
         <!-- Rank / Badge Indicator (30px x 30px square element) -->
         <span 
@@ -75,7 +75,10 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
           >
             {{ writer.creator.username }}
           </button>
-      </h3>
+
+          <span class="divider divider--circle"></span>
+            <time>Since {{ toShortDate(writer.onboardedAt) }}</time>
+        </div>
       
       <!-- Writer Call to Action -->
       <button 
@@ -85,18 +88,10 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
         :disabled="uiMeta.isFavoriteDisabled"
         @click="engage.favorite(writer.creator.engagement)"
       >
-        <SvgIcons name="bookmark" /> {{ uiMeta.favoriteAltText }}
+       {{ uiMeta.favoriteAltText }}
       </button>
 
-    </div>
-
-      <div class="writer-card__metadata">
-      
-       <span class="writer-card__metadata--item">{{ CountryDescriptions[writer.country] }}</span>
-             <span class="divider divider--circle"></span>
-          <time>Since {{ toShortDate(writer.onboardedAt) }}</time>
-
-      </div>
+    </header>
 
     <div class="writer-card__metric">
       <RouterLink 
@@ -107,18 +102,6 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
       >
         <span class="writer-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
         <span class="writer-card__metric-label">Tales&rarr;</span>
-      </RouterLink>
-
-      <span class="divider divider--line"></span>
-
-      <RouterLink 
-        :to="`/insights?username=${writer.creator.username}`" 
-        class="writer-card__metric-link" 
-        :class="{ 'disabled': writer.creator.insightsCount === 0 }"
-        title="Filter Insights"
-      >
-        <span class="writer-card__metric-value">{{ formatCounts(writer.creator.insightsCount) }}</span>
-        <span class="writer-card__metric-label">Insights&rarr;</span>
       </RouterLink>
 
       <span class="divider divider--line"></span>
@@ -135,6 +118,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
 
     </div>
   </article>
+
 </template>
 
 <style lang="less" scoped>

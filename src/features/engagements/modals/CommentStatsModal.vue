@@ -3,11 +3,12 @@
 // --- IMPORTS ---
 import { computed } from 'vue'
 import { useModalStore } from '@/stores/modalStore'
+
 import { type CommentListDto } from '@/features/engagements/types/EngagementTypes' // 🎯 Import your clean semantics
 import { toLongDate } from '@/utils/dateExtensions'
 import { formatCounts } from '@/utils/stringHelpers'
 import { useEngagement } from '@/composables/useEngagement';
-import { getEngagementMetadata, type ActiveContentContext } from '@/features/engagements/types/EngagementTypes'
+import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
@@ -20,8 +21,11 @@ const props = defineProps<{
 // 🔒 Strongly-type cast the payload context for your template and logic
 const comment = computed(() => props.payload as CommentListDto)
 
+
+
 // Transform state properties reactively on demand
 const uiMeta = computed(() => getEngagementMetadata(comment.value.engagement));
+
 
 </script>
 

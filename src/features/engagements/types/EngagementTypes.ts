@@ -1,14 +1,19 @@
 import { reactive } from 'vue';
-import type { CommentStatus, ContentType, FlagType, VoteType} from '@/utils/enumHelper'
+import type { CommentStatus, ContentType, FlagType, ReactionType} from '@/utils/enumHelper'
 import { APIError } from '@/api/apiTypes.ts'
 
 export interface Engageable {
   contentId: string; // Map your ULID string representation
   contentType: ContentType;
-  myVote: VoteType;
+  myReaction: ReactionType;
   commentsCount: number;
   upvotesCount: number;
   downvotesCount: number;
+  transformedPerspectivesCount: number;
+  exposesRealitiesCount: number;
+  sparksDebatesCount: number;
+  missedCriticalContextsCount: number;
+  lacksRealWorldRelevancesCount: number;
   isFavorite: boolean;
   favoritesCount: number;
   flagsCount: number;
@@ -20,15 +25,20 @@ export interface Engageable {
 }
 
 export interface EngagementState {
-  voteClicks: number;
+  reactionClicks: number;
   favoriteClicks: number;
-  snapshotVote: VoteType;
+  snapshotReaction: ReactionType;
   snapshotUpvotes: number;
   snapshotDownvotes: number;
+  snapshotTransformedPerspectives: number;
+  snapshotExposesRealities: number;
+  snapshotSparksDebates: number;
+  snapshotMissedCriticalContexts: number;
+  snapshotLacksRealWorldRelevancess: number;
   snapshotFavorite: boolean;
   snapshotFavorites: number;
-  firstVoteClick: VoteType | null;
-  nextVoteClick: VoteType | null;
+  firstVoteClick: ReactionType | null;
+  nextVoteClick: ReactionType | null;
   lastVoteClick: number | null; // epoch milliseconds
   lastFavoriteClick: number | null;
 }
@@ -36,11 +46,16 @@ export interface EngagementState {
 // Factory to initialize pristine UI tracking states
 export function createDefaultUiState(): EngagementState {
   return {
-    voteClicks: 0,
+    reactionClicks: 0,
     favoriteClicks: 0,
-    snapshotVote: 'None',
+    snapshotReaction: 'None',
     snapshotUpvotes: 0,
     snapshotDownvotes: 0,
+    snapshotTransformedPerspectives: 0,
+    snapshotExposesRealities: 0,
+    snapshotSparksDebates: 0,
+    snapshotMissedCriticalContexts: 0,
+    snapshotLacksRealWorldRelevancess: 0,
     snapshotFavorite: false,
     snapshotFavorites: 0,
     firstVoteClick: null,
@@ -49,16 +64,20 @@ export function createDefaultUiState(): EngagementState {
     lastFavoriteClick: null,
   };
 }
-
 
 // Factory to initialize pristine UI tracking states
 export function createAbridgedUiState(): EngagementState {
   return {
-    voteClicks: 0,
+    reactionClicks: 0,
     favoriteClicks: 0,
-    snapshotVote: 'None',
+    snapshotReaction: 'None',
     snapshotUpvotes: 0,
     snapshotDownvotes: 0,
+    snapshotTransformedPerspectives: 0,
+    snapshotExposesRealities: 0,
+    snapshotSparksDebates: 0,
+    snapshotMissedCriticalContexts: 0,
+    snapshotLacksRealWorldRelevancess: 0,
     snapshotFavorite: false,
     snapshotFavorites: 0,
     firstVoteClick: null,
@@ -67,13 +86,12 @@ export function createAbridgedUiState(): EngagementState {
     lastFavoriteClick: null,
   };
 }
-
 
 export function getEngagementMetadata(item: Engageable) {
   
 
   const hasLoaded = item.isEngagementLoaded;
-  const clicksExceeded = (item.uiState.voteClicks || 0) >= 20;
+  const clicksExceeded = (item.uiState.reactionClicks || 0) >= 20;
   const favClicksExceeded = (item.uiState.favoriteClicks || 0) >= 20;
   const contentTypeLower = (item.contentType || 'item').toLowerCase();
 
@@ -83,8 +101,13 @@ export function getEngagementMetadata(item: Engageable) {
     isRepliesDisabled: (item.commentsCount || 0) === 0, // Maps cleanly to your backend response field
     isFlagDisabled: !hasLoaded || item.hasFlagged,
 
-    isUpvoteChecked: item.myVote === 'Upvote' ? 'checked' : null,
-    isDownvoteChecked: item.myVote === 'Downvote' ? 'checked' : null,
+    isUpvoteChecked: item.myReaction === 'Upvote' ? 'checked' : null,
+    isDownvoteChecked: item.myReaction === 'Downvote' ? 'checked' : null,
+    isTransformedPerspectiveChecked: item.myReaction === 'TransformedPerspective' ? 'checked' : null,
+    isExposesRealityChecked: item.myReaction === 'ExposesReality' ? 'checked' : null,
+    isSparksDebateChecked: item.myReaction === 'SparksDebate' ? 'checked' : null,
+    isMissedCriticalContextChecked: item.myReaction === 'MissedCriticalContext' ? 'checked' : null,
+    isLacksRealWorldRelevanceChecked: item.myReaction === 'LacksRealWorldRelevance' ? 'checked' : null,
 
     favoriteClass: item.isFavorite ? 'active text-brand-gold' : '',
     flagClass: item.hasFlagged ? 'active text-brand-red' : '',
@@ -103,10 +126,10 @@ export function getEngagementMetadata(item: Engageable) {
 }
 
 
-export interface VoteRequest {
+export interface ReactionRequest {
   contentId: string;
   contentType: ContentType
-  type: VoteType
+  type: ReactionType
 }
 
 export interface FavoriteRequest {
@@ -116,9 +139,14 @@ export interface FavoriteRequest {
 
 export interface EngagementResponse {
   hasFlagged: boolean; 
- commentsCount: number;
+  commentsCount: number;
   upvotesCount: number;
   downvotesCount: number;
+  transformedPerspectivesCount: number;
+  exposesRealitiesCount: number;
+  sparksDebatesCount: number;
+  missedCriticalContextsCount: number;
+  lacksRealWorldRelevancesCount: number;
   isFavorite: boolean;
   favoritesCount: number;
   flagsCount: number;
@@ -244,6 +272,11 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
       // 📊 Phase 1 Defaults (Overwritten during lazy-loaded metrics sync)
       upvotesCount:rawComment.upvotesCount || 0,
       downvotesCount: rawComment.downvotesCount || 0,
+      transformedPerspectivesCount: rawComment.transformedPerspectivesCount || 0,
+      exposesRealitiesCount: rawComment.exposesRealitiesCount || 0,
+      sparksDebatesCount: rawComment.sparksDebatesCount || 0,
+      missedCriticalContextsCount: rawComment.missedCriticalContextsCount || 0,
+      lacksRealWorldRelevancesCount: rawComment.lacksRealWorldRelevancesCount || 0,
       commentsCount: rawComment.commentsCount || 0,
       favoritesCount: rawComment.favoritesCount || 0,
       flagsCount: rawComment.flagsCount || 0,
@@ -254,7 +287,7 @@ export function initializeCommentListEngagement(rawComment: any, isNew = false):
       // 🔒 Phase 1 Personalization Defaults (Overwritten during Auth check sync)
       isFavorite: false,
       hasFlagged: false,
-      myVote: 'None', // 🎯 Establishes 'Upvote' | 'Downvote' | 'None' baseline
+      myReaction: 'None', // 🎯 Establishes 'Upvote' | 'Downvote' | 'None' baseline
 
       isEngagementLoaded: isNew,
       
@@ -285,6 +318,11 @@ export function initializeCommentPageListEngagement(rawComment: any, isNew = fal
       // 📊 Phase 1 Defaults (Overwritten during lazy-loaded metrics sync)
       upvotesCount:rawComment.upvotesCount || 0,
       downvotesCount: rawComment.downvotesCount || 0,
+      transformedPerspectivesCount: rawComment.transformedPerspectivesCount || 0,
+      exposesRealitiesCount: rawComment.exposesRealitiesCount || 0,
+      sparksDebatesCount: rawComment.sparksDebatesCount || 0,
+      missedCriticalContextsCount: rawComment.missedCriticalContextsCount || 0,
+      lacksRealWorldRelevancesCount: rawComment.lacksRealWorldRelevancesCount || 0,
       commentsCount: rawComment.commentsCount || 0,
       favoritesCount: rawComment.favoritesCount || 0,
       flagsCount: rawComment.flagsCount || 0,
@@ -295,7 +333,7 @@ export function initializeCommentPageListEngagement(rawComment: any, isNew = fal
       // 🔒 Phase 1 Personalization Defaults (Overwritten during Auth check sync)
       isFavorite: false,
       hasFlagged: false,
-      myVote: 'None', // 🎯 Establishes 'Upvote' | 'Downvote' | 'None' baseline
+      myReaction: 'None', // 🎯 Establishes 'Upvote' | 'Downvote' | 'None' baseline
 
       isEngagementLoaded: isNew,
       
@@ -332,8 +370,8 @@ export interface ReplyCommentRequest {
 }
 
 export interface UpdateCommentRequest {
-   contentid: string | null;
-contentType: ContentType | null; 
+ contentid: string;
+contentType: ContentType; 
     detail: string;
     commentId: string;
 }
@@ -352,6 +390,11 @@ export interface CommentCreatedResponse {
   commentsCount: number;
   upvotesCount: number;
   downvotesCount: number;
+  transformedPerspectivesCount: number;
+  exposesRealitiesCount: number;
+  sparksDebatesCount: number;
+  missedCriticalContextsCount: number;
+  lacksRealWorldRelevancesCount: number;
   favoritesCount: number;
   flagsCount: number;
   sharesCount: number;
@@ -406,8 +449,10 @@ export interface LoadingCommentThreadResponse {
 
 
 export interface UpdateDetailRequest {
-  commentId: string;
+ commentId: string;
   detail: string;
+  contentId: string;
+  contentType: ContentType;
 }
 
 export interface UpdateAddendumRequest {
@@ -455,6 +500,32 @@ export interface GetSnapshotListResponse {
   pointer: string | null; 
 }
 
+
+export interface GetTaleSnapshotListResponse {
+  snapshots: TaleSnapshotListDto[];
+  hasNext: boolean;
+  anchor: string | null;
+  pointer: string | null; 
+}
+
+
+export interface TaleSnapshotListDto{
+  id: string;
+    date: Date;
+    viewsCount: number;
+    authViewsCount: number;
+    sharesCount: number;
+    commentsCount: number;
+    transformedPerspectivesCount: number;
+    exposesRealitiesCount: number;
+    sparksDebatesCount: number;
+    missedCriticalContextsCount: number;
+    lacksRealWorldRelevancesCount: number;
+    flagsCount: number;
+    favoritesCount: number;
+    totalCounts: number
+}
+
   export interface SnapshotDetailDto{
     date: Date;
     viewsCount: number;
@@ -463,6 +534,11 @@ export interface GetSnapshotListResponse {
     commentsCount: number;
     upvotesCount: number;
     downvotesCount: number;
+    transformedPerspectivesCount: number;
+    exposesRealitiesCount: number;
+    sparksDebatesCount: number;
+    missedCriticalContextsCount: number;
+    lacksRealWorldRelevancesCount: number;
     flagsCount: number;
     favoritesCount: number;
     talesCount: number;

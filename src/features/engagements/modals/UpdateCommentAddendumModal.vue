@@ -32,7 +32,7 @@ onBeforeMount(() => {
     // 2. Pass a friendly, descriptive error straight down to your message layout
     setError({
       title: "Content Unavailable",
-      detail: "Unable to load current insight details. Refresh page and try again",
+      detail: "Unable to load current comment details. Refresh page and try again",
       status: 204 // Standard missing resource code
     })
     

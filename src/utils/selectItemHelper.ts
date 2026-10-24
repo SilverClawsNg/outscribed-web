@@ -1,9 +1,9 @@
 import { ContentTypeDescriptions, CategoryDescriptions, CountryDescriptions,
   GeneralSortTypeDescriptions, SortTypeDescriptions, ActivityTypeDescriptions, TaleStatusDescriptions, 
-  InsightStatusDescriptions, CommentStatusDescriptions, LimitedContentTypeDescriptions,
+  CommentStatusDescriptions, LimitedContentTypeDescriptions,
  } from '../utils/descriptors' // 🎯 Import your clean semantics
 import type { ContentType, Category, Country, SortType, GeneralSortType, ActivityType,
-  TaleStatus, InsightStatus, CommentStatus, LimitedContentType, 
+  TaleStatus, CommentStatus, LimitedContentType, 
  } from './enumHelper' // 🎯 Import your clean semantics
 
 interface SelectItem<T = string> {
@@ -69,13 +69,6 @@ export const TaleStatusSelectItems = (
 ).map((key): SelectItem<TaleStatus> => ({
   value: key,
   label: TaleStatusDescriptions[key]
-}))
-
-export const InsightStatusSelectItems = (
-  Object.keys(InsightStatusDescriptions) as InsightStatus[]
-).map((key): SelectItem<InsightStatus> => ({
-  value: key,
-  label: InsightStatusDescriptions[key]
 }))
 
 export const CommentStatusSelectItems = (
