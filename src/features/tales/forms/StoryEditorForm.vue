@@ -400,15 +400,6 @@ onBeforeUnmount(() => {
   background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
 
-  
-   @media @smallDevice {
-       top: calc(56px + @body-top-offset-small);
- // Pushes standard document flow down cleanly
-  }
-
-  @media @largeDevice {
-   top: calc(56px + @body-top-offset-large);// Pushes standard document flow down cleanly
-  }
 }
 
 .toolbar.ql-toolbar.ql-snow {

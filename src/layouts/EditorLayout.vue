@@ -66,6 +66,12 @@ const taleStore = useTaleDraftStore()
   margin: 0 auto;
   position: relative;
   background-color: var(--background-color);
+
+  /* 1. Prevent horizontal content overflow from being panned */
+  //overflow-x: hidden; 
+  
+  /* 2. Restrict mobile touch gestures to vertical scrolling only, blocking horizontal swipe-panning */
+  touch-action: pan-y;
 }
 
 .editor-layout {
@@ -73,6 +79,10 @@ const taleStore = useTaleDraftStore()
   position: relative;
   width: 100%;
   min-height: 100vh;
+
+  /* Ensure container bounds are strictly locked horizontally */
+  //overflow-x: hidden;
+  touch-action: pan-y;
   
   /* -------------------------------------------------------------
    * 1. ASIDE PANEL (Fixed relative to max-width wrapper)
