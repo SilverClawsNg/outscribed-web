@@ -245,7 +245,7 @@ function navigateToAside(section: AsideView) {
   align-items: stretch; /* Forces children to match header height */
   position: sticky;
   top: 0;
-  border-bottom: 1px solid var(--thick-border-color);
+  border-bottom: 1px solid var(--border-color);
   background-color: var(--background-color);
   z-index: 5;
 
@@ -262,7 +262,7 @@ function navigateToAside(section: AsideView) {
       width: 100%;
       height: 100%;
       border-radius: 0; /* Square edges or adjust if you prefer subtle rounding */
-      
+      border: 1px solid var(--border-color);
       border-top: none;
       border-bottom: none;
       display: flex;
@@ -270,16 +270,12 @@ function navigateToAside(section: AsideView) {
       justify-content: center;
       text-align: center;
       text-transform: uppercase;
-
       
       /* Optional: clean border splitting between the three buttons */
-      &:first-child {
-        border-right: 1px solid var(--thick-border-color);
+      &:not(:first-child) {
+        border-left: none; 
       }
 
-      &.btn.btn--primary{
-        background-color: var(--light-background-color);
-      }
     }
   }
 }
