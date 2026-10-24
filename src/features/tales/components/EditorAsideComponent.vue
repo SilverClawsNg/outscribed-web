@@ -98,45 +98,38 @@ function navigateToAside(section: AsideView) {
 
 <template>
       
-      <!-- Aside Fixed Header -->
-      <header class="editor-studio__aside-header">
+  <!-- Aside Fixed Header -->
+<header class="editor-studio__aside-header">
+  <div class="editor-studio__aside-header--actions">
+    <button 
+      type="button" 
+      class="btn btn--primary"
+      :class="{ 'active': taleStore.currentAsideView === 'list' }"
+      @click="navigateToAside('list')"
+      title="Back to Drafts"
+    >
+      Tales
+    </button>
 
-        <h2 class="editor-studio__aside-header--title">
-            Editor
-          </h2>
+    <button 
+      type="button" 
+      class="btn btn--primary"
+      :class="{ 'active': taleStore.currentAsideView === 'filter' }"
+      @click="navigateToAside('filter')"
+    >
+      Filter
+    </button>
 
-          <div class="editor-studio__aside-header--actions">
-
-            <button 
-            type="button" 
-            class="btn btn--primary"
-            :class="{ 'active': taleStore.currentAsideView === 'list' }"
-            @click="navigateToAside('list')"
-            title="Back to Drafts"
-          >
-           Tales
-          </button>
-
-              <button 
-          type="button" 
-           class="btn btn--primary"
-          :class="{ 'active': taleStore.currentAsideView === 'filter' }"
-          @click="navigateToAside('filter')"
-        >
-          Filter
-        </button>
-
-             <button 
-             type="button" 
-              class="btn btn--secondary"
-             :class="{ 'active': taleStore.currentAsideView === 'create' }"
-             @click="navigateToAside('create')">
-            OutScribe
-          </button>
-
-          </div>
-
-      </header>
+    <button 
+      type="button" 
+      class="btn btn--secondary"
+      :class="{ 'active': taleStore.currentAsideView === 'create' }"
+      @click="navigateToAside('create')"
+    >
+      OutScribe
+    </button>
+  </div>
+</header>
 
       <!-- Aside Dynamic Component Body -->
       <div class="editor-studio__aside-body">
@@ -243,34 +236,53 @@ function navigateToAside(section: AsideView) {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 
+.editor-studio__aside-header {
+  flex: 0 0 auto;
+  height: 56px;
+  padding: 0; /* Remove horizontal padding so items span full width */
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: stretch; /* Forces children to match header height */
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--thick-border-color);
+  background-color: var(--background-color);
+  z-index: 5;
 
-  .editor-studio__aside-header {
-    flex: 0 0 auto;
-    height: 56px;
-    padding: 0 0.5rem;
-    margin-bottom: 1.25rem;
+  &--actions {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--background-color);
+    width: 100%;
+    height: 100%;
+    align-items: stretch;
+    column-gap: 0; /* Remove gap so buttons can form a cohesive segment control if desired */
 
-    &--title{
-        text-transform:uppercase;
-        font-size: 1.1rem;
-        font-weight:700;
-    }
+    /* Force all 3 buttons to take up equal width (33.333%) and 100% height */
+    > button {
+      flex: 1 1 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0; /* Square edges or adjust if you prefer subtle rounding */
+      
+      border-top: none;
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-transform: uppercase;
 
-     &--actions{
-        display: flex;
-        column-gap: 0.25rem;
-        align-items:center;
-    
+      
+      /* Optional: clean border splitting between the three buttons */
+      &:first-child {
+        border-right: 1px solid var(--thick-border-color);
+      }
+
+      &.btn.btn--primary{
+        background-color: var(--light-background-color);
+      }
     }
   }
-
+}
 
   .editor-studio__aside-body {
     flex: 1;
