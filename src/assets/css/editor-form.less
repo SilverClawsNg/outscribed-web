@@ -37,10 +37,22 @@
  
 
   &__badge {
-    font-size: 1.2rem;
-    font-weight: normal;
+   
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+
+     @media @phone {
+       font-size: 1rem;
+  }
+
+    @media @phablet, @tablet {
+       font-size: 1.1rem;
+  }
+
+  @media @largeDevice {
+   font-size: 1.2rem;
+  }
   }
 
 }
