@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 
@@ -135,6 +135,16 @@ async function onAnimationEnd(windowItem: any) {
 export interface ModalComponentState {
   isSubmitting: boolean
 }
+
+function handleKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    modalStore.closeAll()
+  }
+}
+
+onMounted(() => window.addEventListener('keydown', handleKeyDown))
+onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
+
 
 </script>
 

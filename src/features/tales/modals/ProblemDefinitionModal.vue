@@ -16,10 +16,13 @@ function handleKeyDown(event: KeyboardEvent) {
 
 onMounted(() => window.addEventListener('keydown', handleKeyDown))
 onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
+
 </script>
 
 <template>
+
   <Transition name="modal-fade">
+    
     <div
       v-if="error"
       class="studio-modal-backdrop"
@@ -36,7 +39,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
         <header class="studio-modal__header">
 
           <div class="studio-modal__meta">
-            <span class="studio-modal__badge studio-modal__danger">{{ error.status || 400 }}</span>
+            <span class="studio-modal__badge studio-modal__badge--danger">{{ error.status || 400 }}</span>
             <h2 class="studio-modal__title">{{ error.title || 'Action Blocked' }}</h2>
           </div>
 

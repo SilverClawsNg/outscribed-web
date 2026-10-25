@@ -202,7 +202,7 @@ const modalStore = useModalStore()
     }
      
     &__summary {
-      font-size: clamp(1rem, 5vw, 1.2rem);
+      font-size: clamp(0.95rem, 5vw, 1.1rem);
       margin-bottom: 2rem;
       text-align: center;
       color: var(--muted-text-color);

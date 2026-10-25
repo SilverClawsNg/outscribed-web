@@ -4,98 +4,35 @@ import { RouterLink } from 'vue-router'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useLoginHint } from '@/utils/authHelper'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
+import { useRouter } from 'vue-router'
 
 // 1. Setup your services/stores
 const modalStore = useModalStore()
 const isLoggedIn = useLoginHint()
 const isMenuOpen = ref(false)
+const authStore = useAuthenticationStore();
+const router = useRouter()
 
 function handleCreateDraftClick() {
   modalStore.push('CreateTale', 'Create Tale')
   isMenuOpen.value = false;
 }
 
+function handleSavedDraftsClick() {
+  if(authStore.writerStatus === 'None'){
+    modalStore.push('CreateTale', 'Create Tale')
+  }
+  else{
+    router.push('/editor')
+  }
+      isMenuOpen.value = false;
+}
+
 function handleSearchClick() {
   modalStore.push('Search', 'Search')
   isMenuOpen.value = false;
 }
-
-// 2. Define your component inputs and outputs (Props & Emits)
-const emit = defineEmits<{
-  (e: 'headerClassChanged', className: string): void
-}>()
-
-// 3. Replicate the HeaderState Enum using string values
-type HeaderState = 'Neutral' | 'Public' | 'User'
-
-const currentState = ref<HeaderState>('Neutral')
-  
-const LARGE_MQ = '(min-width: 768px)' // match your @largeDevice
-
-function isLargeDevice() {
-  return typeof window !== 'undefined' && window.matchMedia(LARGE_MQ).matches
-}
-
-function applyDefaultForViewport() {
-  // Only auto-open public when nothing user-driven is forcing User
-  if (isLargeDevice()) {
-    if (currentState.value !== 'User') {
-      currentState.value = 'Public'
-      updateParent()
-    }
-  } else {
-    // Mobile: menus closed by default
-    if (currentState.value === 'Public') {
-      currentState.value = 'Neutral'
-      updateParent()
-    }
-  }
-}
-
-// 4. Computed property (mirrors your C# switch statement switch expression)
-const activeStateClass = computed(() => {
-  switch (currentState.value) {
-    case 'Public': return 'state-public-open'
-    case 'User': return 'state-user-open'
-    default: return 'state-neutral'
-  }
-})
-
-// 5. Component Methods
-const updateParent = () => {
-  emit('headerClassChanged', activeStateClass.value)
-}
-
-const CloseMenu = () => {
-  if (!isLargeDevice()) {
-    currentState.value = 'Neutral'
-    updateParent()
-  } 
- 
-}
-
-const TogglePublicMenu = () => {
-  currentState.value = currentState.value === 'Public' ? 'Neutral' : 'Public'
-  updateParent()
-}
-
-const ToggleUserMenu = () => {
-  currentState.value = currentState.value === 'User' ? 'Neutral' : 'User'
-  updateParent()
-}
-
-
-onMounted(() => {
-  applyDefaultForViewport()
-  const mq = window.matchMedia(LARGE_MQ)
-  // modern browsers
-  mq.addEventListener?.('change', applyDefaultForViewport)
-  // fallback
-  // mq.addListener?.(applyDefaultForViewport)
-  onUnmounted(() => {
-    mq.removeEventListener?.('change', applyDefaultForViewport)
-  })
-})
 
 </script>
 
@@ -152,9 +89,9 @@ onMounted(() => {
 
         <!-- Slot E: Studio Actions & Draft CTA (Desktop Right) -->
         <div class="main-header__studio-slot">
-           <router-link to="/editor" class="main-header__utility-link">
+           <button type="button" @click="handleSavedDraftsClick" class="main-header__utility-link">
            Saved Drafts
-          </router-link>
+           </button>
          
           <button type="button" class="btn btn--secondary" @click="handleCreateDraftClick">
             OutScribe
@@ -202,16 +139,14 @@ onMounted(() => {
           </template>
           <div class="divider-multi"><span></span></div>
         </div>
-
-         
-
+       
         <div class="main-header__mobile-studio-group">
            <button type="button" class="main-header__mobile-cta-btn" @click="handleCreateDraftClick">
               <SvgIcons name="edit" /> Create Draft
             </button>
-          <router-link to="/editor" class="main-header__mobile-link" @click="isMenuOpen = false">
+          <button type="button" @click="handleSavedDraftsClick" class="main-header__mobile-link">
             <SvgIcons name="archive" /> Saved Drafts
-          </router-link>
+          </button>
           <router-link v-if="isLoggedIn" to="/logout" class="main-header__mobile-link main-header__mobile-link--logout" @click="isMenuOpen = false">
            <SvgIcons name="padlock" /> Logout
           </router-link>
@@ -221,7 +156,6 @@ onMounted(() => {
     </div>
   </header>
 </template>
-
 
 <style scoped lang="less">
 @import "@/assets/css/header.less";

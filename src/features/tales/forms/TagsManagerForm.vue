@@ -408,6 +408,8 @@ currentTag.value = tagId
     position: relative;
     height: 100%;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   &__row-input{
@@ -420,9 +422,7 @@ currentTag.value = tagId
   }
 
   &__label {
-    font-family: @font-heading;
-    font-size: @text-sm;
-    line-height: @line-height-ui;
+    font-size: 0.95rem;
     color: var(--muted-text-color);
     font-weight: 500;
     margin-bottom: 0.5rem;
@@ -477,9 +477,7 @@ currentTag.value = tagId
   }
   
     &__character-counter {
-      position: absolute;
-      right: 0.25rem;
-      bottom: 0.25rem;
+     text-align: right;
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--muted-text-color);

@@ -1,12 +1,28 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useLoginHint } from '@/utils/authHelper'
 import { useModalStore } from '@/stores/modalStore'
+import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore';
 
-const currentYear = computed(() => new Date().getFullYear())
-const isLoggedIn = useLoginHint()
+import { useRouter } from 'vue-router'
+
+// 1. Setup your services/stores
 const modalStore = useModalStore()
+const isLoggedIn = useLoginHint()
+const authStore = useAuthenticationStore();
+const router = useRouter()
+const currentYear = computed(() => new Date().getFullYear())
+
+
+function handleSavedDraftsClick() {
+  if(authStore.writerStatus === 'None'){
+    modalStore.push('CreateTale', 'Create Tale')
+  }
+  else{
+    router.push('/editor')
+  }
+}
 
 </script>
 
@@ -57,7 +73,11 @@ const modalStore = useModalStore()
              <template v-if="isLoggedIn">
                 <li><router-link to="/profile" class="main-header__utility-link">Profile</router-link></li>
                 <li><router-link to="/timeline" class="main-header__utility-link">Timeline</router-link></li>
-                 <li><router-link to="/editor">Saved Drafts</router-link></li>
+                 <li>
+                     <button type="button" @click="handleSavedDraftsClick" class="main-header__utility-link">
+                      Saved Drafts
+                    </button>
+                  </li>
             <li><router-link to="/logout">Log Out</router-link></li>
           </template>
           <template v-else>

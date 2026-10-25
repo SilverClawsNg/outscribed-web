@@ -27,8 +27,7 @@ const taleStore = useTaleDraftStore()
       <!-- 1. ASIDE: Disabled during init (or handles its own loading list) -->
       <aside 
         class="editor-layout__aside"
-        :class="{ 'is-disabled': taleStore.isInitializing }"
-        :inert="taleStore.isInitializing"
+       
       >
         <EditorAsideComponent />
       </aside>
@@ -37,13 +36,15 @@ const taleStore = useTaleDraftStore()
       <div class="editor-layout__canvas-container">
         
         <!-- 3. ACTION STRIP: Disabled during init -->
-        <aside 
+        <nav 
           class="editor-layout__strip"
-          :class="{ 'is-disabled': taleStore.isInitializing }"
-          :inert="taleStore.isInitializing"
+         :class="{ 
+          'is-disabled': taleStore.isInitializing || !taleStore.activeTale 
+        }"
+        :inert="taleStore.isInitializing"
         >
           <EditorStripComponent />
-        </aside>
+      </nav>
 
         <!-- 4. MAIN CANVASES: ACTIVE & UNLOCKED so loaders/error actions work -->
         <main class="editor-layout__canvas">

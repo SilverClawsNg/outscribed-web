@@ -11,13 +11,19 @@ const taleStore = useTaleDraftStore()
 // Assert the non-null type when safe behind v-if in the template
 const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
 
-
-
 </script>
 
 <template>
+         
+        <template v-if="taleStore.isInitializing">
 
-  <template v-if="taleStore.activeTale">
+            <div class="loader" role="status" aria-label="Initializing">
+            <p class="loader__dot"></p>
+            </div>
+
+        </template>
+
+  <template v-else-if="taleStore.activeTale">
     
   <div class="draft-detail">
 
@@ -279,7 +285,6 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
   transition: background-color 0.15s ease, border-color 0.15s ease;
   background-color:var(--background-color);
 
-
  &__header-meta {
     display: flex;
     align-items: center;
@@ -303,13 +308,12 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
     }
 
   &__title {
-   font-size: clamp(1.125rem, 1.5vw + 0.875rem, 1.5rem); // Fluid title scaling
+   font-size: clamp(1.25rem, 1.5vw + 0.875rem, 1.5rem); // Fluid title scaling
     line-height: @line-height-tight;
     text-transform: capitalize;
     padding: 0.5rem 0;
     font-weight: normal;
   }
-
   
   &__menu {
     display: flex;
@@ -330,7 +334,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
     text-align:left;
     transition: all 0.15s ease;
     font-weight:normal;
- color:var(--editor-link-color);
+    color:var(--editor-link-color);
      border-radius: 4px;
   
     &:hover,

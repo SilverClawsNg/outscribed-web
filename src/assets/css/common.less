@@ -2,6 +2,7 @@
 
 html {
   // Sets root base size cleanly without breaking browser user zoom settings
+  background-color: var(--background-color);
   font-size:1rem;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
@@ -44,22 +45,7 @@ body {
     font-size: 100%;
   }
 
-  
-  @media @smallDevice {
-
-    &::before{
-        height: @body-top-offset-small; // Pushes standard document flow down cleanly
-    }
-  }
-
-  @media @largeDevice {
-     &::before{
-        height: @body-top-offset-large; // Pushes standard document flow down cleanly
-    }
-  }
-
-
-  &::before {
+    &::before {
     content: "";
     position: fixed;
     top: 0;
@@ -77,13 +63,24 @@ body {
       @logo-yellow 100%
     );
   }
-}
+  
+  @media @smallDevice {
 
+    &::before{
+        height: @body-top-offset-small; // Pushes standard document flow down cleanly
+    }
+  }
+
+  @media @largeDevice {
+     &::before{
+        height: @body-top-offset-large; // Pushes standard document flow down cleanly
+    }
+  }
+}
 
 body.modal-open {
     overflow: hidden;
 }
-
 
 /* ==========================================================================
    Main

@@ -208,7 +208,7 @@ async function handleFormSubmission() {
 </script>
 
 <template>
-  
+
       <div class="editorial-canvas">
 
           <!-- Header Action Bar (Full Canvas Width) -->

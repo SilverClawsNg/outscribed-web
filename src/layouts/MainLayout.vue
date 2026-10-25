@@ -6,14 +6,10 @@ import MainHeader from '@/components/MainHeader.vue'
 import ModalContainer from '@/components/ModalContainer.vue'
 import Alert from '@/components/Alert.vue'; // 👈 Import alert store
 import MainFooter from '@/components/MainFooter.vue'
+import { useRouter } from 'vue-router'
 
 const route = useRoute()
 const modalStore = useModalStore()
-const currentHeaderClass = ref('state-neutral')
-
-const handleHeaderClassChanged = (newClass: string) => {
-  currentHeaderClass.value = newClass
-}
 
 // Automatically dismiss open modals on page navigation
 watch(() => route.path, () => modalStore.closeAll())
@@ -28,9 +24,9 @@ watch(() => route.path, () => modalStore.closeAll())
 
     <ModalContainer />
     
-    <MainHeader @headerClassChanged="handleHeaderClassChanged" />
+    <MainHeader />
 
-    <main class="main-layout" :class="currentHeaderClass">
+    <main class="main-layout">
       <RouterView />
     </main>
 

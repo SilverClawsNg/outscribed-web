@@ -269,44 +269,7 @@ onBeforeUnmount(() => {
         </button>
       </header>
 
-      <template v-if="taleStore.isInitializing">
-        <div class="loader" role="status" aria-label="Loading tales">
-          <p class="loader__dot"></p>
-        </div>
-      </template>
-
-      <template v-else-if="taleStore.loadingError">
-        <PageStatusMessage 
-          :title="taleStore.loadingError.title || 'Error Loading Drafts'" 
-          :message="taleStore.loadingError.detail || 'An unexpected error occurred.'"
-          icon="broken-chain"
-          :is-standalone="true"
-        >
-          <template v-if="taleStore.loadingError.status == 401" #actions>
-            <button class="btn btn--primary" @click="redirectToLogin">Login</button>
-          </template>
-          <template v-else-if="taleStore.loadingError.definition" #actions>
-            <button 
-              class="btn btn--primary"  
-              @click="modalStore.push('ProblemDefinition', 'Problem Detail', taleStore.loadingError)"
-            >
-              More Details
-            </button>
-          </template>
-        </PageStatusMessage>
-      </template>
-
-      <template v-else-if="!taleStore.activeTale">
-        <PageStatusMessage 
-          title="No Draft Selected" 
-          message="There are no active draft to update. Select a draft from the list or create a new one."
-          icon="broken-chain"
-          :is-standalone="true"
-        />
-      </template>
-
-      <template v-else>
-        <!-- Sticky Quill Toolbar Container -->
+       <!-- Sticky Quill Toolbar Container -->
         <div class="toolbar-wrapper">
           <div ref="toolbarRef" class="ql-toolbar ql-snow toolbar">
             <span class="ql-formats">
@@ -356,7 +319,6 @@ onBeforeUnmount(() => {
             </span>
           </div>
         </div>
-      </template>
     </div>
 
   </template>

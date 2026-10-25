@@ -207,8 +207,7 @@ async function handleCommitAddendum() {
 
 <template>
 
-
-      <!-- 1. PRE-ACTION INVALID STATE NOTICE -->
+<!-- 1. PRE-ACTION INVALID STATE NOTICE -->
       <template v-if="notEngaged">
         <PageStatusMessage
           title="Action Not Available"

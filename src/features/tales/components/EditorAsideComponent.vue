@@ -237,9 +237,8 @@ function navigateToAside(section: AsideView) {
              <DraftDetailComponent />
 
         </template>
-
-          
-        
+         
+       
       </div>
 
 </template>
