@@ -30,7 +30,7 @@ const lockSubmission = ref(false)
 
 
 // Local TagDto array initialized from active tale
-const tagList = ref<TagDto[]>([...(taleStore.activeTale?.tags || [])])
+const tagList = computed(() => taleStore.activeTale?.tags || [])
 
 const remainingTags = computed(() => MAX_TAGS - tagList.value.length)
 const isAtLimit = computed(() => tagList.value.length >= MAX_TAGS)
@@ -109,22 +109,22 @@ const tagLength = computed(() => tagFormData.value.name?.length || 0)
 
 // 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
+  const tagText = tagFormData.value.name || '';
 
-const tagText = tagFormData.value.name || '';
+  // 🔑 Fix: Read from tagFormData.name instead of unassigned newTagInput
+  const cleanedName = tagText.trim().toLowerCase().replace(/[^a-z0-9-]/g, '')
 
- const cleanedName = newTagInput.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '')
-
- const isDuplicate = tagList.value.some(
+  const isDuplicate = tagList.value.some(
     (tag) => tag.name.toLowerCase() === cleanedName
   )
 
- let tagError = '';
+  let tagError = '';
 
- if(tagText === '' || tagText.length < 3 || tagText.length > 32){
-    tagError = 'Tag name must be between 3 and 32 characters';
- } else  if (isAtLimit.value) {
-   tagError = `You cannot add more than ${MAX_TAGS} tags to a story.`
-  } else  if (isDuplicate) {
+  if(tagText === '' || tagText.length < 3 || tagText.length > 32){
+     tagError = 'Tag name must be between 3 and 32 characters';
+  } else if (isAtLimit.value) {
+    tagError = `You cannot add more than ${MAX_TAGS} tags to a story.`
+  } else if (isDuplicate) {
     tagError = `"${cleanedName}" has already been added to this story.`
   }
 
@@ -132,7 +132,6 @@ const tagText = tagFormData.value.name || '';
     name: tagError
   }
 })
-
 // 3. Form is valid if all computed error fields are empty strings
 const isFormValid = computed(() => {
   return Object.values(validationErrors.value).every(error => error === '')
@@ -249,23 +248,30 @@ currentTag.value = tagId
 
         <div class="tags-card__row">
 
-            <div class="tags-card__row-input-wrapper">
-
+            <div class="tags-card__row-wrapper">
                  <input
-            v-model="tagFormData.name"
-            type="text"
-            placeholder="Type in tag name"
-            class="tags-card__row-input"
-          />
-                 <span 
-            class="tags-card__character-counter" 
-            :class="{ 
-              'is-warning': tagLength > 28  && tagLength <= 32,
-              'is-over-limit': tagLength < 3  || tagLength > 32 
-            }"
-          >
-            {{ tagLength }}/32
-          </span>
+                    v-model="tagFormData.name"
+                    type="text"
+                    placeholder="Type in tag name"
+                    class="tags-card__row-input"
+                />
+                <div class="tags-card__row-footer">
+
+                    <span v-if="formSubmitted && validationErrors.name" class="tags-card__validation-message">
+                      {{ validationErrors.name }}
+                  </span>
+
+                    <span 
+                    class="tags-card__character-counter" 
+                    :class="{ 
+                      'is-warning': tagLength > 28  && tagLength <= 32,
+                      'is-over-limit': (tagLength > 0 && tagLength < 3)  || tagLength > 32 
+                    }"
+                  >
+                  {{ tagLength.toLocaleString() }}/32
+                 </span>
+                </div>
+               
             </div>
        
             <button 
@@ -273,7 +279,6 @@ currentTag.value = tagId
                 form="add-tag-form" 
                 class="btn btn--secondary"  
                 :disabled="progressState.type === 'Loading' || lockSubmission || taleStore.activeTale?.tags.length === MAX_TAGS"
-                 @click="handleTagSubmission"
             >
            Add
 
@@ -281,38 +286,31 @@ currentTag.value = tagId
 
         </div>
 
-          <div class="tags-card__row tags-card__row--offset">
-
-         <span v-if="formSubmitted && validationErrors.name" class="tags-card__validation-message">
-                {{ validationErrors.name }}
-            </span>
-
-        </div>
-       
       </form>
 
          <div class="divider-multi divider-multi--thick"><span></span></div>
 
         <!-- Validation Error Bubble -->
 
-         <label class="tags-card__label">
+         
+        <template v-if="tagList.length > 0">
+
+         <label class="tags-card__label tags-card__label--double">
             Click box to remove existing tags
             <span 
             class="tags-card__character-counter" 
             :class="{ 
-              'is-over-limit': taleStore.activeTale?.tags.length && (taleStore.activeTale?.tags.length >= (MAX_TAGS - 2))
+              'is-over-limit': tagList.length && (tagList.length >= (MAX_TAGS - 2))
             }"
           >
-            {{ taleStore.activeTale?.tags.length.toLocaleString() }} / {{ MAX_TAGS }}
+            {{ tagList.length.toLocaleString() }} / {{ MAX_TAGS }}
           </span>
         </label>
-         
-        <template v-if="tagList.length > 0">
 
             <ol class="tags-card__existing">
                 <li
-                    v-for="tag in taleStore.activeTale?.tags"
-                    :key="tag.tagId || tag.name"
+                    v-for="tag in tagList"
+                    :key="tag.tagId"
                 >
                     <button
                     type="button"
@@ -404,7 +402,7 @@ currentTag.value = tagId
     }
   }
 
-  &__row-input-wrapper{
+  &__row-wrapper{
     position: relative;
     height: 100%;
     flex-grow: 1;
@@ -413,12 +411,19 @@ currentTag.value = tagId
   }
 
   &__row-input{
-    height: 3rem;
+    height: 2.5rem;
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: 6px;
     width: 100%;
     padding: 0 0.5rem;
+  }
+
+  &__row-footer{
+    display: flex;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    margin-top: 0.5rem;
   }
 
   &__label {
@@ -428,6 +433,12 @@ currentTag.value = tagId
     margin-bottom: 0.5rem;
     display: inline-block;
     position:relative;
+
+    &--double{
+      display: flex;
+      justify-content: space-between;
+      column-gap: 0.5rem;
+    }
   }
 
  .tags-card__existing {
@@ -468,16 +479,13 @@ currentTag.value = tagId
    &__validation-message {
     font-size: 0.85rem;
     line-height:1.1rem;
-    background-color: var(--text-color);
-    color: var(--background-color);
+    color: @danger-color;
     border-radius: 50px;
-    padding: 1rem 0.6rem;
-    max-width: 350px;
-    text-align:center;
   }
   
     &__character-counter {
-     text-align: right;
+      margin-left: auto; // 🔑 This instantly pins it to the right, error or no error!
+      white-space: nowrap;
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--muted-text-color);

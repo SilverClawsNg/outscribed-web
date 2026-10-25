@@ -264,21 +264,35 @@ async function handleFormSubmission() {
     
      <div class="editorial-canvas">
 
-          <!-- Header Action Bar (Full Canvas Width) -->
         <header class="editorial-canvas__header">
-            <span class="editorial-canvas__badge">Cover Photo</span>
+  <!-- Left Side: Title & Section Completion Status Indicators -->
+  <div class="editorial-canvas__header-info">
+    <span class="editorial-canvas__badge">Cover Photo</span>
+    
+    <div class="editorial-canvas__indicators">
+      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasBasicInfo() }">
+        Basic {{ taleStore.hasBasicInfo() ? '✓' : '✗' }}
+      </span>
+      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasDetails() }">
+        Story {{ taleStore.hasDetails() ? '✓' : '✗' }}
+      </span>
+      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasRealityCheck() }">
+        Reality Check {{ taleStore.hasRealityCheck() ? '✓' : '✗' }}
+      </span>
+    </div>
+  </div>
 
-            <button 
-                type="submit" 
-                form="cover-photo-form" 
-                class="btn btn--secondary"  
-                :disabled="progressState.type === 'Loading' || lockSubmission"
-            >
-                {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
-            </button>
-
+  <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
+  <button 
+    type="submit" 
+    form="basic-info-form" 
+    class="btn btn--secondary"  
+    :disabled="progressState.type === 'Loading' || lockSubmission"
+  >
+    {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
+  </button>
         </header>
-
+     
         <!-- Centered Editorial Content Container (750px Width) -->
         <div class="editorial-form">
             

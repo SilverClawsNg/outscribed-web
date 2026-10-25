@@ -254,21 +254,37 @@ onBeforeUnmount(() => {
   <template v-else>
 
     <div class="editorial-canvas">
-      <!-- Header Action Bar (Full Canvas Width) -->
-      <header class="editorial-canvas__header">
-        <span class="editorial-canvas__badge">Story Details</span>
 
-        <button 
-          type="submit" 
-          form="basic-info-form" 
-          class="btn btn--secondary"  
-          @click="handleFormSubmission"
-          :disabled="progressState.type === 'Loading' || lockSubmission"
-        >
-          {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
-        </button>
-      </header>
 
+        <header class="editorial-canvas__header">
+  <!-- Left Side: Title & Section Completion Status Indicators -->
+  <div class="editorial-canvas__header-info">
+    <span class="editorial-canvas__badge">Story Details</span>
+    
+    <div class="editorial-canvas__indicators">
+      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasBasicInfo() }">
+        Basic {{ taleStore.hasBasicInfo() ? '✓' : '✗' }}
+      </span>
+      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasDetails() }">
+        Story {{ taleStore.hasDetails() ? '✓' : '✗' }}
+      </span>
+      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasRealityCheck() }">
+        Reality Check {{ taleStore.hasRealityCheck() ? '✓' : '✗' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
+  <button 
+    type="submit" 
+    form="basic-info-form" 
+    class="btn btn--secondary"  
+    :disabled="progressState.type === 'Loading' || lockSubmission"
+  >
+    {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
+  </button>
+        </header>
+     
        <!-- Sticky Quill Toolbar Container -->
         <div class="toolbar-wrapper">
           <div ref="toolbarRef" class="ql-toolbar ql-snow toolbar">

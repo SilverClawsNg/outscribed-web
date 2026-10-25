@@ -297,15 +297,14 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       }
 
       // ALWAYS persist the anchor if the server returned one
-   
-
-      await reconcileNewDrafts();
+         await reconcileNewDrafts();
 
       // 3. SET TOPMOST DRAFT & INITIAL ACTIVE VIEW
     if (tales.value.length > 0) {
-      const topmostTale = tales.value[0];
+    
+      //Set active tale
+      activeTale.value = tales.value[0] || null;
 
-      if(topmostTale) activeTale.value = { ...topmostTale };
       currentAsideView.value = 'detail';
 
       // Smart view resolution based on completeness
@@ -416,8 +415,12 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       };
       
       tales.value.unshift(newTaleDraft);
-      activeTale.value = { ...newTaleDraft };
+     
+      //Set active tale
+      activeTale.value = tales.value[0] || null;
+
       currentMainView.value = 'details';
+
       localStorage.setItem(`tale:draft:new:${outcome.value.id}`, JSON.stringify(newTaleDraft));
 
       return { success: true, error: null };
@@ -447,23 +450,16 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         return { success: false, error: error };
       } 
 
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+      const nowIso = new Date().toISOString();
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          tale.detail = outcome.value.detail;
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
-        localStorage.removeItem('tale:anchor:drafts');
-      }
+    // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+    if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+      activeTale.value.detail = outcome.value.detail;
+      activeTale.value.lastUpdatedAt = nowIso;
 
-              // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-        activeTale.value.detail = outcome.value.detail;
-      activeTale.value.lastUpdatedAt = nowIso
+      // Single persistence call using the live reference
+      localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
+      localStorage.removeItem('tale:anchor:drafts');
     }
 
       return { success: true, error: null };
@@ -478,28 +474,18 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
       const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          tale.title = payload.title;
-          if(payload.category != '-1') tale.category = payload.category;
-          if(payload.country != '-1') tale.country = payload.country;
-          tale.summary = payload.summary;
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
-        localStorage.removeItem('tale:anchor:drafts');
-      }
-
-           // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-        activeTale.value.title = payload.title;
+    // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+    if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+       activeTale.value.title = payload.title;
           if(payload.category != '-1') activeTale.value.category = payload.category;
           if(payload.country != '-1') activeTale.value.country = payload.country;
           activeTale.value.summary = payload.summary;
       activeTale.value.lastUpdatedAt = nowIso
+
+      // Single persistence call using the live reference
+      localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
+      localStorage.removeItem('tale:anchor:drafts');
     }
 
       return { success: true, error: null };
@@ -518,27 +504,18 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         return { success: false, error: error };
       } 
 
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+       const nowIso = new Date().toISOString()
 
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+            activeTale.value.photo = outcome.value.photoUrl;
+            activeTale.value.photoCaption = payload.caption;
+            activeTale.value.lastUpdatedAt = nowIso
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          tale.photo = outcome.value.photoUrl;
-          tale.photoCaption = payload.caption;
-          tale.lastUpdatedAt = new Date().toISOString();
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
         localStorage.removeItem('tale:anchor:drafts');
       }
-
-        // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-        activeTale.value.photo = outcome.value.photoUrl;
-          activeTale.value.photoCaption = payload.caption;
-      activeTale.value.lastUpdatedAt = nowIso
-    }
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -551,30 +528,20 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/realitycheck', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+     const nowIso = new Date().toISOString()
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          tale.realityCheckTitle = payload.title;
-          tale.realityCheckSummary = payload.summary;
-          tale.realityCheckUrl = payload.sourceUrl;
-          tale.realityCheckSource = payload.source;
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
-        localStorage.removeItem('tale:anchor:drafts');
-      }
-
-    // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-        activeTale.value.realityCheckTitle = payload.title;
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+          activeTale.value.realityCheckTitle = payload.title;
           activeTale.value.realityCheckSummary = payload.summary;
           activeTale.value.realityCheckUrl = payload.sourceUrl;
           activeTale.value.realityCheckSource = payload.source;
-      activeTale.value.lastUpdatedAt = nowIso
-    }
+          activeTale.value.lastUpdatedAt = nowIso
+
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
+        localStorage.removeItem('tale:anchor:drafts');
+      }
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -593,26 +560,18 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       } 
 
       const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          if (!tale.tags) tale.tags = [];
-          tale.tags.unshift({ tagId: outcome.value.tagId, name: payload.name });
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+           if (!activeTale.value.tags) activeTale.value.tags = [];
+          activeTale.value.tags.unshift({ tagId: outcome.value.tagId, name: payload.name });
+          activeTale.value.lastUpdatedAt = nowIso
+          activeTale.value.lastUpdatedAt = nowIso
+
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
         localStorage.removeItem('tale:anchor:drafts');
       }
-
-                  // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-        if (!activeTale.value.tags) activeTale.value.tags = [];
-          activeTale.value.tags.unshift({ tagId: outcome.value.tagId, name: payload.name });
-      activeTale.value.lastUpdatedAt = nowIso
-    }
-
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -625,30 +584,18 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/untag', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+     const nowIso = new Date().toISOString()
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-       
-        if (tale && tale.tags) {
-          const tagIndex = tale.tags.findIndex(t => t.tagId === payload.tagId);
-          if (tagIndex !== -1) tale.tags.splice(tagIndex, 1);
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
-        localStorage.removeItem('tale:anchor:drafts');
-      }
-
-                // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-      if(activeTale.value.tags){
-           const tagIndex = activeTale.value.tags.findIndex(t => t.tagId === payload.tagId);
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+         const tagIndex = activeTale.value.tags.findIndex(t => t.tagId === payload.tagId);
           if (tagIndex !== -1) activeTale.value.tags.splice(tagIndex, 1);
           activeTale.value.lastUpdatedAt = nowIso
+
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
+        localStorage.removeItem('tale:anchor:drafts');
       }
-     
-    }
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -668,7 +615,9 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
         localStorage.removeItem(`${UPDATE_DRAFT_PREFIX}${payload.taleId}`);
       }
 
-      activeTale.value = null;
+       //Set active tale
+      activeTale.value = tales.value[0] || null;
+
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };
@@ -696,24 +645,17 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/launch', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          tale.status = 'LaunchedByCreator';
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+     const nowIso = new Date().toISOString()
+
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+         activeTale.value.status = 'LaunchedByCreator';
+         activeTale.value.lastUpdatedAt = nowIso
+
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
         localStorage.removeItem('tale:anchor:drafts');
       }
-
-             // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-      activeTale.value.status = 'LaunchedByCreator';
-      activeTale.value.lastUpdatedAt = nowIso
-    }
-
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -726,30 +668,21 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/user/archive', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
-      let newStatus: TaleStatus = 'LaunchedToArchivedByCreator';
+     const nowIso = new Date().toISOString()
 
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          if (tale.status === 'LaunchedByCreator') {
-            newStatus = 'LaunchedToArchivedByCreator';
-          } else if (tale.status === 'CertifiedByAdmin') {
-            newStatus = 'CertifiedToArchivedByCreator';
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+         if (activeTale.value.status === 'LaunchedByCreator') {
+            activeTale.value.status = 'LaunchedToArchivedByCreator';
+          } else if (activeTale.value.status === 'CertifiedByAdmin') {
+            activeTale.value.status = 'CertifiedToArchivedByCreator';
           }
-          tale.lastUpdatedAt = nowIso;
-          tale.status = newStatus
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+
+          activeTale.value.lastUpdatedAt = nowIso
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
         localStorage.removeItem('tale:anchor:drafts');
       }
-
-             // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-      activeTale.value.status = newStatus
-      activeTale.value.lastUpdatedAt = nowIso
-    }
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -762,31 +695,21 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/user/unarchive', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
+         const nowIso = new Date().toISOString()
 
-      let newStatus: TaleStatus = 'LaunchedToArchivedByCreator';
-
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          if (tale.status === 'LaunchedToArchivedByCreator') {
-            newStatus = 'LaunchedByCreator';
-          } else if (tale.status === 'CertifiedToArchivedByCreator') {
-            newStatus = 'CertifiedByAdmin';
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+         if (activeTale.value.status === 'LaunchedToArchivedByCreator') {
+            activeTale.value.status = 'LaunchedByCreator';
+          } else if (activeTale.value.status === 'CertifiedToArchivedByCreator') {
+            activeTale.value.status = 'CertifiedByAdmin';
           }
-          tale.lastUpdatedAt = nowIso;
-          tale.status = newStatus
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+
+          activeTale.value.lastUpdatedAt = nowIso
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
         localStorage.removeItem('tale:anchor:drafts');
       }
-
-           // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-      activeTale.value.status = newStatus
-      activeTale.value.lastUpdatedAt = nowIso
-    }
 
       return { success: true, error: null };
     } catch (err: any) {
@@ -799,24 +722,19 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       const outcome = await postAsync('/api/tales/addendum', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
 
-      const nowIso = new Date().toISOString()
-      const index = tales.value.findIndex(t => t.taleId === payload.taleId);
-      if (index !== -1) {
-        const tale = tales.value[index];
-        if (tale) {
-          tale.addendum = payload.addendum;
-          tale.lastUpdatedAt = nowIso;
-        }
-        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(tales.value[index]));
+       const nowIso = new Date().toISOString()
+
+      // 🔑 Modifying activeTale automatically mutates the object inside tales.value!
+      if (activeTale.value && activeTale.value.taleId === payload.taleId) {
+          activeTale.value.addendum = payload.addendum
+          activeTale.value.addendumDate = nowIso
+          activeTale.value.lastUpdatedAt = nowIso
+
+        // Single persistence call using the live reference
+        localStorage.setItem(`tale:draft:update:${payload.taleId}`, JSON.stringify(activeTale.value));
         localStorage.removeItem('tale:anchor:drafts');
       }
 
-        // 4. Update Store Active Tale  (Used by callers awaiting resolution)
-    if (activeTale.value) {
-      activeTale.value.addendum = payload.addendum
-      activeTale.value.addendumDate = nowIso
-      activeTale.value.lastUpdatedAt = nowIso
-    }
       return { success: true, error: null };
     } catch (err: any) {
       return { success: false, error: err?.error || new APIError(500, 'Internal Client Error', err.message || 'An unexpected error occurred.') };

@@ -4,56 +4,81 @@
   width: 100%;
   min-height: 100%;
   background-color: var(--background-color);
-   
 
-  /* Sticky Action Header across canvas top */
-  &__header {
+   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 0.5rem;
     height: 56px;
+    padding: 0; // Remove padding so button can stretch to 100% height edge-to-edge
     position: sticky;
     top: 0;
-
-     @media @smallDevice {
-       top: @body-top-offset-small;
- // Pushes standard document flow down cleanly
-  }
-
-  @media @largeDevice {
-   top: @body-top-offset-large;// Pushes standard document flow down cleanly
-  }
-
     z-index: 10;
-    //backdrop-filter: blur(8px);
-    //border-bottom: 1px solid var(--border-color);
     background-color: var(--background-color);
-     box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow);
 
-     
+    @media @smallDevice {
+      top: @body-top-offset-small;
+    }
+
+    @media @largeDevice {
+      top: @body-top-offset-large;
+    }
   }
- 
+
+  &__header-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1rem;
+    gap: 2px;
+  }
 
   &__badge {
-   
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    line-height: 1.2;
 
-     @media @phone {
-       font-size: 1rem;
-  }
-
+    @media @phone {
+      font-size: 0.85rem;
+    }
     @media @phablet, @tablet {
-       font-size: 1.1rem;
+      font-size: 0.95rem;
+    }
+    @media @largeDevice {
+      font-size: 1rem;
+    }
   }
 
-  @media @largeDevice {
-   font-size: 1.2rem;
+  /* Inline Text Indicators (Story ✓ / Reality Check ✗) */
+  &__indicators {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted-text-color, #888);
   }
+
+  &__indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+
+    &.is-complete {
+      color: var(--success-color, #2e7d32);
+      font-weight: 600;
+    }
   }
+
+  /* Full 56px Height Action Button (Stripped of default btn pill borders/margins) */
+  & .btn.btn--secondary {
+    height: 100%;
+    border-radius: 0; // Flush right edge
+
+  }
+  
 
 }
 
