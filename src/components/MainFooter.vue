@@ -16,7 +16,7 @@ const currentYear = computed(() => new Date().getFullYear())
 
 
 function handleSavedDraftsClick() {
-  if(authStore.writerStatus === 'None'){
+  if(!isLoggedIn.value || authStore.writerStatus === 'None'){
     modalStore.push('CreateTale', 'Create Tale')
   }
   else{

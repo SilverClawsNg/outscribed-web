@@ -20,7 +20,8 @@ function handleCreateDraftClick() {
 }
 
 function handleSavedDraftsClick() {
-  if(authStore.writerStatus === 'None'){
+  console.log(`is-logged = ${isLoggedIn.value}. writer status = ${authStore.writerStatus}`)
+  if(!isLoggedIn.value || authStore.writerStatus === 'None'){
     modalStore.push('CreateTale', 'Create Tale')
   }
   else{

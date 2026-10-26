@@ -211,9 +211,18 @@ function navigateToAside(section: AsideView) {
             <template v-else>
             <PageStatusMessage
             title="No Tale Found!"
-            message="We could not find any tale for this account. Tale created offline or in-progress will show up here."
+            message="We could not find any tale matching your search parameters. If you are new here, create a tale else refine your search."
             icon="inbox"
-            :is-standalone="true" />
+            :is-standalone="true">
+                <template #actions>
+                <button class="btn btn--primary"  @click="taleStore.currentAsideView = 'create'">
+                    Create
+                </button>
+                 <button class="btn btn--secondary"  @click="taleStore.currentAsideView = 'filter'">
+                    Filter
+                </button>
+                </template>
+                </PageStatusMessage>
             </template>
 
         </template>
