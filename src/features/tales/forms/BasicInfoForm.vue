@@ -268,7 +268,8 @@ async function handleFormSubmission() {
   <!-- Left Side: Title & Section Completion Status Indicators -->
   <h1 class="editorial-canvas__badge">Basic Information</h1>
 
-  <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
+  <div class="editorial-canvas__btn-holder">
+ <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
   <button 
     type="submit" 
     form="basic-info-form" 
@@ -277,6 +278,8 @@ async function handleFormSubmission() {
   >
     {{ progressState.type === 'Loading' ? 'Saving...' : 'Save' }}
   </button>
+  </div>
+ 
         </header>
 <div class="editorial-canvas__body">
   <!-- Centered Editorial Content Container -->

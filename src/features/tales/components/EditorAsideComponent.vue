@@ -110,8 +110,12 @@ function navigateToAside(section: AsideView) {
 <template>
       
   <!-- Aside Fixed Header -->
-<header class="editor-studio__aside-header">
-  <div class="editor-studio__aside-header--actions">
+<header class="editor-aside-header">
+
+  <div class="editor-aside-header__actions">
+
+    <div class="editor-aside-header__actions-item">
+
     <button 
       type="button" 
       class="btn btn--primary"
@@ -122,6 +126,10 @@ function navigateToAside(section: AsideView) {
       Tales
     </button>
 
+    </div>
+
+    <div class="editor-aside-header__actions-item">
+      
     <button 
       type="button" 
       class="btn btn--primary"
@@ -131,6 +139,10 @@ function navigateToAside(section: AsideView) {
       Filter
     </button>
 
+    </div>
+
+     <div class="editor-aside-header__actions-item">
+      
     <button 
       type="button" 
       class="btn btn--secondary"
@@ -139,11 +151,14 @@ function navigateToAside(section: AsideView) {
     >
       OutScribe
     </button>
+    
+    </div>
+
   </div>
 </header>
 
       <!-- Aside Dynamic Component Body -->
-      <div class="editor-studio__aside-body">
+      <div class="editor-sidebar-body">
 
         <template v-if="taleStore.currentAsideView === 'list'">
 
@@ -255,7 +270,7 @@ function navigateToAside(section: AsideView) {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 
-.editor-studio__aside-header {
+.editor-aside-header {
   flex: 0 0 auto;
   height: 56px;
   padding: 0; /* Remove horizontal padding so items span full width */
@@ -269,38 +284,33 @@ function navigateToAside(section: AsideView) {
   background-color: var(--background-color);
   z-index: 5;
 
-  &--actions {
+  &__actions {
     display: flex;
     width: 100%;
     height: 100%;
     align-items: stretch;
-    column-gap: 0; /* Remove gap so buttons can form a cohesive segment control if desired */
+    padding: 0 0.5rem;
+   
+  }
+   column-gap: 0; /* Remove gap so buttons can form a cohesive segment control if desired */
 
-    /* Force all 3 buttons to take up equal width (33.333%) and 100% height */
-    > button {
+&__actions-item{
+
       flex: 1 1 0;
       width: 100%;
       height: 100%;
-      border-radius: 0; /* Square edges or adjust if you prefer subtle rounding */
-      border: 1px solid @link-color;
-      border-top: none;
-      border-bottom: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      text-transform: uppercase;
-      
-      /* Optional: clean border splitting between the three buttons */
-      &:not(:first-child) {
-        border-left: none; 
-      }
+      padding: 0.5rem;
 
-    }
-  }
+      & .btn{
+        width: 100%;
+      }
+   
 }
 
-  .editor-studio__aside-body {
+   
+}
+
+  .editor-aside-body {
     flex: 1;
     overflow-y: auto;
     height: auto;

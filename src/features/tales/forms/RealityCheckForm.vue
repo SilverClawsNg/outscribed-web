@@ -216,14 +216,17 @@ async function handleFormSubmission() {
   <h1 class="editorial-canvas__badge">Reality Check</h1>
 
   <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
+ <div class="editorial-canvas__btn-holder">
+ <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
   <button 
     type="submit" 
-    form="basic-info-form" 
+    form="reality-check-form" 
     class="btn btn--secondary"  
     :disabled="progressState.type === 'Loading' || lockSubmission"
   >
     {{ progressState.type === 'Loading' ? 'Saving...' : 'Save' }}
   </button>
+  </div>
         </header>
         
       <div class="editorial-canvas__body">

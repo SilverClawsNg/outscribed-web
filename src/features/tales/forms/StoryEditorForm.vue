@@ -260,15 +260,17 @@ onBeforeUnmount(() => {
   <!-- Left Side: Title & Section Completion Status Indicators -->
   <h1 class="editorial-canvas__badge">Story Details</h1>
 
-  <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
+  <div class="editorial-canvas__btn-holder">
+ <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
   <button 
     type="submit" 
-    form="basic-info-form" 
+    form="story-details-form" 
     class="btn btn--secondary"  
     :disabled="progressState.type === 'Loading' || lockSubmission"
   >
     {{ progressState.type === 'Loading' ? 'Saving...' : 'Save' }}
   </button>
+  </div>
         </header>
      
        <!-- Sticky Quill Toolbar Container -->
@@ -296,7 +298,7 @@ onBeforeUnmount(() => {
 
         <!-- Centered Article Canvas -->
         <div class="editorial-canvas__body">
-          
+
           <div v-if="progressState.type !== 'Idle'" class="floating-progress-bar">
             <FormProgress :progress="progressState" :is-editor="true" />
           </div>
