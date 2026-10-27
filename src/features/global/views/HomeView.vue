@@ -675,39 +675,49 @@ onUnmounted(() => {
     /* --- Logo Ribbon Spectrum Background Wash --- */
     &--step1 {
       background-color: fade(@logo-red, 8%);
-      .publishing-roadmap__number { background-color: @logo-red; color: #fff; }
+            border: 1px solid fade(@logo-red, 35%); // Highlight victory state
+
+      .publishing-roadmap__number { background-color: @logo-red; color: @white-color; }
       h4 { color: darken(@logo-red, 10%); }
     }
 
     &--step2 {
       background-color: fade(@logo-orange, 8%);
-      .publishing-roadmap__number { background-color: @logo-orange; color: #fff; }
+            border: 1px solid fade(@logo-orange, 35%); // Highlight victory state
+
+      .publishing-roadmap__number { background-color: @logo-orange; color:@white-color;  }
       h4 { color: darken(@logo-orange, 15%); }
     }
 
     &--step3 {
       background-color: fade(@logo-yellow, 15%);
-      .publishing-roadmap__number { background-color: darken(@logo-yellow, 20%); color: #fff; }
+            border: 1px solid fade(@logo-yellow, 35%); // Highlight victory state
+
+      .publishing-roadmap__number { background-color: darken(@logo-yellow, 20%); color:@white-color;  }
       h4 { color: darken(@logo-yellow, 35%); }
     }
 
     &--step4 {
       background-color: fade(@logo-purple, 8%);
-      .publishing-roadmap__number { background-color: @logo-purple; color: #fff; }
+            border: 1px solid fade(@logo-purple, 35%); // Highlight victory state
+
+      .publishing-roadmap__number { background-color: @logo-purple; color:@white-color;  }
       h4 { color: @logo-purple; }
     }
 
     &--step5 {
       background-color: fade(@logo-green, 8%);
-      .publishing-roadmap__number { background-color: @logo-green; color: #fff; }
+            border: 1px solid fade(@logo-green, 35%); // Highlight victory state
+
+      .publishing-roadmap__number { background-color: @logo-green; color:@white-color;  }
       h4 { color: darken(@logo-green, 10%); }
     }
 
     &--step6 {
-      background-color: fade(@logo-green, 18%);
-      border: 1px solid fade(@logo-green, 35%); // Highlight victory state
-      .publishing-roadmap__number { background-color: @logo-green; color: #fff; }
-      h4 { color: darken(@logo-green, 15%); font-weight: 700; }
+      background-color: fade(@link-color, 8%);
+      border: 1px solid fade(@link-color, 35%); // Highlight victory state
+      .publishing-roadmap__number { background-color: @link-color; color:@white-color;  }
+      h4 { color: darken(@link-color, 15%); font-weight: 700; }
     }
   }
 
