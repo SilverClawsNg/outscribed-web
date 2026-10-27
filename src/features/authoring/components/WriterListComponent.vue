@@ -105,7 +105,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
             {{ writer.latestTale.title }}
             </h1>
 
-             <time class="writer-card__latest--date">{{writer.latestTale.createdAt}}</time>
+             <time class="writer-card__latest--date">{{toShortDate(writer.latestTale.createdAt)}}</time>
 
              <p class="writer-card__latest--summary">
               {{ writer.latestTale.summary.length > 500 ? writer.latestTale.summary.substring(0, 500) + '...' : writer.latestTale.summary }}
@@ -122,10 +122,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
               icon="broken-chain" 
             />
       </template>
-    <div class="writer-card__latest">
-
    
-    </div>
   </article>
 
 </template>
@@ -184,7 +181,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
  row-gap: 0.75rem;
  background-color: var(--light-background-color);
  border-color: var(--border-color);
- border-radius: 6px;
+ border-radius: 12px;
 
  &:hover{
   background-color:var(--thick-background-color);
