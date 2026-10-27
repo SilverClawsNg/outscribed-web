@@ -43,7 +43,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
         <div class="writer-card__title">
            <button 
           type="button" 
-          class="writer-card__username" 
+          class="writer-card__title--username" 
           title="Creator Profile" 
           @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)"
         >
