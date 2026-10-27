@@ -52,7 +52,7 @@ function handleLogin() {
     router.push('/login?returnurl="/editor"')
   } else {
     // Open login modal for standard page contexts
-    modalStore.push('LoginUser', 'Login')
+    modalStore.push('Login', 'Login')
   }
   emit('login')
 }

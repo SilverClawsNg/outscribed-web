@@ -36,8 +36,12 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
     <!-- Writer Identity & Profile Section -->
     <header class="writer-card__header">
 
-      <div class="writer-card__title">
-        <button 
+      
+      <div class="writer-card__meta">
+     
+
+        <div class="writer-card__title">
+           <button 
           type="button" 
           class="writer-card__username" 
           title="Creator Profile" 
@@ -45,11 +49,12 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
         >
           @{{ writer.creator.username }}
         </button>
-        <span class="divider divider--circle"></span>
 
-          <time>{{ toShortDate(writer.onboardedAt) }}</time>
+            <time class="writer-card__title--time"><span>OutScribing </span>since {{ toShortDate(writer.onboardedAt) }}</time>
+        </div>
+        
       </div>
-
+  
         <button 
           type="button" 
           class="btn btn--secondary"
@@ -92,22 +97,23 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
     <!-- Writer's Latest Featured Content -->
   
-    <div class="writer-card__latest">
+       <template v-if="writer.latestTale">
 
-      <template v-if="writer.latestTale">
+      <RouterLink :to="`/tale/${writer.latestTale.slug}`"  class="writer-card__latest">
 
-          <Content 
-            :title="writer.latestTale.title"
-            :slug="writer.latestTale.slug"
-            :creator-id="writer.creator.accountId"
-            :creator-username="writer.creator.username"
-            :created-at="writer.latestTale.createdAt"
-            content-type='tale'
-            :summary="writer.latestTale.summary"
-            :is-alt="false"
-          />
+           <h1  class="writer-card__latest--title">
+            {{ writer.latestTale.title }}
+            </h1>
 
-      </template>
+             <time class="writer-card__latest--date">{{writer.latestTale.createdAt}}</time>
+
+             <p class="writer-card__latest--summary">
+              {{ writer.latestTale.summary.length > 500 ? writer.latestTale.summary.substring(0, 500) + '...' : writer.latestTale.summary }}
+            </p>
+              
+      </RouterLink>
+
+       </template>
 
       <template v-else>
           <PageStatusMessage 
@@ -116,16 +122,92 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
               icon="broken-chain" 
             />
       </template>
+    <div class="writer-card__latest">
+
+   
     </div>
   </article>
 
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/writer-card.less";
+@import "@/assets/css/variables.less";
 
-.content-x-card {
-padding: 0;
-border-bottom:0;
+.writer-card {
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding: 1.5rem 0;
+  border-bottom: 2px solid var(--border-color);
+  
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    
+  }
+
+  &__title{
+    display: flex;
+    flex-direction:column;
+    align-items:flex-start;
+
+    &--username{
+      font-size: 1.25rem;
+      }
+
+      &--time{
+        font-size: 0.95rem;
+
+        & span{
+          font-style: italic;
+        }
+  
+      }
+  }
+
+  
+&__latest {
+  width: 100%;
+  height: auto;
+  padding: 1.5rem;
+  display: flex;
+ flex-direction: column;
+ row-gap: 0.75rem;
+ background-color: var(--light-background-color);
+ border-color: var(--border-color);
+ border-radius: 6px;
+
+ &:hover{
+  background-color:var(--thick-background-color);
+  
+ }
+
+   &--title {
+    font-size: 1.2rem;
+    line-height: 1.35;
+    text-transform: capitalize;
+  }
+
+  &--date {
+    font-size: 0.9rem;
+  }
+
+  
+  &--summary {
+    line-height: 1.5;
+  }
+
+
+}
+
 }
 </style>

@@ -238,13 +238,13 @@ onBeforeUnmount(() => {
             class="btn btn--primary"
             @click="taleStore.setCurrentMainView('addendum')"
           >
-            Add Addendum
+            Addendum
           </button>
           <button
             class="btn btn--secondary"
             @click="router.push(`/tale/${taleStore.activeTale?.slug}`)"
           >
-            View Live Story
+            Live Story
           </button>
       </template>
     </PageStatusMessage>
@@ -265,6 +265,7 @@ onBeforeUnmount(() => {
   <button 
     type="submit" 
     form="story-details-form" 
+    @click="handleFormSubmission"
     class="btn btn--secondary"  
     :disabled="progressState.type === 'Loading' || lockSubmission"
   >

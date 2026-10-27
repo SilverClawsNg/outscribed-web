@@ -145,7 +145,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     if (!activeTale.value) return false;
     return Boolean(
         activeTale.value?.realityCheckTitle && 
-        activeTale.value?.summary
+        activeTale.value?.realityCheckSummary
       )
   }
  
