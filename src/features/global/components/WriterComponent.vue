@@ -156,7 +156,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
       }
 
       &--time{
-        font-size: 0.95rem;
+         font-size: 0.875rem;
 
         & span{
           font-style: italic;

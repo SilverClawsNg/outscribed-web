@@ -162,7 +162,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
       }
 
       &--time{
-        font-size: 0.9rem;
+        font-size: 0.875rem;
 
         & span{
           font-style: italic;
