@@ -289,7 +289,7 @@ function navigateToAside(section: AsideView) {
     width: 100%;
     height: 100%;
     align-items: stretch;
-    padding: 0 0.5rem;
+    padding: 0 0.25rem;
    
   }
    column-gap: 0; /* Remove gap so buttons can form a cohesive segment control if desired */
@@ -299,7 +299,7 @@ function navigateToAside(section: AsideView) {
       flex: 1 1 0;
       width: 100%;
       height: 100%;
-      padding: 0.5rem;
+      padding: 0.25rem;
 
       & .btn{
         width: 100%;

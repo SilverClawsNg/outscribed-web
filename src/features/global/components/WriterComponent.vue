@@ -48,7 +48,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
 
     <header class="writer-card__header">
 
-      <div class="writer-card__title">
+      <div class="writer-card__meta">
         
         <!-- Rank / Badge Indicator (30px x 30px square element) -->
         <span 
@@ -68,17 +68,19 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
           </template>
         </span>
 
-          <button 
+        <div class="writer-card__title">
+            <button 
             type="button"
-            class="writer-card__username at" 
+            class="writer-card__title--username at" 
             @click="modalStore.push('Profile', 'Profile', writer.creator.accountId)"
           >
             {{ writer.creator.username }}
           </button>
 
-          <span class="divider divider--circle"></span>
-            <time>Since {{ toShortDate(writer.onboardedAt) }}</time>
+            <time class="writer-card__title--time"><span>OutScribing </span>since {{ toShortDate(writer.onboardedAt) }}</time>
         </div>
+        
+      </div>
       
       <!-- Writer Call to Action -->
       <button 
@@ -122,5 +124,114 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/writer-x-card.less";
+@import "@/assets/css/variables.less";
+
+.writer-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+  border-bottom: 2px solid var(--border-color);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    
+  }
+
+  &__title{
+    display: flex;
+    flex-direction:column;
+    align-items:flex-start;
+
+    &--username{
+      font-size: 1.25rem;
+      }
+
+      &--time{
+        font-size: 0.95rem;
+
+        & span{
+          font-style: italic;
+        }
+  
+      }
+  }
+
+  &__badge {
+    font-size: 0.95rem;
+    font-weight: 900;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--background-color);
+
+    // #1 Gold Background
+     &--gold {
+      background-color: @gold-color;
+    }
+
+     &--silver {
+      background-color: @silver-color;
+    }
+
+    &--bronze {
+      background-color: @bronze-color;
+    }
+
+    &--number{
+        background-color: var(--text-color);
+    }
+
+    // New Writers (Unnumbered, Transparent, Neutral Theme Border)
+    &--new {
+      background-color: transparent;
+      border: 1px solid var(--text-color);
+    }
+  }
+
+  &__metadata{
+    margin-bottom: 1rem;
+    display: flex;
+    align-items:center;
+    column-gap: 0.25rem;
+  }
+
+  &__metrics {
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+    font-size: 0.95rem;
+     
+    @media @phone{
+      column-gap: 0.15rem;
+    }
+  }
+
+  &__metric-link {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+  }
+}
 </style>

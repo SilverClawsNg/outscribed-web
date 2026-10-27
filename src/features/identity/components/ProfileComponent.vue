@@ -199,7 +199,7 @@ function handleEditContactClick(platform: ContactType) {
   <div class="profile-actions">
     <button 
       type="button" 
-      class="btn btn--secondary btn--has-icon"
+      class="btn btn--primary btn--has-icon"
       @click="modalStore.push('UpdateProfile', 'Update Profile')"
     >
       <div class="profile-actions__label">
@@ -211,7 +211,7 @@ function handleEditContactClick(platform: ContactType) {
 
     <button 
       type="button" 
-      class="btn btn--secondary btn--has-icon"
+      class="btn btn--primary btn--has-icon"
       @click="modalStore.push('ChangePassword', 'Change Password')"
     >
       <div class="profile-actions__label">
@@ -223,7 +223,7 @@ function handleEditContactClick(platform: ContactType) {
 
     <button 
       type="button" 
-      class="btn btn--secondary btn--has-icon"
+      class="btn btn--primary btn--has-icon"
       @click="modalStore.push('Archive', 'Archive Profile')"
     >
       <div class="profile-actions__label">

@@ -81,5 +81,87 @@ const props = defineProps<Props>()
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/country-card.less";
+@import "@/assets/css/variables.less";
+
+.country-card {
+  width: 100%;
+  padding: 1.5rem 0;
+  border-bottom: 2px dotted var(--border-color);
+
+  &__header{
+    display: flex;
+    column-gap: 0.25rem;
+    align-items:center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  // Metallic badges for ranks 2 and 3
+  &__badge {
+    font-size: 0.95rem;
+    font-weight: 900;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--background-color);
+
+    &--gold {
+      background-color: @gold-color;
+    }
+
+     &--silver {
+      background-color: @silver-color;
+    }
+
+    &--bronze {
+      background-color: @bronze-color;
+    }
+
+    &--number{
+        background-color: var(--text-color);
+    }
+  }
+
+
+  // --- Title & Icon ---
+  &__title {
+    display: flex;
+    align-items:center;
+    column-gap: 0.5rem;
+    font-size: 1.25rem;
+
+  }
+
+  // --- Metrics ---
+  &__metrics {
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+    font-size: 0.95rem;
+   
+  }
+
+  &__metric-link {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+
+  
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+  }
+
+  
+}
 </style>

@@ -169,7 +169,7 @@ onUnmounted(() => {
       @click="engage.favorite(profileStore.profile.user.engagement)"
                   :title="profileStore.profile.user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
                   :disabled="uiMeta.isFavoriteDisabled"
-                  class="btn btn--secondary btn--has-icon"
+                  class="btn btn--primary btn--has-icon"
     >
      {{ uiMeta.favoriteAltText }}
       <SvgIcons name="bookmark" :size="20" />

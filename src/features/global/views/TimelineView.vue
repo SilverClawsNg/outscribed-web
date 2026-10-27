@@ -128,7 +128,7 @@ onUnmounted(() => {
         <h1>
               Timelines
             </h1>
-        <button class="btn btn--secondary"  @click="modalStore.push('TimelineFilter', 'Filter Timelines')">Filter</button>
+        <button class="btn btn--primary"  @click="modalStore.push('TimelineFilter', 'Filter Timelines')">Filter</button>
     </header>
     
     <template v-if="wasCleaned">
@@ -177,10 +177,15 @@ onUnmounted(() => {
     <div class="container">
   <PageStatusMessage
       title="No timeline found!"
-      message="Sorry. No timeline was found matching your filter requirements."
+      message="Sorry. No timeline was found matching your search parameters."
         icon="inbox" 
-              :is-bordered="true"
-            />
+         :is-standalone="true">
+        <template #actions>
+           <button class="btn btn--primary" click="modalStore.push('TimelineFilter', 'Filter Timelines')">
+            Refine Search
+          </button>
+        </template>
+    </PageStatusMessage>
     </div>
   </template>
   </template>

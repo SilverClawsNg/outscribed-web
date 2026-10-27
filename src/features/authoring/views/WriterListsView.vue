@@ -143,7 +143,7 @@ onUnmounted(() => {
         </h1>
       <button 
         type="button" 
-        class="btn btn--secondary"  @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
+        class="btn btn--primary"  @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
     </header>
 
     <template v-if="wasCleaned">
@@ -194,10 +194,15 @@ onUnmounted(() => {
   <template v-else>
     <PageStatusMessage
       title="No Writer Found!"
-      message="We did not find any writer matching your search filters."
+      message="We did not find any writer matching your search parameters."
       icon="inbox"
-      :is-standalone="true"
-      />
+     :is-standalone="true">
+        <template #actions>
+           <button class="btn btn--primary"  @click="modalStore.push('WriterFilter', 'Filter Writers')">
+            Refine Search
+          </button>
+        </template>
+    </PageStatusMessage>
   </template>
   </template>
 

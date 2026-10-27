@@ -64,7 +64,7 @@ const contentTypeClass = computed(() => {
   padding: 1.5rem 0.5rem;
   width: 100%;
   height: auto;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
  
   &__metadata {
     height: auto;

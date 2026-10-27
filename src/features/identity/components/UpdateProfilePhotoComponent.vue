@@ -113,7 +113,7 @@ async function upload() {
       <img v-if="photoUrl" :src="photoUrl" alt="Staged Preview" />
       <img v-else-if="profile.photo" :src="mediaHelper.getUrl(profile.photo, 'profiles') || undefined" alt="Profile Photo" />
       <span v-else class="placeholder">
-         <SvgIcons name="placeholder"  />
+         <SvgIcons name="placeholder" :size="60" />
         <span class="placeholder-text">No Photo!</span>
       </span>
 
@@ -131,5 +131,154 @@ async function upload() {
 
 
 <style lang="less" scoped>
-@import "@/assets/css/photo-preview.less";
+@import "@/assets/css/variables.less";
+
+.photo-preview {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    & .wrapper {
+        width: 150px;
+        height: 150px;
+        border-radius: 8px;
+        background-color: var(--loading-background-color);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 100%;
+
+    }
+
+
+    & label {
+        cursor: pointer;
+        display: block;
+        width: 150px;
+            height: 150px;
+            position: relative;
+            background-color: var(--light-background-color);
+            border: 1px solid var(--thick-border-color);
+            border-radius: 100%;
+
+            & img {
+                border-radius: 100%;
+                border: 3px solid var(--light-background-color);
+            }
+
+            .edit-badge {
+                position: absolute;
+                bottom: 5px; /* Distance from bottom */
+                right: 5px; /* Distance from right */
+                z-index: 100;
+                width: 32px;
+                height: 32px;
+                background-color: var(--background-color);
+                color: var(--text-color);
+                font-size: 30px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border: 2px solid var(--native-background-color);
+                border: 1px solid var(--thick-border-color);
+
+                &:hover {
+                    transform: scale(1.1);
+                    transition: transform 0.2s ease-in-out;
+                }
+            }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            border-radius: 100%;
+            z-index: 2;
+        }
+
+        &:hover {
+             box-shadow: var(--box-shadow);
+        }
+
+        & .placeholder {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color:var(--muted-link-color);
+
+            &:hover {
+
+              color:@link-color;
+
+                & .placeholder-text {
+                       color:@link-color;
+                }
+
+            }
+
+            & .placeholder-text {
+                color: var(--muted-text-color);
+                margin-top: 20px;
+            }
+
+        }
+    }
+
+    & .small-button-holder {
+        height: 40px;
+        display: flex;
+        column-gap: 0.5rem;
+
+        & button {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 1rem;
+            font-size: 30px;
+            font-weight: 500;
+            background-color: var(--background-color);
+            border-radius: 4px;
+            /*  color: @white-color;
+
+            & svg.fill path {
+                fill: @white-color;
+            }*/
+
+            &:hover {
+                box-shadow: var(--box-shadow);
+            }
+        }
+    }
+}
+
+
+    .photo-preview-error{
+        text-align:center;
+         font-style: italic;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    }
+
 </style>

@@ -112,6 +112,8 @@ onUnmounted(() => {
 </div>
 <div class="publishing-roadmap">
 
+<div class="publishing-roadmap__contents">
+  
   <div class="publishing-roadmap__header">
   <h3 class="publishing-roadmap__title">From Guest to OutScriber</h3>
   <p class="publishing-roadmap__subtitle">
@@ -190,6 +192,9 @@ onUnmounted(() => {
         OutScribe
       </button>
     </div>
+    
+</div>
+
 </div>
 
    <template v-if="isLoading">
@@ -223,7 +228,7 @@ onUnmounted(() => {
 
     <header class="page-header">
     <h1>Recent Tales</h1>
-      <RouterLink to="/tales" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
+      <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
     </header>
     
          <div class="container">
@@ -238,7 +243,6 @@ onUnmounted(() => {
         </div>
 
   </template>
-
 
        <template v-if="homepageStore.categories && homepageStore.categories.length > 0">
 
@@ -264,7 +268,7 @@ onUnmounted(() => {
 
        <header class="page-header">
       <h1>Trending Tags</h1>
-      <RouterLink to="/tags" class="btn btn--secondary"  title="Recent Tales"><span>View All</span></RouterLink>
+      <RouterLink to="/tags" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
     </header>
     
          <div class="container">
@@ -303,7 +307,7 @@ onUnmounted(() => {
 
         <header class="page-header">
        <h1>Writer Leaderboard</h1>
-      <RouterLink to="/writers" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
+      <RouterLink to="/writers" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
     </header>
       
         <div class="container">
@@ -600,12 +604,20 @@ onUnmounted(() => {
 .publishing-roadmap {
   display: flex;
   flex-direction: column;
-  background-color: var(--light-background-color);
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
-  margin: 0 auto 2rem auto;
-  max-width: 750px; // Constrained 750px viewing width
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  //background-color: var(--light-background-color);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  //border-radius: 12px;
+  padding: 2rem 0;
+  //margin: 0 auto 2rem auto;
+  //max-width: 750px; // Constrained 750px viewing width
+  //box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+
+  &__contents{
+width: @mid-width;
+max-width: calc(100% - 20px);
+margin: 0 auto;
+  }
 
   @media @largeDevice {
     padding: 2.5rem 2rem;
@@ -629,6 +641,10 @@ onUnmounted(() => {
     color: var(--muted-text-color);
     font-style: italic;
     margin-bottom: 1rem;
+
+    & span{
+      border-bottom: 1px dotted var(--text-color);
+    }
   }
 
  /* CTA Banner Box with Embedded Button */
@@ -694,7 +710,7 @@ onUnmounted(() => {
             border: 1px solid fade(@logo-yellow, 35%); // Highlight victory state
 
       .publishing-roadmap__number { background-color: darken(@logo-yellow, 20%); color:@white-color;  }
-      h4 { color: darken(@logo-yellow, 35%); }
+      h4 { color: darken(@logo-yellow, 10%); }
     }
 
     &--step4 {

@@ -177,7 +177,7 @@ onUnmounted(() => {
         <h1  :class="{ at: creatorUsername }"> {{ pageTitle }}</h1>
           <button 
         type="button" 
-        class="btn btn--secondary"  
+        class="btn btn--primary"  
         @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
       >
       Filter
@@ -231,10 +231,16 @@ onUnmounted(() => {
   <template v-else>
     <PageStatusMessage
       title="No Tale Found!"
-      message="We did not find any tale matching your search filters."
+      message="We did not find any tale matching your search parameters."
       icon="inbox"
-      :is-standalone="true"
-      />
+      :is-standalone="true">
+        <template #actions>
+           <button class="btn btn--primary"  @click="modalStore.push('TaleListFilter', 'Filter Lists', type)">
+            Refine Search
+          </button>
+        </template>
+    </PageStatusMessage>
+
   </template>
 
   </template>
