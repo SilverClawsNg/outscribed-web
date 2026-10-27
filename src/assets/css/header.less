@@ -130,8 +130,8 @@
 
   /* Utility Typography & Controls */
   &__utility-link {
-    font-size: 0.9rem;
-    font-weight: 500;
+    //font-size: 0.9rem;
+    font-weight: 600;
     color: var(--text-color);
     background: none;
     border: none;
@@ -141,18 +141,16 @@
     &:hover { color: @link-color; }
 
     &--logout {
-      color: #888;
-      &:hover { color: #d9534f; }
+      &:hover { color: @danger-color; }
     }
   }
 
   &__utility-divider {
-    color: #ccc;
-    font-size: 0.75rem;
+    color: var(--text-color);
   }
 
   &__auth-prompt {
-    font-size: 0.8125rem;
+    //font-size: 0.8125rem;
     //color: var(--muted-text-color);
   }
 
@@ -251,7 +249,7 @@ background-color: var(--background-color);
   }
 
   &__editorial-link {
-    font-size: 0.9rem;
+    //font-size: 0.9rem;
     font-weight: 500;
     text-decoration: none;
     transition: color 0.15s ease;

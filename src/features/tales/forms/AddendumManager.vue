@@ -356,7 +356,19 @@ async function handleCommitAddendum() {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 3rem 1.5rem;
+  
+  @media @phone{
+ padding: 1.5rem 0.5rem;
+  }
+
+  @media @phablet{
+ padding: 2rem 0.75rem;
+  }
+
+  @media @smallDevice{
+     padding: 3rem 1.5rem;
+  }
+
 
   &__wrapper {
     width: 100%;

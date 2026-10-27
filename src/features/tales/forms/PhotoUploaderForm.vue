@@ -28,21 +28,22 @@ const formData = ref<UpdatePhotoRequest>({
    caption: ''
 })
 
+
 // --- ⚙️ COMPONENT STATE ---
 const photo = ref<string | null>(null)
 const rawImageSource = ref<string | null>(null)
 const showCropper = ref(false)
+const isDragging = ref(false) // 🔑 Tracks drag state for drop zone UI
 
 const captionRef = ref<HTMLTextAreaElement | null>(null)
 
 // Function to clone active tale into isolated local form state
 function populateFormFromStore() {
-  if (!taleStore.activeTale) return
+ if (!taleStore.activeTale) return
 
- // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.taleId = taleStore.activeTale.taleId
-  formData.value.caption = taleStore.activeTale.photoCaption ?? ''
-  photo.value = taleStore.activeTale.photo ?? null
+ formData.value.taleId = taleStore.activeTale.taleId
+ formData.value.caption = taleStore.activeTale.photoCaption ?? ''
+ photo.value = taleStore.activeTale.photo ?? null
 }
 
 // 2. Watch for draft switches in the aside list and sync local form state
@@ -58,13 +59,13 @@ watch(
 
 // Auto-adjust textarea height to fit content without scrollbars
 function adjustHeight(el: HTMLTextAreaElement | null) {
-  if (!el) return
-  el.style.height = 'auto'
-  el.style.height = `${el.scrollHeight}px`
+ if (!el) return
+ el.style.height = 'auto'
+ el.style.height = `${el.scrollHeight}px`
 }
 
 function handleInput() {
-  adjustHeight(captionRef.value)
+ adjustHeight(captionRef.value)
 }
 
 
@@ -72,34 +73,23 @@ function handleInput() {
 onBeforeMount(() => {
 
   if (!taleStore.activeTale) {
-    // 1. Lock down the form immediately to block accidental click updates
     lockSubmission.value = true
-    
-    // 2. Pass a friendly, descriptive error straight down to your message layout
     setError({
       title: "Content Unavailable",
       detail: "Unable to load current tale details. Refresh page and try again",
-      status: 204 // Standard missing resource code
+      status: 204
     })
-    
-    return // 🛑 Stop initialization; do not attempt to read properties of null
+    return 
   }
 
- // --- INITIALIZE FORM DATA FROM STORE ---
- populateFormFromStore()
+  populateFormFromStore()
   resetProgress()
 })
 
-
-// 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
-
-// Clean character length derived directly from reactive state
 const captionLength = computed(() => formData.value.caption?.length || 0)
 
-// 2. Pure, derivative validation state. No tracking refs, no manual clearing.
 const validationErrors = computed(() => {
-
 const photoText = formData.value.base64String || '';
 const captionText = formData.value.caption || '';
 
@@ -114,24 +104,18 @@ const captionText = formData.value.caption || '';
   }
 })
 
-// 3. Form is valid if all computed error fields are empty strings
 const isFormValid = computed(() => {
   return Object.values(validationErrors.value).every(error => error === '')
 })
 
-// --- 4. The centralized warning to ensures the to warning is in sync with the form field warnings ---
-// It monitors form health and automatically dictates top-level notification state
 watch(
   [isFormValid, formSubmitted], 
   ([isValid, submitted]) => {
-    // Don't disturb the user if they haven't tried to submit yet
     if (!submitted) return
 
     if (!isValid) {
       setWarning('Ensure all fields are filled out correctly before submission.')
     } else {
-      // Clear warning and clean up state immediately when compliance is met
-      // 🎯 Only reset if we are clearing a warning!
       if (progressState.value.type === 'Warning') {
         resetProgress()
       }
@@ -147,30 +131,70 @@ const lockSubmission = ref(false)
 // --- CLIENT-SIDE IMAGE PROCESSING & RESIZING PIPELINE ---
 const photoUrl = ref<string | null>(null)
 
-// Clear the staging upload pipeline state
 function reset() {
   photoUrl.value = null
 }
 
+// Centralized file processor used by both input change and drag drop
+function processSelectedFile(file: File) {
+  if (!file.type.startsWith('image/')) {
+    setWarning('Please select a valid image file.')
+    return
+  }
+
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = () => {
+    rawImageSource.value = reader.result as string
+    showCropper.value = true
+  }
+}
+
 /**
- * 📸 CLEAN CLIENT-SIDE IMAGE READING PIPELINE (No Canvas Resizing)
+ * 📸 FILE INPUT CHANGE HANDLER
  */
 function handleFileSelection(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files || target.files.length === 0) return
 
   const file = target.files[0]
-  
-  // 🛡️ Early return if file is undefined
-  if (!file) return
+  target.value = '' // Clear input so same file can be re-selected if needed
+  if (file) processSelectedFile(file)
+}
 
-  target.value = ''
+/**
+ * 📥 DRAG AND DROP HANDLERS
+ */
+// --- REFS FOR FILE INPUT ---
+const fileInputRef = ref<HTMLInputElement | null>(null)
 
-  const reader = new FileReader()
-  reader.readAsDataURL(file) // TypeScript now knows 'file' is strictly type 'File'
-  reader.onload = () => {
-    rawImageSource.value = reader.result as string
-    showCropper.value = true
+// Programmatically open the file dialog when the custom drop zone is clicked
+function triggerFileInput() {
+  if (progressState.value.type === 'Loading' || lockSubmission.value) return
+  fileInputRef.value?.click()
+}
+
+// --- DRAG AND DROP HANDLERS ---
+function handleDragOver(event: DragEvent) {
+  if (progressState.value.type === 'Loading' || lockSubmission.value) return
+  isDragging.value = true
+}
+
+function handleDragLeave(event: DragEvent) {
+  // Ensure we are leaving the actual drop zone container, not just hovering over child elements
+  if (event.currentTarget === event.target) {
+    isDragging.value = false
+  }
+}
+
+function handleDrop(event: DragEvent) {
+  isDragging.value = false
+
+  if (progressState.value.type === 'Loading' || lockSubmission.value) return
+
+  const files = event.dataTransfer?.files
+  if (files && files.length > 0) {
+   if(files[0]) processSelectedFile(files[0])
   }
 }
 
@@ -186,7 +210,6 @@ function handleCropComplete(cropResult: { base64String: string; contentType: str
  * 🚀 DISPATCH UNALTERED PAYLOAD TO MUTATION MONOLITH
  */
 async function handleFormSubmission() {
-
   formSubmitted.value = true
   
   if (!isFormValid.value) return
@@ -205,11 +228,10 @@ async function handleFormSubmission() {
       setWarning('An unknown error occurred. Refresh page and try again')
     }
   } else {
-       resetProgress()
-   formSubmitted.value = false
-   taleStore.openPostUpdateModal('photo')
+    resetProgress()
+    formSubmitted.value = false
+    taleStore.openPostUpdateModal('photo')
   }
-
 }
 
 </script>
@@ -266,21 +288,7 @@ async function handleFormSubmission() {
 
         <header class="editorial-canvas__header">
   <!-- Left Side: Title & Section Completion Status Indicators -->
-  <div class="editorial-canvas__header-info">
-    <span class="editorial-canvas__badge">Cover Photo</span>
-    
-    <div class="editorial-canvas__indicators">
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasBasicInfo() }">
-        Basic {{ taleStore.hasBasicInfo() ? '✓' : '✗' }}
-      </span>
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasDetails() }">
-        Story {{ taleStore.hasDetails() ? '✓' : '✗' }}
-      </span>
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasRealityCheck() }">
-        Reality Check {{ taleStore.hasRealityCheck() ? '✓' : '✗' }}
-      </span>
-    </div>
-  </div>
+  <h1 class="editorial-canvas__badge">Cover Photo</h1>
 
   <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
   <button 
@@ -289,76 +297,100 @@ async function handleFormSubmission() {
     class="btn btn--secondary"  
     :disabled="progressState.type === 'Loading' || lockSubmission"
   >
-    {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
+    {{ progressState.type === 'Loading' ? 'Saving...' : 'Save' }}
   </button>
         </header>
-     
-        <!-- Centered Editorial Content Container (750px Width) -->
-        <div class="editorial-form">
-            
-         <FormProgress :progress="progressState" :is-editor="true" />
 
-    <div class="photo-preview">
+      <div class="editorial-canvas__body">
+  <!-- Centered Editorial Content Container -->
+  <div class="editorial-form">
+    <div class="editorial-form__contents">
+      <FormProgress :progress="progressState" :is-editor="true" />
 
-     <label>
+      <form id="cover-photo-form" @submit.prevent="handleFormSubmission">
 
-    <input type="file" accept="image/*" @change="handleFileSelection" style="display: none;" />
-
-             <img v-if="photoUrl" :src="photoUrl" alt="Staged Preview" />
-            <img v-else-if="photo" :src="mediaHelper.getUrl(photo, 'tales','full') || undefined" alt="Photo" />
-            <span v-else class="placeholder">
-              <SvgIcons name="placeholder" :size="100" />
-              <span class="placeholder-text">Click to upload photo!</span>
-            </span>
-
-     </label>
+        <!-- 1. Photo Upload Field Group -->
       
-                   <span v-if="formSubmitted && validationErrors.photo" class="editorial-form__validation-message">
-                {{ validationErrors.photo }}
+        <!-- 1. Photo Upload Field Group -->
+<div class="editorial-form__group">
+  <label class="editorial-form__label">Cover Photo</label>
+  
+  <div class="photo-preview">
+    <div 
+      class="photo-preview__upload-zone"
+      :class="{ 'is-dragging': isDragging }"
+      @click="triggerFileInput"
+      @dragover.prevent="handleDragOver"
+      @dragleave.prevent="handleDragLeave"
+      @drop.prevent="handleDrop"
+    >
+      <!-- Hidden file input triggered programmatically -->
+      <input 
+        ref="fileInputRef"
+        type="file" 
+        accept="image/*" 
+        @change="handleFileSelection" 
+        style="display: none;" 
+        :disabled="progressState.type === 'Loading' || lockSubmission"
+      />
+
+      <img v-if="photoUrl" :src="photoUrl" alt="Staged Preview" class="photo-preview__image" />
+      <img v-else-if="photo" :src="mediaHelper.getUrl(photo, 'tales', 'full') || undefined" alt="Photo" class="photo-preview__image" />
+      <div v-else class="photo-preview__placeholder">
+        <SvgIcons name="placeholder" :size="80" />
+        <span class="photo-preview__placeholder-text">
+          {{ isDragging ? 'Drop image here...' : 'Click or drag image to upload cover photo' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="editorial-form__field-footer">
+    <span v-if="formSubmitted && validationErrors.photo" class="editorial-form__validation-message">
+      {{ validationErrors.photo }}
+    </span>
+  </div>
+</div>
+
+        <div class="divider-multi"><span></span></div>
+
+        <!-- 2. Photo Caption Group -->
+        <div class="editorial-form__group">
+          <label class="editorial-form__label" for="photo-caption">Photo Caption & Attributions</label>
+          <div class="editorial-form__row">
+            <textarea
+              id="photo-caption"
+              ref="captionRef"
+              v-model="formData.caption" 
+              placeholder="Write a short caption or credit for the cover photo..."
+              rows="2"
+              class="editorial-form__summary"
+              @input="handleInput"
+              :disabled="progressState.type === 'Loading' || lockSubmission"
+              required
+            ></textarea>
+          </div>
+          <div class="editorial-form__field-footer">
+            <span v-if="formSubmitted && validationErrors.caption" class="editorial-form__validation-message">
+              {{ validationErrors.caption }}
             </span>
- </div>
-
-  <form id="cover-photo-form" 
-           @submit.prevent="handleFormSubmission" 
-           class="editorial-form">
-    
-         <div class="divider-multi"><span></span></div>
-
-          <!-- 3. Summary Block (Framed as Lead Teaser / Deck) -->
-        <div class="editorial-form__row editorial-form__row--offset">
-          <textarea
-            ref="captionRef"
-             v-model="formData.caption" 
-            placeholder="Write a short caption for the cover photo..."
-            rows="2"
-            class="editorial-form__caption"
-            @input="handleInput"
-            required
-          ></textarea>
-          
-       <div class="editorial-form__field-footer">
-
-             <span v-if="formSubmitted && validationErrors.caption" class="editorial-form__validation-message">
-        {{ validationErrors.caption }}
-      </span>
-
-                 <span 
-            class="editorial-form__character-counter" 
-            :class="{ 
-              'is-warning': captionLength > 120  && captionLength <= 128,
-              'is-over-limit': captionLength < 3  || captionLength > 128 
-            }"
-          >
-            {{ captionLength.toLocaleString() }} / 128
-          </span>
-           </div>
-
+            <span 
+              class="editorial-form__character-counter" 
+              :class="{ 
+                'is-warning': captionLength > 120 && captionLength <= 128,
+                'is-over-limit': captionLength < 3 || captionLength > 128 
+              }"
+            >
+              {{ captionLength.toLocaleString() }} / 128
+            </span>
+          </div>
         </div>
 
       </form>
-
-        </div>
-
+    </div>
+  </div>
+</div>
+     
     </div>
 
   </template>
@@ -367,68 +399,59 @@ async function handleFormSubmission() {
 
 <style lang="less" scoped>
 @import "@/assets/css/editor-form.less";
-
-
 .photo-preview {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  position: relative;
+
+  &__upload-zone {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    position: relative;
+    width: 100%;
+    min-height: 240px;
+    background-color: var(--background-color);
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
 
-    & label {
-        cursor: pointer;
-        display: block;
-         border-radius: 8px;
-            max-width: 100%;
-            width: 750px;
-            aspect-ratio: 5 / 3;
-            height: auto;
-            border-radius: 8px;
-            background-color: var(--light-background-color);
-
-        input[type="file"] {
-            display: none;
-        }
-
-        & img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            z-index: 2;
-        }
-
-        & .placeholder {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-             color: var(--muted-link-color);
-
-            &:hover {
-                 color: @link-color;
-
-                & .placeholder-text {
-                    color: @link-color;
-                }
-
-            }
-
-            & .placeholder-text {
-                color: var(--muted-link-color);
-                margin-top: 20px;
-            }
-
-        }
+    &:hover {
+      border-color: @link-color;
+      background-color: var(--light-background-color);
     }
 
+    &.is-dragging {
+      border-color: @link-color;
+      background-color: rgba(var(--link-color-rgb, 0, 119, 255), 0.08);
+      border-style: solid;
+      transform: scale(1.005);
+    }
+  }
+
+  &__image {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+
+  &__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem;
+    color: var(--muted-text-color);
+    text-align: center;
+    pointer-events: none; // 🔑 Crucial so drag events register cleanly on the parent div
+  }
+
+  &__placeholder-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
 }
-
-
 </style>

@@ -258,21 +258,7 @@ onBeforeUnmount(() => {
 
         <header class="editorial-canvas__header">
   <!-- Left Side: Title & Section Completion Status Indicators -->
-  <div class="editorial-canvas__header-info">
-    <span class="editorial-canvas__badge">Story Details</span>
-    
-    <div class="editorial-canvas__indicators">
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasBasicInfo() }">
-        Basic {{ taleStore.hasBasicInfo() ? '✓' : '✗' }}
-      </span>
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasDetails() }">
-        Story {{ taleStore.hasDetails() ? '✓' : '✗' }}
-      </span>
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasRealityCheck() }">
-        Reality Check {{ taleStore.hasRealityCheck() ? '✓' : '✗' }}
-      </span>
-    </div>
-  </div>
+  <h1 class="editorial-canvas__badge">Story Details</h1>
 
   <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
   <button 
@@ -281,7 +267,7 @@ onBeforeUnmount(() => {
     class="btn btn--secondary"  
     :disabled="progressState.type === 'Loading' || lockSubmission"
   >
-    {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
+    {{ progressState.type === 'Loading' ? 'Saving...' : 'Save' }}
   </button>
         </header>
      
@@ -309,23 +295,25 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Centered Article Canvas -->
-        <div class="editorial-form">
+        <div class="editorial-canvas__body">
+          
           <div v-if="progressState.type !== 'Idle'" class="floating-progress-bar">
             <FormProgress :progress="progressState" :is-editor="true" />
           </div>
 
           <!-- Quill Editor Mount Container -->
           <div class="editor-wrapper">
-            <div ref="editorRef" class="ql-editor-container editorial-form__editor"></div>
+            <div ref="editorRef" class="ql-editor-container"></div>
           </div>
           
-          <div class="editorial-form__field-footer">
-            <p v-if="formSubmitted && validationErrors.detail" class="editorial-form__validation-message">
+          <div class="editorial-canvas__field-footer">
+
+            <p v-if="formSubmitted && validationErrors.detail" class="editorial-canvas__validation-message">
               {{ validationErrors.detail }}
             </p>
 
             <span 
-              class="editorial-form__character-counter" 
+              class="editorial-canvas__character-counter" 
               :class="{ 
                 'is-warning': detailLength > 64000 && detailLength <= 65535,
                 'is-over-limit': detailLength < 512 || detailLength > 65535 
@@ -334,6 +322,7 @@ onBeforeUnmount(() => {
               {{ detailLength.toLocaleString() }} / 65,535 chars
             </span>
           </div>
+
         </div>
     </div>
 

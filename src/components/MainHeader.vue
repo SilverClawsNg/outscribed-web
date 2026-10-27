@@ -54,7 +54,7 @@ function handleSearchClick() {
             <span class="main-header__utility-divider">/</span>
             <router-link to="/timelines" class="main-header__utility-link">Timeline</router-link>
             <span class="main-header__utility-divider">/</span>
-            <router-link to="/logout" class="main-header__utility-link">logout</router-link>
+            <router-link to="/logout" class="main-header__utility-link">Logout</router-link>
           </template>
           <template v-else>
             <span class="main-header__auth-prompt">

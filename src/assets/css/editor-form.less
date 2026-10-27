@@ -27,48 +27,23 @@
     }
   }
 
-  &__header-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 1rem;
-    gap: 2px;
-  }
-
   &__badge {
+    display: flex;
+    align-items:center;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1.2;
+    padding-left: 0.5rem;
 
     @media @phone {
-      font-size: 0.85rem;
+      font-size: 0.875rem;
     }
-    @media @phablet, @tablet {
+    @media @phablet {
       font-size: 0.95rem;
     }
     @media @largeDevice {
       font-size: 1rem;
-    }
-  }
-
-  /* Inline Text Indicators (Story ✓ / Reality Check ✗) */
-  &__indicators {
-    display: flex;
-    gap: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--muted-text-color, #888);
-  }
-
-  &__indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-
-    &.is-complete {
-      color: var(--success-color, #2e7d32);
-      font-weight: 600;
     }
   }
 
@@ -79,128 +54,7 @@
 
   }
   
-
-}
-
-.editorial-form {
-  display: flex;
-  flex-direction: column;
-  width: @mid-width;
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
-    padding: 3rem 0 6rem 0;
-    position:relative;
-
-   ::placeholder {
-    
-    letter-spacing: 0.55px;
-    font-style:italic;
-    color: var(--muted-link-color);
-    opacity: 1;
-    font-weight: normal;
-  }
-
-  /* -------------------------------------------------------------
-   * 1. BORDERLESS TITLE
-   * ------------------------------------------------------------- */
- 
-  /* Centered 750px Article Container */
   
-  /* -------------------------------------------------------------
-   * 2. SIDE-BY-SIDE METADATA ROW
-   * ------------------------------------------------------------- */
-  &__meta-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 1.25rem 0;
-  }
-
-  .meta-field {
-    display: flex;
-    width: 50%;
-    
-
-    & select {
-     
-      width: 100%;
-      text-align:center;
-    }
-
-  }
-
-  /* -------------------------------------------------------------
-   * 3. BORDERLESS SUMMARY
-   * ------------------------------------------------------------- */
-  
-   & textarea,
-   & input,
-   & select {
-    width: 100%;
-    box-sizing: border-box;
-    font-family: inherit;
-    color: var(--text-color);
-    background-color: transparent !important;
-    border: none;
-    outline: none;
-    opacity: 1;
-    z-index: 1;
-    padding: 0;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-     font-size: 1.1rem;
-  line-height: 1.5; 
-   
-    &:disabled {
-      color: var(--muted-text-color);
-      background-color: transparent !important;
-      cursor: not-allowed;
-    }
-
-    &:focus,
-    &:active {
-      color: var(--muted-text-color);
-      background-color: transparent !important;
-      outline: none !important;
-    }
-
-    // Autofill override to prevent background flashing
-    &:-webkit-autofill,
-    &:-webkit-autofill:hover,
-    &:-webkit-autofill:focus,
-    &:-webkit-autofill:active {
-      -webkit-transition-delay: 5000s;
-      -webkit-transition: color 5000s ease-out, background-color 5000s ease-out;
-      transition: background-color 5000s ease-in-out 0s;
-      -webkit-text-fill-color: var(--text-color) !important;
-    }
-  }
-
-  & textarea {
-    resize: none;
-    overflow: hidden;
-    //font-family: var(--font-body, system-ui, -apple-system, sans-serif);
-    //font-size: 1.1rem; /* ~20px lead text */
-    //line-height: 1.4;
-
-    &::placeholder {
-       font-size: 1.1rem; /* ~20px lead text */
-    }
-  }
-
-  
-
-  &__row{
-    margin-bottom: 0.5rem;
-    position: relative;
-
-    &--offset{
-        margin-top: 1rem;
-    }
-  }
-
   &__field-footer{
    padding-right: 3.5rem;
    height: 3rem;
@@ -238,14 +92,176 @@
       }
     }
 
+    &__body{
+   width: @mid-width;
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+    padding: 3rem 0 6rem 0;
+    position:relative;
+
+   ::placeholder {
     
-  
-/* -------------------------------------------------------------
- * STICKY TOOLBAR (Alt Background Color)
- * ------------------------------------------------------------- */
- 
+    letter-spacing: 0.55px;
+    font-style:italic;
+    color: var(--muted-link-color);
+    opacity: 1;
+    font-weight: normal;
+  }
 
-  
+}
+}
 
+.editorial-form {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 
+  @media @phone {
+    padding: 1.5rem 0.75rem;
+  }
+
+  @media @phablet {
+    padding: 1.75rem 1.25rem;
+  }
+
+  @media @largeDevice {
+    padding: 2rem 2.5rem;
+  }
+
+  &__contents {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Structural Field Group (Label + Input Box + Footer) */
+  &__group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted-text-color);
+    margin-bottom: 0.5rem;
+
+    & span{
+      font-style: italic;
+      text-transform: lowercase;
+    }
+  }
+
+  /* Framed Input Box Container */
+  &__row {
+    position: relative;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-within {
+      border-color: @link-color;
+      box-shadow: 0 0 0 2px rgba(var(--link-color-rgb, 0, 119, 255), 0.15);
+    }
+  }
+
+  /* Side-by-Side Metadata Row */
+  &__meta-row {
+    display: flex;
+    gap: 1.25rem;
+    width: 100%;
+
+    @media @phone {
+      flex-direction: column;
+    }
+  }
+
+  &__meta-group {
+    flex: 1;
+  }
+
+  /* Inputs, Textareas, and Selects */
+  & textarea,
+  & input,
+  & select,
+  & .form-field {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    color: var(--text-color);
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+
+    &:disabled {
+      color: var(--muted-text-color);
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      letter-spacing: 0.3px;
+      font-style: italic;
+      color: var(--muted-text-color);
+      opacity: 0.7;
+    }
+  }
+
+  & textarea {
+    resize: none;
+    overflow: hidden;
+  }
+
+  &__title {
+    min-height: 2.5rem;
+    font-weight: 600;
+  }
+
+  &__summary {
+    min-height: 4rem;
+  }
+
+  /* Field Footer (Validation Error & Character Counter) */
+  &__field-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.4rem;
+    min-height: 1.2rem;
+    padding: 0 0.25rem;
+  }
+
+  &__validation-message {
+    font-size: 0.8rem;
+    color: @danger-color;
+    font-weight: 500;
+  }
+
+  &__character-counter {
+    margin-left: auto;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--muted-text-color);
+    font-variant-numeric: tabular-nums;
+
+    &.is-warning {
+      color: @warning-color;
+    }
+
+    &.is-over-limit {
+      color: @fatal-color;
+      font-weight: 700;
+    }
+  }
 }

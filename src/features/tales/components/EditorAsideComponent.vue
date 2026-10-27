@@ -264,7 +264,8 @@ function navigateToAside(section: AsideView) {
   align-items: stretch; /* Forces children to match header height */
   position: sticky;
   top: 0;
-  border-bottom: 1px solid var(--border-color);
+  //border-bottom: 1px solid @link-color;
+   box-shadow: var(--box-shadow);
   background-color: var(--background-color);
   z-index: 5;
 
@@ -281,7 +282,7 @@ function navigateToAside(section: AsideView) {
       width: 100%;
       height: 100%;
       border-radius: 0; /* Square edges or adjust if you prefer subtle rounding */
-      border: 1px solid var(--border-color);
+      border: 1px solid @link-color;
       border-top: none;
       border-bottom: none;
       display: flex;

@@ -213,21 +213,7 @@ async function handleFormSubmission() {
         
         <header class="editorial-canvas__header">
   <!-- Left Side: Title & Section Completion Status Indicators -->
-  <div class="editorial-canvas__header-info">
-    <span class="editorial-canvas__badge">Reality Check</span>
-    
-    <div class="editorial-canvas__indicators">
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasBasicInfo() }">
-        Basic {{ taleStore.hasBasicInfo() ? '✓' : '✗' }}
-      </span>
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasDetails() }">
-        Story {{ taleStore.hasDetails() ? '✓' : '✗' }}
-      </span>
-      <span class="editorial-canvas__indicator" :class="{ 'is-complete': taleStore.hasRealityCheck() }">
-        Reality Check {{ taleStore.hasRealityCheck() ? '✓' : '✗' }}
-      </span>
-    </div>
-  </div>
+  <h1 class="editorial-canvas__badge">Reality Check</h1>
 
   <!-- Right Side: Edge-to-Edge Action Button matching header height (56px) -->
   <button 
@@ -236,143 +222,145 @@ async function handleFormSubmission() {
     class="btn btn--secondary"  
     :disabled="progressState.type === 'Loading' || lockSubmission"
   >
-    {{ progressState.type === 'Loading' ? 'Updating...' : 'Update' }}
+    {{ progressState.type === 'Loading' ? 'Saving...' : 'Save' }}
   </button>
         </header>
         
-           <!-- Centered Editorial Content Container (750px Width) -->
-        <div class="editorial-form">
+      <div class="editorial-canvas__body">
+  <!-- Centered Editorial Content Container -->
+  <div class="editorial-form">
+    <div class="editorial-form__contents">
+      <FormProgress :progress="progressState" :is-editor="true" />
 
-    <FormProgress :progress="progressState" :is-editor="true" />
+      <form id="reality-check-form" @submit.prevent="handleFormSubmission">
 
-              <form id="reality-check-form" 
-                @submit.prevent="handleFormSubmission">
-
-                
-           <div class="editorial-form__row">
-
-               <!-- 1. Large Title Field (Auto-expanding Textarea) -->
+        <!-- 1. Reality Check Title Group -->
+        <div class="editorial-form__group">
+          <label class="editorial-form__label" for="reality-title">Reality Check Headline</label>
+          <div class="editorial-form__row">
             <textarea
-            ref="titleRef"
-            v-model="formData.title" 
-            placeholder="Title..."
-            rows="1"
-            class="editorial-form__title"
-            @input="handleInput"
-            :disabled="progressState.type === 'Loading'  || lockSubmission"
-            required
-            >
-            </textarea>
-            <div class="editorial-form__field-footer">
-
-                   <span v-if="formSubmitted && validationErrors.title" class="editorial-form__validation-message">
-                {{ validationErrors.title }}
+              id="reality-title"
+              ref="titleRef"
+              v-model="formData.title" 
+              placeholder="Headline summarizing the real-world fact or law..."
+              rows="1"
+              class="editorial-form__title"
+              @input="handleInput"
+              :disabled="progressState.type === 'Loading' || lockSubmission"
+              required
+            ></textarea>
+          </div>
+          <div class="editorial-form__field-footer">
+            <span v-if="formSubmitted && validationErrors.title" class="editorial-form__validation-message">
+              {{ validationErrors.title }}
             </span>
-                   <span 
-                class="editorial-form__character-counter" 
-                :class="{ 
+            <span 
+              class="editorial-form__character-counter" 
+              :class="{ 
                 'is-warning': titleLength > 100 && titleLength <= 128,
-                'is-over-limit': titleLength < 8  || titleLength > 128 
-                }"
+                'is-over-limit': titleLength < 8 || titleLength > 128 
+              }"
             >
-                {{ titleLength.toLocaleString() }} / 128
+              {{ titleLength.toLocaleString() }} / 128
             </span>
-
-           </div>
-
-           </div>
-
-           
-          <!-- 3. Summary Block (Framed as Lead Teaser / Deck) -->
-        <div class="editorial-form__row">
-          <textarea
-            ref="summaryRef"
-             v-model="formData.summary" 
-            placeholder="Provide the real-world facts or legal context to give readers full clarity..."
-            rows="2"
-            class="editorial-form__summary"
-            @input="handleInput"
-            required
-          ></textarea>
-          
-       <div class="editorial-form__field-footer">
-
-             <span v-if="formSubmitted && validationErrors.summary" class="editorial-form__validation-message">
-        {{ validationErrors.summary }}
-      </span>
-
-                 <span 
-            class="editorial-form__character-counter" 
-            :class="{ 
-              'is-warning': summaryLength > 500  && summaryLength <= 512,
-              'is-over-limit': summaryLength < 8  || summaryLength > 512 
-            }"
-          >
-            {{ summaryLength.toLocaleString() }} / 512
-          </span>
-           </div>
+          </div>
         </div>
 
-            <div class="divider-multi"><span></span></div>
+        <!-- 2. Reality Check Summary / Fact Context Group -->
+        <div class="editorial-form__group">
+          <label class="editorial-form__label" for="reality-summary">Fact Context & Legal Clarification</label>
+          <div class="editorial-form__row">
+            <textarea
+              id="reality-summary"
+              ref="summaryRef"
+              v-model="formData.summary" 
+              placeholder="Provide the real-world facts or legal context to give readers full clarity..."
+              rows="3"
+              class="editorial-form__summary"
+              @input="handleInput"
+              required
+            ></textarea>
+          </div>
+          <div class="editorial-form__field-footer">
+            <span v-if="formSubmitted && validationErrors.summary" class="editorial-form__validation-message">
+              {{ validationErrors.summary }}
+            </span>
+            <span 
+              class="editorial-form__character-counter" 
+              :class="{ 
+                'is-warning': summaryLength > 500 && summaryLength <= 512,
+                'is-over-limit': summaryLength < 8 || summaryLength > 512 
+              }"
+            >
+              {{ summaryLength.toLocaleString() }} / 512
+            </span>
+          </div>
+        </div>
 
-            <!-- 2. Source & Source URL Row -->
-        <div class="editorial-form__row  editorial-form__row--offset">
+         <div class="divider-multi divider-multi--thick"><span></span></div>
 
+        <!-- 3. Source Name Group -->
+        <div class="editorial-form__group">
+          <label class="editorial-form__label" for="reality-source">Source Name <span>(optional)</span></label>
+          <div class="editorial-form__row">
             <input 
+              id="reality-source"
               v-model="formData.source" 
               type="text"
               placeholder="Source Name (e.g. Electoral Act 2022, Reuters)"
-              class="source-field__input"
+              class="editorial-form__input"
+              :disabled="progressState.type === 'Loading' || lockSubmission"
             />
-
-       <div class="editorial-form__field-footer">
-
-             <span v-if="formSubmitted && validationErrors.source" class="editorial-form__validation-message">
-                    {{ validationErrors.source }}
-                </span>
+          </div>
+          <div class="editorial-form__field-footer">
+            <span v-if="formSubmitted && validationErrors.source" class="editorial-form__validation-message">
+              {{ validationErrors.source }}
+            </span>
             <span 
-           class="editorial-form__character-counter" 
-            :class="{ 
-              'is-warning': sourceLength > 30  && sourceLength <= 36,
-              'is-over-limit': sourceLength < 2  || sourceLength > 36 
-            }"
-          >
-            {{ sourceLength.toLocaleString() }}/36
-          </span>
-           </div>
+              class="editorial-form__character-counter" 
+              :class="{ 
+                'is-warning': sourceLength > 30 && sourceLength <= 36,
+                'is-over-limit': sourceLength < 2 || sourceLength > 36 
+              }"
+            >
+              {{ sourceLength.toLocaleString() }} / 36
+            </span>
+          </div>
         </div>
 
-           <div class="editorial-form__row">
-            
-           <input 
-               v-model="formData.sourceUrl" 
+        <!-- 4. Source URL Group -->
+        <div class="editorial-form__group">
+          <label class="editorial-form__label" for="reality-url">Source Reference URL <span>(optional)</span></label>
+          <div class="editorial-form__row">
+            <input 
+              id="reality-url"
+              v-model="formData.sourceUrl" 
               type="url"
               placeholder="https://source-link.com/document"
-              class="source-field__input source-field__input--url"
+              class="editorial-form__input"
+              :disabled="progressState.type === 'Loading' || lockSubmission"
             />
-              
-       <div class="editorial-form__field-footer">
-
-             <span v-if="formSubmitted && validationErrors.url" class="editorial-form__validation-message">
-        {{ validationErrors.url }}
-      </span>
-
-                <span 
-           class="editorial-form__character-counter" 
-            :class="{ 
-              'is-warning': urlLength > 240  && urlLength <= 256,
-              'is-over-limit': urlLength < 3  || urlLength > 256 
-            }"
-          >
-            {{ urlLength.toLocaleString() }}/256
-          </span>
-           </div>
+          </div>
+          <div class="editorial-form__field-footer">
+            <span v-if="formSubmitted && validationErrors.url" class="editorial-form__validation-message">
+              {{ validationErrors.url }}
+            </span>
+            <span 
+              class="editorial-form__character-counter" 
+              :class="{ 
+                'is-warning': urlLength > 240 && urlLength <= 256,
+                'is-over-limit': urlLength < 3 || urlLength > 256 
+              }"
+            >
+              {{ urlLength.toLocaleString() }} / 256
+            </span>
+          </div>
         </div>
 
-            </form>
-
-        </div>
-
+      </form>
+    </div>
+  </div>
+</div>
     </div>
 
 </template>

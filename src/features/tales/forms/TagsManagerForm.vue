@@ -347,7 +347,19 @@ currentTag.value = tagId
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 3rem 1.5rem;
+ 
+
+  @media @phone{
+ padding: 1.5rem 0.5rem;
+  }
+
+  @media @phablet{
+ padding: 2rem 0.75rem;
+  }
+
+  @media @largeDevice{
+     padding: 3rem 1.5rem;
+  }
 
   &__wrapper {
     width: 100%;
@@ -375,16 +387,23 @@ currentTag.value = tagId
 .tags-card {
   background-color: var(--light-background-color);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.75rem 2rem;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
 
    @media @phone{
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+ padding: 1.75rem 0.5rem;
+  }
+
+  @media @phablet{
+padding: 1.75rem 1rem;
+  }
+
+  @media @largeDevice{
+     padding: 1.75rem 2rem;
   }
 
   &:focus-within {
