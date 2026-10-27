@@ -162,7 +162,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
       }
 
       &--time{
-        font-size: 0.95rem;
+        font-size: 0.9rem;
 
         & span{
           font-style: italic;
@@ -175,16 +175,17 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 &__latest {
   width: 100%;
   height: auto;
-  padding: 1.5rem;
+  padding: 1.5rem 0.5rem;
   display: flex;
  flex-direction: column;
  row-gap: 0.75rem;
- background-color: var(--light-background-color);
- border-color: var(--border-color);
+ border: 1px solid var(--border-color);
  border-radius: 12px;
+ 
 
  &:hover{
-  background-color:var(--thick-background-color);
+  background-color:var(--light-background-color);
+  color: var(--text-color);
   
  }
 
