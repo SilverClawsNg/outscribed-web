@@ -147,7 +147,7 @@ onUnmounted(() => {
       <span class="publishing-roadmap__number">03</span>
       <div class="publishing-roadmap__content">
         <h4>Acknowledgement</h4>
-        <p>Agree to platform publishing guidelines with a single tick.</p>
+        <p>Agree to platform publishing guidelines with a single check.</p>
       </div>
     </div>
 
@@ -155,8 +155,8 @@ onUnmounted(() => {
     <div class="publishing-roadmap__card publishing-roadmap__card--step4">
       <span class="publishing-roadmap__number">04</span>
       <div class="publishing-roadmap__content">
-        <h4>Share Your Reality</h4>
-        <p>Craft your alternate perspective directly inside the clean editorial canvas.</p>
+        <h4>Create A Draft</h4>
+        <p>Get started with your story by selecting a category and a befitting title.</p>
       </div>
     </div>
 
@@ -164,8 +164,8 @@ onUnmounted(() => {
     <div class="publishing-roadmap__card publishing-roadmap__card--step5">
       <span class="publishing-roadmap__number">05</span>
       <div class="publishing-roadmap__content">
-        <h4>Provide Metadata</h4>
-        <p>Complete basic info, reality check sources, and optional cover photo.</p>
+        <h4>Build Story</h4>
+        <p>Use a rich text editor to write story. Complete basic information, reality check, and optional photo & tags.</p>
       </div>
     </div>
 
@@ -174,7 +174,7 @@ onUnmounted(() => {
       <span class="publishing-roadmap__number">06</span>
       <div class="publishing-roadmap__content">
         <h4>Go Live & Engage</h4>
-        <p>Launch your tale to the network and spark real-world conversation!</p>
+        <p>Launch your tale to the network and start inviting other to experience your world!</p>
       </div>
     </div>
 
@@ -383,15 +383,12 @@ onUnmounted(() => {
 }
 
 .hero-contents{
- 
   margin: 0 auto;
   position:relative;
   max-width: calc(100% - 20px);
   display: flex;
   justify-content: center;
   align-items: center;
-
-  
 }
 
 .hero__pattern {
@@ -401,7 +398,7 @@ onUnmounted(() => {
   pointer-events: none;
   background-image:
     /* Layer 1: Top wash gradient fading downward from header */
-    linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
+    //linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
 
     /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
     repeating-linear-gradient(

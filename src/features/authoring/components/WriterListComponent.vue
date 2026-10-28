@@ -5,7 +5,7 @@ import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useEngagement } from '@/composables/useEngagement';
 
-import { toShortDate } from '@/utils/dateExtensions'
+import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { type WriterListDto } from '../types/AuthoringTypes';
 import { CountryDescriptions } from '@/utils/descriptors'
@@ -105,7 +105,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
             {{ writer.latestTale.title }}
             </h1>
 
-             <time class="writer-card__latest--date">{{toShortDate(writer.latestTale.createdAt)}}</time>
+             <time class="writer-card__latest--date">{{toRelativeTime(writer.latestTale.createdAt)}}</time>
 
              <p class="writer-card__latest--summary">
               {{ writer.latestTale.summary.length > 500 ? writer.latestTale.summary.substring(0, 500) + '...' : writer.latestTale.summary }}

@@ -35,13 +35,12 @@ const showAnswer = ref(false)
       class="faq-card__content"
       :class="{ 'faq-card__content--show': showAnswer }"
     >
-      <div class="faq-card__body rich-text" v-html="sanitizeHtml(faq.answer)"></div>
+      <div class="faq-card__body rich-text rich-text--faq" v-html="sanitizeHtml(faq.answer)"></div>
     </div>
   </article>
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/faq-card.less";
 @import "@/assets/css/rich-text.less";
 @import "@/assets/css/variables.less";
 
@@ -79,7 +78,7 @@ const showAnswer = ref(false)
   &__question {
      font-size: 1.1rem;
     line-height: 1.35;
-    font-weight:normal;
+    font-weight:600;
     color:var(--text-color);
     margin: 0;
     transition: color 0.2s ease;
