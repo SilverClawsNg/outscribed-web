@@ -73,7 +73,7 @@ function handleSearchClick() {
           aria-label="Toggle Navigation Menu"
           @click="isMenuOpen = !isMenuOpen"
         >
-           <SvgIcons name="menu" :size="20" />
+           <SvgIcons name="menu" :size="25" />
         </button>
 
         <!-- Slot C: Main Brand Anchor (Always Centered) -->
@@ -85,7 +85,7 @@ function handleSearchClick() {
 
         <!-- Slot D: Quick Write Icon (Mobile Right) -->
           <button type="button" class="main-header__quick-write-btn" @click="handleCreateDraftClick">
-             <SvgIcons name="edit" :size="20" />
+             <SvgIcons name="edit" :size="25" />
           </button>
 
         <!-- Slot E: Studio Actions & Draft CTA (Desktop Right) -->
@@ -124,18 +124,18 @@ function handleSearchClick() {
           <div class="divider-multi"><span></span></div>
            <template v-if="isLoggedIn">
             <router-link to="/profile" class="main-header__mobile-link" @click="isMenuOpen = false">
-              <SvgIcons name="user" /> Profile
+              <SvgIcons name="user" :size="20" /> Profile
             </router-link>
             <router-link to="/timelines" class="main-header__mobile-link" @click="isMenuOpen = false">
-              <SvgIcons name="clock" /> Timeline
+              <SvgIcons name="clock" :size="20" /> Timeline
             </router-link>
           </template>
           <template v-else>
             <router-link to="/login"  class="main-header__mobile-link" @click="isMenuOpen = false">
-              <SvgIcons name="user" /> Log In
+              <SvgIcons name="user" :size="20" /> Log In
             </router-link>
             <router-link to="/register"  class="main-header__mobile-link main-header__mobile-link--highlight" @click="isMenuOpen = false">
-             <SvgIcons name="archive" />  Sign Up For Free
+             <SvgIcons name="archive" :size="20" />  Sign Up For Free
             </router-link>
           </template>
           <div class="divider-multi"><span></span></div>
@@ -143,13 +143,13 @@ function handleSearchClick() {
        
         <div class="main-header__mobile-studio-group">
            <button type="button" class="main-header__mobile-cta-btn" @click="handleCreateDraftClick">
-              <SvgIcons name="edit" /> Create Draft
+              <SvgIcons name="edit" :size="20" /> Create Draft
             </button>
           <button type="button" @click="handleSavedDraftsClick" class="main-header__mobile-link">
-            <SvgIcons name="archive" /> Saved Drafts
+            <SvgIcons name="archive" :size="20" /> Saved Drafts
           </button>
           <router-link v-if="isLoggedIn" to="/logout" class="main-header__mobile-link main-header__mobile-link--logout" @click="isMenuOpen = false">
-           <SvgIcons name="padlock" /> Logout
+           <SvgIcons name="padlock" :size="20" /> Logout
           </router-link>
         </div>
         </div>

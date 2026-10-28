@@ -196,6 +196,7 @@ background-color: var(--light-background-color);
       
       &--expanded {
         grid-template-rows: 1fr;
+        min-height: calc(100lvh - 56px);
       }
     }
   }
@@ -208,7 +209,7 @@ background-color: var(--light-background-color);
   width: 100%;
   padding: 0; // Absolutely zero padding on grid boundary
 
-  @media @phone, @phablet {
+  @media @smallDevice {
     max-height: calc(100lvh - 56px);
     overflow-y: auto;
   }
@@ -216,14 +217,15 @@ background-color: var(--light-background-color);
 
 /* Inner padding wrapper that smoothly collapses with grid-template-rows */
 &__primary-nav-inner {
-  @media @tablet, @laptop, @desktop {
+
+  @media @largeDevice {
     height: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  @media @phone, @phablet {
+  @media @smallDevice {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -237,11 +239,11 @@ background-color: var(--light-background-color);
     display: flex;
     align-items: center;
 
-    @media @tablet, @laptop, @desktop {
+    @media @largeDevice {
       gap: 2.25rem;
     }
 
-    @media @phone, @phablet {
+    @media @smallDevice {
       flex-direction: column;
       align-items: flex-start;
       gap: 0.85rem;
@@ -257,9 +259,10 @@ background-color: var(--light-background-color);
 
     &:hover { color: @link-color }
 
-    @media @phone, @phablet {
-      font-size: 1rem;
+    @media @largeDevice{
+      color: var(--muted-link-color);
     }
+  
   }
 
   &__search-trigger {
