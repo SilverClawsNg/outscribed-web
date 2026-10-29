@@ -554,11 +554,11 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   </footer>
 
   </article>
+
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/rich-text.less";
-
 
 .story {
   width: @mid-width;

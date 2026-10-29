@@ -158,7 +158,7 @@ function navigateToAside(section: AsideView) {
 </header>
 
       <!-- Aside Dynamic Component Body -->
-      <div class="editor-sidebar-body">
+      <div class="editor-aside-body">
 
         <template v-if="taleStore.currentAsideView === 'list'">
 
