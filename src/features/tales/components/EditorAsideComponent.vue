@@ -161,7 +161,6 @@ function navigateToAside(section: AsideView) {
       <div class="editor-aside-body">
 
         <template v-if="taleStore.currentAsideView === 'list'">
-
                     
         <template v-if="isLoading">
 
