@@ -95,15 +95,15 @@ const missingRequirements = computed(() => {
 
   const missing: string[] = []
   if (!taleStore.hasBasicInfo()) {
-    missing.push('Basic Information (Title, Category, Country, Summary)')
+    missing.push('Basic Information (includes title, category, country, & summary)')
     nextAction.value = 'basic'
   }
   if (!taleStore.hasRealityCheck()) {
-    missing.push('Reality Check (Title, Summary, Source)')
+    missing.push('Reality Check (includes title, summary, and optional source & url)')
     nextAction.value = 'reality'
   }
   if (!taleStore.hasDetails()) {
-    missing.push('Story Details (Story Content)')
+    missing.push('Story Details')
     nextAction.value = 'details'
   }
 

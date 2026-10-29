@@ -168,9 +168,10 @@ const modalStore = useModalStore()
 
         </RouterLink>
       </div>
-            <div class="divider-multi"><span></span></div>
 
       <div v-if="tags?.length" class="story-taxonomy__group story-taxonomy__group--tags">
+                    <div class="divider-multi"><span></span></div>
+
          <button 
           v-for="tag in tags" 
           :key="tag.tagId" 

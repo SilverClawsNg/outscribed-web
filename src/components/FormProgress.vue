@@ -48,14 +48,18 @@ function handleMoreDetails() {
 
 function handleLogin() {
   if (props.isEditor) {
-    // Redirect directly to login view when operating within the Studio
-    router.push('/login?returnurl="/editor"')
+    // Safely route to login while passing the returnUrl as a clean object query
+    router.push({
+      path: '/login',
+      query: { returnUrl: '/editor' }
+    });
   } else {
     // Open login modal for standard page contexts
-    modalStore.push('Login', 'Login')
+    modalStore.push('Login', 'Login');
   }
-  emit('login')
+  emit('login');
 }
+
 </script>
 
 <template v-if="progress.type !== 'Idle'">

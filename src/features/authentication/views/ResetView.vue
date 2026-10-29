@@ -4,7 +4,13 @@ import Reset from '../components/ResetComponent.vue'
 
 const router = useRouter()
 const route = useRoute()
-const returnUrl = route.query.returnUrl as string;
+
+// 1. Capture and normalize the returnUrl at the top level so all functions share it.
+// This checks both casing variations and strips any accidental quotes.
+const rawQueryReturn = route.query.returnUrl || route.query.returnurl;
+const returnUrl = typeof rawQueryReturn === 'string' 
+  ? rawQueryReturn.replace(/["']/g, '') 
+  : null;
 
 function handleResetSuccess() {
   // Grab the returnUrl query token if it exists (e.g., /login?returnUrl=/profile)

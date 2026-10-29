@@ -2,15 +2,11 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useModalStore } from '@/stores/modalStore'
-import SvgIcons from '@/components/SvgIcons.vue'
 import { useEngagement } from '@/composables/useEngagement';
 
 import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { type WriterListDto } from '../types/AuthoringTypes';
-import { CountryDescriptions } from '@/utils/descriptors'
-import Content from '@/components/Content.vue'
-import WriterStats from '@/components/WriterStats.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { formatCounts } from '@/utils/stringHelpers'
 
@@ -67,7 +63,6 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
     </header>
 
-    
     <div class="writer-card__metric">
       <RouterLink 
         :to="`/tales?username=${writer.creator.username}`" 
@@ -93,7 +88,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
     </div>
 
-  <div class="divider-multi"><span></span></div>
+  <div class="divider-multi divider-multi--thick"><span></span></div>
 
     <!-- Writer's Latest Featured Content -->
   
@@ -101,11 +96,11 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
       <RouterLink :to="`/tale/${writer.latestTale.slug}`"  class="writer-card__latest">
 
-           <h1  class="writer-card__latest--title">
-            {{ writer.latestTale.title }}
-            </h1>
-
-             <time class="writer-card__latest--date">{{toRelativeTime(writer.latestTale.createdAt)}}</time>
+           <div  class="writer-card__latest--title">
+              <span>{{ writer.latestTale.title }}</span>
+              <span class="divider divider--circle"></span>
+              <time class="writer-card__latest--date">{{toRelativeTime(writer.latestTale.createdAt)}}</time>
+           </div>
 
              <p class="writer-card__latest--summary">
               {{ writer.latestTale.summary.length > 500 ? writer.latestTale.summary.substring(0, 500) + '...' : writer.latestTale.summary }}
@@ -134,8 +129,13 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
   position: relative;
   width: 100%;
   height: auto;
-  padding: 1.5rem 0;
-  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 1.5rem;
+  background-color: var(--light-background-color);
+  padding: 1.5rem 0.75rem;
+
+  &:first-child{
+    margin-top: 1.5rem;
+  }
   
   &__header {
     display: flex;
@@ -149,6 +149,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
+   
     
   }
 
@@ -158,17 +159,26 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
     align-items:flex-start;
 
     &--username{
-      font-size: 1.25rem;
+       color: var(--text-color);
+        font-size: clamp(1.2rem, 5vw, 1.7rem);
+        font-weight:normal;
       }
 
       &--time{
-        font-size: 0.875rem;
+        font-size: 0.9rem;
 
         & span{
           font-style: italic;
         }
   
       }
+  }
+
+  &__metric{
+    display:flex;
+    column-gap: 0.5rem;
+     font-size: 0.9rem;
+     align-items:center;
   }
 
   
@@ -179,20 +189,21 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
   display: flex;
  flex-direction: column;
  row-gap: 0.75rem;
- border: 1px solid var(--border-color);
+ border: 1px solid var(--thick-border-color);
+ background-color:var(--background-color);
  border-radius: 12px;
- 
+ font-weight:normal;
+  
 
  &:hover{
   background-color:var(--light-background-color);
-  color: var(--text-color);
-  
- }
+}
 
    &--title {
     font-size: 1.2rem;
     line-height: 1.35;
     text-transform: capitalize;
+    color: var(--text-color);
   }
 
   &--date {
@@ -202,6 +213,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
   
   &--summary {
     line-height: 1.5;
+    color: var(--muted-text-color);
   }
 
 

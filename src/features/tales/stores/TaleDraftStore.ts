@@ -113,10 +113,10 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
    function hasBasicInfo() {
     if (!activeTale.value) return false;
     return Boolean(
-        activeTale.value?.title?.trim() && 
+        activeTale.value?.title && 
         activeTale.value?.country && 
         activeTale.value?.category && 
-        activeTale.value?.summary?.trim()
+        activeTale.value?.summary
       )
   }
 

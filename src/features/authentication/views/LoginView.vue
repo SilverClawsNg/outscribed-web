@@ -6,13 +6,6 @@ import Login from '../components/LoginComponent.vue'
 
 const router = useRouter()
 const route = useRoute()
-const returnUrl = route.query.returnUrl as string;
-
-function handleLoginSuccess() {
-  // Grab the returnUrl query token if it exists (e.g., /login?returnUrl=/profile)
-  const destination = returnUrl || '/timelines'
-  router.push(destination)
-}
 
 // 🗺️ DICTIONARY MAP: Easily scaled for any new features down the line
 const CONTEXT_MESSAGES: Record<string, {message: string }> = {
@@ -58,7 +51,14 @@ const contextKey = route.query.context as string
   return CONTEXT_MESSAGES[contextKey] || null
 })
 
+// 1. Capture and normalize the returnUrl at the top level so all functions share it.
+// This checks both casing variations and strips any accidental quotes.
+const rawQueryReturn = route.query.returnUrl || route.query.returnurl;
+const returnUrl = typeof rawQueryReturn === 'string' 
+  ? rawQueryReturn.replace(/["']/g, '') 
+  : null;
 
+// 2. Your reset and register navigations will now correctly forward it!
 function navigateToReset() {
   router.replace({
     path: '/reset',
@@ -66,12 +66,17 @@ function navigateToReset() {
   });
 }
 
-
 function navigateToRegister() {
   router.replace({
     path: '/register',
     query: returnUrl ? { returnUrl } : undefined
   });
+}
+
+// 4. On successful login, use it as the destination (falling back to /timelines)
+function handleLoginSuccess() {
+  const destination = returnUrl || '/timelines';
+  router.push(destination);
 }
 
 </script>

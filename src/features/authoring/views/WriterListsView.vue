@@ -139,7 +139,7 @@ onUnmounted(() => {
 
      <header class="page-header">
           <h1 class="page-header__title">
-          Browse Writers
+          Meet The Writers
         </h1>
       <button 
         type="button" 

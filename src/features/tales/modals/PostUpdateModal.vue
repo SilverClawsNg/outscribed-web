@@ -29,6 +29,8 @@ const missingRequirements = computed(() => {
   return missing
 })
 
+
+
 const isAllRequirementsMet = computed(() => missingRequirements.value.length === 0)
 
 // Identify the next step in the authoring progression
@@ -127,15 +129,21 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
     <template v-else-if="!isAllRequirementsMet && !isPublished">
 
         <p>
-        Complete the remaining requirement below to get your story ready for publication:
+        Your tale is missing essential sections and cannot be published yet. Please complete the following steps:
       </p>
-       <p class="studio-modal__message--sub">{{ nextIncompleteSection?.label }}</p>
-
+        <ol class="studio-modal__missing-list">
+              <li v-for="(item, index) in missingRequirements" :key="index">
+                {{ item.label }}
+              </li>
+              
+            </ol>
+        <!-- <p class="studio-modal__message--sub">{{ nextIncompleteSection?.label }}</p>-->
+<p class="studio-modal__optional-list">*Cover photo and tags are optional</p>
     </template>
 
     
     <!-- STATE 4: UNPUBLISHED & NO PHOTO -->
-    <template v-else-if="isAllRequirementsMet && !isPublished && !taleStore.hasPhoto">
+    <template v-else-if="isAllRequirementsMet && !isPublished && !taleStore.hasPhoto()">
 
       <p>
         All required story sections are complete! Your tale is ready to go live. 
@@ -203,7 +211,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
     </template>
 
       <!-- STATE 4: UNPUBLISHED & NO PHOTO -->
-    <template v-else-if="isAllRequirementsMet && !isPublished && !taleStore.hasPhoto">
+    <template v-else-if="isAllRequirementsMet && !isPublished && !taleStore.hasPhoto()">
 
        <footer class="studio-modal__footer">
 

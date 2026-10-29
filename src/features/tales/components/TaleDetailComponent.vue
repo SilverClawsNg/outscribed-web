@@ -771,7 +771,6 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 }
 
 .story-footer{
-
   background-color: var(--light-background-color);
   padding: 1.5rem 0.75rem;
 }
