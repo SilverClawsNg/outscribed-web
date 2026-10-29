@@ -254,8 +254,8 @@ onUnmounted(() => {
           class="footer-filter-btn footer-filter-btn--more" 
           @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
         >
-          <SvgIcons name="filter" class="filter-icon" />
-          <span>More Filters</span>
+         
+          <span>More</span>  <SvgIcons name="filter" :size="20" />
         </button>
       </div>
     </footer>

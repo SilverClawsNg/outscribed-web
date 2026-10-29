@@ -721,41 +721,6 @@ h1.logo {
    Filter Button
    ========================================================================== */
 
-.filter-trigger {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  padding: 0;
-  border: 1px solid var(--muted-link-color);
-  border-radius: 50%; // Circular icon button
-  background-color: var(--background-color);
-  color: var(--muted-link-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    background-color: var(--light-background-color);
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  & svg {
-    width: 2rem;
-    height: 2rem;
-    pointer-events: none; // Ensures click event targets the button directly
-  }
-}
-
 /* Fixed Bottom Action Bar */
 .page-footer-bar {
   position: fixed;
@@ -763,21 +728,20 @@ h1.logo {
   left: 0;
   width: 100%;
   z-index: 4999;
-  background-color: var(--background-color, #ffffff);
-  border-top: 1px solid var(--border-color, #e2e8f0);
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  background-color: var(--thick-background-color);
+  border-top: 1px solid var(--thick-border-color);
+  box-shadow: var(--box-shadow);
   backdrop-filter: blur(8px);
-  background-color: rgba(var(--background-color-rgb, 255, 255, 255), 0.9);
 
   &__inner {
-    max-width: @mid-width;
+    width: @mid-width;
+    max-width: calc(100% - 20px);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 42px;
     gap: 1rem;
-    padding: 0 1rem;
   }
 }
 
@@ -787,7 +751,7 @@ h1.logo {
   border: none;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--muted-text-color, #64748b);
+  color: var(--muted-text-color);
   cursor: pointer;
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
@@ -797,18 +761,17 @@ h1.logo {
   gap: 0.4rem;
 
   &:hover {
-    color: var(--text-color, #0f172a);
-    background-color: var(--light-background-color, #f1f5f9);
+    color: @link-color;
+    background-color: var(--light-background-color);
   }
 
   &.active {
-    font-weight: 700;
-    color: var(--primary-color, #0a192f);
+    pointer-events: none;
+    font-weight: normal;
   }
 
   &--more {
     font-weight: 600;
-    color: var(--text-color, #0f172a);
 
     .filter-icon {
       width: 1rem;
@@ -818,7 +781,7 @@ h1.logo {
 }
 
 .footer-divider {
-  color: var(--border-color, #cbd5e1);
+  color: var(--thick-border-color);
   font-weight: 300;
   user-select: none;
 }
