@@ -187,5 +187,86 @@ function handleTouchMove(e: TouchEvent) {
   </div>
 </template>
 <style lang="less" scoped>
-   @import "@/assets/css/image-cropper.less";
+   @import "@/assets/css/variables.less";
+
+.cropper-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100lvh;
+  background: var(--modal-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 0.5rem;
+}
+
+.cropper-modal {
+  background: var(--light-background-color);
+  border-radius: 4px;
+  height: 100%;
+  width: 100%;
+  max-width: @mid-width; /* Constrains large desktop screens */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--box-shadow);
+
+    @media @smallDevice {
+       padding: 0.5rem;
+    }
+
+    @media @largeDevice {
+       padding: 1.5rem;
+    }
+}
+
+/* Fluid responsive viewport container */
+.canvas-viewport {
+  width: 100%;
+  max-width: 750px; /* Scaled up to full target width on desktop */
+  aspect-ratio: var(--aspect-ratio, 4 / 3); /* Maintains 750:562 aspect ratio automatically */
+  border: 2px dashed @link-color;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  background: var(--background-color);
+  position: relative;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  /* Make canvas scale dynamically inside the container */
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.cropper-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 300px;
+
+  input[type='range'] {
+    flex: 1;
+  }
+}
+
+.cropper-actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: flex-end;
+}
+
 </style>

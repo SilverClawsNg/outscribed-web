@@ -144,7 +144,6 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
     margin-bottom: 1.25rem;
   }
 
-
   &__meta {
     display: flex;
     align-items: center;

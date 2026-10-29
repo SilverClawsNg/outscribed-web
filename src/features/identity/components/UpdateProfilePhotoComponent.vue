@@ -2,18 +2,19 @@
 import { ref, Teleport } from 'vue'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { computed } from 'vue'
-import { useProfileStore } from '../stores/ProfileStore' // 🚀 Import Profile Store
+import { useProfileStore } from '../stores/ProfileStore'
 import { mediaHelper } from '@/utils/mediaHelper'
 import type { UpdatePhotoRequest } from '../types/IdentityTypes'
 import ImageCropper from '@/components/ImageCropper.vue'
 
-const profileStore = useProfileStore() // 💡 Instantiate Store
+const profileStore = useProfileStore()
 const profile = computed(() => profileStore.profile!)
 
 // --- ⚙️ COMPONENT STATE ---
 const photoUrl = ref<string | null>(null)
 const rawImageSource = ref<string | null>(null)
 const showCropper = ref(false)
+const isDraggingOver = ref(false) // 👈 Track drag state for visual styling
   
 // --- INITIALIZE FORM DATA FROM STORE ---
 const formData = ref<UpdatePhotoRequest>({
@@ -31,22 +32,40 @@ function reset() {
   profileStore.uploadError = null
 }
 
+// 📂 Core file processor shared between file input and drag-and-drop
+function processFile(file: File) {
+  if (!file.type.startsWith('image/')) {
+    profileStore.uploadError = 'Please upload a valid image file.'
+    return
+  }
+
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = () => {
+    rawImageSource.value = reader.result as string
+    showCropper.value = true
+  }
+}
+
 function handleFileSelection(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files || target.files.length === 0) return
 
   const file = target.files[0]
-  
-  // 🛡️ Early return if file is undefined
   if (!file) return
 
   target.value = ''
+  processFile(file)
+}
 
-  const reader = new FileReader()
-  reader.readAsDataURL(file) // TypeScript now knows 'file' is strictly type 'File'
-  reader.onload = () => {
-    rawImageSource.value = reader.result as string
-    showCropper.value = true
+// 🖱️ Drag and Drop Event Handlers
+function handleDrop(event: DragEvent) {
+  isDraggingOver.value = false
+  if (!event.dataTransfer?.files || event.dataTransfer.files.length === 0) return
+
+  const file = event.dataTransfer.files[0]
+  if (file) {
+    processFile(file)
   }
 }
 
@@ -66,8 +85,6 @@ async function upload() {
   }
   profileStore.uploadProfilePhoto(formData.value)
 }
-
-
 </script>
 
 <template>
@@ -85,7 +102,13 @@ async function upload() {
       />
     </Teleport>
 
-  <div class="photo-preview">
+  <div 
+    class="photo-preview"
+    :class="{ 'is-dragging': isDraggingOver }"
+    @dragover.prevent="isDraggingOver = true"
+    @dragleave.prevent="isDraggingOver = false"
+    @drop.prevent="handleDrop"
+  >
     
     <div v-if="profileStore.uploadStatus === 'Loading'" class="loader small" aria-label="Loading profile">
       <p class="loader__dot"></p>
