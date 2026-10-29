@@ -237,6 +237,7 @@
   &__editorial-links {
     display: flex;
     align-items: center;
+    height: 100%;
 
     @media @largeDevice {
       gap: 2.25rem;
@@ -254,9 +255,24 @@
     font-weight: 500;
     text-decoration: none;
     transition: color 0.15s ease;
+    height: 100%;
+    display: flex;
+    align-items:center;
+    border-bottom: 2px solid transparent;
      //color:  var(--text-color);
 
+     &.router-link-exact-active {
+     border-bottom-color: var(--text-color);
+     pointer-events: none;
+    }
+
+
     &:hover { color: @link-color }
+
+    
+    @media @smallDevice{
+     font-size: 1.2rem;
+    }
 
     @media @largeDevice{
       color: var(--muted-link-color);
@@ -283,6 +299,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+       font-size: 1.2rem;
       //padding-top: 1rem;
       //border-top: 1px solid var(--border-color);
     }
@@ -300,6 +317,10 @@
     //color: var(--muted-text-color);
     text-decoration: none;
     padding: 0.2rem 0;
+
+      @media @smallDevice{
+     font-size: 1.2rem;
+    }
 
     &--highlight { color: @link-color; font-weight: 700; }
     &--logout { color: #d9534f; }

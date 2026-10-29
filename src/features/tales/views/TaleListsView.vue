@@ -12,6 +12,7 @@ import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
 import SvgIcons from '@/components/SvgIcons.vue'
+import type { SortType } from '@/utils/enumHelper.ts';
 
 // --- INITIALIZE STORES & ROUTER ---
 const taleStore = useTaleListStore();
@@ -131,6 +132,18 @@ async function initPage() {
   }
 }
 
+async function setSort(sort: SortType) {
+  // 1. Update the store
+  taleFilterStore.sort = sort;
+
+  // 2. Push/Replace the URL query. 
+  // This single call updates the browser URL AND automatically triggers your route watcher 
+  // (or page reload hook) to fetch the data cleanly without a double-firewall trip.
+  await router.replace({
+    path: route.path,
+    query: taleFilterStore.getAsDictionary()
+  });
+}
 
 function redirectToLogin() {
   router.push(`/login?returnUrl=${currentPath.value}`)
@@ -140,6 +153,8 @@ function redirectToLogin() {
 onUnmounted(() => {
   taleStore.abort();
 });
+
+
 </script>
 
 <template>
@@ -173,17 +188,6 @@ onUnmounted(() => {
 
    <template v-else>
 
-     <header class="page-header">
-        <h1  :class="{ at: creatorUsername }"> {{ pageTitle }}</h1>
-          <button 
-        type="button" 
-        class="btn btn--primary"  
-        @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
-      >
-      Filter
-      </button>
-    </header>
-
     <template v-if="wasCleaned">
 
      <div class="container">
@@ -206,7 +210,7 @@ onUnmounted(() => {
         @load-more="taleStore.loadMoreTales"
         @retry="taleStore.loadMoreTales">
 
-      <div class="container">
+      <div class="container container--offset-top">
 
           <TaleListComponent 
             v-for="tale in taleStore.tales" 
@@ -217,14 +221,45 @@ onUnmounted(() => {
 
        </InfiniteScroller>
 
-       <button 
+       <!-- Fixed Bottom Filter & Sort Footer -->
+    <footer class="page-footer-bar">
+      <div class="page-footer-bar__inner">
+        <!-- Quick Sort: Newest -->
+        <button 
           type="button" 
-          class="filter-trigger" 
-          aria-label="Filter content"
-           @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
+          class="footer-filter-btn" 
+          :class="{ active: taleFilterStore.sort === 'MostRecent' }"
+          @click="setSort('MostRecent')"
         >
-         <SvgIcons name="filter" />
+          Newest
         </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- Quick Sort: Oldest -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: taleFilterStore.sort === 'LeastRecent' }"
+          @click="setSort('LeastRecent')"
+        >
+          Oldest
+        </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- More Filters Modal Trigger -->
+        <button 
+          type="button" 
+          class="footer-filter-btn footer-filter-btn--more" 
+          @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
+        >
+          <SvgIcons name="filter" class="filter-icon" />
+          <span>More Filters</span>
+        </button>
+      </div>
+    </footer>
+
 
   </template>
 
