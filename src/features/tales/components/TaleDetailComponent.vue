@@ -230,12 +230,6 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   }
 ])
 
-
-
-
-
-
-
 </script>
 
 <template>
@@ -411,17 +405,21 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
           <div class="story-credits__meta">
         
-              Written  By
+            <p class="story-credits__meta-item">
+                  <span>Written By </span>
           <button 
             type="button"
-            class="at"
+            class="story-credits__meta-username at"
             @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
           >
           {{ tale.creator.username }}
           </button>
-               on    <time class="story-credits__meta--date">{{toShortDate(tale.createdAt)}}</time>
-
-
+            </p>
+             <p class="story-credits__meta-item">
+                   <span> On </span>
+          <time class="story-credits__meta-date">{{toShortDate(tale.createdAt)}}</time>
+            </p>
+        
         </div>
         
           <div class="story-credits__stats">
@@ -789,6 +787,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   &__credits-meta{
     display: flex;
     align-items:center;
+    flex-direction: column;
 
     & a{
       display: flex;
@@ -796,10 +795,18 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
     }
 
-    
-     
   }
 
+  &__credits-meta{
+    margin-bottom: 1rem;
+  }
+
+  
+    &__meta-username{
+       font-size: clamp(1rem, 5vw, 1.2rem);
+    }
+
+  
     &__value {
         margin-right: 0.25rem;
         }
@@ -931,6 +938,7 @@ padding-top: 0.5rem;
     display: flex;
     align-items: center;
      justify-content: center;
+     flex-wrap: wrap;
     gap: 0.5rem;
     width: 100%;
     margin-bottom: 0.5rem;
