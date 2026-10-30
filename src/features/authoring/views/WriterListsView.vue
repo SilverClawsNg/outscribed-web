@@ -11,6 +11,7 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import SvgIcons from '@/components/SvgIcons.vue'
+import type { SortType } from '@/utils/enumHelper.ts';
 
 // --- INITIALIZE STORES ---
 const writerStore = useWriterListStore();
@@ -104,6 +105,21 @@ onUnmounted(() => {
   writerStore.abort();
 });
 
+
+async function setSort(sort: SortType) {
+  // 1. Update the store
+  writerFilterStore.sort = sort;
+
+  // 2. Push/Replace the URL query. 
+  // This single call updates the browser URL AND automatically triggers your route watcher 
+  // (or page reload hook) to fetch the data cleanly without a double-firewall trip.
+  await router.replace({
+    path: route.path,
+    query: writerFilterStore.getAsDictionary()
+  });
+}
+
+
 </script>
 
 <template>
@@ -137,15 +153,6 @@ onUnmounted(() => {
 
    <template v-else>
 
-     <header class="page-header">
-          <h1 class="page-header__title">
-          Meet The Writers
-        </h1>
-      <button 
-        type="button" 
-        class="btn btn--primary"  @click="modalStore.push('WriterFilter', 'Filter Writers')">Filter</button>
-    </header>
-
     <template v-if="wasCleaned">
 
      <div class="container">
@@ -169,7 +176,7 @@ onUnmounted(() => {
         @retry="writerStore.loadMoreWriters">
 
         
-  <div class="container">
+  <div class="container container--offset-top">
 
       <WriterListComponent 
         v-for="writer in writerStore.writers" 
@@ -180,14 +187,45 @@ onUnmounted(() => {
 
        </InfiniteScroller>
 
+       
+       <!-- Fixed Bottom Filter & Sort Footer -->
+    <footer class="page-footer-bar">
+      <div class="page-footer-bar__inner">
+        <!-- Quick Sort: Newest -->
         <button 
           type="button" 
-          class="filter-trigger" 
-          aria-label="Filter content"
-           @click="modalStore.push('WriterFilter', 'Filter Writers')"
+          class="footer-filter-btn" 
+          :class="{ active: writerFilterStore.sort === 'MostRecent' }"
+          @click="setSort('MostRecent')"
         >
-         <SvgIcons name="filter" />
+          Newest
         </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- Quick Sort: Oldest -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: writerFilterStore.sort === 'LeastRecent' }"
+          @click="setSort('LeastRecent')"
+        >
+          Oldest
+        </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- More Filters Modal Trigger -->
+        <button 
+          type="button" 
+          class="footer-filter-btn footer-filter-btn--more" 
+          @click="modalStore.push('WriterFilter', 'Filter Writers')"
+        >
+         
+          <span>More</span>  <SvgIcons name="filter" :size="20" />
+        </button>
+      </div>
+    </footer>
 
   </template>
 

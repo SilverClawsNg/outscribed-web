@@ -46,7 +46,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
           @{{ writer.creator.username }}
         </button>
 
-            <time class="writer-card__title--time"><span>OutScribing </span>since {{ toShortDate(writer.onboardedAt) }}</time>
+            <time class="writer-card__title--time"><span>Since </span> {{ toShortDate(writer.onboardedAt) }}</time>
         </div>
         
       </div>
@@ -130,8 +130,8 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
   width: 100%;
   height: auto;
   margin-bottom: 1.5rem;
-  background-color: var(--light-background-color);
-  padding: 1.5rem 0.75rem;
+  //background-color: var(--light-background-color);
+  //padding: 1.5rem 0.75rem;
 
   &:first-child{
     margin-top: 1.5rem;

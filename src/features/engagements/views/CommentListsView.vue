@@ -12,6 +12,7 @@ import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
 import SvgIcons from '@/components/SvgIcons.vue'
+import type { SortType } from '@/utils/enumHelper.ts';
 
 // --- INITIALIZE STORES & ROUTER ---
 const commentStore = useCommentListStore();
@@ -138,6 +139,20 @@ onUnmounted(() => {
   commentStore.abort();
 });
 
+
+async function setSort(sort: SortType) {
+  // 1. Update the store
+  commentFilterStore.sort = sort;
+
+  // 2. Push/Replace the URL query. 
+  // This single call updates the browser URL AND automatically triggers your route watcher 
+  // (or page reload hook) to fetch the data cleanly without a double-firewall trip.
+  await router.replace({
+    path: route.path,
+    query: commentFilterStore.getAsDictionary()
+  });
+}
+
 </script>
 
 <template>
@@ -171,19 +186,6 @@ onUnmounted(() => {
 
    <template v-else>
 
-     <header class="page-header">
-          <h1 :class="{ at: creatorUsername }">
-          {{ pageTitle }}
-        </h1>
-        <button 
-          type="button" 
-          class="btn btn--secondary"  
-          @click="modalStore.push('CommentListFilter', 'Filter Lists')"
-        >
-          Filter
-        </button>
-    </header>
-   
     <template v-if="wasCleaned">
      <div class="container">
           <PageStatusMessage 
@@ -204,8 +206,7 @@ onUnmounted(() => {
         @load-more="commentStore.loadMoreComments"
         @retry="commentStore.loadMoreComments">
         
-  <div class="container">
-
+<div class="container container--offset-top">
       <CommentListComponent 
         v-for="comment in commentStore.comments" 
         :key="comment.commentId" 
@@ -215,14 +216,45 @@ onUnmounted(() => {
 
        </InfiniteScroller>
 
-          <button 
+         
+       <!-- Fixed Bottom Filter & Sort Footer -->
+    <footer class="page-footer-bar">
+      <div class="page-footer-bar__inner">
+        <!-- Quick Sort: Newest -->
+        <button 
           type="button" 
-          class="filter-trigger" 
-          aria-label="Filter content"
+          class="footer-filter-btn" 
+          :class="{ active: commentFilterStore.sort === 'MostRecent' }"
+          @click="setSort('MostRecent')"
+        >
+          Newest
+        </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- Quick Sort: Oldest -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: commentFilterStore.sort === 'LeastRecent' }"
+          @click="setSort('LeastRecent')"
+        >
+          Oldest
+        </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- More Filters Modal Trigger -->
+        <button 
+          type="button" 
+          class="footer-filter-btn footer-filter-btn--more" 
            @click="modalStore.push('CommentListFilter', 'Filter Lists')"
         >
-         <SvgIcons name="filter" />
+         
+          <span>More</span>  <SvgIcons name="filter" :size="20" />
         </button>
+      </div>
+    </footer>
 
   </template>
 

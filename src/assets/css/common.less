@@ -649,10 +649,22 @@ h1.logo {
     height: auto;
     max-width: calc(100% - 20px);
 
+    @media @smallDevice{
+
     &--offset-top{
-      margin-top: 2rem;
+      margin-top: 1.5rem;
     }
   
+    }
+
+    @media @largeDevice{
+
+    &--offset-top{
+      margin-top: 2.5rem;
+    }
+  
+    }
+
     &.min{
         width: @min-width;
     }

@@ -50,7 +50,7 @@ const contentPath = 'tale'
         {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
       </p>
 
-      <div class="content-card__meta-bottom">
+      <div class="content-card__meta">
         <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
           {{ tale.creatorUsername }}
         </button>
@@ -135,7 +135,7 @@ const contentPath = 'tale'
     object-position: top;
   }
   
-  &__meta-bottom {
+  &__meta{
     display: flex;
     align-items: center;
     //justify-content:center;
@@ -148,26 +148,6 @@ const contentPath = 'tale'
   &__body {
     display: flex;
     flex-direction: column;
-  }
-
-  &__meta-top {
-    text-transform: uppercase;
-    font-size: 0.85rem;
-     justify-content: space-between;
-    display: flex;
-    align-items: center;
-    //flex-wrap: wrap;
-    gap: 0.25rem 0.5rem;
-    margin-bottom: 0.5rem;
-
-
-  }
-
-  &__meta-link{
-    
-    &:last-child{
-      text-align:right;
-    }
   }
 
     &__title {
