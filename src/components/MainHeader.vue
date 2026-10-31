@@ -45,6 +45,7 @@ function handleSearchClick() {
     <!-- UTILITY BAR (Level 1 Wrapper - 100% Width for Full Bleed Border)    -->
     <!-- ==================================================================== -->
     <div class="main-header__utility-bar-wrapper">
+
       <div class="main-header__utility-bar">
         
         <!-- Slot A: Account / Auth Status (Desktop Left) -->
@@ -57,12 +58,12 @@ function handleSearchClick() {
             <router-link to="/logout" class="main-header__utility-link">Logout</router-link>
           </template>
           <template v-else>
-            <span class="main-header__auth-prompt">
-              Get Started. 
-              <router-link to="/login" class="main-header__editorial-link" @click="isMenuOpen = false">Log In</router-link>
-              or 
+            <p class="main-header__auth-prompt">
+              <span>Get Started. </span>
+              <router-link to="/login" class="main-header__editorial-link" @click="isMenuOpen = false">Log In </router-link>
+              <span>or </span>
               <router-link to="/register" class="main-header__auth-btn main-header__auth-btn--highlight" @click="isMenuOpen = false">Sign Up</router-link>
-            </span>
+            </p>
           </template>
         </div>
 
@@ -309,8 +310,10 @@ function handleSearchClick() {
   }
 
   &__auth-prompt {
+    display: flex;
+    column-gap: 0.25rem;
     //font-size: 0.8125rem;
-    //color: var(--muted-text-color);
+    color: var(--muted-text-color);
   }
 
   &__auth-btn {

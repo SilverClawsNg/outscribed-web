@@ -19,6 +19,8 @@ body {
   position: relative;
   margin: 0;
   
+   -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
   @media @smallDevice {
     padding-top: @body-top-offset-small; // Pushes standard document flow down cleanly
@@ -418,7 +420,7 @@ footer.site-footer {
   pointer-events: none;
   background-image:
     /* Layer 1: Top wash gradient fading downward from header */
-    linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
+    //linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
 
     /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
     repeating-linear-gradient(
@@ -754,6 +756,7 @@ h1.logo {
     justify-content: center;
     height: 42px;
     gap: 1rem;
+    padding: 0.5rem 0;
   }
 }
 

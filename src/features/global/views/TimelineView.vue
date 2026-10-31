@@ -11,6 +11,7 @@ import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import TimelineComponent from '../components/TimelineComponent.vue' // 🎯 Reusable Component Import
 import SvgIcons from '@/components/SvgIcons.vue'
+import type { SortType } from '@/utils/enumHelper.ts';
 
 // --- INITIALIZE STORES ---
 const timelineStore = useTimelineStore();
@@ -91,6 +92,20 @@ onUnmounted(() => {
   timelineStore.abort();
 });
 
+async function setSort(sort: SortType) {
+  // 1. Update the store
+  timelineFilterStore.sort = sort;
+
+  // 2. Push/Replace the URL query. 
+  // This single call updates the browser URL AND automatically triggers your route watcher 
+  // (or page reload hook) to fetch the data cleanly without a double-firewall trip.
+  await router.replace({
+    path: route.path,
+    query: timelineFilterStore.getAsDictionary()
+  });
+}
+
+
 </script>
 
 <template>
@@ -124,13 +139,6 @@ onUnmounted(() => {
 
   <template v-else>
    
-     <header class="page-header">
-        <h1>
-              Timelines
-            </h1>
-        <button class="btn btn--primary"  @click="modalStore.push('TimelineFilter', 'Filter Timelines')">Filter</button>
-    </header>
-    
     <template v-if="wasCleaned">
      <div class="container">
           <PageStatusMessage 
@@ -151,7 +159,7 @@ onUnmounted(() => {
       @load-more="timelineStore.loadMoreTimelines"
       @retry="timelineStore.loadMoreTimelines">
 
-<div class="container">
+<div class="container container--offset-top">
 
       <TimelineComponent 
         v-for="timeline in timelineStore.timelines" 
@@ -162,14 +170,44 @@ onUnmounted(() => {
     
     </InfiniteScroller>
 
-              <button 
+       <!-- Fixed Bottom Filter & Sort Footer -->
+    <footer class="page-footer-bar">
+      <div class="page-footer-bar__inner">
+        <!-- Quick Sort: Newest -->
+        <button 
           type="button" 
-          class="filter-trigger" 
-          aria-label="Filter content"
+          class="footer-filter-btn" 
+          :class="{ active: timelineFilterStore.sort === 'MostRecent' }"
+          @click="setSort('MostRecent')"
+        >
+          Newest
+        </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- Quick Sort: Oldest -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: timelineFilterStore.sort === 'LeastRecent' }"
+          @click="setSort('LeastRecent')"
+        >
+          Oldest
+        </button>
+
+        <span class="footer-divider">|</span>
+
+        <!-- More Filters Modal Trigger -->
+        <button 
+          type="button" 
+          class="footer-filter-btn footer-filter-btn--more" 
           @click="modalStore.push('TimelineFilter', 'Filter Timelines')"
         >
-         <SvgIcons name="filter" />
+         
+          <span>More</span>  <SvgIcons name="filter" :size="20" />
         </button>
+      </div>
+    </footer>
 
   </template>
 

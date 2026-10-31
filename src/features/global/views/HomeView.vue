@@ -69,9 +69,9 @@ onUnmounted(() => {
 
 <div class="hero-wrapper">
 
-  <div class="hero__pattern" aria-hidden="true"></div>
-  <div class="hero__fade hero__fade--bottom" aria-hidden="true"></div>
-  <div class="hero__fade hero__fade--top" aria-hidden="true"></div>
+  <div class="page__pattern" aria-hidden="true"></div>
+  <div class="page__fade page__fade--bottom" aria-hidden="true"></div>
+  <div class="page__fade page__fade--top" aria-hidden="true"></div>
  
   <div class="hero-contents">
 
@@ -391,58 +391,6 @@ onUnmounted(() => {
   align-items: center;
 }
 
-.hero__pattern {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    /* Layer 1: Top wash gradient fading downward from header */
-    //linear-gradient(180deg, var(--hero-top-wash) 0%, transparent 60%),
-
-    /* Layer 2: 5-Step Alternating Brand Spectrum Gridlines (48px Spacing) */
-    repeating-linear-gradient(
-      90deg,
-      transparent 0px,
-      transparent 48px,
-      var(--grid-green) 48px,
-      var(--grid-green) 49px,
-
-      transparent 49px,
-      transparent 97px,
-      var(--grid-red) 97px,
-      var(--grid-red) 98px,
-
-      transparent 98px,
-      transparent 146px,
-      var(--grid-purple) 146px,
-      var(--grid-purple) 147px,
-
-      transparent 147px,
-      transparent 195px,
-      var(--grid-orange) 195px,
-      var(--grid-orange) 196px,
-
-      transparent 196px,
-      transparent 244px,
-      var(--grid-yellow) 244px,
-      var(--grid-yellow) 245px
-    );
-}
-
-.hero__fade {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hero__fade--bottom {
-  bottom: 0;
-  height: 5rem; /* Provides a smooth 100px transition into page content */
-  background: var(--hero-fade-bottom);
-}
 
 .hero-contents {
   position: relative;

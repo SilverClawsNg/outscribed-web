@@ -11,9 +11,12 @@ import { APIError } from '@/api/apiTypes'
 
 import type { WriterStatus } from '@/utils/enumHelper'
 import { setLoginHint, clearLoginHint, checkIsLoggedIn, clearByPatterns } from '@/utils/authHelper'
-import type { AuthenticationSessionResponse, LoginRequest, ReserveResponse,
+import type { AuthenticationSessionResponse, LoginRequest,
     SendTokenRequest, LogoutRequest, ChangePasswordRequest, ResetPasswordRequest,
-    SendTokenWithCaptchaRequest
+    VerificationResponse,
+    VerifyTokenRequest,
+    RegisterRequest,
+    PollRequest
  } from '../types/AuthenticationTypes'
 
 
@@ -253,14 +256,24 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
 
     // --- Reserve Account ---
-    async function reserveAccount(formData: any): Promise<Result<string>> {
+    
+    async function poll(formData: PollRequest): Promise<Result<string>> {
 
-        const outcome = await postAsync<ReserveResponse, any>('/api/reserve', formData, false)
+            console.log(`inside transactionId poll is ${formData.transactionId}`);
+
+
+            console.log(`transactionId poll is ${formData.transactionId}`);
+
+        const outcome = await getAsync<VerificationResponse>(
+            `/api/oauth/poll/${encodeURIComponent(formData.transactionId)}`, 
+            false, 
+            {} as VerificationResponse
+        );
 
         if (outcome.isFailure || !outcome.value) {
             return {
             value: null,
-            error: outcome.error || new APIError(400, 'Registration Failed', 'Could not complete registration process.'),
+            error: outcome.error || new APIError(400, 'Authentication Failed', 'Third party autehntication failed to complete.'),
             isFailure: true,
             isSuccess: false
             }
@@ -276,9 +289,9 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
 
     // --- Register Via OAuth - Polled After Third Party Auth Started ---
-    async function registerOAuth(formData: any): Promise<Result<boolean>> {
+    async function register(formData: RegisterRequest): Promise<Result<boolean>> {
 
-    const outcome = await postAsync<AuthenticationSessionResponse, any>('/api/register/oauth', formData, false)
+    const outcome = await postAsync<AuthenticationSessionResponse, any>('/api/register', formData, false)
 
     if (outcome.isFailure || !outcome.value?.isSuccessful) {
         return {
@@ -343,14 +356,37 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
 
     // --- Send Verification Token ---
-    async function sendToken(formData: SendTokenRequest | SendTokenWithCaptchaRequest): Promise<Result<boolean>> {
+    async function sendToken(formData: SendTokenRequest): Promise<Result<string>> {
     
-        const outcome = await postAsync('/api/token', formData, false)
+        const outcome = await postAsync<VerificationResponse, any>('/api/token', formData, false)
 
-        if (outcome.isFailure) {
+         if (outcome.isFailure || !outcome.value) {
             return {
             value: null,
-            error: outcome.error || new APIError(400, 'Token Send Failed', 'Could not send verification token.'),
+            error: outcome.error || new APIError(400, 'Authentication Failed', 'Token could not be sent.'),
+            isFailure: true,
+            isSuccess: false
+            }
+        }
+
+        return {
+            value: outcome.value?.verificationId,
+            error: null,
+            isFailure: false,
+            isSuccess: true
+            }
+
+    }
+
+    // --- Send Verification Token ---
+    async function verifyToken(formData: VerifyTokenRequest): Promise<Result<boolean>> {
+    
+        const outcome = await postAsync('/api/token/verify', formData, false)
+
+         if (outcome.isFailure) {
+            return {
+            value: null,
+            error: outcome.error || new APIError(400, 'Verification Failed', 'Token could not be verified.'),
             isFailure: true,
             isSuccess: false
             }
@@ -361,10 +397,9 @@ export const useAuthenticationStore = defineStore('authStore', () => {
             error: null,
             isFailure: false,
             isSuccess: true
-        }
+            }
 
     }
-
     // --- Resets password ---
     async function resetPassword(formData: ResetPasswordRequest) {
     
@@ -452,14 +487,15 @@ export const useAuthenticationStore = defineStore('authStore', () => {
         checkAuthentication,
         setWriterActive,
         getAccessToken,
+        verifyToken,
         login,
         registerToken,
         logout,
         changePassword,
         verifyAuthoring,
         sendToken,
-        reserveAccount,
-        registerOAuth,
+        poll,
+        register,
         resetPassword
     }
 

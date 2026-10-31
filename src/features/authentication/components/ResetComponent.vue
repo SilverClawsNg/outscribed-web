@@ -104,7 +104,7 @@ async function handleSendToken() {
       emailAddress: emailAddress.value,
       type: 2,
       isResend: isResend.value,
-      CaptchaToken: captchaToken.value
+      captchaToken: captchaToken.value
     });
 
     isSendTokenFormLoading.value = false

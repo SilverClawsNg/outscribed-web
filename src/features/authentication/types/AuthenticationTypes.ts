@@ -10,23 +10,32 @@ export interface LoginRequest {
     password: string; 
 }
 
-export interface ReserveResponse { 
+export interface RegisterRequest { 
+    username: string; 
+    password: string; 
+    verificationId: string | null
+}
+
+export interface VerificationResponse { 
     verificationId: string 
 }
 
 export interface SendTokenRequest { 
     emailAddress: string; 
-    verificationId: string | null; 
     type: number;
     isResend: boolean;
+    captchaToken: string | null
 }
 
-export interface SendTokenWithCaptchaRequest { 
-    emailAddress: string; 
-    type: number;
-    isResend: boolean;
-    CaptchaToken: string | null
+export interface VerifyTokenRequest { 
+    verificationId: string | null
+    token: string
 }
+
+export interface PollRequest { 
+    transactionId: string
+}
+
 
 export interface LogoutRequest { 
     closeAll: boolean; 
