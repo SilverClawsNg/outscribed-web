@@ -71,7 +71,8 @@ watch(
   async (newPath, oldPath) => {
     if (newPath === oldPath) return
 
-    loadingError.value = null
+     isLoading.value = true;
+    loadingError.value = null;
 
     if (!isValidType.value) {
       router.push('/404')
@@ -98,7 +99,9 @@ async function initPage() {
 
   if (!isClean) {
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')
-    wasCleaned.value = true
+    wasCleaned.value = true;
+     isLoading.value = true;
+    loadingError.value = null;
 
     await router.replace({
       path: route.path,
@@ -135,6 +138,8 @@ async function initPage() {
 async function setSort(sort: SortType) {
   // 1. Update the store
   taleFilterStore.sort = sort;
+   isLoading.value = true;
+    loadingError.value = null;
 
   // 2. Push/Replace the URL query. 
   // This single call updates the browser URL AND automatically triggers your route watcher 

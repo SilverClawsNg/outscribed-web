@@ -45,7 +45,9 @@ async function initPage() {
   if (!isClean) {
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')
     
-    wasCleaned.value  = true
+    wasCleaned.value  = true;
+     isLoading.value = true;
+    loadingError.value = null;
 
     await router.replace({
       path: route.path,
@@ -92,23 +94,24 @@ watch(
   async (newPath, oldPath) => {
     if (newPath === oldPath) return
 
-    loadingError.value = null
+    loadingError.value = null;
+    isLoading.value = true;
 
     await initPage() // fetch only; apiUrl/pageTitle already correct
   },
   { immediate: true }
 )
 
-
 // inside your HomeView.vue
 onUnmounted(() => {
   writerStore.abort();
 });
 
-
 async function setSort(sort: SortType) {
   // 1. Update the store
   writerFilterStore.sort = sort;
+   isLoading.value = true;
+    loadingError.value = null;
 
   // 2. Push/Replace the URL query. 
   // This single call updates the browser URL AND automatically triggers your route watcher 
@@ -118,7 +121,6 @@ async function setSort(sort: SortType) {
     query: writerFilterStore.getAsDictionary()
   });
 }
-
 
 </script>
 

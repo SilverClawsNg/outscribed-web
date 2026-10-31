@@ -43,7 +43,9 @@ async function initPage() {
 
     console.log('[Firewall] Stomping out double API call. Syncing browser string first...')
     
-    wasCleaned.value  = true
+    wasCleaned.value  = true;
+    isLoading.value = true;
+
 
     await router.replace({
       path: route.path,
@@ -81,6 +83,7 @@ watch(
     if (newPath === oldPath) return
 
     loadingError.value = null
+    isLoading.value = true;
 
     await initPage() // fetch only; apiUrl/pageTitle already correct
   },
@@ -95,6 +98,7 @@ onUnmounted(() => {
 async function setSort(sort: SortType) {
   // 1. Update the store
   timelineFilterStore.sort = sort;
+  isLoading.value = true;
 
   // 2. Push/Replace the URL query. 
   // This single call updates the browser URL AND automatically triggers your route watcher 

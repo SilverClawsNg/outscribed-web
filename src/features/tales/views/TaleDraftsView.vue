@@ -148,7 +148,6 @@ onUnmounted(() => {
               :is-bordered="true"
             />
    
-
     </template>
 
     <template v-if="taleStore.tales && taleStore.tales.length > 0">

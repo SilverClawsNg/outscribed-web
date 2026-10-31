@@ -16,6 +16,7 @@ function resetFilters() {
 }
 
 async function applyFilter() {
+  
   // 1. Silently update the browser URL for bookmarking support
   await router.replace({
     path: router.currentRoute.value.path,
