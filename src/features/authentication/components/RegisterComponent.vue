@@ -367,7 +367,7 @@ onUnmounted(() => {
 
       <form @submit.prevent="handleSendToken" class="auth-card__form">
         <fieldset class="auth-card__form--group">
-          <label class="auth-card__form--label">OR enter your email address to receive a verification token</label>
+          <label class="auth-card__form--label">OR request a verification token through your email address</label>
           <input
             v-model="emailAddress"
             type="email"
@@ -442,12 +442,9 @@ onUnmounted(() => {
     <!-- STEP 3: CHOOSE HANDLE (Finalize Account Setup) -->
     <template v-else-if="step === 'handle'">
       <form @submit.prevent="handleFinalizeAccount" class="auth-card__form">
-        <label class="auth-card__form--label">
-          Your identity is verified! Now, choose a unique handle and password to complete your account.
-        </label>
-
+      
         <fieldset class="auth-card__form--group">
-          <label class="auth-card__form--label">Visible handle on all your content (letters, numbers, underscores)</label>
+          <label class="auth-card__form--label">Choose your OutScribed handle (letters, numbers, underscores)</label>
           <input
             v-model="username"
             class="auth-card__form--input"
