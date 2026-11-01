@@ -77,8 +77,8 @@ function openCreateTale() {
             icon="broken-chain"
             :is-standalone="true">
           <template #actions>
-               <button class="btn btn--primary"  @click="openCreateTale"  >
-            More Details
+               <button class="btn btn--secondary"  @click="openCreateTale"  >
+            Create Draft
           </button>
                 </template>
             </PageStatusMessage>

@@ -92,8 +92,8 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     }
 
     function openAside() {
-      if(isAsideHidden.value == true) {
-        isAsideHidden.value = false;
+      if(isAsideHidden.value == false) {
+        isAsideHidden.value = true;
       }
     
     }
