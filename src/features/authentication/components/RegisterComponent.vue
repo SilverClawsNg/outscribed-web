@@ -410,6 +410,9 @@ onUnmounted(() => {
 
         <!-- Captcha required specifically for Token generation route -->
         <div class="auth-card__captcha">
+          <label class="auth-card__form--label">
+            This website uses a security service to protect against malicious bots.
+        </label>
           <template v-if="captchaFailed">
             <p class="auth-card__captcha--error">
               {{ captchaErrorMessage || 'Security check failed.' }}

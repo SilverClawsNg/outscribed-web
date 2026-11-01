@@ -27,6 +27,7 @@ const newPassword = ref('');
 const isResend = ref(false);
 const canResendToken = ref(false)
 const countdownTimer = ref(0)
+const verificationId = ref<string | null>(null)
 
 const captchaToken = ref<string | null>(null)
 const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
@@ -104,7 +105,8 @@ async function handleSendToken() {
       emailAddress: emailAddress.value,
       type: 2,
       isResend: isResend.value,
-      captchaToken: captchaToken.value
+      captchaToken: captchaToken.value,
+    verificationId: verificationId.value
     });
 
     isSendTokenFormLoading.value = false
@@ -112,6 +114,7 @@ async function handleSendToken() {
   if (outcome.isFailure) {
     setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred. Refresh page and try again.'))
   } else{
+      verificationId.value = outcome.value
       startResendTimer()
       inputs.value[0]?.focus()
       step.value = 'reset';
@@ -234,6 +237,7 @@ function startResendTimer() {
 function handleResendRequest() {
   if (timerInterval) clearInterval(timerInterval)
   isResend.value = true;
+tokenbits.value = ['', '', '', '', '', ''];
   step.value = 'request';
   resetProgress()
 }
