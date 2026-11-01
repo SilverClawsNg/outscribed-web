@@ -78,7 +78,7 @@ function openCreateTale() {
             :is-standalone="true">
           <template #actions>
                <button class="btn btn--secondary"  @click="openCreateTale"  >
-            Create Draft
+            OutScribe
           </button>
                 </template>
             </PageStatusMessage>

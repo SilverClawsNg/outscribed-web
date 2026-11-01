@@ -111,8 +111,19 @@ async function handleSendToken() {
 
     isSendTokenFormLoading.value = false
 
-  if (outcome.isFailure) {
+ 
+    if (outcome.isFailure) {
+
+    // 🎯 DO NOT nullify token on standard form validation errors!
+    // ONLY invalidate if backend explicitly reports a CAPTCHA verification failure:
+    if (outcome.error?.title === 'Captcha Error') {
+      captchaToken.value = null
+      captchaFailed.value = true
+      captchaErrorMessage.value = 'Captcha validation failed on server. Please re-verify.'
+    }else{
     setError(outcome.error ?? new APIError(0, 'Server Error', 'An unknown server failure occurred. Refresh page and try again.'))
+    }
+    return
   } else{
       verificationId.value = outcome.value
       startResendTimer()

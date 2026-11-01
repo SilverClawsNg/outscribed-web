@@ -115,7 +115,7 @@ function handleLogin() {
       </div>
 
       <div v-if="progress.error?.definition" class="form-alert__actions">
-        <button type="button" class="btn btn--alert-action" @click="handleMoreDetails">
+        <button type="button" class="form-alert__actions-btn" @click="handleMoreDetails">
           See Details
         </button>
       </div>
@@ -136,10 +136,10 @@ function handleLogin() {
       </div>
 
       <div class="form-alert__actions">
-      <button v-if="progress.error?.definition" type="button" class="btn btn--alert-action" @click="handleMoreDetails">
+      <button v-if="progress.error?.definition" type="button" class="form-alert__actions-btn" @click="handleMoreDetails">
           See Details
         </button>
-        <button type="button" class="btn btn--alert-action" @click="handleLogin">
+        <button type="button" class="form-alert__actions-btn" @click="handleLogin">
           Continue to Login
         </button>
       </div>
@@ -148,5 +148,112 @@ function handleLogin() {
 </template>
 
 <style lang="less" scoped>
-   @import "@/assets/css/form-progress.less";
+   @import "@/assets/css/variables.less";
+
+.form-alert {
+  position: relative;
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+
+  // Horizontal flex layout for 750px editor canvas that wraps on small screens
+  &__content--row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  &__loader{
+     width: 100%;
+    height: auto;
+    z-index: 998;
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
+    padding: 1rem 0 2rem 0;
+
+  }
+
+  &__text-group {
+    flex: 1 1 300px; 
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  &__message {
+    margin: 0;
+  }
+
+  &__actions {
+    flex-shrink: 0; // Prevents button from squishing on tight viewports
+  }
+
+  // --------------------------------------------------------------------------
+  // COLOR THEMES (TINTED BACKGROUNDS + ACCENT BORDERS)
+  // --------------------------------------------------------------------------
+
+  &--success {
+    background-color: @success-background-color;
+    border-left-color: @success-text-color;
+    color: @success-text-color;
+  }
+
+  &--warning {
+     background-color: @warning-background-color;
+    border-left-color: @warning-text-color;
+    color: @warning-text-color;
+  }
+
+  &--error {
+    background-color: @danger-background-color;
+    border-left-color: @danger-text-color;
+    color: @danger-text-color;
+  }
+
+
+  &--boxed {
+    border: 1px solid var(--border-color);
+    border-left-width: 4px;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// PLAIN WHITE BUTTON WITH BLACK TEXT FOR TINTED ALERTS
+// ----------------------------------------------------------------------------
+.form-alert__actions-btn {
+  background-color: @white-color;
+  color: @link-color;
+  border:1px solid transparent;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+
+  &:hover {
+    color: @link-alt-color;
+    border-color: @link-alt-color;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid @link-color;
+    outline-offset: 2px;
+  }
+}
 </style>

@@ -111,41 +111,46 @@ async function handleLogin() {
     <FormProgress :progress="progressState" />
 
     <form @submit.prevent="handleLogin" class="auth-card__form">
-      <fieldset class="auth-card__form--group">
+
+      
+        <fieldset class="auth-card__form--group">
         <label class="auth-card__form--label">Enter your username</label>
-        <input
-          v-model="username"
-          class="auth-card__form--input"
-          type="text"
-          placeholder="Username"
-          pattern="[a-zA-Z0-9_]+"
-          required
-        />
-        <p v-if="loginFormSubmitted && loginFormValidationErrors.username" class="auth-card__form--error">
+           <div class="auth-card__form--input-wrapper">
+           <span class="auth-card__form--username at" aria-hidden="true"></span>
+            <input
+              v-model="username"
+              class="auth-card__form--input auth-card__form--input-username"
+              type="text"
+              placeholder="Username"
+              pattern="[a-zA-Z0-9_]+"
+              required
+            />
+          </div>
+          <p v-if="loginFormSubmitted && loginFormValidationErrors.username" class="auth-card__form--error">
           {{ loginFormValidationErrors.username }}
         </p>
-      </fieldset>
+        </fieldset>
 
-      <fieldset class="auth-card__form--group">
-        <label class="auth-card__form--label">Enter your password. 
+        <fieldset class="auth-card__form--group">
+           <label class="auth-card__form--label">Enter your password. 
           <button type="button" @click="emit('forgotPassword')" title="Reset Password">Did you forget it?</button>
         </label>
-        <div class="auth-card__form--password-wrapper">
-          <button type="button" class="auth-card__form--show-password" @click="passwordVisible = !passwordVisible">
-            👁️
-          </button>
-          <input
-            v-model="password"
-            class="auth-card__form--input"
-            :type="passwordVisible ? 'text' : 'password'" 
-            placeholder="Password"
-            required
-          />
-        </div>
-        <p v-if="loginFormSubmitted && loginFormValidationErrors.password" class="auth-card__form--error">
+          <div class="auth-card__form--input-wrapper">
+            <button type="button" class="auth-card__form--show-password" @click="passwordVisible = !passwordVisible">
+              👁️
+            </button>
+            <input
+              v-model="password"
+              class="auth-card__form--input auth-card__form--input-password"
+              :type="passwordVisible ? 'text' : 'password'"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <p v-if="loginFormSubmitted && loginFormValidationErrors.password" class="auth-card__form--error">
           {{ loginFormValidationErrors.password }}
         </p>
-      </fieldset>
+        </fieldset>
 
       <button type="submit" class="auth-card__form--action" :disabled="isLoginFormLoading">
         {{ isLoginFormLoading ? 'Logging in...' : 'Log In' }}

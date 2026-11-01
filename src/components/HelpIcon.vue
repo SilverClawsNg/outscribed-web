@@ -32,7 +32,7 @@ function openHelp() {
     @click="openHelp"
   >
     <SvgIcons v-if="useIcon" name="help" :size="20" />
-    <template v-else>Help?</template>
+    <template v-else>[See Help]</template>
   </button>
 </template>
 
@@ -41,13 +41,6 @@ function openHelp() {
 
 button.help-icon-btn {
   color: @link-color;
-  background: transparent;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 3px 5px;
 
   &:hover {
     color: @link-alt-color;

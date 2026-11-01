@@ -365,7 +365,9 @@ onUnmounted(() => {
 </script>
 
 <template>
+
   <div class="auth-card">
+    
     <div class="auth-card__header">
       <div v-if="isPage" class="auth-card__header--logo">
         <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
@@ -433,6 +435,7 @@ onUnmounted(() => {
           <button type="button" @click="emit('logIn')">Log In</button>
         </div>
       </form>
+
     </template>
 
     <!-- STEP 2: VERIFY TOKEN -->
@@ -476,14 +479,17 @@ onUnmounted(() => {
       
         <fieldset class="auth-card__form--group">
           <label class="auth-card__form--label">Choose your OutScribed handle (letters, numbers, underscores)</label>
-          <input
-            v-model="username"
-            class="auth-card__form--input"
-            @blur="handleUsernameBlur"
-            type="text"
-            placeholder="Choose Handle (e.g. shadows)"
-            required
-          />
+           <div class="auth-card__form--input-wrapper">
+          <span class="auth-card__form--username at" aria-hidden="true"></span>
+            <input
+              v-model="username"
+              class="auth-card__form--input auth-card__form--input-username"
+              @blur="handleUsernameBlur"
+              type="text"
+              placeholder="Choose Handle (e.g. shadows)"
+              required
+            />
+          </div>
           <p v-if="finalizeAccountFormSubmitted && finalizeAccountFormValidationErrors.username" class="auth-card__form--error">
             {{ finalizeAccountFormValidationErrors.username }}
           </p>
@@ -491,13 +497,13 @@ onUnmounted(() => {
 
         <fieldset class="auth-card__form--group">
           <label class="auth-card__form--label">Add a secure password</label>
-          <div class="auth-card__form--password-wrapper">
+          <div class="auth-card__form--input-wrapper">
             <button type="button" class="auth-card__form--show-password" @click="passwordVisible = !passwordVisible">
               👁️
             </button>
             <input
               v-model="password"
-              class="auth-card__form--input"
+              class="auth-card__form--input auth-card__form--input-password"
               :type="passwordVisible ? 'text' : 'password'"
               placeholder="Password"
               required

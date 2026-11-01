@@ -86,6 +86,19 @@
         }
       }
 
+  &--username {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 1rem;
+        z-index: 100;
+        
+        &.at:before {
+        color: @black-color;
+        }
+      
+      }
+
   &--group {
     display: flex;
     flex-direction: column;
@@ -114,11 +127,16 @@
       &:focus { border-color: @link-color; outline: none; }
     }
 
-    &--password-wrapper{
+  
+    &--input-wrapper{
       position:relative;
 
-      & .auth-card__form--input{
+      & .auth-card__form--input-password{
         padding-right: 3.2rem;
+      }
+
+       & .auth-card__form--input-username{
+        padding-left: 1.8rem;
       }
     }
 

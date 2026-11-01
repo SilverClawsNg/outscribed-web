@@ -140,7 +140,7 @@ const taleStore = useTaleDraftStore()
     //min-height: 100svh;
     z-index: 2;
     background-color: var(--background-color);
-    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--sidebar-box-shadow);
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     
