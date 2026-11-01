@@ -91,6 +91,13 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
       }
     }
 
+    function openAside() {
+      if(isAsideHidden.value == true) {
+        isAsideHidden.value = false;
+      }
+    
+    }
+
   // 2. Direct section navigation from anywhere (Strip, Detail Card, or Canvas)
 
    function setCurrentMainView(section: MainCanvasView) {
@@ -778,6 +785,6 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleBasic, 
     deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTalePhoto,
     clearActiveTale, updateTaleAddendum, updateTaleRealityCheck, cleanLocalDraft, abort, CannotPublish, hasBasicInfo,
-    hasDetails, hasTags, hasRealityCheck, hasPhoto, setCurrentMainView, setCurrentAsideView, toggleAside
+    hasDetails, hasTags, hasRealityCheck, hasPhoto, setCurrentMainView, setCurrentAsideView, toggleAside, openAside
   };
 });

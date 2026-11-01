@@ -33,6 +33,11 @@ function openProblemDefinition() {
   taleStore.openModal(taleStore.loadingError ?? new APIError(500, 'Error Loading Drafts', 'Failed to retrieve drafts from server.'))
 }
 
+function openCreateTale() {
+  taleStore.setCurrentAsideView('create');
+  taleStore.openAside();
+}
+
 </script>
 
 <template>
@@ -71,7 +76,11 @@ function openProblemDefinition() {
             message="There are no active draft to update. Select a draft from the list or create a new one."
             icon="broken-chain"
             :is-standalone="true">
-         
+          <template #actions>
+               <button class="btn btn--primary"  @click="openCreateTale"  >
+            More Details
+          </button>
+                </template>
             </PageStatusMessage>
 
         </template>

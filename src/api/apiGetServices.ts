@@ -8,6 +8,7 @@ import { mapToApiError } from '@/utils/errorMapper'
  * 
  * @template T The structural contract expected back inside the Result.value payload.
  */
+
 export async function getAsync<T>(
   url: string, 
   requiresAuth: boolean = false,
@@ -26,6 +27,8 @@ export async function getAsync<T>(
     console.log(`[Get-Services] Network transaction for [${url}] completed seamlessly.`)
 
     const payload = response.data //
+
+    console.log(`[Get-Services] Received payload for [${url}]:`, payload);
 
     // 🎯 2. BLANK BODY HANDLING: Handle empty strings or 204 No-Content returns safely
     if (payload === undefined || payload === null || (typeof payload === 'string' && payload.trim() === '')) { //

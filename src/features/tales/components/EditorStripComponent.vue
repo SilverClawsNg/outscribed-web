@@ -24,7 +24,9 @@ function navigateHome() {
         type="button" 
         class="editor-studio__strip-btn"
         @click="taleStore.toggleAside()"
-        :class="{ 'editor-strip__btn--active': !taleStore.isAsideHidden }"
+          :class="{ 
+          'editor-strip__btn--active': !taleStore.isAsideHidden
+        }"
         :title="taleStore.isAsideHidden ? 'Expand Sidebar' : 'Collapse Sidebar'"
       >
         <SvgIcons name="menu" :size="30" />
@@ -34,7 +36,12 @@ function navigateHome() {
   <!-- Middle: Section Editors & Draft Utilities (Scrollable: calc(100vh - 100px)) -->
   <div class="editor-studio__strip-actions-wrapper">
    
-    <div class="editor-studio__strip-actions">
+    <div 
+    class="editor-studio__strip-actions"
+      :class="{ 
+          'is-disabled': taleStore.isInitializing || !taleStore.activeTale
+        }"
+        :inert="taleStore.isInitializing">
         
     <!-- Group 1: Section Editors -->
     <button 
@@ -193,8 +200,6 @@ function navigateHome() {
 
 
     </div>
-
-
   </div>
 
   <!-- Bottom: OutScribed Logo / Home (Fixed 50px) -->
@@ -251,6 +256,7 @@ function navigateHome() {
        padding: 1rem 0;
     }
 
+     
   }
 
    .editor-studio__strip-actions {
@@ -268,6 +274,15 @@ function navigateHome() {
     .editor-studio__strip::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Edge */
     }
+
+     &.is-disabled {
+      pointer-events: none; /* Prevents all clicks, hovers, and focus events */
+      user-select: none;    /* Prevents highlighting text inside */
+      opacity: 0.5;         /* Visually dims the whole panel */
+      filter: grayscale(20%);
+      cursor: not-allowed;
+    }
+
   }
 
   /* Section Divider Line inside Middle Block */

@@ -131,8 +131,8 @@ function handleLogin() {
   >
     <div class="form-alert__content form-alert__content--row">
       <div class="form-alert__text-group">
-        <h4 class="form-alert__title">401: Login Required</h4>
-        <p class="form-alert__message">Authentication is required to continue this action.</p>
+        <h4 class="form-alert__title"> {{ progress.title ?? 'Login Required' }}</h4>
+        <p class="form-alert__message">{{ progress.message ?? 'Login is required to continue.' }}</p>
       </div>
 
       <div class="form-alert__actions">

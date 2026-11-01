@@ -38,10 +38,8 @@ const taleStore = useTaleDraftStore()
         <!-- 3. ACTION STRIP: Disabled during init -->
         <nav 
           class="editor-layout__strip"
-         :class="{ 
-          'is-disabled': taleStore.isInitializing || !taleStore.activeTale 
-        }"
-        :inert="taleStore.isInitializing"
+       
+        
         >
           <EditorStripComponent />
       </nav>
@@ -127,13 +125,7 @@ const taleStore = useTaleDraftStore()
       width: 380px;
     }
 
-      &.is-disabled {
-      pointer-events: none; /* Prevents all clicks, hovers, and focus events */
-      user-select: none;    /* Prevents highlighting text inside */
-      opacity: 0.5;         /* Visually dims the whole panel */
-      filter: grayscale(20%);
-      cursor: not-allowed;
-    }
+    
   }
 
   /* -------------------------------------------------------------

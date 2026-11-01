@@ -35,11 +35,19 @@ export function useFormProgress() {
     if (error.status === 401) {
       progressState.value = {
         type: 'Login',
-        title: '401: Login Required',
+        title: 'Login Required',
         message: 'You must be signed in to perform this action.',
         error
       }
-    } else {
+    } else   if (error.title === 'Account Exists') {
+      progressState.value = {
+        type: 'Login',
+        title: 'Account Exists',
+        message: 'The provided details is already associated with an account on OutScribed. If it\'s yours, please log in.',
+        error
+      }
+    } 
+    else {
       progressState.value = {
         type: 'Error',
         title: error.title || 'Action Failed',

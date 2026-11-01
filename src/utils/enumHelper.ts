@@ -31,6 +31,12 @@ export type ContentType =
 export type LimitedContentType = 
   'Tale' 
   
+  export type PollState = 
+  'NotFound' 
+  | 'IsRegistered' 
+  | 'Completed' 
+  | 'Unknown'
+
 // 🎯 Activity Type Semantics
   export type ActivityType =
 

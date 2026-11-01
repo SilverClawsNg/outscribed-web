@@ -34,6 +34,7 @@ const siteKey = ref(import.meta.env.VITE_CLOUDFLARE_SITE_KEY)
 const captchaFailed = ref(false)
 const captchaErrorMessage = ref<string>('')
 const isResend = ref(false);
+const transactionId = ref(crypto.randomUUID())
 
 const inputs = ref<HTMLInputElement[]>([])
 const tokenbits = ref<string[]>(['', '', '', '', '', ''])
@@ -44,6 +45,8 @@ const maxTimeoutMs = 60000
 const startTime = ref<number>(0)
 const isPolling = ref(false)
 let pollingTimer: number | null = null
+
+const isAvailable = ref<boolean | null>(null);  
 
 const sendTokenFormSubmitted = ref(false)
 const verifyTokenFormSubmitted = ref(false)
@@ -97,6 +100,28 @@ watch(
   { immediate: true }
 )
 
+async function handleUsernameBlur() {
+
+  const trimmed = username.value.trim();
+  
+  // Reset states if empty or too short
+  if (!trimmed || trimmed.length < 3) {
+    isAvailable.value = null;
+    return;
+  }
+
+  const outcome = await authStore.checkUsername(trimmed);
+
+  if(outcome.isSuccess && outcome.value && outcome.value){
+    isAvailable.value = true;
+    setWarning(`The username ${trimmed} is already in use. Choose another unique handle.`)
+  }else{
+    isAvailable.value = false;
+    resetProgress()
+  }
+
+}
+
 // --- 2. HANDLE / PASSWORD FORM VALIDATION ---
 const USERNAME_REGEX = /^[a-zA-Z0-9](?:[a-zA-Z0-9_-]{0,18}[a-zA-Z0-9])?$/;
 
@@ -146,37 +171,32 @@ watch(
 
 // --- OAUTH FLOW WITH TRANSACTION ID ---
 async function triggerOAuth(provider: string) {
-  const transactionId = crypto.randomUUID()
   const baseUrl = import.meta.env.VITE_API_BASE_URL || ''
-  const oauthUrl = `${baseUrl}/api/auth/oauth/${provider.toLowerCase()}?transactionId=${encodeURIComponent(transactionId)}`
+  const oauthUrl = `${baseUrl}/api/auth/oauth/${provider.toLowerCase()}?transactionId=${encodeURIComponent(transactionId.value)}`
 
   window.open(oauthUrl, 'OAuthWindow', 'width=600,height=700')
-  startPollingForVerification(transactionId)
+  startPollingForVerification()
 }
 
-function startPollingForVerification(transactionId: string) {
+function startPollingForVerification() {
   isPolling.value = true
   startLoading()
   startTime.value = Date.now()
 
-  executePoll(transactionId)
+  executePoll()
 }
 
-async function executePoll(incomingTransactionId: string) {
-  if (!isPolling.value || incomingTransactionId == null) return
+async function executePoll() {
+  if (!isPolling.value) return
 
   
   if (Date.now() - startTime.value > maxTimeoutMs) {
     stopPolling()
-    setError(new APIError(408, 'Verification Timeout', 'Verification timed out. Please try again.'))
+    setError(new APIError(408, 'Verification Timeout', 'Authentication is taking longer than expected, or was completed in another window... Try again.'))
     return
   }
 
-  try {
-
-    const outcome = await authStore.poll({
-      transactionId: incomingTransactionId
-      });
+  const outcome = await authStore.poll(transactionId.value);
 
     if (outcome.isFailure) {
       stopPolling()
@@ -184,23 +204,31 @@ async function executePoll(incomingTransactionId: string) {
       return
     }
 
-    if (outcome.value) {
+    console.log(`State is ${outcome.value?.state}`);
+
+    if(outcome.value?.state == 'IsRegistered'){
+     console.log("State is here: Isregistered");
+     stopPolling()
+      setError(outcome.error ?? new APIError(0, 'Account Exists', 'This email belongs to account on OutScribed. If it yours, proceed to login.'))
+      return
+    }else if (outcome.value?.state == 'Completed') {
+      console.log("State is here: Completed");
       stopPolling()
-      verificationId.value = outcome.value
+      verificationId.value = outcome.value.verificationId
       // Transition to final Handle setup step
       step.value = 'handle'
       resetProgress()
       return
+    }else if(outcome.value?.state == 'Unknown'){
+      console.log("State is here: Unknown");
+      stopPolling()
+      setError(outcome.error ?? new APIError(0, 'Unknown Error', 'An unknown error occured while trying to authenticate. Try again.'))
+      return
     }
 
     if (isPolling.value) {
-      pollingTimer = window.setTimeout(() => executePoll(incomingTransactionId), 3000)
+      pollingTimer = window.setTimeout(() => executePoll(), 3000)
     }
-  } catch (err) {
-    stopPolling()
-    console.log(`${err}`)
-    setError(new APIError(0, 'Network Error', 'A connection error occurred.'))
-  }
 }
 
 function stopPolling() {
@@ -228,7 +256,8 @@ async function handleSendToken() {
     emailAddress: emailAddress.value,
     captchaToken: captchaToken.value,
     type: 1,
-    isResend: isResend.value
+    isResend: isResend.value,
+    verificationId: verificationId.value
   });
 
   isSendTokenFormLoading.value = false
@@ -244,14 +273,13 @@ async function handleSendToken() {
   }
 }
 
-
 function handleResendToken() {
   if (timerInterval) clearInterval(timerInterval)
    isResend.value = true;
+  tokenbits.value = ['', '', '', '', '', ''];
   step.value = 'selection';
   resetProgress()
 }
-
 
 function handleInput(e: Event, index: number) {
   const target = e.target as HTMLInputElement
@@ -448,6 +476,7 @@ onUnmounted(() => {
           <input
             v-model="username"
             class="auth-card__form--input"
+            @blur="handleUsernameBlur"
             type="text"
             placeholder="Choose Handle (e.g. shadows)"
             required
@@ -476,7 +505,9 @@ onUnmounted(() => {
           </p>
         </fieldset>
 
-        <button type="submit" class="auth-card__form--action" :disabled="isFinalizeAccountFormLoading">
+        <button type="submit" 
+        class="auth-card__form--action" 
+        :disabled="isFinalizeAccountFormLoading || isAvailable === true">
           {{ isFinalizeAccountFormLoading ? 'Creating Account...' : 'Complete Registration' }}
         </button>
       </form>

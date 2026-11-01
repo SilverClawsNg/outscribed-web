@@ -16,7 +16,8 @@ import type { AuthenticationSessionResponse, LoginRequest,
     VerificationResponse,
     VerifyTokenRequest,
     RegisterRequest,
-    PollRequest
+    PollRequest,
+    CheckUsernameResponse
  } from '../types/AuthenticationTypes'
 
 
@@ -138,7 +139,7 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
 
     // --- Check Authentication Status ---
-     function checkAuthentication(): boolean {
+    function checkAuthentication(): boolean {
         // 1. If local storage hint is missing, user is definitely logged out
         if (!checkIsLoggedIn()) {
         return false;
@@ -256,18 +257,42 @@ export const useAuthenticationStore = defineStore('authStore', () => {
     }
 
     // --- Reserve Account ---
-    
-    async function poll(formData: PollRequest): Promise<Result<string>> {
-
-            console.log(`inside transactionId poll is ${formData.transactionId}`);
-
-
-            console.log(`transactionId poll is ${formData.transactionId}`);
+    async function poll(transactionId: string): Promise<Result<VerificationResponse>> {
 
         const outcome = await getAsync<VerificationResponse>(
-            `/api/oauth/poll/${encodeURIComponent(formData.transactionId)}`, 
+            `/api/oauth/poll/${encodeURIComponent(transactionId)}`, 
             false, 
             {} as VerificationResponse
+        );
+
+        console.log(`[Auth Store]: Polling transaction [${transactionId}] returned outcome:`, outcome)
+
+        if (outcome.isFailure || !outcome.value) {
+            return {
+            value: null,
+            error: outcome.error || new APIError(400, 'Authentication Failed', 'Third party authentication failed to complete.'),
+            isFailure: true,
+            isSuccess: false
+            }
+        }
+
+         console.log(`[Auth Store]: Polling transaction [${transactionId}] returned state: ${outcome.value.state}`);
+
+        return {
+            value: outcome.value,
+            error: null,
+            isFailure: false,
+            isSuccess: true
+            }
+
+    }
+ 
+    async function checkUsername(username: string): Promise<Result<boolean>> {
+
+        const outcome = await getAsync<CheckUsernameResponse>(
+            `/api/check/username/${encodeURIComponent(username)}`, 
+            false, 
+            {} as CheckUsernameResponse
         );
 
         if (outcome.isFailure || !outcome.value) {
@@ -280,7 +305,7 @@ export const useAuthenticationStore = defineStore('authStore', () => {
         }
 
         return {
-            value: outcome.value?.verificationId,
+            value: outcome.value.isAvailable,
             error: null,
             isFailure: false,
             isSuccess: true
@@ -495,6 +520,7 @@ export const useAuthenticationStore = defineStore('authStore', () => {
         verifyAuthoring,
         sendToken,
         poll,
+        checkUsername,
         register,
         resetPassword
     }

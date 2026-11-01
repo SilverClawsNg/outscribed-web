@@ -1,3 +1,4 @@
+import type { PollState } from "@/utils/enumHelper";
 
 export interface AuthenticationSessionResponse {
   isSuccessful: boolean
@@ -17,7 +18,12 @@ export interface RegisterRequest {
 }
 
 export interface VerificationResponse { 
-    verificationId: string 
+    verificationId: string  | null
+    state: PollState
+}
+
+export interface CheckUsernameResponse { 
+    isAvailable: boolean 
 }
 
 export interface SendTokenRequest { 
@@ -25,6 +31,7 @@ export interface SendTokenRequest {
     type: number;
     isResend: boolean;
     captchaToken: string | null
+    verificationId: string | null
 }
 
 export interface VerifyTokenRequest { 
