@@ -257,7 +257,7 @@ async function setSort(sort: SortType) {
            @click="modalStore.push('CommentListFilter', 'Filter Lists')"
         >
          
-          <span>More</span>  <SvgIcons name="filter" :size="20" />
+         More filters
         </button>
       </div>
     </footer>

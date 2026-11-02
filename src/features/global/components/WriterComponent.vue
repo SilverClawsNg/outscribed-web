@@ -130,7 +130,7 @@ const isNewWriter = computed(() => props.index === null || props.index === undef
   display: flex;
   flex-direction: column;
   padding: 1.5rem 0;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 
   &__header {
     display: flex;

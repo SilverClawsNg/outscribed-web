@@ -250,7 +250,9 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
     activeTale.value = { ...tale };
 
       // Smart view resolution based on completeness
-      if (!hasBasicInfo) {
+      if (activeTale.value && activeTale.value.status !== 'Created') {
+        currentMainView.value = 'preview';
+      } else if (!hasBasicInfo) {
         currentMainView.value = 'basic';
       } else {
         currentMainView.value = 'details';

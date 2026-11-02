@@ -208,7 +208,7 @@ async function setSort(sort: SortType) {
           @click="modalStore.push('TimelineFilter', 'Filter Timelines')"
         >
          
-          <span>More</span>  <SvgIcons name="filter" :size="20" />
+          More filters
         </button>
       </div>
     </footer>

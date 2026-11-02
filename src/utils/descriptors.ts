@@ -55,9 +55,9 @@ export const CommentStatusClass: Record<CommentStatus, string> = {
   HiddenByModeration: 'Hidden',
   HiddenByAdmin: 'Suspended',
   CertifiedByAdmin: 'Certified',
-  ArchivedByAdmin: 'Archived By Admin',
-  ActiveToArchivedByCreator: 'Active -> Archived By Me',
-  CertifiedToArchivedByCreator: 'Certified -> Archived By me'
+  ArchivedByAdmin: 'Admin-Archived',
+  ActiveToArchivedByCreator: 'Self-Archived',
+  CertifiedToArchivedByCreator: 'Self-Archived'
 } as const;
 
   export const TaleStatusDescriptions: Record<TaleStatus, string> = {
@@ -66,9 +66,9 @@ export const CommentStatusClass: Record<CommentStatus, string> = {
   HiddenByModeration: 'Hidden',
   HiddenByAdmin: 'Suspended',
   CertifiedByAdmin: 'Certified',
-  ArchivedByAdmin: 'Archived By Admin',
-  LaunchedToArchivedByCreator: 'Active -> Archived By Me',
-  CertifiedToArchivedByCreator: 'Archived'
+  ArchivedByAdmin: 'Admin-Archived',
+  LaunchedToArchivedByCreator: 'Self-Archived',
+  CertifiedToArchivedByCreator: 'Self-Archived'
 } as const;
 
   export const ContactTypeDescriptions: Record<ContactType, string> = {

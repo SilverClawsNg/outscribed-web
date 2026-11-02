@@ -37,7 +37,6 @@ const props = defineProps<Props>()
        {{ tale.title }}
       </h2>
 
-
      <div class="draft-list-card__meta">
        
             <span>

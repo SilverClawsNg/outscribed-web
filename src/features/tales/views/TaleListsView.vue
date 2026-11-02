@@ -260,11 +260,10 @@ onUnmounted(() => {
           @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"
         >
          
-          <span>More</span>  <SvgIcons name="filter" :size="20" />
+          More filters
         </button>
       </div>
     </footer>
-
 
   </template>
 

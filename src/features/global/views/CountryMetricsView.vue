@@ -119,7 +119,3 @@ onUnmounted(() => {
  
 
 </template>
-
-<style lang="less" scoped>
-@import "@/assets/css/hero.less";
-</style>

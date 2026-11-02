@@ -3,7 +3,7 @@ export type IconName =
   | 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain'
   | 'padlock' | 'bookmark' | 'upvote' | 'downvote' | 'share' | 'facebook' | 'twitter'
   | 'linkedin' | 'email' | 'placeholder' | 'back-arrow' | 'globe' | 'tag' | 'clock'
-  | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'uparrow'
+  | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'unarchive' | 'uparrow'
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
   | 'whatsapp' | 'telephone' | 'website' | 'filter' | 'google' | 'microsoft' | 'apple' | 'menu'
   | 'delete' | 'publish' | 'help' | 'metadata' | 'details' | 'lock' | 'trash' | 'addendum' | 'close'
@@ -337,9 +337,22 @@ const icons: Record<IconName, IconConfig> = {
     stroke: 'currentColor',
     strokeWidth: 1,
     paths: [
-      { d: 'M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8' },
-      { type: 'rect', x: 1, y: 3, width: 22, height: 5, rx: 1 },
-      { type: 'line', x1: 10, y1: 12, x2: 14, y2: 12 }
+      { type: 'rect', x: 3, y: 3, width: 18, height: 4, rx: 1 },
+      { d: 'M4 7v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7' },
+      {  d: 'M12 11v6' },
+      {  d: 'm9 14 3 3 3-3' }
+    ]
+  },
+   unarchive: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { type: 'rect', x: 3, y: 3, width: 18, height: 4, rx: 1 },
+      { d: 'M4 7v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7' },
+      {  d: 'M12 17v-6' },
+      {  d: 'm9 14 3-3 3 3' }
     ]
   },
   uparrow: {

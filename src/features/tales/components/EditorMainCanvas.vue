@@ -109,11 +109,11 @@ function openCreateTale() {
 
     </template>
 
-    <template v-else-if="['publish', 'archive', 'delete'].includes(taleStore.currentMainView)">
+    <template v-else-if="['publish', 'archive', 'unarchive', 'delete'].includes(taleStore.currentMainView)">
 
         <!-- Simple Single-Checkbox Confirmation Forms -->
     <EditorConfirmationForm
-      :mode="(taleStore.currentMainView as 'publish' | 'archive' | 'delete')"
+      :mode="(taleStore.currentMainView as 'publish' | 'archive' | 'unarchive' | 'delete')"
     />
 
     </template>

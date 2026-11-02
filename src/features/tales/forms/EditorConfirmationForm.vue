@@ -190,7 +190,7 @@ const config = computed(() => {
         buttonText: 'Unarchive Story',
         buttonClass: 'btn--success',
         successTitle: 'Tale Unarchived',
-        successDescription: 'Your tale has been returned to teh public feeds.'
+        successDescription: 'Your tale has been returned to the public feeds.'
       }
     case 'delete':
       return {

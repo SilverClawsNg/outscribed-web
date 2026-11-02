@@ -742,21 +742,20 @@ h1.logo {
   left: 0;
   width: 100%;
   z-index: 4999;
-  background-color: var(--thick-background-color);
-  border-top: 1px solid var(--thick-border-color);
-  box-shadow: var(--box-shadow);
-  backdrop-filter: blur(8px);
+  padding: 0.5rem 0;
 
   &__inner {
-    width: @mid-width;
+    width: @min-width;
     max-width: calc(100% - 20px);
+    background-color: var(--text-color);
+    border-radius: 99999px;
+    backdrop-filter: blur(8px);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 42px;
     gap: 1rem;
-    padding: 0.5rem 0;
   }
 }
 
@@ -764,10 +763,9 @@ h1.logo {
 .footer-filter-btn {
   background: transparent;
   border: none;
-  font-size: 0.9375rem;
+  font-size: 0.8375rem;
   font-weight: 500;
-  color: var(--muted-text-color);
-  cursor: pointer;
+  color: var(--background-color);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   transition: all 0.2s ease;
@@ -777,7 +775,7 @@ h1.logo {
 
   &:hover {
     color: @link-color;
-    background-color: var(--light-background-color);
+    background-color: var(--background-color);
   }
 
   &.active {
@@ -796,7 +794,7 @@ h1.logo {
 }
 
 .footer-divider {
-  color: var(--thick-border-color);
+  color: var(--background-color);
   font-weight: 300;
   user-select: none;
 }

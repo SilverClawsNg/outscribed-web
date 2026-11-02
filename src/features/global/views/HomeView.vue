@@ -129,7 +129,7 @@ onUnmounted(() => {
       <span class="publishing-roadmap__number">01</span>
       <div class="publishing-roadmap__content">
         <h4>Sign Up</h4>
-        <p>Choose a unique username and secure password to create your writer profile.</p>
+        <p>Easily verify your identity via Google, Microsoft, Apple, or an email security token.</p>
       </div>
     </div>
 
@@ -137,8 +137,8 @@ onUnmounted(() => {
     <div class="publishing-roadmap__card publishing-roadmap__card--step2">
       <span class="publishing-roadmap__number">02</span>
       <div class="publishing-roadmap__content">
-        <h4>Verify Account</h4>
-        <p>Confirm via Google, Microsoft, Apple, or an email security token.</p>
+        <h4>Choose Handle</h4>
+        <p>Choose your unique OutScribed username and secure password to access your account.</p>
       </div>
     </div>
 

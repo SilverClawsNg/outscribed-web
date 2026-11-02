@@ -49,7 +49,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'basic' }"
       @click="taleStore.currentMainView = 'basic'"
-      title="Basic Info (Title, Country, Summary)"
+      title="Update Basic Information"
     >
       <SvgIcons name="metadata" :size="30" />
     </button>
@@ -59,7 +59,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'details' }"
       @click="taleStore.currentMainView = 'details'"
-      title="Prose Canvas (Details)"
+      title="Update Story Details"
     >
       <SvgIcons name="details" :size="30"/>
     </button>
@@ -69,7 +69,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'reality' }"
       @click="taleStore.currentMainView = 'reality'"
-      title="Reality Check"
+      title="Update Reality Check"
     >
       <SvgIcons name="check" :size="30"/>
     </button>
@@ -79,7 +79,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'photo' }"
       @click="taleStore.currentMainView = 'photo'"
-      title="Cover Photo"
+      title="Update Cover Photo"
     >
       <SvgIcons name="placeholder" :size="30" />
     </button>
@@ -92,7 +92,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'preview' }"
       @click="taleStore.currentMainView = 'preview'"
-      title="Tale Metrics"
+      title="Preview Tale"
     >
       <SvgIcons name="preview" :size="30" />
     </button>
@@ -116,7 +116,7 @@ function navigateHome() {
        class="editor-studio__strip-btn"
        target="_blank" 
         rel="noopener noreferrer"
-        title="Open live story in a new tab">
+        title="Open live story">
         <SvgIcons name="live" :size="30" />
       </RouterLink>
     
@@ -130,7 +130,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'tags' }"
       @click="taleStore.currentMainView = 'tags'"
-      title="Story Tags"
+      title="Update Story Tags"
     >
       <SvgIcons name="tag" :size="30" />
     </button>
@@ -140,7 +140,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'addendum' }"
       @click="taleStore.currentMainView = 'addendum'"
-      title="Addendum"
+      title="Update Addendum"
     >
       <SvgIcons name="addendum" :size="30" />
     </button>
@@ -150,7 +150,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'metrics' }"
       @click="taleStore.currentMainView = 'metrics'"
-      title="Tale Metrics"
+      title="View Tale Metrics"
     >
       <SvgIcons name="stats" :size="30" />
     </button>
@@ -164,7 +164,7 @@ function navigateHome() {
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'help' }"
       @click="taleStore.currentMainView = 'help'"
-      title="Tale Metrics"
+      title="View Help"
     >
       <SvgIcons name="help" :size="30" />
     </button>
@@ -183,22 +183,31 @@ function navigateHome() {
     </button>
 
     </template>
+    
+    <template v-else-if="taleStore.activeTale?.status == 'CertifiedToArchivedByCreator' || taleStore.activeTale?.status == 'LaunchedToArchivedByCreator'">
+     <button 
+      type="button" 
+      class="editor-studio__strip-btn"
+      :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'unarchive' }"
+      @click="taleStore.currentMainView = 'unarchive'"
+      title="Unarchive Tale"
+    >
+      <SvgIcons name="unarchive" :size="30"/>
+    </button>
+    </template>
 
     <template v-else>
-       <button 
+      <button 
       type="button" 
       class="editor-studio__strip-btn"
       :class="{ 'editor-studio__strip-btn--active': taleStore.currentMainView === 'archive' }"
       @click="taleStore.currentMainView = 'archive'"
       title="Archive Tale"
     >
-      <SvgIcons name="trash" :size="30"/>
+      <SvgIcons name="archive" :size="30"/>
     </button>
     </template>
    
-    
-
-
     </div>
   </div>
 

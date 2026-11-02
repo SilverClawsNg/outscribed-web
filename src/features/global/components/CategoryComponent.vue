@@ -84,7 +84,7 @@ const props = defineProps<Props>()
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem 0;
-  border-bottom: 2px dotted var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 
   &__header{
     width: 100%;

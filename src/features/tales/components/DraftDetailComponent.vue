@@ -226,7 +226,8 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
           
         </div>
       </button>
-        <template v-if="taleStore.activeTale?.status == 'Created'">
+
+    <template v-if="taleStore.activeTale?.status == 'Created'">
 
       <button 
         type="button" 
@@ -238,11 +239,24 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
           <SvgIcons name="trash" :size="25" />
            <h4 class="draft-detail__item-title">Delete Draft</h4>
         </div>
-        <div class="draft-detail__item-check">
-          
-        </div>
+        <div class="draft-detail__item-check"></div>
       </button>
 
+    </template>
+
+    <template v-else-if="taleStore.activeTale?.status == 'CertifiedToArchivedByCreator' || taleStore.activeTale?.status == 'LaunchedToArchivedByCreator'">
+       <button 
+        type="button" 
+        class="draft-detail__item"
+          :class="{ 'draft-detail__item--active': taleStore.currentMainView === 'unarchive' }"
+        @click="taleStore.setCurrentMainView('unarchive')"
+      >
+        <div class="draft-detail__item-meta">
+          <SvgIcons name="unarchive" :size="25" />
+           <h4 class="draft-detail__item-title">Unarchive Tale</h4>
+        </div>
+        <div class="draft-detail__item-check"></div>
+      </button>
     </template>
 
     <template v-else>
@@ -253,12 +267,10 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
         @click="taleStore.setCurrentMainView('archive')"
       >
         <div class="draft-detail__item-meta">
-          <SvgIcons name="trash" :size="25" />
+          <SvgIcons name="archive" :size="25" />
            <h4 class="draft-detail__item-title">Archive Tale</h4>
         </div>
-        <div class="draft-detail__item-check">
-            <span v-if="taleStore.isArchived()"  class="form-message-icon">✓</span>
-        </div>
+        <div class="draft-detail__item-check"></div>
       </button>
     </template>
    
