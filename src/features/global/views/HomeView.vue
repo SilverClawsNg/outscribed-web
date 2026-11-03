@@ -1249,24 +1249,30 @@ margin: 0 auto;
  
 
   /* Desktop View (768px and up) */
+  display: flex;
 
   @media @smallDevice{
   max-width: @mid-width;
   margin: 0 auto;
+   row-gap: 1rem;
+    flex-direction:column-reverse;
   }
 
   @media @tablet{
   max-width: @mid-width;
   margin: 0 auto;
+   row-gap: 1rem;
+    flex-direction:column-reverse;
   }
 
   @media @laptop{
   max-width: @mid-width;
   margin: 0 auto;
+  row-gap: 1rem;
+    flex-direction:column-reverse;
   }
 
   @media @desktop{
-     display: flex;
   column-gap: 1rem;
     justify-content: space-between;
   }
@@ -1284,16 +1290,13 @@ margin: 0 auto;
 
       @media @smallDevice{
   width: 100%;
-  margin-bottom: 2rem;
   }
 
      @media @tablet{
   width: 100%;
-  margin-bottom: 2rem;
   }
      @media @laptop{
   width: 100%;
-  margin-bottom: 2rem;
   }
     @media @desktop{
    width: 32%;
