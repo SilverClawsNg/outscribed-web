@@ -231,11 +231,11 @@ function handleSearchClick() {
         width: auto;
 
        @media @phone {
-           height: 22px;
+           height: 26px;
         }
 
          @media @phablet {
-            height: 23px;
+            height: 26px;
         }
 
         @media @largeDevice {

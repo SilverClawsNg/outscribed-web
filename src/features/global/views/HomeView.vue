@@ -134,7 +134,7 @@ const pillTales = computed<TaleListDto[]>(() => {
               :tag="tag">
 
 <span class="tag-link__name"><span class="tag-link__name--pre">#</span>{{ tag.name }}</span>
-<span class="divider divider--line"></span>
+<span class="divider divider--circle"></span>
 <span class="tag-link__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
 </RouterLink>
 
@@ -1177,6 +1177,9 @@ margin: 0 auto;
       display: flex;
       flex-direction: column;
       cursor: pointer;
+       margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
 
       @media @smallDevice{
      width: 100%;
@@ -1185,7 +1188,7 @@ margin: 0 auto;
   }
 
 
-         @media @tablet {
+    @media @tablet {
       width: 100%;
       max-width: @min-width;
       margin: 0 auto;
@@ -1457,7 +1460,6 @@ margin: 0 auto;
   &__metrics {
     display: flex;
     gap: 0.75rem;
-    font-size: 0.95rem;
     
   }
 
@@ -1488,8 +1490,6 @@ column-gap: 1rem;
   width: @max-width;
   max-width: calc(100% - 20px);
   margin: 2rem auto;
- 
- column-gap: 1rem;
  border-bottom: 1px solid var(--border-color);
  padding-bottom: 1rem;
  
@@ -1499,6 +1499,7 @@ column-gap: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   column-gap: 0.5rem;
   margin-bottom: 0.75rem;
 color: @red-color;
@@ -1525,8 +1526,8 @@ color: @red-color;
   .tag-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.75rem;
+    column-gap: 0.25rem;
+    padding: 0.25rem;
     //background-color: var(--light-background-color);
     border: 1px solid var(--border-color);
     color: var(--muted-text-color);
@@ -1538,7 +1539,7 @@ color: @red-color;
  //flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 3rem;
+  height: 2rem;
   display: inline-flex;
 
      &:hover {
