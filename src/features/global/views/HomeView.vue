@@ -32,7 +32,7 @@ const engage = useEngagement()
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
 
-const isRecent = ref(true)
+const isRecent = ref(false)
 
 
 function handleCreateDraftClick() {
@@ -88,7 +88,6 @@ const pillTales = computed<TaleListDto[]>(() => {
   return homepageStore.tales.length > 1 ? homepageStore.tales.slice(1) : [];
 });
 
-
 </script>
 
 <template>
@@ -120,7 +119,7 @@ const pillTales = computed<TaleListDto[]>(() => {
   
  <div class="trending-container-title">
   <SvgIcons name="trending" :size="80" />
- <h2 class="trending__title">Trending </h2>
+ <h2 class="trending__title">Trending On OutScribed </h2>
  </div>
 
  <div class="tag-group">
@@ -148,9 +147,18 @@ const pillTales = computed<TaleListDto[]>(() => {
  </div>
 </div>
 
+   
+
+
 <div class="main-contents">
 
 <div class="tale-contents">
+
+  <header class="page-header">
+    <h1>Recent Tales</h1>
+    <span class="single-line"></span>
+      <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
+    </header>
 
 <section class="focus-tale-container">
   <article class="focus-tale-wrapper" v-if="focusTale">
@@ -210,7 +218,6 @@ const pillTales = computed<TaleListDto[]>(() => {
   </article>
 </section>
 
-    <!-- PILL TALES GRID (3 Columns) -->
     <div class="pill-tales-grid">
       <article 
         v-for="tale in pillTales" 
@@ -227,9 +234,7 @@ const pillTales = computed<TaleListDto[]>(() => {
         </div>
         <div class="pill-body">
           <div class="content-card">
-       
-          
-
+      
       <!-- Title -->
       <h2 class="content-card__title content-card__title--small">
         <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
@@ -300,20 +305,18 @@ const pillTales = computed<TaleListDto[]>(() => {
           <span class="block-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
-   <button 
+          <button 
             type="button"
             class="btn btn--primary" 
             @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
           >
             OutScribe
           </button>
-
         
     </div>
 
   </article>
   
-
 </div>
  
 <footer class="block-footer">
@@ -321,11 +324,10 @@ const pillTales = computed<TaleListDto[]>(() => {
             type="button"
           >
             See All Categories
-          </button>
+  </button>
 </footer>
 
 </div>
-
 
 <div class="sidebar-block">
   <header class="block-header">Top Countries</header>
@@ -380,8 +382,6 @@ const pillTales = computed<TaleListDto[]>(() => {
 </footer>
  
 </div>
-
-
 
 <div class="sidebar-block">
    <header class="block-header block-header--writers">
@@ -489,9 +489,6 @@ const pillTales = computed<TaleListDto[]>(() => {
 </footer>
 </div>
 
-
-
-
 </aside>
 
 </div>
@@ -588,64 +585,17 @@ const pillTales = computed<TaleListDto[]>(() => {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 
-.become-outscriber{
-  width: @max-width;
-  height: auto;
-  min-height: 500px;
-  background-image: url('@/assets/images/guest-outscriber-background.png');
-  background-repeat: no-repeat;
-  margin: 0 auto;
-  object-fit: cover;
-}
-
 .hero-wrapper {
   width: 100%;
   height: auto;
   position:relative;
   justify-content:center;
-    display: flex;
+  display: flex;
   align-items: center;
   margin-top: -1px;
-  //background-color: @link-color;
-  //color:@black-color;
-  //border-bottom: 1px solid var(--border-color);
-  //background-image: url('@/assets/images/hero-background-image.png');
-  //background-image: url('@/assets/images/hero-patterns.png');
   background-color: @link-color;
- padding: 1rem;
- margin-bottom: 1rem;
-   
-}
-
-.hero-contents{
-  margin: 0 auto;
-  width: 1300px;
-  min-height: 400px;
-  max-width: calc(100% - 20px);
-   display: flex;
-  justify-content: flex-start;
-  position:relative;
-  max-width: calc(100% - 20px);
-    
-   background-size: contain; 
-   background-position: right center;
-   background-repeat: no-repeat;
-
-}
-
-
-
-.hero__image{
-  height: auto;
-  display:flex;
-  justify-content:center;
-  margin-bottom: 1.5rem;
-
-  & img{
-    width: 3rem;
-    height: auto;
-  }
- 
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .hero {
@@ -762,7 +712,6 @@ const pillTales = computed<TaleListDto[]>(() => {
 
 }
 
-//Road Map
 .publishing-roadmap {
   display: flex;
   flex-direction: column;
@@ -947,8 +896,6 @@ margin: 0 auto;
   }
 }
 
-
-
 .content-card {
   width: 100%;
   height: auto;
@@ -1110,7 +1057,6 @@ margin: 0 auto;
   }
 }
 
-
 .main-contents {
   width: @max-width;
   max-width: calc(100% - 20px);
@@ -1127,12 +1073,9 @@ margin: 0 auto;
 
 }
 
-// ------------------------------------
-// 1. MAIN CONTENT (940px)
-// ------------------------------------
 .tale-contents {
   
-  padding-right: 1rem;
+ 
  
 
   @media @smallDevice{
@@ -1141,15 +1084,18 @@ margin: 0 auto;
 
   @media @tablet{
      border-right: 1px solid var(--border-color);
+      padding-right: 1rem;
   width: 64%;
   }
    @media @laptop{
      border-right: 1px solid var(--border-color);
+      padding-right: 1rem;
   width: 70%;
   }
 
   @media @desktop{
      border-right: 1px solid var(--border-color);
+      padding-right: 1rem;
     width: 77%;
   }
  
@@ -1158,7 +1104,6 @@ margin: 0 auto;
   // --- PILL TALES GRID ---
   .pill-tales-grid {
     display: grid;
-    grid-template-columns: 1fr;
     gap: 10px;
 
     
@@ -1184,9 +1129,9 @@ margin: 0 auto;
       display: flex;
       flex-direction: column;
       cursor: pointer;
-       margin-bottom: 1rem;
+       margin-bottom: 2rem;
         border-bottom: 1px solid var(--border-color);
-        padding-bottom: 1rem;
+        padding-bottom: 2rem;
 
       @media @smallDevice{
      width: 100%;
@@ -1271,8 +1216,8 @@ margin: 0 auto;
     @media @smallDevice{
      width: @min-width;
      max-width: 100%;
-     margin: 0 auto;
-     
+     margin-right: auto;
+      margin-left: auto;
   }
 
     .block-header {
@@ -1496,9 +1441,8 @@ column-gap: 1rem;
 .trending-container{
   width: @max-width;
   max-width: calc(100% - 20px);
-  margin: 2rem auto;
- border-bottom: 1px solid var(--border-color);
- padding-bottom: 1rem;
+  margin: 1rem auto 2rem auto;
+ 
  
 }
 
@@ -1534,7 +1478,7 @@ color: @red-color;
     display: inline-flex;
     align-items: center;
     column-gap: 0.25rem;
-    padding: 0.25rem;
+    padding: 0.5rem 0.75rem;
     //background-color: var(--light-background-color);
     border: 1px solid var(--border-color);
     color: var(--muted-text-color);
