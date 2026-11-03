@@ -157,6 +157,7 @@ function handleSearchClick() {
       </div>
     </div>
   </header>
+  
 </template>
 
 <style scoped lang="less">
@@ -230,19 +231,15 @@ function handleSearchClick() {
         width: auto;
 
        @media @phone {
-           height: 26px;
+           height: 22px;
         }
 
          @media @phablet {
-            height: 27px;
-        }
-
-         @media @tablet {
-            height: 29px;
+            height: 23px;
         }
 
         @media @largeDevice {
-            height: 32px; /* Your desired height */
+            height: 26px; /* Your desired height */
         }
     }
   }

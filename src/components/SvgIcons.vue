@@ -7,7 +7,7 @@ export type IconName =
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
   | 'whatsapp' | 'telephone' | 'website' | 'filter' | 'google' | 'microsoft' | 'apple' | 'menu'
   | 'delete' | 'publish' | 'help' | 'metadata' | 'details' | 'lock' | 'trash' | 'addendum' | 'close'
-  | 'checkbox' | 'chain' | 'live' |'preview'
+  | 'checkbox' | 'chain' | 'live' |'preview' | 'trending'
 
 const props = defineProps<{
   name: IconName
@@ -618,6 +618,19 @@ const icons: Record<IconName, IconConfig> = {
       { type: 'line', x1: 12, y1: 17, x2: 12, y2: 21 },
       // Arrow head at X=3 (left frame edge), tail extending to X=11
       { d: 'M6 8l-3 3m0 0l3 3m-3-3h8' }
+    ]
+  },
+  trending: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { d: 'M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z' },
+      { d: 'M20 18c1.26-1.67 2-3.75 2-6s-.74-4.33-2-6' },
+      { d: 'M4 6c-1.26 1.67-2 3.75-2 6s.74 4.33 2 6' },
+      { d: 'M16.8 15.6c.75-1 1.2-2.25 1.2-3.6s-.45-2.6-1.2-3.6' },
+      { d: 'M7.2 8.4C6.45 9.4 6 10.65 6 12s.45 2.6 1.2 3.6' }
     ]
   },
 }

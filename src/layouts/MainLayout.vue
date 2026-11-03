@@ -7,6 +7,7 @@ import ModalContainer from '@/components/ModalContainer.vue'
 import Alert from '@/components/Alert.vue'; // 👈 Import alert store
 import MainFooter from '@/components/MainFooter.vue'
 import { useRouter } from 'vue-router'
+import TestHeader from '@/components/TestHeader.vue'
 
 const route = useRoute()
 const modalStore = useModalStore()
@@ -24,7 +25,7 @@ watch(() => route.path, () => modalStore.closeAll())
 
     <ModalContainer />
     
-    <MainHeader />
+    <TestHeader />
 
     <main class="main-layout">
       <RouterView />

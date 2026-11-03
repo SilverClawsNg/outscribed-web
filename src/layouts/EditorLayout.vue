@@ -108,11 +108,12 @@ const taleStore = useTaleDraftStore()
   }
 
   @media @largeDevice {
+    border-left: 1px solid var(--border-color);
    height: calc(100vh - @body-top-offset-large);// Pushes standard document flow down cleanly
   }
    
     z-index: 1;
-    border-right: 1px solid var(--border-color);
+    //border-right: 1px solid var(--border-color);
     background-color: var(--background-color);
     overflow-y: auto;
 
@@ -140,7 +141,7 @@ const taleStore = useTaleDraftStore()
     //min-height: 100svh;
     z-index: 2;
     background-color: var(--background-color);
-    box-shadow: var(--sidebar-box-shadow);
+    //box-shadow: var(--sidebar-box-shadow);
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     
@@ -149,6 +150,8 @@ const taleStore = useTaleDraftStore()
   }
 
   @media @largeDevice {
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     min-height: calc(100vh - @body-top-offset-large);
   }
     
@@ -205,6 +208,7 @@ const taleStore = useTaleDraftStore()
     height:auto;
     background-color: var(--background-color);
     border-left: 1px solid var(--border-color);
+    
     position:relative;
     //padding-top: @body-top-offset;
 
@@ -217,6 +221,7 @@ const taleStore = useTaleDraftStore()
   }
 
   @media @largeDevice {
+    
     padding-top: @body-top-offset-large; // Pushes standard document flow down cleanly
   }
   }

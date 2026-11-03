@@ -27,7 +27,9 @@ function handleSavedDraftsClick() {
 </script>
 
 <template>
+
   <footer class="site-footer">
+
     <div class="footer-container">
       
       <!-- Top Section: Brand & Disclaimer -->
@@ -53,10 +55,11 @@ function handleSavedDraftsClick() {
         </div> -->
       </div>
 
-    <div class="divider-multi divider-multi--thick"><span></span></div>
+    <!--  <div class="divider-multi divider-multi--thick"><span></span></div> -->
 
-      <!-- Navigation Columns -->
-      <div class="footer-nav">
+    <div class="footer-bottom">
+ <!-- Navigation Columns -->
+      <nav class="footer-nav">
         <div class="nav-column">
           <h3 class="nav-column__title">Explore</h3>
           <ul class="nav-column__list">
@@ -108,15 +111,214 @@ function handleSavedDraftsClick() {
             <li><router-link to="/contact-us">Contact &amp; Support</router-link></li>
           </ul>
         </div>
-      </div>
-
-         <div class="divider-multi divider-multi--thick"><span></span></div>
+      </nav>
 
       <!-- Bottom Bar: Copyright -->
-      <div class="footer-bottom">
-        <p>&copy; {{ currentYear }} OutScribed. All rights reserved.</p>
-      </div>
+       <p class="copyright">&copy; {{ currentYear }} OutScribed. All rights reserved.</p>
+    </div>
+     
 
     </div>
   </footer>
 </template>
+
+
+<style scoped lang="less">
+@import "@/assets/css/variables.less";
+
+
+footer.site-footer {
+  background-color: var(--background-color);
+  background-color: var(--light-background-color);
+  background-color: @link-color;
+  color:@white-color;
+  border-top: 1px solid var(--thick-border-color);
+  padding: 2.5rem 0;
+  font-size: 0.9rem;
+  padding-bottom: 6rem;
+
+ 
+
+  .footer-container {
+   
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+   
+
+    @media @smallDevice {
+     width: @min-width;
+    }
+
+    @media @tablet {
+       width: @mid-width;
+    }
+
+    @media @laptop {
+       display: flex;
+    column-gap: 1rem;
+    align-items:center;
+     width: @mid-width;
+    }
+
+     @media @desktop {
+       display: flex;
+    column-gap: 5rem;
+    align-items:center;
+     width: @max-width;
+    }
+  }
+
+  .footer-top {
+    color: @white-color;
+    
+    display: flex;
+
+     @media @smallDevice {
+       justify-content:center;
+       padding-bottom: 1rem;
+       margin-bottom: 1rem;
+       border-bottom: 1px solid var(--border-color);
+    }
+     @media @tablet {
+       justify-content:center;
+       padding-bottom: 1rem;
+       margin-bottom: 1rem;
+       border-bottom: 1px solid var(--border-color);
+    }
+
+    @media @laptop {
+          align-items: stretch;
+
+    }
+
+     @media @desktop {
+         align-items: stretch;
+
+    }
+  
+
+  }
+
+  .brand-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+    row-gap: 1rem;
+
+    
+
+    & h1.logo{
+        text-align:center;
+        color:@white-color;
+          & svg{
+      width: 100%;
+      height: auto;
+      fill: @white-color;
+    }
+    }
+      & .icon{
+        margin-bottom: 0.5rem;
+
+         img {
+        height: 60px;
+        width: auto;
+      }
+      }
+
+    &__logo {
+      margin-bottom: 0.5rem;
+
+
+     
+    }
+
+    &__tagline {
+      font-size: 0.85rem;
+      margin: 0;
+    }
+  }
+
+  .disclaimer-block {
+    margin-bottom: 1.5rem;
+    p {
+      margin: 0;
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .footer-nav {
+    display: grid;
+    gap: 2rem;
+    
+
+    @media @smallDevice {
+    grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media @tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media @laptop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+     @media @desktop {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .nav-column {
+    &__title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 0.6rem;
+      }
+
+      a, button {
+        font-weight: 400;
+       color:@white-color;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+          color: @link-color;
+           text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    width: auto;
+  }
+
+    p.copyright {
+      font-size: 0.9rem;
+      text-align:center;
+      margin-top: 2rem;
+         padding-top: 1rem;
+margin-top: 1rem;
+    border-top: 1px solid @white-color;
+    }
+}
+
+</style>

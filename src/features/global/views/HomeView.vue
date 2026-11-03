@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { APIError } from '@/api/apiTypes'
 import { useHomeStore } from '../stores/HomeStore'; 
+import { type TaleListDto } from '@/features/tales/types/TalesTypes';
+
 
 // Import your sub-components (We map these next)
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
@@ -12,14 +14,26 @@ import { useModalStore } from '@/stores/modalStore'
 import CategoryComponent from '../components/CategoryComponent.vue';
 import CountryComponent from '../components/CountryComponent.vue';
 import WriterComponent from '../components/WriterComponent.vue';
+import { mediaHelper } from '@/utils/mediaHelper'
+import { CategoryDescriptions, CountryDescriptions, CategorySummaries } from '@/utils/descriptors'
+import { formatCounts } from '@/utils/stringHelpers'
+import { toRelativeTime } from '@/utils/dateExtensions'
+import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
+import { useEngagement } from '@/composables/useEngagement';
+import SvgIcons from '@/components/SvgIcons.vue';
+
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
 const modalStore = useModalStore()
+const engage = useEngagement()
 
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
+
+const isRecent = ref(true)
+
 
 function handleCreateDraftClick() {
   modalStore.push('CreateTale', 'Create Tale')
@@ -63,29 +77,26 @@ onUnmounted(() => {
   homepageStore.abort();
 });
 
+// 🎯 1. FOCUS TALE: Takes the very first tale in the collection
+const focusTale = computed<TaleListDto | null | undefined>(() => {
+  return homepageStore.tales.length > 0 ? homepageStore.tales[0] : null;
+});
+
+
+// 🎯 2. PILL DISPLAY TALES: Slices the rest of the array (from index 1 onward)
+const pillTales = computed<TaleListDto[]>(() => {
+  return homepageStore.tales.length > 1 ? homepageStore.tales.slice(1) : [];
+});
+
+
 </script>
 
 <template>
 
 <div class="hero-wrapper">
-
-  <div class="page__pattern" aria-hidden="true"></div>
-  <div class="page__fade page__fade--bottom" aria-hidden="true"></div>
-  <div class="page__fade page__fade--top" aria-hidden="true"></div>
- 
-  <div class="hero-contents">
-
-   <div class="hero">
-
-    <div class="hero__image">
-      <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
-    </div>
-   
-    <div class="hero__content">
-      <h3 class="hero__eyebrow">
-      The Facts, The Fiction, & Everything In-between
-      </h3>
-      
+  
+      <div class="hero">
+     
       <h1 class="hero__title">
        The <span class="text-gradient">reality</span> you know is just one <span class="text-gradient">version</span>.
       </h1>
@@ -99,255 +110,394 @@ onUnmounted(() => {
         <RouterLink class="btn btn--primary hero__action" to="/faqs">
           More About OutScribed
         </RouterLink>
-        <RouterLink class="btn btn--secondary hero__action" to="/register">
-          Become An OutScriber
-        </RouterLink>
+       
       </div>
-    </div>
 
   </div>
-  
-</div>
 
 </div>
-<div class="publishing-roadmap">
 
-<div class="publishing-roadmap__contents">
+<div class="trending-container">
   
-  <div class="publishing-roadmap__header">
-  <h3 class="publishing-roadmap__title">From Guest to OutScriber</h3>
-  <p class="publishing-roadmap__subtitle">
-    Become a <span>bona fide</span> OutScriber and start sharing your alternate realities in quick, simple steps.
-  </p>
+ <div class="trending-container-title">
+  <SvgIcons name="trending" :size="60" />
+ <h2 class="trending__title">Trending: </h2>
+ </div>
+
+ <div class="tag-group">
   
+<RouterLink
+ :to="`/tales?tag=${tag.slug}`" 
+ class="tag-link" 
+  v-for="tag in homepageStore.tags" 
+              :key="tag.tagId" 
+              :tag="tag">
+
+<span class="tag-link__name"><span class="tag-link__name--pre">#</span>{{ tag.name }}</span>
+<span class="divider divider--line"></span>
+<span class="tag-link__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
+</RouterLink>
+
+ </div>
 </div>
 
-  <div class="publishing-roadmap__grid">
+<div class="main-contents">
+
+<div class="tale-contents">
+
+<section class="focus-tale-container">
+  <article class="focus-tale-wrapper" v-if="focusTale">
     
-    <!-- Step 1: Sign Up (Red / Start) -->
-    <div class="publishing-roadmap__card publishing-roadmap__card--step1">
-      <span class="publishing-roadmap__number">01</span>
-      <div class="publishing-roadmap__content">
-        <h4>Sign Up</h4>
-        <p>Easily verify your identity via Google, Microsoft, Apple, or an email security token.</p>
+    <!-- Text Wrapper -->
+    <div class="focus-text-wrapper">
+        <div class="content-card">
+       
+          
+
+      <!-- Title -->
+      <h2 class="content-card__title content-card__title--large">
+        <RouterLink :to="`/tale/${focusTale.slug}`">{{ focusTale.title }}</RouterLink>
+      </h2>
+ 
+      <!-- Summary -->
+      <p class="content-card__summary content-card__summary--large">
+        {{ focusTale.summary.length > 500 ? focusTale.summary.substring(0, 500) + '...' : focusTale.summary }}
+      </p>
+
+      <div class="content-card__meta">
+        <button class="at" @click="modalStore.push('Profile', 'Profile', focusTale.creatorId)">
+          {{ focusTale.creatorUsername }}
+        </button>
+        <span class="divider divider--circle"></span>
+        <time class="content-card__date">{{ toRelativeTime(focusTale.createdAt) }}</time>
+        <span class="divider divider--circle"></span>
+        <span>{{ focusTale.readingTime }} Min Read</span>
       </div>
-    </div>
-
-    <!-- Step 2: Verify Account (Orange) -->
-    <div class="publishing-roadmap__card publishing-roadmap__card--step2">
-      <span class="publishing-roadmap__number">02</span>
-      <div class="publishing-roadmap__content">
-        <h4>Choose Handle</h4>
-        <p>Choose your unique OutScribed username and secure password to access your account.</p>
-      </div>
-    </div>
-
-    <!-- Step 3: Acknowledgement (Yellow) -->
-    <div class="publishing-roadmap__card publishing-roadmap__card--step3">
-      <span class="publishing-roadmap__number">03</span>
-      <div class="publishing-roadmap__content">
-        <h4>Acknowledgement</h4>
-        <p>Agree to platform publishing guidelines with a single check.</p>
-      </div>
-    </div>
-
-    <!-- Step 4: Write Story (Purple) -->
-    <div class="publishing-roadmap__card publishing-roadmap__card--step4">
-      <span class="publishing-roadmap__number">04</span>
-      <div class="publishing-roadmap__content">
-        <h4>Create A Draft</h4>
-        <p>Get started with your story by selecting a category and a befitting title.</p>
-      </div>
-    </div>
-
-    <!-- Step 5: Metadata (Green Transition) -->
-    <div class="publishing-roadmap__card publishing-roadmap__card--step5">
-      <span class="publishing-roadmap__number">05</span>
-      <div class="publishing-roadmap__content">
-        <h4>Build Story</h4>
-        <p>Use a rich text editor to write story. Complete basic information, reality check, and optional photo & tags.</p>
-      </div>
-    </div>
-
-    <!-- Step 6: Publish Story (Emerald Green / Live) -->
-    <div class="publishing-roadmap__card publishing-roadmap__card--step6">
-      <span class="publishing-roadmap__number">06</span>
-      <div class="publishing-roadmap__content">
-        <h4>Go Live & Engage</h4>
-        <p>Launch your tale to the network and start inviting other to experience your world!</p>
-      </div>
-    </div>
-
-  </div>
-
-  
-<!-- Third Line CTA with Direct Action Button -->
-    <div class="publishing-roadmap__footer">
-      <span>Ready to start? Click here.</span>
+      
+    <!-- Actions Footer -->
+    <footer class="content-card__footer">
+      <RouterLink class="btn btn--secondary"  :to="`/tale/${focusTale.slug}`">View Tale</RouterLink>
+      
       <button 
-        type="button" 
-        class="btn btn--secondary"
-        @click="handleCreateDraftClick"
+        class="content-card__save-btn"
+        @click="engage.favorite(focusTale.engagement)"
+        :title="focusTale.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
       >
-        OutScribe
+        <SvgIcons name="bookmark" /> 
+        <span>Add to Favorites</span>
       </button>
+    </footer>
+        
+      </div>
     </div>
-    
-</div>
 
-</div>
+    <!-- Image Wrapper -->
+    <div class="focus-image-wrapper">
+        <img 
+            :src="mediaHelper.getUrl(focusTale.photo, 'tales', 'full') || undefined" 
+            :alt="focusTale.title" 
+            class="content-card__image"
+          />
+    </div>
 
-   <template v-if="isLoading">
+  </article>
+</section>
 
-    <div class="loader" role="status" aria-label="Loading homepage">
-  <p class="loader__dot"></p>
-  
-</div>
-
-  </template>
-
-   <template v-else-if="loadingError">
-
-     <PageStatusMessage 
-      :title="loadingError.title || 'Error Loading Lists'" 
-      :message="loadingError.detail || 'An unexpected error occurred.'"
-      icon="warning"
-      :is-standalone="true">
-        <template v-if="loadingError.definition" #actions>
-           <button class="btn btn--primary"  @click="modalStore.push('ProblemDefinition', 'Problem Detail', loadingError)"  >
-            More Details
-          </button>
-        </template>
-    </PageStatusMessage>
-
-  </template>
-
-  <template v-else>
-   
-       <template v-if="homepageStore.tales && homepageStore.tales.length > 0">
-
-    <header class="page-header">
-    <h1>Recent Tales</h1>
-      <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
-    </header>
-    
-         <div class="container">
-
-            <TaleListComponent 
+    <!-- PILL TALES GRID (3 Columns) -->
+    <div class="pill-tales-grid">
+      <article 
         v-for="tale in homepageStore.tales" 
         :key="tale.taleId" 
-        :tale="tale" 
-        :is-homepage="true"
-      />
-
-        </div>
-
-  </template>
-
-       <template v-if="homepageStore.categories && homepageStore.categories.length > 0">
-
-        <header class="page-header">
-       <h1>Categories Leaderboard</h1>
-    </header>
-
-         <div class="container">
-
-           <CategoryComponent 
-              v-for="(category, index) in homepageStore.categories" 
-              :key="category.category"
-              :category="category" 
-              :index="index"
-            />
-
-        </div>
-
-    
-  </template>
-
-       <template v-if="homepageStore.tags && homepageStore.tags.length > 0">
-
-       <header class="page-header">
-      <h1>Trending Tags</h1>
-      <RouterLink to="/tags" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
-    </header>
-    
-         <div class="container">
-
-            <TagComponent 
-              v-for="tag in homepageStore.tags" 
-              :key="tag.tagId" 
-              :tag="tag" 
-            />
-
-        </div>
-    
-  </template>
-
-         <template v-if="homepageStore.countries && homepageStore.countries.length > 0">
-
-        <header class="page-header">
-       <h1>Country Leaderboard</h1>
-      <RouterLink to="/country/metrics" class="btn btn--secondary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
-    </header>
-      
-        <div class="container">
-
-           <CountryComponent 
-              v-for="(country, index) in homepageStore.countries" 
-              :key="country.country"
-              :country="country" 
-              :index="index"
-            />
-
-        </div>
-    
-  </template>
-
-         <template v-if="homepageStore.prolificWriters && homepageStore.prolificWriters.length > 0">
-
-        <header class="page-header">
-       <h1>Writer Leaderboard</h1>
-      <RouterLink to="/writers" class="btn btn--primary"  title="Countries Leaderboard"><span>View All</span></RouterLink>
-    </header>
-      
-        <div class="container">
-
-         <template v-for="(writer, index) in homepageStore.prolificWriters" :key="writer?.creator?.accountId || index">
-          <WriterComponent 
-            v-if="writer?.creator"
-            :writer="writer" 
-            :index="index"
+        class="pill-card"
+      >
+       <div class="pill-wrapper">
+         <div class="pill-image-wrap">
+          <img 
+            :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb') || undefined" 
+            :alt="tale.title" 
+            class="content-card__image"
           />
-        </template>
-
         </div>
+        <div class="pill-body">
+          <div class="content-card">
+       
+          
 
-    
-  </template>
+      <!-- Title -->
+      <h2 class="content-card__title content-card__title--small">
+        <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
+      </h2>
+ 
+      <!-- Summary -->
+      <p class="content-card__summary content-card__summary--small">
+        {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
+      </p>
 
-         <template v-if="homepageStore.newWriters && homepageStore.newWriters.length > 0">
+      <div class="content-card__meta">
+        <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
+          {{ tale.creatorUsername }}
+        </button>
+        <span class="divider divider--circle"></span>
+        <time class="content-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
+        <span class="divider divider--circle"></span>
+        <span>{{ tale.readingTime }} Min Read</span>
+      </div>
+      
+    <!-- Actions Footer -->
+    <footer class="content-card__footer">
+      <RouterLink class="btn btn--secondary"  :to="`/tale/${tale.slug}`">View Tale</RouterLink>
+      
+      <button 
+        class="content-card__save-btn"
+        @click="engage.favorite(tale.engagement)"
+        :title="tale.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+      >
+        <SvgIcons name="bookmark" /> 
+        <span>Add to Favorites</span>
+      </button>
+    </footer>
         
-        <header class="page-header">
-       <h1>And Introducing...</h1>
-    </header>
-
-        <div class="container">
-
-         <!-- New Writers (Unranked - index omitted) -->
-        <template v-for="writer in homepageStore.newWriters" :key="writer?.creator?.accountId">
-          <WriterComponent 
-            v-if="writer?.creator"
-            :writer="writer" 
-          />
-        </template>
-
+      </div>
         </div>
+       </div>
+      </article>
+    </div>
 
-        <!--<div class="page-closure"></div>-->
-    
-  </template>
+</div>
 
-  </template>
+<aside class="sidebar">
+
+<div class="sidebar-block">
+  <header class="block-header">Top Categories</header>
+
+  <div class="block-contents">
+
+  <article 
+    v-for="category in homepageStore.categories" 
+        :key="category.category" 
+    class="block-card"
+  >
+
+ <h3 class="block-card__title">
+    #{{ CategoryDescriptions[category.category] }}
+  </h3>
+
+    <div class="block-card__actions">
+      
+   <button 
+            type="button"
+            class="btn btn--primary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
+          >
+            OutScribe
+          </button>
+
+          
+    <div class="block-card__metrics">
+      <RouterLink 
+          :to="`/tales?category=${category.category}`" 
+          class="block-card__metric-link" 
+          :class="{ 'disabled': category.talesCounter === 0 }"
+          title="Filter Tales"
+        >
+          <span class="block-card__metric-value">{{ formatCounts(category.talesCounter) }}</span>
+          <span class="block-card__metric-label">Tales&rarr;</span>
+        </RouterLink>
+
+    </div>
+    </div>
+
+  </article>
+  
+
+</div>
+ 
+<footer class="block-footer">
+  <button 
+            type="button"
+          >
+            See All Categories
+          </button>
+</footer>
+
+</div>
+
+
+<div class="sidebar-block">
+  <header class="block-header">Top Countries</header>
+
+ <div class="block-contents">
+  
+  <article 
+    v-for="country in homepageStore.countries" 
+        :key="country.country" 
+    class="block-card"
+  >
+
+ <h3 class="block-card__title">
+    #{{ CountryDescriptions[country.country] }}
+  </h3>
+
+    <div class="block-card__actions">
+      
+   <button 
+            type="button"
+            class="btn btn--primary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
+          >
+            OutScribe
+          </button>
+
+          
+    <div class="block-card__metrics">
+      <RouterLink 
+          :to="`/tales?country=${country.country}`" 
+          class="block-card__metric-link" 
+          :class="{ 'disabled': country.talesCounter === 0 }"
+          title="Filter Tales"
+        >
+          <span class="block-card__metric-value">{{ formatCounts(country.talesCounter) }}</span>
+          <span class="block-card__metric-label">Tales&rarr;</span>
+        </RouterLink>
+
+    </div>
+    </div>
+
+  </article>
+
+</div>
+
+  
+<footer class="block-footer">
+  <button 
+            type="button"
+          >
+            See All Countries
+          </button>
+</footer>
+ 
+</div>
+
+
+
+<div class="sidebar-block">
+   <header class="block-header block-header--writers">
+    Writers
+  
+    <div class="block-header-selector">
+      <button :class="{ 'active': isRecent }" @click="isRecent = true">Recent</button>
+       <button :class="{ 'active': !isRecent }" @click="isRecent = false">Popular</button>
+    </div>
+  
+  </header>
+
+  <div class="block-contents">
+
+    <template v-if="isRecent">
+
+  <article 
+    v-for="writer in homepageStore.newWriters" 
+       :key="writer.creator.accountId" 
+  :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+  :class="{ 'is-disabled': getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled }"
+  @click="!getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled && engage.favorite(writer.creator.engagement)"
+    class="block-card"
+  >
+
+ <h3 class="block-card__title at">
+    {{ writer.creator.username }}
+  </h3>
+
+    <div class="block-card__actions">
+        <button 
+        type="button" 
+        class="btn btn--primary"
+        :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+        @click="engage.favorite(writer.creator.engagement)"
+      >
+       {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
+      </button>
+
+    <div class="block-card__metrics">
+      <RouterLink 
+          :to="`/tales?username=${writer.creator.username}`" 
+          class="block-card__metric-link" 
+          :class="{ 'disabled': writer.creator.talesCount === 0 }"
+          title="Filter Tales"
+        >
+          <span class="block-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+          <span class="block-card__metric-label">Tales&rarr;</span>
+        </RouterLink>
+
+    </div>
+    </div>
+
+  </article>
+  
+    </template>
+
+    <template v-else>
+
+ <article 
+  v-for="writer in homepageStore.prolificWriters" 
+  :key="writer.creator.accountId" 
+  :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+  :class="{ 'is-disabled': getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled }"
+  @click="!getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled && engage.favorite(writer.creator.engagement)"
+  class="block-card"
+>
+
+ <h3 class="block-card__title at">
+    {{ writer.creator.username }}
+  </h3>
+
+    <div class="block-card__actions">
+        <button 
+        type="button" 
+        class="btn btn--primary"
+        :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+        @click="engage.favorite(writer.creator.engagement)"
+      >
+        {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
+      </button>
+
+    <div class="block-card__metrics">
+      <RouterLink 
+          :to="`/tales?username=${writer.creator.username}`" 
+          class="block-card__metric-link" 
+          :class="{ 'disabled': writer.creator.talesCount === 0 }"
+          title="Filter Tales"
+        >
+          <span class="block-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+          <span class="block-card__metric-label">Tales&rarr;</span>
+        </RouterLink>
+
+    </div>
+    </div>
+
+  </article>
+  
+    </template>
+
+
+</div>
+ 
+<footer class="block-footer">
+  <button 
+            type="button"
+          >
+            See All Writers
+          </button>
+</footer>
+</div>
+
+
+
+
+</aside>
+
+</div>
+
 
 </template>
 
@@ -357,55 +507,39 @@ onUnmounted(() => {
 .hero-wrapper {
   width: 100%;
   height: auto;
-  margin-top: -1px;
   position:relative;
+  justify-content:center;
+    display: flex;
+  align-items: center;
+  margin-top: -1px;
   //background-color: @link-color;
   //color:@black-color;
   //border-bottom: 1px solid var(--border-color);
-  //background-image: url('@/assets/images/background-image.png');
-
-  background-color: var(--bbackground-color);
-  overflow: hidden;
-  transition: background-color 0.3s ease;
-
-    display: flex;
-    flex-direction:column;
-    justify-content:center;
-
-  @media @smallDevice{
-    min-height: calc(100svh - 56px);
-  }
-  
-  @media @largeDevice{
-    min-height:600px;
-  }
+  //background-image: url('@/assets/images/hero-background-image.png');
+  //background-image: url('@/assets/images/hero-patterns.png');
+  background-color: @link-color;
+ padding: 1rem;
+ margin-bottom: 1rem;
    
 }
 
 .hero-contents{
   margin: 0 auto;
+  width: 1300px;
+  min-height: 400px;
+  max-width: calc(100% - 20px);
+   display: flex;
+  justify-content: flex-start;
   position:relative;
   max-width: calc(100% - 20px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    
+   background-size: contain; 
+   background-position: right center;
+   background-repeat: no-repeat;
+
 }
 
 
-.hero-contents {
-  position: relative;
-  z-index: 2; /* Sits cleanly above background pattern & bottom fade */
-}
-
-.hero__fade--top {
-  top: 0;
-  height: 5rem;
-  background: linear-gradient(
-    0deg,
-    rgba(23, 21, 25, 0) 0%,
-    var(--background-color) 100%
-  );
-}
 
 .hero__image{
   height: auto;
@@ -424,24 +558,31 @@ onUnmounted(() => {
   position: relative;
   height: auto;
   z-index: 1;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align:center;
-   width: @min-width;
+   width: 550px;
    max-width: 100%;
+   color: @white-color;
+ 
   
-   @media @phone, @phablet {
+   @media @smallDevice {
          padding: 2rem 0;
     }
 
-     @media @tablet, @largeDevice {
+     @media  @largeDevice {
         
-         padding: 4rem 0;
+         padding: 2rem 0;
     }
 
   // Element: Logo and line divider header
   &__brand {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     margin-bottom: 1.5rem;
   }
@@ -461,9 +602,9 @@ onUnmounted(() => {
    &__title,
    &__eyebrow,
    &__explainer {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
-
+ text-align:center;
       @media @phone, @phablet {
          text-align:center;
     }
@@ -485,9 +626,9 @@ onUnmounted(() => {
   
 
   &__title {
-    font-size: clamp(2rem, 2.2vw + 1rem, 2.3rem);
-    line-height: clamp(2.3rem, 2.2vw + 1rem, 2.6rem);
-    font-weight: 700;
+    font-size: clamp(2rem, 2.2vw + 1rem, 2.8rem);
+    line-height: clamp(2.3rem, 2.2vw + 1rem, 2.9rem);
+    font-weight: 900;
     text-transform: uppercase;
     //color: @link-color;
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
@@ -495,28 +636,6 @@ onUnmounted(() => {
       display:block;
     }
 
-    & .text-gradient {
-      background: linear-gradient(
-        115deg,
-        #05a660 0%,   /* Emerald Green */
-        #e61d38 25%,  /* Crimson Red */
-        #8b1e8b 50%,  /* Violet Purple */
-        #f26522 75%,  /* Sunset Orange */
-        #ffcc00 100%  /* Warm Yellow */
-      );
-      
-      /* Standard & Webkit clip definitions */
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      
-      /* Fallback color for legacy browsers */
-      color: #0066cc;
-      
-      /* Prevents descenders from clipping horizontally */
-      display: inline-block;
-      padding-right: 0.05em;
-    }
   }
 
   &__explainer {
@@ -528,18 +647,18 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: auto;
     gap: 0.75rem;
     flex-wrap: wrap; // Allows buttons to wrap cleanly when space runs out
   }
 
   &__action {
    
-    flex: 1 1 auto; // Allows buttons to grow and fill available space evenly
+    //flex: 1 1 auto; // Allows buttons to grow and fill available space evenly
     min-width: 150px; // Guarantees enough horizontal space so text won't wrap inside the button
     white-space: nowrap; // Prevents the text string itself from breaking onto multiple lines
     transition: background-color 0.3s ease;
-    border-radius:99999px;
+   // border-radius:99999px;
   
   }
 
@@ -713,4 +832,622 @@ margin: 0 auto;
     }
   }
 }
+
+
+
+.content-card {
+  width: 100%;
+  height: auto;
+  //padding: 1.5rem 0;
+  
+  &__media-link {
+   display: block;
+   width: 100%;
+    height: 250px;
+    margin-bottom: 1rem;
+    background-color: var(--light-background-color);
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  
+  &__meta{
+    display: flex;
+    align-items: center;
+    //justify-content:center;
+    column-gap: 0.5rem;
+    z-index: 10;
+    margin-bottom: 1rem;
+    }
+
+  // --- Card Content Body ---
+  &__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+    &__title {
+      //text-align: center;
+     
+     
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      font-weight:normal;
+
+       &--large {
+         font-size: clamp(1.4rem, 5vw, 1.8rem);
+          line-height: 1.2;
+      }
+
+      &--small {
+        font-size: clamp(1.3rem, 5vw, 1.6rem);
+         line-height: 1.1;
+      }
+    }
+     
+    &__summary {
+      
+      margin-bottom: 1rem;
+      //text-align: center;
+      color: var(--muted-text-color);
+
+        &--large {
+        font-size: clamp(0.95rem, 5vw, 1.1rem);
+         line-height: 1.4;
+      }
+
+      &--small {
+        font-size: clamp(0.85rem, 5vw, 0.95rem);
+         line-height: 1.2;  
+      }
+    }
+
+
+  // --- Metrics ---
+  &__stats {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    //justify-content:center;
+    gap: 0.25rem 0.75rem;
+    //font-size: 0.9rem;
+    
+  }
+
+  &__stat {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25rem;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+
+&__taxonomy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    //justify-content:center;
+    margin-bottom: 1rem;
+}
+       
+  &__taxonomy-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background-color: var(--light-background-color);
+    border: 1px solid var(--border-color);
+    color: var(--muted-text-color);
+    //color:@link-color;
+    border-radius: 99999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+     &:hover {
+          background-color: var(--light-background-color);
+        }
+      }
+
+  // --- Footer Actions ---
+  &__footer {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    //justify-content:space-between;
+  }
+
+  &__save-btn {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    height: 40px;
+  }
+}
+// Key Dimensions
+@main-content-width: 940px;
+@sidebar-width: 300px;
+@grid-gap: 60px;
+
+@focus-img-width: 620px;
+@focus-img-height: 465px;
+@focus-text-width: 320px;
+
+@pill-img-height: 240px;
+
+.main-contents {
+  width: @max-width;
+  max-width: calc(100% - 20px);
+  margin: 5rem auto;
+
+ 
+
+  @media @largeDevice{
+    display: flex;
+  }
+
+}
+
+// ------------------------------------
+// 1. MAIN CONTENT (940px)
+// ------------------------------------
+.tale-contents {
+  
+  padding-right: 1rem;
+  border-right: 1px solid var(--border-color);
+
+  @media @smallDevice{
+   width: 100%;
+  }
+
+  @media @tablet{
+  width: 64%;
+  }
+   @media @laptop{
+  width: 70%;
+  }
+
+  @media @desktop{
+    width: 77%;
+  }
+ 
+
+
+  // --- PILL TALES GRID ---
+  .pill-tales-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+
+    
+  @media @smallDevice{
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+
+       @media @tablet {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+
+    @media @laptop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media @desktop {
+      grid-template-columns: repeat(3, 1fr); // 3 Columns (~300px each inside 940px)
+    }
+
+    .pill-card {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+
+      @media @smallDevice{
+     width: 100%;
+      max-width: @min-width;
+      margin: 0 auto;
+  }
+
+
+         @media @tablet {
+      width: 100%;
+      max-width: @min-width;
+      margin: 0 auto;
+    }
+
+      .pill-image-wrap {
+        width: 100%;
+        height: @pill-img-height; // Fixed 240px height
+        background-color: #f3f4f6;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+
+       
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.25s ease;
+        }
+      }
+
+      &:hover .pill-image-wrap img {
+        transform: scale(1.03);
+      }
+
+      .pill-body {
+        .pill-category {
+          font-size: 0.65rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          color: #4f46e5;
+        }
+
+        .pill-title {
+          font-size: 0.95rem;
+          font-weight: 700;
+          line-height: 1.3;
+          color: #1f2937;
+          margin: 0.25rem 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          transition: color 0.15s ease;
+        }
+
+        .pill-byline {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          margin-top: 0.25rem;
+        }
+      }
+
+      &:hover .pill-title {
+        color: #4f46e5;
+      }
+    }
+  }
+}
+
+// ------------------------------------
+// 2. SIDEBAR (300px)
+// ------------------------------------
+.sidebar {
+
+ 
+    @media @smallDevice{
+     width: 100%;
+     padding-top: 1rem;
+     margin-top: 1rem;
+     border-top: 1px solid var(--border-color);
+  }
+
+     @media @tablet {
+      width:36%;
+       padding-left: 1rem;
+    }
+
+  
+   @media @laptop{
+  width: 30%;
+   padding-left: 1rem;
+  }
+
+  @media @desktop{
+      width: 23%;
+       padding-left: 1rem;
+
+  }
+
+  .sidebar-block {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    @media @smallDevice{
+     width: @min-width;
+     max-width: 100%;
+     margin: 0 auto;
+     
+  }
+
+    .block-header {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+      
+      &--writers {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .block-header-selector {
+          display: flex;
+          gap: 0.5rem;
+
+          button {
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--muted-text-color);
+            transition: color 0.2s ease;
+            text-decoration: underline;
+
+            &.active {
+              color: var(--link-color);
+              text-decoration: none;
+               pointer-events: none;
+            }
+
+            &:hover:not(.active) {
+              color: var(--text-color);
+              text-decoration: none;
+             
+            }
+          }
+        }
+      }
+    }
+
+    .block-footer{
+      text-align: center;
+      margin-top: 1rem;
+      padding: 1rem 0;
+      border-top: 1px solid var(--border-color);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.focus-tale-container {
+  width: 100%;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  //max-width: 1300px;
+  //margin: 2rem auto;
+  //padding: 1rem;
+  //background-color:#f2f2fb;
+}
+
+.focus-tale-wrapper {
+ 
+  //flex-direction: column-reverse; /* Rule 4: Mobile view defaults to image on top */
+  //background: #ffffff;
+  //border: 1px solid #e5e7eb;
+  //border-radius: 12px;
+  //overflow: hidden;
+  //box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+ 
+
+  /* Desktop View (768px and up) */
+
+  @media @smallDevice{
+  max-width: @mid-width;
+  margin: 0 auto;
+  }
+
+  @media @tablet{
+  max-width: @mid-width;
+  margin: 0 auto;
+  }
+
+  @media @laptop{
+  max-width: @mid-width;
+  margin: 0 auto;
+  }
+
+  @media @desktop{
+     display: flex;
+  column-gap: 1rem;
+    justify-content: space-between;
+  }
+ 
+
+  /* --- Text Wrapper --- */
+  .focus-text-wrapper {
+   
+    //padding: 2rem;
+    display: flex;
+    //flex-direction: column;
+    justify-content: center;
+    //align-items:center;
+    //background-color: var(--background-color);
+
+      @media @smallDevice{
+  width: 100%;
+  margin-bottom: 2rem;
+  }
+
+     @media @tablet{
+  width: 100%;
+  margin-bottom: 2rem;
+  }
+     @media @laptop{
+  width: 100%;
+  margin-bottom: 2rem;
+  }
+    @media @desktop{
+   width: 32%;
+  }
+
+  }
+
+  /* --- Image Wrapper --- */
+  .focus-image-wrapper {
+    
+    overflow: hidden;
+    position: relative;
+//background-color: var(--background-color);
+//padding: 1rem;
+
+ @media @smallDevice{
+  width: 100%;
+  }
+
+ @media @tablet{
+  width: 100%;
+  }
+
+ @media @laptop{
+  width: 100%;
+  }
+
+ @media @desktop{
+  width: 68%;
+  }
+   
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  &:hover .focus-image-wrapper img {
+    transform: scale(1.02);
+  }
+}
+
+
+.block-card {
+
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child{
+    margin-bottom: 0;
+     padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  &__title {
+    //font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  }
+
+  &__metrics {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    
+  }
+
+  &__metric-link {
+   display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+  }
+
+  &__actions{
+display: flex;
+column-gap: 1rem;
+  }
+
+}
+
+.trending-container{
+  width: @max-width;
+  max-width: calc(100% - 20px);
+  margin: 2rem auto;
+  display: flex;
+align-items:center;
+ column-gap: 1rem;
+ border-bottom: 1px solid var(--border-color);
+ padding-bottom: 1rem;
+ 
+}
+
+.trending-container-title{
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+color: @red-color;
+ 
+
+  & h2{
+    font-size: 1.1rem;
+     //color: var(--muted-text-color);
+     text-transform: uppercase;
+     font-weight: 600;
+  }
+}
+
+.tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+   
+ 
+}
+       
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    //background-color: var(--light-background-color);
+    border: 1px solid var(--border-color);
+    color: var(--muted-text-color);
+    //color:@link-color;
+    border-radius: 99999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6rem;
+ //flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  display: inline-flex;
+
+     &:hover {
+          background-color: var(--light-background-color);
+        }
+      }
+
+
 </style>

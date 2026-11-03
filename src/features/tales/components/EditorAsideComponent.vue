@@ -281,7 +281,8 @@ function navigateToAside(section: AsideView) {
   position: sticky;
   top: 0;
   //border-bottom: 1px solid @link-color;
-   box-shadow: var(--box-shadow);
+   //box-shadow: var(--box-shadow);
+   border-bottom: 1px solid var(--border-color);
   background-color: var(--background-color);
   z-index: 5;
 

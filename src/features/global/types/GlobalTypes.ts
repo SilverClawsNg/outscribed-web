@@ -41,7 +41,7 @@ export interface TagListDto {
     date: string,
     name: string,
     slug: string,
-    talesCounter: number,
+    talesCounter: number
 }
 
 export interface CategoryMetricsDto {
