@@ -206,7 +206,7 @@ const pillTales = computed<TaleListDto[]>(() => {
     <!-- PILL TALES GRID (3 Columns) -->
     <div class="pill-tales-grid">
       <article 
-        v-for="tale in homepageStore.tales" 
+        v-for="tale in pillTales" 
         :key="tale.taleId" 
         class="pill-card"
       >
