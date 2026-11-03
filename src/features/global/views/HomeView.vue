@@ -95,33 +95,32 @@ const pillTales = computed<TaleListDto[]>(() => {
 
 <div class="hero-wrapper">
   
-      <div class="hero">
+    <div class="hero">
      
       <h1 class="hero__title">
-       The <span class="text-gradient">reality</span> you know is just one <span class="text-gradient">version</span>.
+       The reality you know is just one version.
       </h1>
       
       <h2 class="hero__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
-                  reframe the present, and sculpt futures.
+        reframe the present, and sculpt futures.
       </h2>
 
       <div class="hero__cta">
         <RouterLink class="hero__cta-action" to="/faqs">
           More About OutScribed
         </RouterLink>
-       
       </div>
 
-  </div>
+    </div>
 
 </div>
 
 <div class="trending-container">
   
  <div class="trending-container-title">
-  <SvgIcons name="trending" :size="60" />
- <h2 class="trending__title">Trending: </h2>
+  <SvgIcons name="trending" :size="80" />
+ <h2 class="trending__title">Trending </h2>
  </div>
 
  <div class="tag-group">
@@ -136,6 +135,14 @@ const pillTales = computed<TaleListDto[]>(() => {
 <span class="tag-link__name"><span class="tag-link__name--pre">#</span>{{ tag.name }}</span>
 <span class="divider divider--circle"></span>
 <span class="tag-link__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
+</RouterLink>
+
+<RouterLink
+ to="/tags" 
+ class="tag-link">
+
+<span class="tag-link__name">More...</span>
+
 </RouterLink>
 
  </div>
