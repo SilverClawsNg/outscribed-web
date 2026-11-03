@@ -340,13 +340,13 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
     column-gap: 2rem;
     width: 100%;
     padding: 0.75rem 0.5rem;
-    border: 1px solid var(--border-color);
+    //border: 1px solid var(--border-color);
     margin-bottom: 0.25rem;
     cursor: pointer;
     text-align:left;
     transition: all 0.15s ease;
     font-weight:normal;
-    color:var(--editor-link-color);
+    //color:var(--editor-link-color);
      border-radius: 4px;
   
     &:hover,

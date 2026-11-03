@@ -107,7 +107,7 @@ const pillTales = computed<TaleListDto[]>(() => {
       </h2>
 
       <div class="hero__cta">
-        <RouterLink class="btn btn--primary hero__action" to="/faqs">
+        <RouterLink class="hero__cta-action" to="/faqs">
           More About OutScribed
         </RouterLink>
        
@@ -283,18 +283,7 @@ const pillTales = computed<TaleListDto[]>(() => {
   </h3>
 
     <div class="block-card__actions">
-      
-   <button 
-            type="button"
-            class="btn btn--primary" 
-            @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
-          >
-            OutScribe
-          </button>
-
-          
-    <div class="block-card__metrics">
-      <RouterLink 
+        <RouterLink 
           :to="`/tales?category=${category.category}`" 
           class="block-card__metric-link" 
           :class="{ 'disabled': category.talesCounter === 0 }"
@@ -304,7 +293,15 @@ const pillTales = computed<TaleListDto[]>(() => {
           <span class="block-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
-    </div>
+   <button 
+            type="button"
+            class="btn btn--primary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
+          >
+            OutScribe
+          </button>
+
+        
     </div>
 
   </article>
@@ -339,18 +336,9 @@ const pillTales = computed<TaleListDto[]>(() => {
   </h3>
 
     <div class="block-card__actions">
-      
-   <button 
-            type="button"
-            class="btn btn--primary" 
-            @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
-          >
-            OutScribe
-          </button>
-
+    
           
-    <div class="block-card__metrics">
-      <RouterLink 
+    <RouterLink 
           :to="`/tales?country=${country.country}`" 
           class="block-card__metric-link" 
           :class="{ 'disabled': country.talesCounter === 0 }"
@@ -360,7 +348,15 @@ const pillTales = computed<TaleListDto[]>(() => {
           <span class="block-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
-    </div>
+      
+   <button 
+            type="button"
+            class="btn btn--primary" 
+            @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
+          >
+            OutScribe
+          </button>
+
     </div>
 
   </article>
@@ -409,6 +405,15 @@ const pillTales = computed<TaleListDto[]>(() => {
   </h3>
 
     <div class="block-card__actions">
+       <RouterLink 
+          :to="`/tales?username=${writer.creator.username}`" 
+          class="block-card__metric-link" 
+          :class="{ 'disabled': writer.creator.talesCount === 0 }"
+          title="Filter Tales"
+        >
+          <span class="block-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+          <span class="block-card__metric-label">Tales&rarr;</span>
+        </RouterLink>
         <button 
         type="button" 
         class="btn btn--primary"
@@ -418,18 +423,6 @@ const pillTales = computed<TaleListDto[]>(() => {
        {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
       </button>
 
-    <div class="block-card__metrics">
-      <RouterLink 
-          :to="`/tales?username=${writer.creator.username}`" 
-          class="block-card__metric-link" 
-          :class="{ 'disabled': writer.creator.talesCount === 0 }"
-          title="Filter Tales"
-        >
-          <span class="block-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
-          <span class="block-card__metric-label">Tales&rarr;</span>
-        </RouterLink>
-
-    </div>
     </div>
 
   </article>
@@ -452,6 +445,15 @@ const pillTales = computed<TaleListDto[]>(() => {
   </h3>
 
     <div class="block-card__actions">
+       <RouterLink 
+          :to="`/tales?username=${writer.creator.username}`" 
+          class="block-card__metric-link" 
+          :class="{ 'disabled': writer.creator.talesCount === 0 }"
+          title="Filter Tales"
+        >
+          <span class="block-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+          <span class="block-card__metric-label">Tales&rarr;</span>
+        </RouterLink>
         <button 
         type="button" 
         class="btn btn--primary"
@@ -461,18 +463,7 @@ const pillTales = computed<TaleListDto[]>(() => {
         {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
       </button>
 
-    <div class="block-card__metrics">
-      <RouterLink 
-          :to="`/tales?username=${writer.creator.username}`" 
-          class="block-card__metric-link" 
-          :class="{ 'disabled': writer.creator.talesCount === 0 }"
-          title="Filter Tales"
-        >
-          <span class="block-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
-          <span class="block-card__metric-label">Tales&rarr;</span>
-        </RouterLink>
-
-    </div>
+   
     </div>
 
   </article>
@@ -498,11 +489,107 @@ const pillTales = computed<TaleListDto[]>(() => {
 
 </div>
 
+<div class="publishing-roadmap">
+
+<div class="publishing-roadmap__contents">
+  
+  <div class="publishing-roadmap__header">
+  <h3 class="publishing-roadmap__title">From Guest to OutScriber</h3>
+  <p class="publishing-roadmap__subtitle">
+    Start   <button type="button" @click="handleCreateDraftClick">OutScribing</button> in quick, simple steps.
+  </p>
+  
+</div>
+
+  <div class="publishing-roadmap__grid">
+    
+    <!-- Step 1: Sign Up (Red / Start) -->
+    <div class="publishing-roadmap__card publishing-roadmap__card--step1">
+      <span class="publishing-roadmap__number">01</span>
+      <div class="publishing-roadmap__content">
+        <h4>Sign Up</h4>
+        <p>Easily verify your identity via Google, Microsoft, Apple, or an email security token.</p>
+      </div>
+    </div>
+
+    <!-- Step 2: Verify Account (Orange) -->
+    <div class="publishing-roadmap__card publishing-roadmap__card--step2">
+      <span class="publishing-roadmap__number">02</span>
+      <div class="publishing-roadmap__content">
+        <h4>Choose Handle</h4>
+        <p>Choose your unique OutScribed username and secure password to access your account.</p>
+      </div>
+    </div>
+
+    <!-- Step 3: Acknowledgement (Yellow) -->
+    <div class="publishing-roadmap__card publishing-roadmap__card--step3">
+      <span class="publishing-roadmap__number">03</span>
+      <div class="publishing-roadmap__content">
+        <h4>Acknowledgement</h4>
+        <p>Agree to platform publishing guidelines with a single check.</p>
+      </div>
+    </div>
+
+    <!-- Step 4: Write Story (Purple) -->
+    <div class="publishing-roadmap__card publishing-roadmap__card--step4">
+      <span class="publishing-roadmap__number">04</span>
+      <div class="publishing-roadmap__content">
+        <h4>Create A Draft</h4>
+        <p>Get started with your story by selecting a category and a befitting title.</p>
+      </div>
+    </div>
+
+    <!-- Step 5: Metadata (Green Transition) -->
+    <div class="publishing-roadmap__card publishing-roadmap__card--step5">
+      <span class="publishing-roadmap__number">05</span>
+      <div class="publishing-roadmap__content">
+        <h4>Build Story</h4>
+        <p>Use a rich text editor to write story. Complete basic information, reality check, and optional photo & tags.</p>
+      </div>
+    </div>
+
+    <!-- Step 6: Publish Story (Emerald Green / Live) -->
+    <div class="publishing-roadmap__card publishing-roadmap__card--step6">
+      <span class="publishing-roadmap__number">06</span>
+      <div class="publishing-roadmap__content">
+        <h4>Go Live & Engage</h4>
+        <p>Launch your tale to the network and start inviting other to experience your world!</p>
+      </div>
+    </div>
+
+  </div>
+
+  
+<!-- Third Line CTA with Direct Action Button -->
+    <div class="publishing-roadmap__footer">
+      <span>Ready to start? Click here.</span>
+      <button 
+        type="button" 
+        class="btn btn--secondary"
+        @click="handleCreateDraftClick"
+      >
+        OutScribe
+      </button>
+    </div>
+    
+</div>
+
+</div>
 
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
+
+.become-outscriber{
+  width: @max-width;
+  height: auto;
+  min-height: 500px;
+  background-image: url('@/assets/images/guest-outscriber-background.png');
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  object-fit: cover;
+}
 
 .hero-wrapper {
   width: 100%;
@@ -645,20 +732,24 @@ const pillTales = computed<TaleListDto[]>(() => {
 
   &__cta {
     display: flex;
-    align-items: center;
     justify-content: center;
     width: auto;
-    gap: 0.75rem;
-    flex-wrap: wrap; // Allows buttons to wrap cleanly when space runs out
   }
 
-  &__action {
+  &__cta-action {
    
-    //flex: 1 1 auto; // Allows buttons to grow and fill available space evenly
-    min-width: 150px; // Guarantees enough horizontal space so text won't wrap inside the button
-    white-space: nowrap; // Prevents the text string itself from breaking onto multiple lines
-    transition: background-color 0.3s ease;
-   // border-radius:99999px;
+   height: 3rem;
+   display: flex;
+   align-items:center;
+   background-color:@white-color;
+   color:@link-color;
+   text-transform: capitalize;
+   padding: 0 1rem;
+   border-radius: 6px;
+
+   &:hover{
+    background-color: var(--light-background-color);
+   }
   
   }
 
@@ -669,8 +760,8 @@ const pillTales = computed<TaleListDto[]>(() => {
   display: flex;
   flex-direction: column;
   //background-color: var(--light-background-color);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  //border-top: 1px solid var(--border-color);
+  //border-bottom: 1px solid var(--border-color);
   //border-radius: 12px;
   padding: 2rem 0;
   //margin: 0 auto 2rem auto;
@@ -678,7 +769,7 @@ const pillTales = computed<TaleListDto[]>(() => {
   //box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
 
   &__contents{
-width: @mid-width;
+width: @max-width;
 max-width: calc(100% - 20px);
 margin: 0 auto;
   }
@@ -698,16 +789,21 @@ margin: 0 auto;
     letter-spacing: 0.05em;
     color: var(--text-color);
     margin-bottom: 0.3rem;
+    //text-transform: uppercase;
   }
 
   &__subtitle {
     font-size: 0.95rem;
-    color: var(--muted-text-color);
+    color: var(--text-color);
     font-style: italic;
     margin-bottom: 1rem;
 
-    & span{
+    & button{
       border-bottom: 1px dotted var(--text-color);
+
+      &:hover{
+        border-bottom: none;
+      }
     }
   }
 
@@ -729,12 +825,23 @@ margin: 0 auto;
   /* 2-Column Grid for Large Devices, Single for Small */
   &__grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+     gap: 0.5rem;
 
-    @media @largeDevice {
+     @media @smallDevice {
+     grid-template-columns: 1fr;
+    }
+
+     @media @tablet {
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
+    }
+
+    @media @laptop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+     @media @desktop {
+      grid-template-columns: repeat(3, 1fr);
+     
     }
   }
 
@@ -880,15 +987,26 @@ margin: 0 auto;
       margin-bottom: 1rem;
       font-weight:normal;
 
+      @media @smallDevice{
+        &--small {
+              font-size: clamp(1.4rem, 5vw, 1.8rem);
+          line-height: 1.2;
+        }
+      }
+
+        @media @largeDevice{
+        &--small {
+                font-size: clamp(1.3rem, 5vw, 1.6rem);
+                line-height: 1.1;
+        }
+      }
+
        &--large {
          font-size: clamp(1.4rem, 5vw, 1.8rem);
           line-height: 1.2;
       }
 
-      &--small {
-        font-size: clamp(1.3rem, 5vw, 1.6rem);
-         line-height: 1.1;
-      }
+     
     }
      
     &__summary {
@@ -897,15 +1015,26 @@ margin: 0 auto;
       //text-align: center;
       color: var(--muted-text-color);
 
+        @media @smallDevice{
+        &--small {
+          font-size: clamp(0.95rem, 5vw, 1.1rem);
+         line-height: 1.4;
+        }
+      }
+
+        @media @largeDevice{
+        &--small {
+        font-size: clamp(0.9rem, 5vw, 1rem);
+         line-height: 1.2;  
+      }
+      }
+
         &--large {
         font-size: clamp(0.95rem, 5vw, 1.1rem);
          line-height: 1.4;
       }
 
-      &--small {
-        font-size: clamp(0.85rem, 5vw, 0.95rem);
-         line-height: 1.2;  
-      }
+    
     }
 
 
@@ -973,26 +1102,20 @@ margin: 0 auto;
     height: 40px;
   }
 }
-// Key Dimensions
-@main-content-width: 940px;
-@sidebar-width: 300px;
-@grid-gap: 60px;
 
-@focus-img-width: 620px;
-@focus-img-height: 465px;
-@focus-text-width: 320px;
-
-@pill-img-height: 240px;
 
 .main-contents {
   width: @max-width;
   max-width: calc(100% - 20px);
-  margin: 5rem auto;
+  
 
- 
+  @media @smallDevice{
+    margin: 2rem auto;
+  }
 
   @media @largeDevice{
     display: flex;
+    margin: 5rem auto;
   }
 
 }
@@ -1003,20 +1126,23 @@ margin: 0 auto;
 .tale-contents {
   
   padding-right: 1rem;
-  border-right: 1px solid var(--border-color);
+ 
 
   @media @smallDevice{
    width: 100%;
   }
 
   @media @tablet{
+     border-right: 1px solid var(--border-color);
   width: 64%;
   }
    @media @laptop{
+     border-right: 1px solid var(--border-color);
   width: 70%;
   }
 
   @media @desktop{
+     border-right: 1px solid var(--border-color);
     width: 77%;
   }
  
@@ -1067,9 +1193,10 @@ margin: 0 auto;
 
       .pill-image-wrap {
         width: 100%;
-        height: @pill-img-height; // Fixed 240px height
-        background-color: #f3f4f6;
-        border-radius: 6px;
+        aspect-ratio: 4/3;
+        height: auto; // Fixed 240px height
+        background-color: var(--light-background-color);
+        border-radius: 8px;
         overflow: hidden;
         margin-bottom: 0.75rem;
 
@@ -1087,33 +1214,6 @@ margin: 0 auto;
         transform: scale(1.03);
       }
 
-      .pill-body {
-        .pill-category {
-          font-size: 0.65rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          color: #4f46e5;
-        }
-
-        .pill-title {
-          font-size: 0.95rem;
-          font-weight: 700;
-          line-height: 1.3;
-          color: #1f2937;
-          margin: 0.25rem 0;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          transition: color 0.15s ease;
-        }
-
-        .pill-byline {
-          font-size: 0.75rem;
-          color: #9ca3af;
-          margin-top: 0.25rem;
-        }
-      }
 
       &:hover .pill-title {
         color: #4f46e5;
@@ -1217,15 +1317,6 @@ margin: 0 auto;
     }
   }
 }
-
-
-
-
-
-
-
-
-
 
 .focus-tale-container {
   width: 100%;
@@ -1358,7 +1449,7 @@ margin: 0 auto;
   }
 
   &__title {
-    //font-size: 1.25rem;
+    font-size: 1.25rem;
   margin-bottom: 0.75rem;
   font-weight: 600;
   }
@@ -1387,6 +1478,7 @@ margin: 0 auto;
 
   &__actions{
 display: flex;
+justify-content:space-between;
 column-gap: 1rem;
   }
 
@@ -1396,8 +1488,7 @@ column-gap: 1rem;
   width: @max-width;
   max-width: calc(100% - 20px);
   margin: 2rem auto;
-  display: flex;
-align-items:center;
+ 
  column-gap: 1rem;
  border-bottom: 1px solid var(--border-color);
  padding-bottom: 1rem;
@@ -1407,7 +1498,9 @@ align-items:center;
 .trending-container-title{
   display: flex;
   align-items: center;
+  justify-content: center;
   column-gap: 0.5rem;
+  margin-bottom: 0.75rem;
 color: @red-color;
  
 
@@ -1424,6 +1517,7 @@ color: @red-color;
     flex-wrap: wrap;
     gap: 0.5rem;
     align-items: center;
+    justify-content: center;
    
  
 }

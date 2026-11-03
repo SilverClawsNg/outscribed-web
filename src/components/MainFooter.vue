@@ -66,7 +66,7 @@ function handleSavedDraftsClick() {
             <li><router-link to="/tales">Browse Tales</router-link></li>
              <li><router-link to="/writers">Browse Writers</router-link></li>
             <li><button type="button" @click="modalStore.push('Search', 'Search')" >Search OutScribed</button></li>
-            <li><button type="button" @click="modalStore.push('CreateTale', 'Create Tale')">Create A tale Draft</button></li>
+            <li><button type="button" @click="modalStore.push('CreateTale', 'Create Tale')">Create A Draft</button></li>
           </ul>
         </div>
 

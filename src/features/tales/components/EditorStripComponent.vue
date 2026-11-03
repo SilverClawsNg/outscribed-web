@@ -339,7 +339,7 @@ function navigateHome() {
     //color: #94A3B8;
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
-   color:var(--editor-link-color);
+   //color:var(--editor-link-color);
 
     &:hover,
     &--active {
