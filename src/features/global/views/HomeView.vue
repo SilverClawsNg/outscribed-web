@@ -147,9 +147,6 @@ const pillTales = computed<TaleListDto[]>(() => {
  </div>
 </div>
 
-   
-
-
 <div class="main-contents">
 
 <div class="tale-contents">
@@ -357,7 +354,6 @@ const pillTales = computed<TaleListDto[]>(() => {
           <span class="block-card__metric-value">{{ formatCounts(country.talesCounter) }}</span>
           <span class="block-card__metric-label">Tales&rarr;</span>
         </RouterLink>
-
       
    <button 
             type="button"
@@ -470,7 +466,6 @@ const pillTales = computed<TaleListDto[]>(() => {
       >
         {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
       </button>
-
    
     </div>
 
@@ -1446,16 +1441,17 @@ column-gap: 1rem;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  column-gap: 0.5rem;
+  row-gap: 0.5rem;
   margin-bottom: 0.75rem;
 color: @red-color;
  
 
   & h2{
     font-size: 1.1rem;
+  
      //color: var(--muted-text-color);
-     text-transform: uppercase;
-     font-weight: 600;
+     //text-transform: uppercase;
+     font-weight: 700;
   }
 }
 
