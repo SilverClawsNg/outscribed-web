@@ -462,11 +462,13 @@ h1.logo {
         line-height: clamp(1.2rem, 3vw + 1rem, 1.4rem);
     }
 
-    & span.single-line{
-      height: 1px;
-      margin: 0 0.5rem;
-      background-color:var(--border-color);
+    & .btn.primary.mobile-only{
+
+      @media @largeDevice{
+        display: none !important;
+      }
     }
+
 }
 
 

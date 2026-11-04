@@ -156,7 +156,6 @@ const pillTales = computed<TaleListDto[]>(() => {
 
   <header class="page-header">
     <h1>Recent Tales</h1>
-    <span class="single-line"></span>
       <RouterLink to="/tales" class="btn btn--primary"  title="Recent Tales"><span>View All</span></RouterLink>
     </header>
 
@@ -1180,6 +1179,7 @@ margin: 0 auto;
 // ------------------------------------
 // 2. SIDEBAR (300px)
 // ------------------------------------
+
 .sidebar {
 
  

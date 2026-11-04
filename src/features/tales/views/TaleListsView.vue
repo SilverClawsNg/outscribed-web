@@ -208,6 +208,9 @@ onUnmounted(() => {
 
   <template v-if="taleStore.tales && taleStore.tales.length > 0">
 
+    <div class="main-contents">
+
+
        <InfiniteScroller
         :has-next="taleStore.hasNext"
         :is-fetching="taleStore.isFetchingMore"
@@ -215,16 +218,18 @@ onUnmounted(() => {
         @load-more="taleStore.loadMoreTales"
         @retry="taleStore.loadMoreTales">
 
-      <div class="container container--offset-top">
+        <div class="pills-grid">
 
-          <TaleListComponent 
+     <TaleListComponent 
             v-for="tale in taleStore.tales" 
             :key="tale.taleId" 
             :tale="tale"/>
 
-      </div>
+        </div>
 
        </InfiniteScroller>
+
+    </div>
 
        <!-- Fixed Bottom Filter & Sort Footer -->
     <footer class="page-footer-bar">
@@ -285,3 +290,54 @@ onUnmounted(() => {
   </template>
 
 </template>
+
+<style lang="less" scoped>
+@import "@/assets/css/variables.less";
+
+
+.main-contents {
+  width: @max-width;
+  max-width: calc(100% - 20px);
+  
+
+  @media @smallDevice{
+    margin: 2rem auto;
+  }
+
+  @media @largeDevice{
+    margin: 5rem auto;
+  }
+
+}
+
+
+  // --- PILL TALES GRID ---
+  .pills-grid {
+    display: grid;
+    gap: 1rem;
+   
+
+    
+  @media @smallDevice{
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+
+       @media @tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    @media @laptop {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media @desktop {
+      grid-template-columns: repeat(3, 1fr); // 3 Columns (~300px each inside 940px)
+    }
+
+   
+  }
+
+
+</style>
