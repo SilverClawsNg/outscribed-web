@@ -89,27 +89,20 @@ const taleStore = useTaleDraftStore()
 
   &__aside {
     position: fixed;
-    //top: @body-top-offset;
+    top: 0;
     
-  @media @smallDevice {
-    top: @body-top-offset-small; // Pushes standard document flow down cleanly
-  }
-
-  @media @largeDevice {
-    top: @body-top-offset-large; // Pushes standard document flow down cleanly
-  }
     /* Aligns to the left edge of the centered 1300px wrapper */
     left: max(0px, calc((100vw - @max-width) / 2));
    padding-bottom: 5rem;
 
    @media @smallDevice {
-       height: calc(100svh - @body-top-offset-small);
+       height: 100svh;
  // Pushes standard document flow down cleanly
   }
 
   @media @largeDevice {
     border-left: 1px solid var(--border-color);
-   height: calc(100vh - @body-top-offset-large);// Pushes standard document flow down cleanly
+   height: 100vh;// Pushes standard document flow down cleanly
   }
    
     z-index: 1;
@@ -146,13 +139,12 @@ const taleStore = useTaleDraftStore()
 
     
   @media @smallDevice {
-    min-height: calc(100svh - @body-top-offset-small);
+    min-height: 100svh;
   }
 
   @media @largeDevice {
-    border-left: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
-    min-height: calc(100vh - @body-top-offset-large);
+    min-height: 100vh;
   }
     
   }
@@ -163,7 +155,8 @@ const taleStore = useTaleDraftStore()
   &__strip {
     flex: 0 0 50px;
     width: 50px;
-    position: sticky;
+    position: fixed;
+     border-left: 1px solid var(--border-color);
     //top: @body-top-offset;
 
       @media @phone{
@@ -172,13 +165,12 @@ const taleStore = useTaleDraftStore()
     }
     
   @media @smallDevice {
-    top: @body-top-offset-small; // Pushes standard document flow down cleanly
-    height: calc(100svh - @body-top-offset-small);
+    height: 100svh;
   }
 
   @media @largeDevice {
-    top: @body-top-offset-large; // Pushes standard document flow down cleanly
-    height: calc(100vh - @body-top-offset-large);
+    height: 100vh;
+     border-right: 1px solid var(--border-color);
   }
     
     
@@ -207,7 +199,7 @@ const taleStore = useTaleDraftStore()
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
-    border-left: 1px solid var(--border-color);
+   
     
     position:relative;
     //padding-top: @body-top-offset;
@@ -216,14 +208,6 @@ const taleStore = useTaleDraftStore()
       max-width: calc(100vw - 40px);
       }
     
-  @media @smallDevice {
-    padding-top: @body-top-offset-small; // Pushes standard document flow down cleanly
-  }
-
-  @media @largeDevice {
-    
-    padding-top: @body-top-offset-large; // Pushes standard document flow down cleanly
-  }
   }
 
   /* =============================================================
