@@ -252,21 +252,19 @@ function navigateHome() {
   
   /* 3. BOTTOM HOME LOGO BLOCK (Fixed 50px) */
   .editor-studio__strip-home {
-    flex: 0 0 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 0;
 
       @media @phone{
-      flex: 0 0 40px;
       height: 40px;
     }
 
-      .editor-studio__strip img{
-        width: 25px;
+      & img{
+        width: 30px;
         height: auto;
      }
   }
