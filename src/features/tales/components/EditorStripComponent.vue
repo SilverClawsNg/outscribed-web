@@ -32,6 +32,20 @@ function navigateHome() {
         <SvgIcons name="menu" :size="30" />
       </button>
     </div>
+
+      <!-- OutScribed Logo / Home (Fixed 50px) -->
+
+     <div class="editor-studio__strip-home">
+    <button 
+      type="button" 
+      class="editor-studio__strip-btn"
+      @click="navigateHome"
+      title="Return to Home"
+    >
+      <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
+
+    </button>
+  </div>
     
   <!-- Middle: Section Editors & Draft Utilities (Scrollable: calc(100vh - 100px)) -->
   <div class="editor-studio__strip-actions-wrapper">
@@ -211,18 +225,7 @@ function navigateHome() {
     </div>
   </div>
 
-  <!-- Bottom: OutScribed Logo / Home (Fixed 50px) -->
-  <div class="editor-studio__strip-home">
-    <button 
-      type="button" 
-      class="editor-studio__strip-btn"
-      @click="navigateHome"
-      title="Return to Home"
-    >
-      <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
-
-    </button>
-  </div>
+ 
 
 </template>
 
@@ -238,12 +241,34 @@ function navigateHome() {
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-bottom: 1px solid var(--thick-border-color);
+    border-bottom: 1px solid var(--border-color);
 
     @media @phone{
       flex: 0 0 40px;
       height: 40px;
     }
+  }
+
+  
+  /* 3. BOTTOM HOME LOGO BLOCK (Fixed 50px) */
+  .editor-studio__strip-home {
+    flex: 0 0 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+
+      @media @phone{
+      flex: 0 0 40px;
+      height: 40px;
+    }
+
+      .editor-studio__strip img{
+        width: 25px;
+        height: auto;
+     }
   }
 
 
@@ -298,30 +323,9 @@ function navigateHome() {
   .editor-studio__strip-divider {
     width: 24px;
     height: 1px;
-    background-color: var(--thick-border-color);
+    background-color: var(--border-color);
     margin: 0.25rem 0;
     flex: 0 0 auto;
-  }
-
-  /* 3. BOTTOM HOME LOGO BLOCK (Fixed 50px) */
-  .editor-studio__strip-home {
-    flex: 0 0 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    border-top: 1px solid var(--thick-border-color);
-
-      @media @phone{
-      flex: 0 0 40px;
-      height: 40px;
-    }
-
-      .editor-studio__strip img{
-        width: 30px;
-        height: auto;
-     }
   }
 
   /* Icon Button Base Styling */
@@ -343,7 +347,7 @@ function navigateHome() {
 
     &:hover,
     &--active {
-      background-color: var(--background-color);
+      background-color: var(--light-background-color);
       color: @link-color;
     }
 

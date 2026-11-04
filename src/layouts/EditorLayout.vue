@@ -164,9 +164,9 @@ const taleStore = useTaleDraftStore()
     //flex: 0 0 50px;
     width: 50px;
     position: fixed;
-      //border-left: 1px solid var(--border-color);
+      border-left: 1px solid var(--border-color);
     //top: @body-top-offset;
-     //border-left: 1px solid var(--border-color);
+     border-right: 1px solid var(--border-color);
 
       @media @phone{
       //flex: 0 0 40px;
@@ -189,7 +189,7 @@ const taleStore = useTaleDraftStore()
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--light-background-color);
+    background-color: var(--background-color);
     
 
   }
