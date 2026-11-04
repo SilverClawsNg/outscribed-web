@@ -101,7 +101,7 @@ const taleStore = useTaleDraftStore()
    padding-bottom: 5rem;
 
    @media @smallDevice {
-       height: 100svh;
+       height: 100vh;
  // Pushes standard document flow down cleanly
   }
 
@@ -233,22 +233,14 @@ const taleStore = useTaleDraftStore()
     
   /* Responsive Adjustments */
   @media @phablet, @tablet {
-   
-
     .editor-layout__canvas-container {
       margin-left: calc(100vw - 50px);
-      
-         
     }
   }
 
    @media @phone {
-   
-
     .editor-layout__canvas-container {
       margin-left: calc(100vw - 40px);
-      
-         
     }
   }
 
