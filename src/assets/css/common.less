@@ -45,6 +45,14 @@ body.modal-open {
     overflow: hidden;
 }
 
+body.editor-menu-open {
+  overflow: hidden;
+  /* Prevents background layout shift on desktop when scrollbar disappears */
+  padding-right: var(--scrollbar-width, 0px); 
+  overscroll-behavior: none;
+  height: 100lvh;
+}
+
 /* ==========================================================================
    Main
    ========================================================================== */
@@ -443,8 +451,7 @@ h1.logo {
    Page Header & Container
    ========================================================================== */
 .page-header{
-    
-    
+        
     height: auto;
     padding: 1rem 0;
     margin-bottom: 1rem;

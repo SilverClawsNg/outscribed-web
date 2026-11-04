@@ -166,6 +166,7 @@ const taleStore = useTaleDraftStore()
     position: fixed;
      border-right: 1px solid var(--border-color);
     //top: @body-top-offset;
+     border-left: 1px solid var(--border-color);
 
       @media @phone{
       flex: 0 0 40px;
@@ -178,7 +179,6 @@ const taleStore = useTaleDraftStore()
 
   @media @largeDevice {
     height: 100vh;
-     border-left: 1px solid var(--border-color);
   }
     
   -webkit-overflow-scrolling: touch;
