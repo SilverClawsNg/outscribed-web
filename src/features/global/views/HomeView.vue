@@ -166,8 +166,6 @@ const pillTales = computed<TaleListDto[]>(() => {
     <div class="focus-text-wrapper">
         <div class="content-card">
        
-          
-
       <!-- Title -->
       <h2 class="content-card__title content-card__title--large">
         <RouterLink :to="`/tale/${focusTale.slug}`">{{ focusTale.title }}</RouterLink>
@@ -190,8 +188,7 @@ const pillTales = computed<TaleListDto[]>(() => {
       
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn btn--secondary"  :to="`/tale/${focusTale.slug}`">View Tale</RouterLink>
-      
+     
       <button 
         class="content-card__save-btn"
         @click="engage.favorite(focusTale.engagement)"
@@ -200,6 +197,9 @@ const pillTales = computed<TaleListDto[]>(() => {
         <SvgIcons name="bookmark" /> 
         <span>Add to Favorites</span>
       </button>
+
+       <RouterLink class="btn btn--secondary"  :to="`/tale/${focusTale.slug}`">View Tale</RouterLink>
+      
     </footer>
         
       </div>
@@ -256,8 +256,7 @@ const pillTales = computed<TaleListDto[]>(() => {
       
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn btn--secondary"  :to="`/tale/${tale.slug}`">View Tale</RouterLink>
-      
+       
       <button 
         class="content-card__save-btn"
         @click="engage.favorite(tale.engagement)"
@@ -266,6 +265,9 @@ const pillTales = computed<TaleListDto[]>(() => {
         <SvgIcons name="bookmark" /> 
         <span>Add to Favorites</span>
       </button>
+
+      <RouterLink class="btn btn--secondary"  :to="`/tale/${tale.slug}`">View Tale</RouterLink>
+     
     </footer>
         
       </div>
@@ -306,7 +308,7 @@ const pillTales = computed<TaleListDto[]>(() => {
 
           <button 
             type="button"
-            class="btn btn--primary" 
+            class="btn btn--secondary" 
             @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
           >
             OutScribe
@@ -359,7 +361,7 @@ const pillTales = computed<TaleListDto[]>(() => {
       
    <button 
             type="button"
-            class="btn btn--primary" 
+            class="btn btn--secondary" 
             @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
           >
             OutScribe
@@ -422,7 +424,7 @@ const pillTales = computed<TaleListDto[]>(() => {
         </RouterLink>
         <button 
         type="button" 
-        class="btn btn--primary"
+        class="btn btn--secondary"
         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         @click="engage.favorite(writer.creator.engagement)"
       >
@@ -462,7 +464,7 @@ const pillTales = computed<TaleListDto[]>(() => {
         </RouterLink>
         <button 
         type="button" 
-        class="btn btn--primary"
+        class="btn btn--secondary"
         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         @click="engage.favorite(writer.creator.engagement)"
       >
@@ -791,7 +793,7 @@ margin: 0 auto;
     }
 
     @media @laptop {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
 
      @media @desktop {
@@ -979,6 +981,8 @@ margin: 0 auto;
         &--small {
         font-size: clamp(0.9rem, 5vw, 1rem);
          line-height: 1.2;  
+          font-size: clamp(0.95rem, 5vw, 1.1rem);
+         line-height: 1.4;
       }
       }
 
@@ -1045,7 +1049,7 @@ margin: 0 auto;
     display: flex;
     align-items: center;
     column-gap: 1rem;
-    //justify-content:space-between;
+    justify-content:space-between;
   }
 
   &__save-btn {
@@ -1104,17 +1108,13 @@ margin: 0 auto;
   .pill-tales-grid {
     display: grid;
     gap: 10px;
-
-    
+   
   @media @smallDevice{
     grid-template-columns: repeat(1, 1fr);
   }
-
-
-       @media @tablet {
+    @media @tablet {
       grid-template-columns: repeat(1, 1fr);
     }
-
 
     @media @laptop {
       grid-template-columns: repeat(2, 1fr);
@@ -1128,12 +1128,12 @@ margin: 0 auto;
       display: flex;
       flex-direction: column;
       cursor: pointer;
-       margin-bottom: 2rem;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2rem;
 
       @media @smallDevice{
-     width: 100%;
+      width: 100%;
       max-width: @min-width;
       margin: 0 auto;
   }
@@ -1167,9 +1167,6 @@ margin: 0 auto;
       &:hover .pill-image-wrap img {
         transform: scale(1.03);
       }
-
-
-     
     }
   }
 }
@@ -1472,7 +1469,7 @@ color: @red-color;
  
 }
        
-  .tag-link {
+.tag-link {
     display: inline-flex;
     align-items: center;
     column-gap: 0.25rem;
@@ -1494,7 +1491,6 @@ color: @red-color;
      &:hover {
           background-color: var(--light-background-color);
         }
-      }
-
+}
 
 </style>

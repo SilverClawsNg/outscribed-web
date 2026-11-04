@@ -69,8 +69,7 @@ const contentPath = 'tale'
       
     <!-- Actions Footer -->
     <footer class="content-card__footer">
-      <RouterLink class="btn btn--secondary"  :to="`/tale/${tale.slug}`">View Tale</RouterLink>
-      
+     
       <button 
         class="content-card__save-btn"
         @click="engage.favorite(tale.engagement)"
@@ -79,6 +78,9 @@ const contentPath = 'tale'
         <SvgIcons name="bookmark" /> 
         <span>Add to Favorites</span>
       </button>
+
+       <RouterLink class="btn btn--secondary"  :to="`/tale/${tale.slug}`">View Tale</RouterLink>
+      
     </footer>
         
       </div>
@@ -207,7 +209,7 @@ const contentPath = 'tale'
     display: flex;
     align-items: center;
     column-gap: 1rem;
-    //justify-content:space-between;
+    justify-content:space-between;
   }
 
   &__save-btn {
