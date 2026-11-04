@@ -101,7 +101,7 @@ const taleStore = useTaleDraftStore()
    padding-bottom: 5rem;
 
    @media @smallDevice {
-       height: 100vh;
+       height: 100lvh;
  // Pushes standard document flow down cleanly
   }
 
