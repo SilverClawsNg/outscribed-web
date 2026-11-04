@@ -373,7 +373,7 @@ onUnmounted(() => {
         <img src="@/assets/images/icon.png" alt="OutScribed Icon" />
       </div>
       <h1 class="auth-card__header--title">Sign Up</h1>
-      <p class="auth-card__header--subtitle">{{ message }}</p>
+      <p class="auth-card__header--subtitle">{{ message ?? "to become an OutScriber" }}</p>
       <HelpIcon topic="CreateAccount" />
     </div>
 

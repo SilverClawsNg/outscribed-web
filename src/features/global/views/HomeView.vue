@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { APIError } from '@/api/apiTypes'
 import { useHomeStore } from '../stores/HomeStore'; 
 import { type TaleListDto } from '@/features/tales/types/TalesTypes';
+import { useRouter, useRoute } from 'vue-router'
 
 
 // Import your sub-components (We map these next)
@@ -21,12 +22,15 @@ import { toRelativeTime } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement';
 import SvgIcons from '@/components/SvgIcons.vue';
+import { useLoginHint } from '@/utils/authHelper'
 
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
 const modalStore = useModalStore()
 const engage = useEngagement()
+const router = useRouter()
+const isLoggedIn = useLoginHint()
 
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
@@ -88,6 +92,16 @@ const pillTales = computed<TaleListDto[]>(() => {
   return homepageStore.tales.length > 1 ? homepageStore.tales.slice(1) : [];
 });
 
+function handleJoinClick() {
+  if (isLoggedIn.value) {
+    // Option A: Direct them to a clear session transition/logout page
+    router.push('/switch');
+  } else {
+    // Standard guest flow
+    router.push('/register');
+  }
+}
+
 </script>
 
 <template>
@@ -109,9 +123,9 @@ const pillTales = computed<TaleListDto[]>(() => {
         <RouterLink class="hero__cta-action hero__cta-action--faq" to="/faqs">
           More About OutScribed
         </RouterLink>
-          <RouterLink class="hero__cta-action hero__cta-action--join" to="/register">
+          <button class="hero__cta-action hero__cta-action--join" @click="handleJoinClick">
           Join
-        </RouterLink>
+          </button>
 
       </div>
 
@@ -309,7 +323,7 @@ const pillTales = computed<TaleListDto[]>(() => {
 
           <button 
             type="button"
-            class="btn btn--secondary" 
+            class="btn btn--primary" 
             @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
           >
             OutScribe
@@ -361,7 +375,7 @@ const pillTales = computed<TaleListDto[]>(() => {
       
    <button 
             type="button"
-            class="btn btn--secondary" 
+            class="btn btn--primary" 
             @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
           >
             OutScribe
@@ -424,7 +438,7 @@ const pillTales = computed<TaleListDto[]>(() => {
         </RouterLink>
         <button 
         type="button" 
-        class="btn btn--secondary"
+        class="btn btn--primary"
         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         @click="engage.favorite(writer.creator.engagement)"
       >
@@ -464,7 +478,7 @@ const pillTales = computed<TaleListDto[]>(() => {
         </RouterLink>
         <button 
         type="button" 
-        class="btn btn--secondary"
+        class="btn btn--primary"
         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         @click="engage.favorite(writer.creator.engagement)"
       >

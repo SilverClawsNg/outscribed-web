@@ -195,6 +195,11 @@ const router = createRouter({
           path: 'reset', // Renders at outscribed.com/reset
           name: 'reset-password',
           component: () => import('@/features/authentication/views/ResetView.vue')
+        },
+         {
+          path: 'switch', // Renders at outscribed.com/switch
+          name: 'switch-account',
+          component: () => import('@/features/authentication/views/SwitchView.vue')
         }
       ]
     },

@@ -102,6 +102,13 @@ function handleLogout() {
             {{ isSubmitting ? 'Logging out...' : 'Log Out' }}
           </button>
 
+            <div class="auth-card__form--option">
+        <span>Don't want to logout yet?</span>
+         <router-link to="/">
+           Return to homepage
+          </router-link>
+      </div>
+
     </form>
 
 </div>
