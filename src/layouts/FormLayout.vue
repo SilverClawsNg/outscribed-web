@@ -52,7 +52,7 @@ watch(() => route.path, () => modalStore.closeAll())
 .form-page {
     height: auto;
     min-height: 100lvh;
-    background-color: var(--light-background-color);
+    background-color: var(--background-color);
     width: 100%;
     position: relative;
     z-index: 999;
@@ -119,5 +119,28 @@ watch(() => route.path, () => modalStore.closeAll())
     }
     }
 }
+
+
+    main.form-layout {
+        width: @mid-width;
+        height: auto;
+        margin: 0 auto;
+        max-width: calc(100% - 20px);
+        background: var(--background-color);
+        border-radius: 28px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border:1px solid var(--border-color);
+        position:relative;
+        z-index:100;
+
+          @media @phone {
+            padding: 1rem 0.5rem;
+            border:none;
+            box-shadow: none;
+            border-radius:0;
+        }
+
+    }
 
 </style>
