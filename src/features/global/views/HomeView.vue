@@ -106,9 +106,13 @@ const pillTales = computed<TaleListDto[]>(() => {
       </h2>
 
       <div class="hero__cta">
-        <RouterLink class="hero__cta-action" to="/faqs">
+        <RouterLink class="hero__cta-action hero__cta-action--faq" to="/faqs">
           More About OutScribed
         </RouterLink>
+          <RouterLink class="hero__cta-action hero__cta-action--join" to="/register">
+          Join
+        </RouterLink>
+
       </div>
 
     </div>
@@ -686,6 +690,7 @@ const pillTales = computed<TaleListDto[]>(() => {
   &__cta {
     display: flex;
     justify-content: center;
+    column-gap: 0.5rem;
     width: auto;
   }
 
@@ -694,14 +699,33 @@ const pillTales = computed<TaleListDto[]>(() => {
    height: 3rem;
    display: flex;
    align-items:center;
-   background-color:@white-color;
-   color:@link-color;
-   text-transform: capitalize;
+   
    padding: 0 1rem;
    border-radius: 6px;
 
+   
+
+   &--faq{
+background-color:@white-color;
+   color:@link-color;
+   text-transform: capitalize;
    &:hover{
     background-color: var(--light-background-color);
+   }
+   }
+
+   
+   &--join{
+    font-weight: 900;
+background-color:@logo-red;
+   color:@white-color;
+   text-transform: uppercase;
+   font-size: 1.5rem;
+   &:hover{
+    background-color: @white-color;
+    color:@logo-red;
+    
+   }
    }
   
   }
@@ -1072,9 +1096,6 @@ margin: 0 auto;
 
 .tale-contents {
   
- 
- 
-
   @media @smallDevice{
    width: 100%;
   }

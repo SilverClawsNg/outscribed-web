@@ -19,10 +19,6 @@ watch(() => route.path, () => modalStore.closeAll())
   
   <div class="form-page">
 
-     <div class="page__pattern" aria-hidden="true"></div>
-    <div class="page__fade page__fade--bottom" aria-hidden="true"></div>
-    <div class="page__fade page__fade--top" aria-hidden="true"></div>
- 
     <main class="form-layout">
 
       <RouterView />
@@ -48,3 +44,80 @@ watch(() => route.path, () => modalStore.closeAll())
   </div>
 
 </template>
+
+<style lang="less" scoped>
+@import "@/assets/css/variables.less";
+
+
+.form-page {
+    height: auto;
+    min-height: 100lvh;
+    background-color: var(--light-background-color);
+    width: 100%;
+    position: relative;
+    z-index: 999;
+    padding-bottom: 4rem;
+
+
+    @media @smallDevice {
+        padding-top: 2rem;
+    }
+
+    @media @largeDevice {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        row-gap: 1rem;
+        padding-top: 2rem;
+    }
+
+    & .icon{
+        display: flex;
+        justify-content:center;
+        padding: 2rem 0;
+
+        & img{
+
+            width: 45px;
+            height: auto;
+        }
+    }
+
+    & .form-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     flex-direction: column;
+        row-gap: 0.25rem;
+    font-size: 0.875rem;
+    //color: #718096;
+    margin-top: 1.25rem;
+
+    
+    & svg {
+        fill: var(--text-color);
+        width: auto;
+ height: 20px;
+     
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: space-between;
+        column-gap: 1.25rem;
+        a {
+        color: inherit;
+        text-decoration: underline;
+
+        &:hover { text-decoration: none; }
+        }
+    }
+
+    .footer-copyright{
+      font-size: 0.85rem;
+    }
+    }
+}
+
+</style>
