@@ -174,7 +174,7 @@ const taleStore = useTaleDraftStore()
     }
     
   @media @smallDevice {
-    height: 100svh;
+    height: 100lvh;
   }
 
   @media @largeDevice {
