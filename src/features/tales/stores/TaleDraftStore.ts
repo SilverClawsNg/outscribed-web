@@ -85,11 +85,11 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
    function toggleAside() {
       if(isAsideHidden.value == true) {
         isAsideHidden.value = false;
-        document.body.classList.add('editor-menu-open');
+        //document.body.classList.add('editor-menu-open');
       }
       else if(isAsideHidden.value == false) {
         isAsideHidden.value = true;
-        document.body.classList.remove('editor-menu-open');
+        //document.body.classList.remove('editor-menu-open');
       }
     }
 

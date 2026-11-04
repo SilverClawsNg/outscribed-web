@@ -46,11 +46,15 @@ body.modal-open {
 }
 
 body.editor-menu-open {
-  overflow: hidden;
+
+  @media @phone, @phablet{
+overflow: hidden;
   /* Prevents background layout shift on desktop when scrollbar disappears */
   padding-right: var(--scrollbar-width, 0px); 
   overscroll-behavior: none;
   height: 100lvh;
+  }
+  
 }
 
 /* ==========================================================================
