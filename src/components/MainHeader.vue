@@ -239,7 +239,7 @@ function handleSearchClick() {
         }
 
         @media @largeDevice {
-            height: 26px; /* Your desired height */
+            height: 28px; /* Your desired height */
         }
     }
   }

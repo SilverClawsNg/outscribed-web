@@ -234,17 +234,16 @@ padding: 0 0.5rem;
     display: flex;
     text-decoration: none;
 
-    
      & svg {
         fill: var(--text-color);
         width: auto;
 
        @media @phone {
-           height: 22px;
+           height: 26px;
         }
 
          @media @phablet {
-            height: 24px;
+            height: 26px;
         }
 
         @media @largeDevice {

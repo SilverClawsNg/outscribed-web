@@ -1169,9 +1169,7 @@ margin: 0 auto;
       }
 
 
-      &:hover .pill-title {
-        color: #4f46e5;
-      }
+     
     }
   }
 }
