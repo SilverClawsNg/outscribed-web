@@ -161,15 +161,15 @@ const taleStore = useTaleDraftStore()
    * 3. ACTION STRIP (Sticky to Viewport Top)
    * ------------------------------------------------------------- */
   &__strip {
-    flex: 0 0 50px;
+    //flex: 0 0 50px;
     width: 50px;
     position: fixed;
-     border-right: 1px solid var(--border-color);
+      //border-left: 1px solid var(--border-color);
     //top: @body-top-offset;
-     border-left: 1px solid var(--border-color);
+     //border-left: 1px solid var(--border-color);
 
       @media @phone{
-      flex: 0 0 40px;
+      //flex: 0 0 40px;
       width: 40px;
     }
     
@@ -189,7 +189,7 @@ const taleStore = useTaleDraftStore()
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--background-color);
+    background-color: var(--light-background-color);
     
 
   }
@@ -198,12 +198,12 @@ const taleStore = useTaleDraftStore()
    * 4. MAIN PROSE CANVAS (Natural Document Height)
    * ------------------------------------------------------------- */
   &__canvas {
-    flex: 1 1 auto;
+    //flex: 1 1 auto;
     min-width: 0;
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
-   
+  
     
     position:relative;
     //padding-top: @body-top-offset;

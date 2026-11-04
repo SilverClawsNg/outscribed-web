@@ -238,7 +238,7 @@ function navigateHome() {
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--thick-border-color);
 
     @media @phone{
       flex: 0 0 40px;
@@ -298,7 +298,7 @@ function navigateHome() {
   .editor-studio__strip-divider {
     width: 24px;
     height: 1px;
-    background-color: var(--border-color);
+    background-color: var(--thick-border-color);
     margin: 0.25rem 0;
     flex: 0 0 auto;
   }
@@ -311,7 +311,7 @@ function navigateHome() {
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--thick-border-color);
 
       @media @phone{
       flex: 0 0 40px;
@@ -343,7 +343,7 @@ function navigateHome() {
 
     &:hover,
     &--active {
-      background-color: var(--light-background-color);
+      background-color: var(--background-color);
       color: @link-color;
     }
 
