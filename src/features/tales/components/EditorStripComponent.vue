@@ -252,17 +252,13 @@ function navigateHome() {
   
   /* 3. BOTTOM HOME LOGO BLOCK (Fixed 50px) */
   .editor-studio__strip-home {
-    height: 50px;
+    flex: 0 0 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 0.75rem 0;
-
-      @media @phone{
-      height: 40px;
-    }
-
+    
       & img{
         width: 30px;
         height: auto;
@@ -274,8 +270,8 @@ function navigateHome() {
   .editor-studio__strip-actions-wrapper {
     flex: 1 1 auto;
     width: 100%;
-    max-height: calc(100vh - 100px);
-    max-height: calc(100lvh - 100px);
+    max-height: calc(100vh - 110px);
+    max-height: calc(100lvh - 110px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
