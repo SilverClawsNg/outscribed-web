@@ -71,6 +71,7 @@ const taleStore = useTaleDraftStore()
   
   /* 2. Restrict mobile touch gestures to vertical scrolling only, blocking horizontal swipe-panning */
   touch-action: pan-y;
+
 }
 
 .editor-layout {
@@ -82,6 +83,10 @@ const taleStore = useTaleDraftStore()
   /* Ensure container bounds are strictly locked horizontally */
   //overflow-x: hidden;
   touch-action: pan-y;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;   /* key: stop scroll chaining */
+  overscroll-behavior-y: contain;
   
   /* -------------------------------------------------------------
    * 1. ASIDE PANEL (Fixed relative to max-width wrapper)
@@ -119,6 +124,9 @@ const taleStore = useTaleDraftStore()
       width: 380px;
     }
 
+    -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;   /* key: stop scroll chaining */
+  overscroll-behavior-y: contain;
     
   }
 
@@ -156,7 +164,7 @@ const taleStore = useTaleDraftStore()
     flex: 0 0 50px;
     width: 50px;
     position: fixed;
-     border-left: 1px solid var(--border-color);
+     border-right: 1px solid var(--border-color);
     //top: @body-top-offset;
 
       @media @phone{
@@ -170,9 +178,12 @@ const taleStore = useTaleDraftStore()
 
   @media @largeDevice {
     height: 100vh;
-     border-right: 1px solid var(--border-color);
+     border-left: 1px solid var(--border-color);
   }
     
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;   /* key: stop scroll chaining */
+  overscroll-behavior-y: contain;
     
     z-index: 3;
     display: flex;
@@ -199,6 +210,7 @@ const taleStore = useTaleDraftStore()
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
+    padding-left: 0.5rem;
    
     
     position:relative;
@@ -206,6 +218,7 @@ const taleStore = useTaleDraftStore()
 
       @media @phone{
       max-width: calc(100vw - 40px);
+      left: 40px;
       }
     
   }
