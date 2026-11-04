@@ -157,6 +157,7 @@ function navigateToAside(section: AsideView) {
     </div>
 
   </div>
+
 </header>
 
       <!-- Aside Dynamic Component Body -->
@@ -276,8 +277,7 @@ function navigateToAside(section: AsideView) {
   height: 56px;
   padding: 0; /* Remove horizontal padding so items span full width */
   margin-bottom: 1.25rem;
-  display: flex;
-  align-items: stretch; /* Forces children to match header height */
+ 
   position: sticky;
   top: 0;
   //border-bottom: 1px solid @link-color;
@@ -292,6 +292,8 @@ function navigateToAside(section: AsideView) {
     height: 100%;
     align-items: stretch;
     padding: 0 0.25rem;
+      max-width:@min-width;
+    margin:0 auto;
    
   }
    column-gap: 0; /* Remove gap so buttons can form a cohesive segment control if desired */

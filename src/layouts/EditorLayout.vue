@@ -100,12 +100,12 @@ const taleStore = useTaleDraftStore()
     left: max(0px, calc((100vw - @max-width) / 2));
    padding-bottom: 5rem;
 
-   @media @smallDevice {
+   @media @phone, @phablet, @tablet {
        height: 100lvh;
  // Pushes standard document flow down cleanly
   }
 
-  @media @largeDevice {
+  @media @laptop, @desktop {
     border-left: 1px solid var(--border-color);
    height: 100vh;// Pushes standard document flow down cleanly
   }
@@ -115,12 +115,12 @@ const taleStore = useTaleDraftStore()
     background-color: var(--background-color);
     overflow-y: auto;
 
-    @media @smallDevice{
+    @media @phone, @phablet, @tablet{
       width: 100%;
       
     }
 
-     @media @largeDevice{
+      @media @laptop, @desktop{
       width: 380px;
     }
 
@@ -146,11 +146,11 @@ const taleStore = useTaleDraftStore()
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     
-  @media @smallDevice {
+   @media @phone, @phablet, @tablet {
     min-height: 100svh;
   }
 
-  @media @largeDevice {
+   @media @laptop, @desktop {
     border-right: 1px solid var(--border-color);
     min-height: 100vh;
   }
@@ -173,11 +173,11 @@ const taleStore = useTaleDraftStore()
       width: 40px;
     }
     
-  @media @smallDevice {
+  @media @phone, @phablet, @tablet {
     height: 100lvh;
   }
 
-  @media @largeDevice {
+  @media @laptop, @desktop {
     height: 100vh;
   }
     
@@ -199,18 +199,20 @@ const taleStore = useTaleDraftStore()
    * ------------------------------------------------------------- */
   &__canvas {
     //flex: 1 1 auto;
+    width: calc(100% - 50px);
     min-width: 0;
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
-  
+  margin-left: 50px;
     
     position:relative;
     //padding-top: @body-top-offset;
 
       @media @phone{
       max-width: calc(100vw - 40px);
-      left: 40px;
+      width: calc(100% - 40px);
+      margin-left: 40px;
       }
     
   }
