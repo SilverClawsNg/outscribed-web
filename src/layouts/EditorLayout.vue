@@ -192,13 +192,6 @@ const taleStore = useTaleDraftStore()
     background-color: var(--background-color);
     
 
-    &.is-disabled {
-      pointer-events: none; /* Prevents all clicks, hovers, and focus events */
-      user-select: none;    /* Prevents highlighting text inside */
-      opacity: 0.5;         /* Visually dims the whole panel */
-      filter: grayscale(20%);
-      cursor: not-allowed;
-    }
   }
 
   /* -------------------------------------------------------------
@@ -210,7 +203,6 @@ const taleStore = useTaleDraftStore()
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
-    padding-left: 0.5rem;
    
     
     position:relative;
