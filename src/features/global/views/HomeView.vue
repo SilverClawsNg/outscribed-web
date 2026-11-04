@@ -1127,10 +1127,17 @@ margin: 0 auto;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 2rem;
 
+      &:last-child{
+        border-bottom: none;
+        
+      }
+
       @media @smallDevice{
       width: 100%;
       max-width: @min-width;
       margin: 0 auto;
+
+
   }
 
 
@@ -1177,7 +1184,7 @@ margin: 0 auto;
      width: 100%;
      padding-top: 1rem;
      margin-top: 1rem;
-     border-top: 1px solid var(--border-color);
+     //border-top: 1px solid var(--border-color);
   }
 
      @media @tablet {
