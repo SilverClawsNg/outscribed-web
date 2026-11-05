@@ -613,27 +613,33 @@ function handleJoinClick() {
    min-height: 400px;
   overflow: hidden;
 
-  // Layered glowing mesh orbs creating the organic blue wave
   &::before {
     content: '';
     position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    height: 85%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
-    filter: blur(100px); // Blurs radial nodes into a seamless mesh
+    background: radial-gradient(
+      circle, 
+      rgba(119, 113, 214, 0.5) 0%, 
+      rgba(54, 46, 189, 0.5) 45%, 
+      rgba(28, 20, 167, 0) 75%
+    );
+    // Tighter blur for small screens so the light core stays visible
+    filter: blur(40px);
+    will-change: transform, filter;
+
+    @media (min-width: 768px) {
+      width: 70%;
+      height: 70%;
+      filter: blur(70px); // Softens on larger desktop displays
+    }
   }
 
-
-  // Center/Bottom S-curve light highlight
-  &::before {
-    bottom: 0%;
-    left: 10%;
-    width: 75%;
-    height: 75%;
-    background: radial-gradient(circle, rgba(47, 38, 210, 0.9) 0%, rgba(8, 3, 87, 0) 65%);
-  }
 }
-
-
-
 
 .hero {
   position: relative;
@@ -770,8 +776,7 @@ function handleJoinClick() {
    border-radius: 6px;
 font-weight: 900;
    text-transform: uppercase;
-font-size: 1.5rem;
-font-size: clamp(1.2rem, 1.3vw + 1rem, 1.5rem);
+font-size: clamp(1.1rem, 1.2vw + 1rem, 1.4rem);
 
    &--faq{
 background-color:@white-color;
