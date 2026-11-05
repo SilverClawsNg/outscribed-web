@@ -582,16 +582,16 @@ function handleJoinClick() {
     text-align: center;
     max-width: 100%;
     color: @white-color;
+  
+      padding: 2rem 0;
 
-    @media @smallDevice {
+        @media @smallDevice {
       width: 500px;
-      padding: 1rem 0;
     }
-
     @media @largeDevice {
-      width: 500px;
-      padding: 1rem 0;
+      width: 550px;
     }
+
   }
 
   &__brand-divider {
@@ -622,8 +622,9 @@ function handleJoinClick() {
   }
 
   &__title {
-    font-weight: normal;
+    font-weight: 600;
     text-transform: uppercase;
+
     //border-bottom: 2px solid @white-color;
     margin-bottom: 1rem;
     //padding-bottom: 1rem;
@@ -645,7 +646,8 @@ function handleJoinClick() {
 
   &__explainer {
     font-weight: 500;
-    font-size: 1.12rem;
+    font-size: clamp(1rem, 1.2vw + 1rem, 1.12rem);
+    line-height: clamp(1.4rem, 1.2vw + 1rem, 1.5rem);
     margin-bottom: 0.75rem;
     text-align: center;
      margin-bottom: 1rem;
