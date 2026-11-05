@@ -107,8 +107,8 @@ function handleJoinClick() {
 <template>
 
 <div class="hero-wrapper">
-  
-    <div class="hero">
+ 
+       <div class="hero">
      
       <h1 class="hero__title">
        The reality you know is just one version.
@@ -121,7 +121,7 @@ function handleJoinClick() {
 
       <div class="hero__cta">
         <RouterLink class="hero__cta-action hero__cta-action--faq" to="/faqs">
-          More About OutScribed
+          About Us
         </RouterLink>
           <button class="hero__cta-action hero__cta-action--join" @click="handleJoinClick">
           Join
@@ -130,7 +130,6 @@ function handleJoinClick() {
       </div>
 
     </div>
-
 </div>
 
 <div class="trending-container">
@@ -581,13 +580,13 @@ function handleJoinClick() {
   
 <!-- Third Line CTA with Direct Action Button -->
     <div class="publishing-roadmap__footer">
-      <span>Ready to start? Click here.</span>
+      <span>Ready?</span>
       <button 
         type="button" 
-        class="btn btn--secondary"
+        class="btn btn--secondary btn--prominent"
         @click="handleCreateDraftClick"
       >
-        OutScribe
+        Start here
       </button>
     </div>
     
@@ -611,7 +610,30 @@ function handleJoinClick() {
   background-color: @link-color;
   padding: 1rem;
   margin-bottom: 1rem;
+   min-height: 400px;
+  overflow: hidden;
+
+  // Layered glowing mesh orbs creating the organic blue wave
+  &::before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px); // Blurs radial nodes into a seamless mesh
+  }
+
+
+  // Center/Bottom S-curve light highlight
+  &::before {
+    bottom: 0%;
+    left: 10%;
+    width: 75%;
+    height: 75%;
+    background: radial-gradient(circle, rgba(47, 38, 210, 0.9) 0%, rgba(8, 3, 87, 0) 65%);
+  }
 }
+
+
+
 
 .hero {
   position: relative;
@@ -689,6 +711,10 @@ function handleJoinClick() {
     line-height: clamp(2.3rem, 2.2vw + 1rem, 2.9rem);
     font-weight: 900;
     text-transform: uppercase;
+  border-top: 2px solid @white-color;
+      border-bottom: 2px solid @white-color;
+    margin: 1rem 0;
+    padding: 1rem 0;
     //color: @link-color;
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
     &-highlight{
@@ -700,6 +726,7 @@ function handleJoinClick() {
   &__explainer {
     font-weight: 500;
     font-size: 1.12rem;
+      
   }
 
   &__cta {
@@ -717,25 +744,26 @@ function handleJoinClick() {
    
    padding: 0 1rem;
    border-radius: 6px;
-
-   
+font-weight: 900;
+   text-transform: uppercase;
+font-size: 1.5rem;
 
    &--faq{
 background-color:@white-color;
-   color:@link-color;
-   text-transform: capitalize;
+   color:@logo-red;
    &:hover{
-    background-color: var(--light-background-color);
+    background-color:@logo-red;
+   color:@white-color;
    }
    }
 
    
    &--join{
-    font-weight: 900;
+    
 background-color:@logo-red;
    color:@white-color;
-   text-transform: uppercase;
-   font-size: 1.5rem;
+   
+   
    &:hover{
     background-color: @white-color;
     color:@logo-red;

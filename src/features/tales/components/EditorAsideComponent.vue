@@ -184,7 +184,7 @@ function navigateToAside(section: AsideView) {
                 <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
             </template>
                 <template v-else-if="loadingError.definition" #actions>
-                <button class="btn btn--secondary"  @click="taleStore.openModal(loadingError)">
+                <button class="btn btn--secondary btn--is-outscribe"  @click="taleStore.openModal(loadingError)">
                     More Details
                 </button>
                 </template>
