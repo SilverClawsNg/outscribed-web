@@ -13,6 +13,7 @@ import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
 import SvgIcons from '@/components/SvgIcons.vue'
 import type { SortType } from '@/utils/enumHelper.ts';
+import RegisterBanner from '@/components/RegisterBanner.vue';
 
 // --- INITIALIZE STORES & ROUTER ---
 const taleStore = useTaleListStore();
@@ -210,7 +211,6 @@ onUnmounted(() => {
 
     <div class="main-contents">
 
-
        <InfiniteScroller
         :has-next="taleStore.hasNext"
         :is-fetching="taleStore.isFetchingMore"
@@ -305,7 +305,7 @@ onUnmounted(() => {
   }
 
   @media @largeDevice{
-    margin: 5rem auto;
+    margin: 2rem auto;
   }
 
 }

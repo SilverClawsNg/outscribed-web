@@ -1,24 +1,39 @@
 @import "variables.less";
 
-.btn {
+.btns {
     width: auto;
     font-weight: 600;
     transition: all 0.25s ease;
-    height: 2.5rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
     border-radius: 6px;
     text-transform: capitalize;
     color: var(--text-color);
     border: 1px solid transparent;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
     
     // Modifier: Has icon layout adjustment
     &--has-icon {
-        column-gap: 0.25rem; // Controls spacing between icon and text
+        position: relative; // Controls spacing between icon and text
+         padding: 0 0.25rem 0 35px;
+
+        & .btn-icon{
+            width: 30px;
+            height: 100%;
+            background-color:@logo-red;
+            color:@white-color;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items:center;
+            justify-content:center;
+            border-radius: 6px 0 0 6px;
+        }
 
         & svg{
             stroke-width: 2px;
@@ -113,4 +128,89 @@
     & .btn{
         width: 100%;
     }
+}
+
+// Theme profiles
+@bg-light: #ffffff;
+@bg-dark: #01050d;
+@text-light: #111827;
+@text-dark: #f3f4f6;
+@primary-color: #4f46e5; // Brand accent
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px; // Smooth pill-rounded rectangle matching reference
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+
+  &--is-outscribe{
+    
+    // ::before pseudo-element creating the clean circled plus sign
+    &::before {
+      content: "+";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+
+      &::before {
+        transform: rotate(90deg); // Subtle interactive flourish on hover
+      }
+    }
+  }
+
+  // --- 1. PRIMARY BUTTON (Light card with ::before plus icon) ---
+  &--primary {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    // Light theme ambient shadow
+    box-shadow: var(--button-shadow);
+
+    &:hover {
+      border-color: @link-color;
+    
+    }
+  }
+
+  // --- 2. SECONDARY BUTTON (Solid primary accent fill) ---
+  &--secondary {
+    background-color: @link-color;
+    color: @white-color;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+
+    .dark-theme & {
+      box-shadow: 0 4px 16px rgba(1, 5, 13, 0.7), 0 2px 8px rgba(79, 70, 229, 0.4);
+    }
+
+    &:hover {
+      background-color: @link-alt-color;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }

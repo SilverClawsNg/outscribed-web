@@ -80,9 +80,14 @@ function handleSearchClick() {
            Saved Drafts
            </button>
 
-          <button type="button" class="btn btn--secondary" @click="handleCreateDraftClick">
+          <button 
+              type="button" 
+              class="btn btn--secondary btn--is-outscribe"
+              @click="handleCreateDraftClick"
+              title="OutScribe a new tale"
+            >
             OutScribe
-          </button>
+            </button>
 
             <button 
               class="top-header__menu-toggle mobile-only" 

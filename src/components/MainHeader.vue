@@ -94,10 +94,22 @@ function handleSearchClick() {
            <button type="button" @click="handleSavedDraftsClick" class="main-header__utility-link">
            Saved Drafts
            </button>
+
+           <button 
+              type="button" 
+              class="btn-outscribe"
+              @click="handleCreateDraftClick"
+              title="OutScribe a new tale"
+            >
+              <!-- Universal visual indicator -->
+              <span class="btn-icon">
+               <SvgIcons name="edit" :size="20" />
+              </span>
+
+              <!-- Brand Action Text -->
+              <span class="btn-text">OutScribe</span>
+            </button>
          
-          <button type="button" class="btn btn--secondary" @click="handleCreateDraftClick">
-            OutScribe
-          </button>
         </div>
    
       </div>

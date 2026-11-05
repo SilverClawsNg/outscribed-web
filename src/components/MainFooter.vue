@@ -206,6 +206,7 @@ footer.site-footer {
     flex-direction: column;
     margin-bottom: 0.75rem;
     row-gap: 1rem;
+       text-align:center;
 
     
 
@@ -236,7 +237,7 @@ footer.site-footer {
 
     &__tagline {
       font-size: 0.85rem;
-      margin: 0;
+       text-align:center;
     }
   }
 

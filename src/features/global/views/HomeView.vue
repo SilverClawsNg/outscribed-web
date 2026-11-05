@@ -321,14 +321,15 @@ function handleJoinClick() {
           <span class="block-card__metric-label">Tales&rarr;</span>
         </RouterLink>
 
-          <button 
-            type="button"
-            class="btn btn--primary" 
-            @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
-          >
+           <button 
+              type="button" 
+              class="btn btn--primary btn--is-outscribe"
+              @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
+              title="OutScribe a new tale"
+            >
             OutScribe
-          </button>
-        
+            </button>
+
     </div>
 
   </article>
@@ -375,7 +376,7 @@ function handleJoinClick() {
       
    <button 
             type="button"
-            class="btn btn--primary" 
+            class="btn btn--primary btn--is-outscribe" 
             @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
           >
             OutScribe
@@ -438,7 +439,7 @@ function handleJoinClick() {
         </RouterLink>
         <button 
         type="button" 
-        class="btn btn--primary"
+        class="btn btn--primary btn--is-outscribe"
         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
         @click="engage.favorite(writer.creator.engagement)"
       >
@@ -571,7 +572,7 @@ function handleJoinClick() {
       <span class="publishing-roadmap__number">06</span>
       <div class="publishing-roadmap__content">
         <h4>Go Live & Engage</h4>
-        <p>Launch your tale to the network and start inviting other to experience your world!</p>
+        <p>Launch your tale to the network and start inviting others to experience your world!</p>
       </div>
     </div>
 
