@@ -542,8 +542,8 @@ function handleJoinClick() {
   background-color: @link-color;
   padding: 1rem;
   margin-bottom: 1rem;
-  min-height: 400px;
-  overflow: hidden;
+  //min-height: 400px;
+  //overflow: hidden;
 
   &::befores {
     content: '';
@@ -585,12 +585,12 @@ function handleJoinClick() {
 
     @media @smallDevice {
       width: 500px;
-      padding: 2rem 0;
+      padding: 1rem 0;
     }
 
     @media @largeDevice {
-      width: 550px;
-      padding: 2rem 0;
+      width: 500px;
+      padding: 1rem 0;
     }
   }
 
@@ -600,6 +600,7 @@ function handleJoinClick() {
     align-items: center;
     margin-bottom: 0.5rem;
     width: 100%;
+    display:none;
   }
 
   &__line { 
@@ -621,11 +622,11 @@ function handleJoinClick() {
   }
 
   &__title {
-    font-weight: 900;
+    font-weight: normal;
     text-transform: uppercase;
-    border-bottom: 2px solid @white-color;
+    //border-bottom: 2px solid @white-color;
     margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    //padding-bottom: 1rem;
     text-align: center;
 
     @media @phone {
@@ -647,12 +648,13 @@ function handleJoinClick() {
     font-size: 1.12rem;
     margin-bottom: 0.75rem;
     text-align: center;
+     margin-bottom: 1rem;
   }
 
   &__cta-group {
     display: flex;
     justify-content: center;
-    column-gap: 0.5rem;
+    column-gap: 0.25rem;
     width: auto;
   }
 
@@ -661,29 +663,32 @@ function handleJoinClick() {
     display: flex;
     align-items: center;
     padding: 0 1rem;
-    border-radius: 6px;
-    font-weight: 900;
-    text-transform: uppercase;
+    //border-radius: 12px;
+    font-weight: normal;
+    text-transform: capitalize;
     font-size: clamp(1rem, 1.2vw + 1rem, 1.2rem);
-    text-decoration: none;
+    font-weight:600;
+     //border: 2px solid transparent;
 
     &--about {
-      background-color: @white-color;
-      color: @logo-red;
+     background-color: @link-alt-color;
+       //border-color: @link-alt-color;
+      color: @white-color;
       &:hover {
-        background-color: @logo-red;
+       background-color: lighten(@link-alt-color, 5%);
         color: @white-color;
       }
     }
    
     &--join {
       background-color: @logo-red;
+       //border-color: @link-alt-color;
       color: @white-color;
       border: none;
       cursor: pointer;
       &:hover {
-        background-color: @white-color;
-        color: @logo-red;
+        background-color: lighten(@logo-red, 5%);
+         color: @white-color;
       }
     }
   }
