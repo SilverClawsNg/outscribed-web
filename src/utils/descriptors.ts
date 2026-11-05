@@ -476,3 +476,23 @@ export const CountryDescriptions: Record<Country, string> = {
   ZM: 'Zambia',
   ZW: 'Zimbabwe'
 } as const
+
+export function CountryFlags(code: Country): string {
+  // Handle special cases like 'ZZ' or missing codes gracefully
+  if (!code || code === 'ZZ' || code.length !== 2) {
+    return '🌐'; // Fallback globe icon for global/unknown
+  }
+
+  const upperCode = code.toUpperCase();
+  
+  // Offset between ASCII uppercase letters and Unicode Regional Indicator Symbols
+  const OFFSET = 127397; 
+
+  try {
+    return [...upperCode]
+      .map(char => String.fromCodePoint(char.charCodeAt(0) + OFFSET))
+      .join('');
+  } catch {
+    return '🏳️';
+  }
+}

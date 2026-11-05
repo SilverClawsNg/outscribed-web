@@ -8,7 +8,7 @@ import { type TaleListDto } from '@/features/tales/types/TalesTypes';
 // Sub-components & Stores
 import { useModalStore } from '@/stores/modalStore'
 import { mediaHelper } from '@/utils/mediaHelper'
-import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
+import { CategoryDescriptions, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
 import { toRelativeTime } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
@@ -138,8 +138,8 @@ function handleJoinClick() {
 
   <div class="main-layout">
     <div class="main-layout__content">
-      <header class="section-header">
-        <h2 class="section-header__title">Recent Tales</h2>
+      <header class="page-header">
+        <h1>Recent Tales</h1>
         <RouterLink to="/tales" class="btn btn--primary" title="Recent Tales"><span>View All</span></RouterLink>
       </header>
 
@@ -156,13 +156,45 @@ function handleJoinClick() {
               </p>
 
               <div class="tale-card__meta">
-                <button class="tale-card__author-btn" @click="modalStore.push('Profile', 'Profile', focusTale.creatorId)">
+                <!-- Creator Profile -->
+                <button class="at" @click="modalStore.push('Profile', 'Profile', focusTale.creatorId)">
                   {{ focusTale.creatorUsername }}
                 </button>
-                <span class="tale-card__dot"></span>
+                
+                <span class="divider divider--circle"></span>
+                
+                <!-- Relative Time -->
                 <time class="tale-card__date">{{ toRelativeTime(focusTale.createdAt) }}</time>
-                <span class="tale-card__dot"></span>
+                
+                <span class="divider divider--circle"></span>
+                
+                <!-- Reading Time -->
                 <span class="tale-card__read-time">{{ focusTale.readingTime }} Min Read</span>
+
+                <span class="divider divider--circle"></span>
+
+                <!-- Category Filter Link -->
+                <RouterLink 
+                  :to="`/tales?category=${focusTale.category}`" 
+                  class="tale-card__meta-link"
+                  :title="`View all ${CategoryDescriptions[focusTale.category]} tales`"
+                >
+                  {{ CategoryDescriptions[focusTale.category] }}
+                </RouterLink>
+                
+                <span class="divider divider--circle"></span>
+
+              <!-- Country Filter Link (with Flag Emoji) -->
+              <RouterLink 
+                :to="`/tales?country=${focusTale.country}`" 
+                class="tale-card__meta-link tale-card__meta-link--country"
+                :title="`View all tales from ${CountryDescriptions[focusTale.country]}`"
+              >
+                <span class="tale-card__flag">{{ CountryFlags(focusTale.country) }}</span>
+                <span v-if="focusTale.country != 'ZZ'" class="tale-card__country-name">{{ focusTale.country }}</span>
+                <span v-else class="tale-card__country-name">Global</span>
+
+              </RouterLink>
               </div>
       
               <footer class="tale-card__footer">
@@ -209,15 +241,47 @@ function handleJoinClick() {
                   {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
                 </p>
 
-                <div class="tale-card__meta">
-                  <button class="tale-card__author-btn" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-                    {{ tale.creatorUsername }}
-                  </button>
-                  <span class="tale-card__dot"></span>
-                  <time class="tale-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
-                  <span class="tale-card__dot"></span>
-                  <span class="tale-card__read-time">{{ tale.readingTime }} Min Read</span>
-                </div>
+                 <div class="tale-card__meta">
+                <!-- Creator Profile -->
+                <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
+                  {{ tale.creatorUsername }}
+                </button>
+                
+                <span class="divider divider--circle"></span>
+                
+                <!-- Relative Time -->
+                <time class="tale-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
+                
+                <span class="divider divider--circle"></span>
+                
+                <!-- Reading Time -->
+                <span class="tale-card__read-time">{{ tale.readingTime }} Min Read</span>
+
+                <span class="divider divider--circle"></span>
+
+                   <!-- Category Filter Link -->
+                <RouterLink 
+                  :to="`/tales?category=${tale.category}`" 
+                  class="tale-card__meta-link"
+                  :title="`View all ${CategoryDescriptions[tale.category]} tales`"
+                >
+                  {{ CategoryDescriptions[tale.category] }}
+                </RouterLink>
+                
+                <span class="divider divider--circle"></span>
+                              
+              <!-- Country Filter Link (with Flag Emoji) -->
+                <RouterLink 
+                  :to="`/tales?country=${tale.country}`" 
+                  class="tale-card__meta-link tale-card__meta-link--country"
+                  :title="`View all tales from ${CountryDescriptions[tale.country]}`"
+                >
+                  <span class="tale-card__flag">{{ CountryFlags(tale.country) }}</span>
+                  <span v-if="tale.country != 'ZZ'" class="tale-card__country-name">{{ tale.country }}</span>
+                   <span v-else class="tale-card__country-name">Global</span>
+                </RouterLink>
+
+              </div>
       
                 <footer class="tale-card__footer">
                   <button 
@@ -481,7 +545,7 @@ function handleJoinClick() {
   min-height: 400px;
   overflow: hidden;
 
-  &::before {
+  &::befores {
     content: '';
     position: absolute;
     top: 50%;
@@ -600,7 +664,7 @@ function handleJoinClick() {
     border-radius: 6px;
     font-weight: 900;
     text-transform: uppercase;
-    font-size: clamp(1.1rem, 1.2vw + 1rem, 1.4rem);
+    font-size: clamp(1rem, 1.2vw + 1rem, 1.2rem);
     text-decoration: none;
 
     &--about {
@@ -721,18 +785,6 @@ function handleJoinClick() {
       padding-right: 1rem;
       width: 77%;
     }
-  }
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-
-  &__title {
-    font-size: 1.5rem;
-    font-weight: 700;
   }
 }
 
@@ -858,25 +910,43 @@ function handleJoinClick() {
   width: 100%;
   height: auto;
 
-  &__meta {
+ &__meta {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    column-gap: 0.5rem;
-    z-index: 10;
+    gap: 0.35rem 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted-text-color);
     margin-bottom: 1rem;
   }
 
-  &__author-btn {
-    background: none;
-    border: none;
-    padding: 0;
+  &__meta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+    color: var(--muted-text-color);
     font-weight: 600;
-    cursor: pointer;
-    color: var(--link-color);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--link-color);
+      text-decoration: underline;
+    }
+
+    &--country {
+      color: var(--text-color); // Gives geographic context a slightly stronger visual weight
+    }
   }
 
-  &__dot {
-    /* Style for divider dots if applicable */
+  &__flag {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  &__country-name {
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
   }
 
   &__title {
