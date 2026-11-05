@@ -84,14 +84,11 @@ function handleJoinClick() {
 </script>
 
 <template>
+
   <div class="homepage-hero">
+
     <div class="homepage-hero__container">
-      <div class="homepage-hero__brand-divider">
-        <span class="homepage-hero__line"></span>
-        <img src="@/assets/images/icon.png" alt="OutScribed Logo" class="homepage-hero__logo-icon" />
-        <span class="homepage-hero__line"></span>
-      </div>
-     
+
       <h1 class="homepage-hero__title">
         The reality you know is just one version.
       </h1>
@@ -542,34 +539,7 @@ function handleJoinClick() {
   background-color: @link-color;
   padding: 1rem;
   margin-bottom: 1rem;
-  //min-height: 400px;
-  //overflow: hidden;
-
-  &::befores {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 85%;
-    height: 85%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(
-      circle, 
-      rgba(119, 113, 214, 0.5) 0%, 
-      rgba(54, 46, 189, 0.5) 45%, 
-      rgba(28, 20, 167, 0) 75%
-    );
-    filter: blur(40px);
-    will-change: transform, filter;
-
-    @media (min-width: 768px) {
-      width: 70%;
-      height: 70%;
-      filter: blur(70px);
-    }
-  }
-
+ 
   &__container {
     position: relative;
     height: auto;
@@ -586,48 +556,19 @@ function handleJoinClick() {
       padding: 2rem 0;
 
         @media @smallDevice {
-      width: 500px;
-    }
-    @media @largeDevice {
-      width: 550px;
-    }
+          width: 500px;
+        }
 
-  }
+        @media @largeDevice {
+          width: 550px;
+        }
 
-  &__brand-divider {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    width: 100%;
-    display:none;
-  }
-
-  &__line { 
-    flex-grow: 1;
-    height: 2px;
-    background-color: @white-color;
-  }
-
-  &__logo-icon {
-    height: auto;
-    margin: 0 0.5rem;
-
-    @media @smallDevice {
-      width: 2.5rem;
-    }
-    @media @largeDevice {
-      width: 3rem;
-    }
   }
 
   &__title {
     font-weight: 600;
     text-transform: uppercase;
-
-    //border-bottom: 2px solid @white-color;
     margin-bottom: 1rem;
-    //padding-bottom: 1rem;
     text-align: center;
 
     @media @phone {
@@ -665,17 +606,15 @@ function handleJoinClick() {
     display: flex;
     align-items: center;
     padding: 0 1rem;
-    //border-radius: 12px;
     font-weight: normal;
     text-transform: capitalize;
     font-size: clamp(1rem, 1.2vw + 1rem, 1.2rem);
     font-weight:600;
-     //border: 2px solid transparent;
+    color: @white-color;
 
     &--about {
      background-color: @link-alt-color;
-       //border-color: @link-alt-color;
-      color: @white-color;
+     
       &:hover {
        background-color: lighten(@link-alt-color, 5%);
         color: @white-color;
@@ -684,10 +623,7 @@ function handleJoinClick() {
    
     &--join {
       background-color: @logo-red;
-       //border-color: @link-alt-color;
-      color: @white-color;
-      border: none;
-      cursor: pointer;
+
       &:hover {
         background-color: lighten(@logo-red, 5%);
          color: @white-color;
