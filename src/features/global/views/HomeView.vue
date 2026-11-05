@@ -744,7 +744,7 @@ function handleJoinClick() {
       margin: 0 0.5rem;
 
           @media @smallDevice {
-        width: 2rem;
+        width: 2.5rem;
       }
        @media @largeDevice {
         width: 3rem;
@@ -760,7 +760,7 @@ function handleJoinClick() {
 
       border-bottom: 2px solid @white-color;
     margin-bottom: 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
 
      @media @phone{
       font-size: 1.8rem;
