@@ -82,7 +82,7 @@ function handleSearchClick() {
 
           <button 
               type="button" 
-              class="btn btn--secondary btn--is-outscribe"
+              class="btn btn--secondary btn--outscribe"
               @click="handleCreateDraftClick"
               title="OutScribe a new tale"
             >
