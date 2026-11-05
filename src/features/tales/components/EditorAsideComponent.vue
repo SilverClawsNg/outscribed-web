@@ -147,7 +147,7 @@ function navigateToAside(section: AsideView) {
       
     <button 
       type="button" 
-      class="btn btn--secondary"
+      class="btn btn--secondary btn--is-outscribe"
       :class="{ 'active': taleStore.currentAsideView === 'create' }"
       @click="navigateToAside('create')"
     >
@@ -184,7 +184,7 @@ function navigateToAside(section: AsideView) {
                 <button class="btn btn--primary"  @click="redirectToLogin">Login</button>
             </template>
                 <template v-else-if="loadingError.definition" #actions>
-                <button class="btn btn--secondary btn--is-outscribe"  @click="taleStore.openModal(loadingError)">
+                <button class="btn btn--secondary"  @click="taleStore.openModal(loadingError)">
                     More Details
                 </button>
                 </template>
@@ -232,8 +232,8 @@ function navigateToAside(section: AsideView) {
             icon="inbox"
             :is-standalone="true">
                 <template #actions>
-                <button class="btn btn--primary"  @click="taleStore.currentAsideView = 'create'">
-                    Create
+                <button class="btn btn--primary btn--is-outscribe"  @click="taleStore.currentAsideView = 'create'">
+                    OutScribe
                 </button>
                  <button class="btn btn--secondary"  @click="taleStore.currentAsideView = 'filter'">
                     Filter

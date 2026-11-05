@@ -306,7 +306,7 @@ function handleJoinClick() {
   >
 
  <h3 class="block-card__title">
-    #{{ CategoryDescriptions[category.category] }}
+   <span class="hash">#</span>{{ CategoryDescriptions[category.category] }}
   </h3>
 
     <div class="block-card__actions">
@@ -357,7 +357,7 @@ function handleJoinClick() {
   >
 
  <h3 class="block-card__title">
-    #{{ CountryDescriptions[country.country] }}
+    <span class="hash">#</span>{{ CountryDescriptions[country.country] }}
   </h3>
 
     <div class="block-card__actions">
@@ -1497,6 +1497,11 @@ margin: 0 auto;
     font-size: 1.25rem;
   margin-bottom: 0.75rem;
   font-weight: 600;
+
+  & span.hash{
+    font-size: 0.9rem;
+    font-weight: normal;
+  }
   }
 
   &__metrics {
