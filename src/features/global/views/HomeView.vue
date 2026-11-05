@@ -109,6 +109,12 @@ function handleJoinClick() {
 <div class="hero-wrapper">
  
        <div class="hero">
+
+        <div class="hero__image">
+          <p></p>
+          <img src="@/assets/images/icon.png" />
+           <p></p>
+        </div>
      
       <h1 class="hero__title">
        The reality you know is just one version.
@@ -713,22 +719,48 @@ function handleJoinClick() {
     font-weight: normal;
 
     &-break {
-       @media @phone, @phablet {
+       @media @smallDevice {
         display: block;
       }
     }
   }
 
+  &__image{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    margin-bottom: 0.5rem;
+    width:100%;
+
+    & p{ 
+      flex-grow: 1;
+      height: 2px;
+      background-color: @white-color;
+    }
+
+    & img{
+     
+      height: auto;
+      margin: 0 0.5rem;
+
+          @media @smallDevice {
+        width: 2rem;
+      }
+       @media @largeDevice {
+        width: 3rem;
+      }
+    }
+  }
   
 
   &__title {
    
     font-weight: 900;
     text-transform: uppercase;
-  border-top: 2px solid @white-color;
+
       border-bottom: 2px solid @white-color;
-    margin: 1rem 0;
-    padding: 1rem 0;
+    margin-bottom: 1rem;
+    padding-bottom: 1.5rem;
 
      @media @phone{
       font-size: 1.8rem;
