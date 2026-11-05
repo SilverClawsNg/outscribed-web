@@ -645,9 +645,18 @@ function handleJoinClick() {
   align-items: center;
   justify-content: center;
   text-align:center;
-   width: 550px;
+  
    max-width: 100%;
    color: @white-color;
+
+   
+    @media @smallDevice{
+      width: 500px;
+    }
+
+    @media @largeDevice{
+      width: 550px;
+    }
  
   
    @media @smallDevice {
@@ -707,14 +716,29 @@ function handleJoinClick() {
   
 
   &__title {
-    font-size: clamp(2rem, 2.2vw + 1rem, 2.8rem);
-    line-height: clamp(2.3rem, 2.2vw + 1rem, 2.9rem);
+   
     font-weight: 900;
     text-transform: uppercase;
   border-top: 2px solid @white-color;
       border-bottom: 2px solid @white-color;
     margin: 1rem 0;
     padding: 1rem 0;
+
+     @media @phone{
+      font-size: 1.8rem;
+      line-height: 2rem;
+    }
+
+     @media @phablet{
+      font-size: 2.2rem;
+      line-height: 2.4rem;
+    }
+
+    @media @largeDevice{
+      font-size: 2.8rem;
+      line-height: 3rem;
+    }
+
     //color: @link-color;
     //text-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
     &-highlight{
@@ -747,6 +771,7 @@ function handleJoinClick() {
 font-weight: 900;
    text-transform: uppercase;
 font-size: 1.5rem;
+font-size: clamp(1.2rem, 1.3vw + 1rem, 1.5rem);
 
    &--faq{
 background-color:@white-color;
