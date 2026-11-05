@@ -123,7 +123,7 @@ function handleJoinClick() {
         class="tag-pill"
       >
         <span class="tag-pill__name"><span class="tag-pill__symbol">#</span>{{ tag.name }}</span>
-        <span class="tag-pill__divider"></span>
+        <span class="divider divider--circle"></span>
         <span class="tag-pill__metric">{{ formatCounts(tag.talesCounter) }}</span>
       </RouterLink>
 
@@ -614,7 +614,7 @@ function handleJoinClick() {
 
     &--about {
      background-color: @link-alt-color;
-     
+
       &:hover {
        background-color: lighten(@link-alt-color, 5%);
         color: @white-color;
