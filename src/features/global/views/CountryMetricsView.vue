@@ -134,7 +134,7 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
   <div class="top-segment__focus">
 
-    <CategoryComponent 
+    <CountryComponent
         :country="countryTales.focusCountry" 
         type="focus" 
       />
@@ -143,7 +143,7 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
    <div class="top-segment__pills">
 
-    <CategoryComponent 
+    <CountryComponent 
         v-for="country in countryTales.pillCountries" 
         :key="country.country"
         :country="country" 
@@ -163,7 +163,7 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
 <div class="lower-segment"  v-if="countryTales && countryTales.remainingCountries.length">
 
-   <CategoryComponent 
+   <CountryComponent 
         v-for="country in countryTales.remainingCountries" 
         :key="country.country"
         :country="country" 
@@ -188,5 +188,118 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
       </template>
  
-
 </template>
+
+<style lang="less" scoped>
+@import "@/assets/css/variables.less";
+
+   .top-segment{
+   
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+
+    @media @phone{
+  width: @min-width;
+  flex-direction: column;
+  }
+  
+    @media @phablet{
+  width: @mod-width;
+  flex-direction: column;
+  }
+
+    @media @tablet{
+  width: @mid-width;
+   flex-direction: column;
+  }
+    
+  @media @desktop, @laptop{
+  width: @max-width;
+  }
+
+     &__focus{
+      height: auto;
+     
+       background-color: @link-color;
+        border-radius: 21px;
+         display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+         background-image: url("@/assets/images/patterns-background(1).png");
+  background-position-x: right;
+  background-position-y: bottom;
+  background-repeat: no-repeat;
+  background-position: contain;
+  
+
+  @media @phone{
+background-size: 40%;
+  }
+  
+    @media @tablet, @phablet, @phone{
+  width: 100%;
+  }
+
+  @media @desktop, @laptop{
+ width: 35%;
+  }
+     }
+
+     &__pills{
+      
+      gap: 1rem;
+      display: grid;
+      
+      @media @tablet, @phablet{
+  width: 100%;
+  grid-template-columns: 1fr;
+
+  }
+      
+    @media @tablet, @phablet{
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+
+  }
+
+       @media @desktop, @laptop{
+    width: 65%;
+    grid-template-columns: 1fr 1fr;
+
+       }
+     }
+
+   }
+
+   /* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
+.lower-segment {
+   max-width: calc(100% - 20px);
+    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+   
+  @media @desktop, @laptop{
+  width: @max-width;
+  }
+
+  @media @tablet {
+    grid-template-columns: repeat(2, 1fr);
+    width: @mid-width;
+  }
+
+   @media @phablet {
+    grid-template-columns: repeat(2, 1fr);
+    width: @mod-width;
+  }
+
+  @media @phone {
+    grid-template-columns: 1fr;
+     width: @min-width;
+  }
+}
+
+</style>
