@@ -218,14 +218,10 @@ onUnmounted(() => {
         @load-more="taleStore.loadMoreTales"
         @retry="taleStore.loadMoreTales">
 
-        <div class="pills-grid">
-
-     <TaleListComponent 
+         <TaleListComponent 
             v-for="tale in taleStore.tales" 
             :key="tale.taleId" 
             :tale="tale"/>
-
-        </div>
 
        </InfiniteScroller>
 

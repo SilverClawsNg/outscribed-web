@@ -7,7 +7,7 @@ export type IconName =
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
   | 'whatsapp' | 'telephone' | 'website' | 'filter' | 'google' | 'microsoft' | 'apple' | 'menu'
   | 'delete' | 'publish' | 'help' | 'metadata' | 'details' | 'lock' | 'trash' | 'addendum' | 'close'
-  | 'checkbox' | 'chain' | 'live' |'preview' | 'trending'
+  | 'checkbox' | 'chain' | 'live' |'preview' | 'trending' | 'nophoto'
 
 const props = defineProps<{
   name: IconName
@@ -424,6 +424,17 @@ const icons: Record<IconName, IconConfig> = {
       { type: 'circle', cx: 12, cy: 12, r: 10 },
       { type: 'line', x1: 12, y1: 8, x2: 12, y2: 12 },
       { type: 'line', x1: 12, y1: 16, x2: 12.01, y2: 16 }
+    ]
+  },
+   nophoto: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      { d: "M4 7h3l2-2h6l2 2h3v11H4z" },
+      { type: 'circle', cx: 12, cy: 13, r: 3 },
+      { type: 'line', x1: 3, y1: 21, x2: 21, y2: 3 }
     ]
   },
  google: {

@@ -20,7 +20,7 @@ import TaleDetailComponent from '@/features/tales/components/TaleDetailComponent
 import CategoryComponent from '../components/CategoryComponent.vue';
 import CountryComponent from '../components/CountryComponent.vue';
 import WriterComponent from '../components/WriterComponent.vue';
-import TaleListComponent from '@/features/tales/components/TaleListComponent.vue';
+import TaleTextComponent from '@/features/tales/components/TaleTextComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -201,9 +201,9 @@ function handleJoinClick() {
       <!-- 1. FOCUS TALE (Must have image) -->
       <article class="tale-hero">
       
-<div class="tale-hero__content">
+    <div class="tale-hero__content">
 
-       <TaleListComponent 
+       <TaleTextComponent 
               :tale="homepageLayout.focus" 
               type="focus" 
             />
@@ -231,7 +231,7 @@ function handleJoinClick() {
 
       <div class="tale-strip__content">
 
-      <TaleListComponent 
+      <TaleTextComponent 
               :tale="tale" 
               type="pill" 
             />
@@ -254,7 +254,7 @@ function handleJoinClick() {
 
             <div class="tale-subfocus__content">
 
-            <TaleListComponent 
+            <TaleTextComponent 
               :tale="homepageLayout.subfocus" 
               type="focus" 
             />
@@ -278,7 +278,7 @@ function handleJoinClick() {
 
               <div class="tale-subside__content">
 
-           <TaleListComponent 
+           <TaleTextComponent 
               :tale="tale" 
               type="pill" 
             />
@@ -308,7 +308,7 @@ function handleJoinClick() {
 
         <div class="tale-sidebar__content">
 
-           <TaleListComponent 
+           <TaleTextComponent 
               :tale="tale" 
               type="pill" 
             />
@@ -546,6 +546,10 @@ function handleJoinClick() {
   background-position-y: bottom;
   background-repeat: no-repeat;
   background-position: contain;
+  
+  @media @phone{
+background-size: 40%;
+  }
 
   &__wrapper{
     width: @max-width;

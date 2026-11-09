@@ -138,6 +138,10 @@ footer.site-footer {
   background-position-y: bottom;
   background-repeat: no-repeat;
   background-position: contain;
+  
+  @media @phone{
+background-size: 40%;
+  }
 
   .footer-container {
    
