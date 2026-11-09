@@ -168,6 +168,16 @@ const router = createRouter({
           path: '/contact-us',
           name: 'contact',
           component: () => import('@/features/support/views/ContactView.vue')
+        },
+         {
+          path: 'categories', // Renders at outscribed.com/categories
+          name: 'categories-metrics',
+          component: () => import('@/features/global/views/CategoryMetricsView.vue')
+        },
+         {
+          path: 'countries', // Renders at outscribed.com/countries
+          name: 'countries-metrics',
+          component: () => import('@/features/global/views/CountryMetricsView.vue')
         }
       ]
     },

@@ -76,6 +76,10 @@ export interface GetCountriesResponse {
   lastUpdatedAt: string;
 }
 
+export interface GetCategoriesResponse {
+  categories: CategoryMetricsDto[];
+  lastUpdatedAt: string;
+}
 
 // Helper type for response
 export interface GetTagsResponse {

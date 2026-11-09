@@ -139,9 +139,7 @@ function handleEditContactClick(platform: ContactType) {
 
 <div class="profile-details">
 
-  <div class="profile-details__shaded-background">
-     
-  </div>
+  <div class="profile-details__shaded-background"></div>
 
 <div class="profile-details__image-container">
   
@@ -182,7 +180,7 @@ function handleEditContactClick(platform: ContactType) {
   </div>
 
   
-<div class="double-update-wrapper">
+<div class="action-wrapper">
 
     <div class="double-update">
 
@@ -206,13 +204,9 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
-
-    <header class="section-header">
-      <p  class="section-header__lines"></p>
-      <h2  class="section-header__title">Bio</h2>
-      <p  class="section-header__lines"></p>
+ <header class="section-header">
+     <h2>Bio</h2>
     </header>
-   
 
 <div class="profile-details__bio-card">
     <template v-if="profile.bio">
@@ -228,180 +222,184 @@ function handleEditContactClick(platform: ContactType) {
 
 
    <header class="section-header">
-      <p  class="section-header__lines"></p>
-      <div  class="section-header__title">
-         <button 
+       <button 
         type="button" 
-        class="section-header__item"
-        :class="{ 'section-header__item--active': activeActivityTab === 'tale' }"
+        class="section-header__cta"
+        :class="{ 'section-header__cta--active': activeActivityTab === 'tale' }"
         @click="activeActivityTab = 'tale'"
       >
         Tales
       </button>
-      <span class="divider divider--line"></span>
       <button 
         type="button" 
-        class="section-header__item"
-        :class="{ 'section-header__item--active': activeActivityTab === 'comment' }"
+        class="section-header__cta"
+        :class="{ 'section-header__cta--active': activeActivityTab === 'comment' }"
         @click="activeActivityTab = 'comment'"
       >
         Comments
       </button>
-       <span class="divider divider--line"></span>
-      <button 
+      
+       <button 
         type="button" 
-        class="section-header__item"
-        :class="{ 'section-header__item--active': activeActivityTab === 'connect' }"
+        class="section-header__cta"
+        :class="{ 'section-header__cta--active': activeActivityTab === 'connect' }"
         @click="activeActivityTab = 'connect'"
       >
         Connect
       </button>
-      </div>
-      <p  class="section-header__lines"></p>
     </header>
 
 <div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'tale' }">
   <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Published</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Published</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.talesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.talesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       :to="`/tales?username=${profile.username}`" title="Tales"  
-      class="profile-links__link">
+      :disabled="profile.talesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
    <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Saved</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Saved</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.taleFavoritesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.taleFavoritesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       to="/tales/my/saves" title="Tales Saved"  
-      class="profile-links__link">
+      :disabled="profile.taleFavoritesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
     <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Shared</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Shared</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.taleSharesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.taleSharesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       to="/tales/my/shares" title="Tales Shared"  
-      class="profile-links__link">
+      :disabled="profile.taleSharesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
    <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Reported</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Reported</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.taleFlagsCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.taleFlagsCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
-      to="/tales/my/flags" title="Tales Reported"  
-      class="profile-links__link">
+      to="/tales/my/flags" title="Tales Reported"
+      :disabled="profile.taleFlagsCount == 0"  
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
    <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Transformed Perspectives</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Transformed Perspectives</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.transformedPerspectivesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.transformedPerspectivesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
      to="/tales/my/reactions?reactiontype=TransformedPerspective" title="Tales Transformed Perspective"
-      class="profile-links__link">
+     :disabled="profile.transformedPerspectivesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
     <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Exposes Realities</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Exposes Realities</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.exposesRealitiesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.exposesRealitiesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=ExposesReality" title="Tales Exposes Realities"
-      class="profile-links__link">
+    :disabled="profile.exposesRealitiesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
     <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Sparks Debates</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Sparks Debates</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.sparksDebatesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.sparksDebatesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=SparksDebate" title="Tales Sparks Debates"
-      class="profile-links__link">
+    :disabled="profile.sparksDebatesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
    <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Missed Critical Contexts</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Missed Critical Contexts</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.missedCriticalContextsCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.missedCriticalContextsCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=MissedCriticalContext" title="Tales Missed Critical Contexts"
-      class="profile-links__link">
+    :disabled="profile.missedCriticalContextsCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
    <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Lacks Real World Relevance</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Lacks Real World Relevance</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.lacksRealWorldRelevancesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.lacksRealWorldRelevancesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=LacksRealWorldRelevance" title="Tales Lacks Real World Relevance"
-      class="profile-links__link">
+    :disabled="profile.lacksRealWorldRelevancesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
@@ -410,81 +408,86 @@ function handleEditContactClick(platform: ContactType) {
 <div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'comment' }">
      <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Published</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Published</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.commentsCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.commentsCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       :to="`/comments?username=${profile.username}`" title="Comments" 
-      class="profile-links__link">
+      :disabled="profile.commentsCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
     <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Saved</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Saved</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.commentFavoritesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.commentFavoritesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       to="/comments/my/saves" title="Comments Saved"
-      class="profile-links__link">
+      :disabled="profile.commentFavoritesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
     <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Reported</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Reported</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.commentFlagsCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.commentFlagsCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       to="/comments/my/flags" title="Comments Reported"
-      class="profile-links__link">
+      :disabled="profile.commentFlagsCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
    <div class="profile-links__item">
 
 <p>
-   <span class="profile-links__link--label">Upvoted</span>
+   <span class="profile-links__text--label">Upvoted</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.commentUpvotesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.commentUpvotesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       to="/comments/my/votes?reactiontype=Upvote" title="Comments Upvoted"
-      class="profile-links__link">
+      :disabled="profile.commentUpvotesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
     <div class="profile-links__item">
 
-<p>
-   <span class="profile-links__link--label">Downvoted</span>
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Downvoted</span>
           <span class="divider divider--circle"></span>
-          <span class="profile-links__link--value">{{ formatCounts(profile.commentDownvotesCount) }}</span>
+          <span class="profile-links__text--value">{{ formatCounts(profile.commentDownvotesCount) }}</span>
 </p>
 
 <span class="profile-links__lines"></span>
 
       <RouterLink 
       to="/comments/my/votes?reactiontype=Downvote" title="Comments Downvoted"
-      class="profile-links__link">
+      :disabled="profile.commentDownvotesCount == 0"
+      class="profile-links__text">
          View
         </RouterLink>
   </div>
@@ -530,9 +533,6 @@ function handleEditContactClick(platform: ContactType) {
         </button>
       </div>
     </div>
-
-
-
 
 </div>
 

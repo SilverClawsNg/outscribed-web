@@ -17,6 +17,9 @@ import SvgIcons from '@/components/SvgIcons.vue';
 import { useLoginHint } from '@/utils/authHelper'
 import { curateHomepageTales } from '@/utils/curateHomepageTales';
 import TaleDetailComponent from '@/features/tales/components/TaleDetailComponent.vue';
+import CategoryComponent from '../components/CategoryComponent.vue';
+import CountryComponent from '../components/CountryComponent.vue';
+import WriterComponent from '../components/WriterComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -80,7 +83,7 @@ const categorizedTales = computed(() => {
   categories.sort((a, b) => b.talesCounter - a.talesCounter);
 
   const focusCategory = categories[0];
-  const pillCategories = categories.slice(1, 6); // Takes up to the next 5 top categories as pills
+  const pillCategories = categories.slice(1, 5); // Takes up to the next 5 top categories as pills
 
   return { focusCategory, pillCategories };
 });
@@ -150,8 +153,8 @@ function handleJoinClick() {
     <div class="trending-section__wrapper">
 
     <div class="trending-section__header">
-      <SvgIcons name="trending" :size="50" />
-      <h2 class="trending-section__title">trending </h2>
+      <SvgIcons name="trending" :size="80" />
+      <h2 class="trending-section__title">Trending on OutScribed</h2>
     </div>
 
     <div class="trending-section__tags">
@@ -174,13 +177,13 @@ function handleJoinClick() {
 
   </div>
 
-  <header class="homepage-header">
-    <h2 class="homepage-header__title">
+  <header class="page-header">
+    <h2 class="page-header__title">
       Recent Tales
     </h2>
-    <div class="homepage-header__lines">
-      <p class="homepage-header__lines--item"></p>
-      <p class="homepage-header__lines--item"></p>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
     </div>
               <RouterLink to="/tales"  class="btn btn--primary">
                 Explore Tales
@@ -196,6 +199,7 @@ function handleJoinClick() {
 
       <!-- 1. FOCUS TALE (Must have image) -->
       <article class="tale-hero">
+
         <div class="tale-hero__content">
             <p  class="categories">
             <RouterLink :to="`/tales?category=${homepageLayout.focus.category}`"
@@ -208,15 +212,17 @@ function handleJoinClick() {
           </h1>
           <p class="tale-hero__summary">{{ homepageLayout.focus.summary }}</p>
           <div class="tale-hero__meta">
-            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+              <button class="at" @click="modalStore.push('Profile', 'Profile', homepageLayout.focus.creatorId)">
+              {{ homepageLayout.focus.creatorUsername }}
+            </button>
             <span class="divider divider--circle"></span>
             <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
             <span class="divider divider--circle"></span>
              <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
             <span class="divider divider--circle"></span>
             <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
-              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
-              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+              <span  class="tale-hero__meta--spaced">{{ CountryFlags(homepageLayout.focus.country) }}</span>
+              <span>{{ CountryDescriptions[homepageLayout.focus.country] }}</span>
             </RouterLink>
 
           </div>
@@ -227,9 +233,11 @@ function handleJoinClick() {
             </button>
           </footer>
         </div>
+
         <div v-if="homepageLayout.focus.photo" class="tale-hero__media">
           <img :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
         </div>
+
       </article>
 
       <!-- 3. NONES STRIP (3 items - Enforces All-or-Nothing images Symmetry) -->
@@ -255,15 +263,17 @@ function handleJoinClick() {
       </h3>
       <p class="tale-strip__summary">{{ tale.summary }}</p>
         <div class="tale-strip__meta">
-            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+              <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
+              {{ tale.creatorUsername }}
+            </button>
             <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <time>{{ toRelativeTime(tale.createdAt) }}</time>
             <span class="divider divider--circle"></span>
-             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+             <span>{{ tale.readingTime }} Min Read</span>
             <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
-              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
-              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            <RouterLink :to="`/tales?country=${tale.country}`">
+              <span class="tale-strip__meta--spaced">{{ CountryFlags(tale.country) }}</span>
+              <span>{{ CountryDescriptions[tale.country] }}</span>
             </RouterLink>
           </div>
             <footer class="tale-footer">
@@ -298,15 +308,17 @@ function handleJoinClick() {
           
           <p class="tale-subfocus__summary">{{ homepageLayout.subfocus.summary }}</p>
           <div class="tale-subfocus__meta">
-            <span class="at">{{ homepageLayout.subfocus.creatorUsername }}</span>
+              <button class="at" @click="modalStore.push('Profile', 'Profile', homepageLayout.subfocus.creatorId)">
+              {{ homepageLayout.subfocus.creatorUsername }}
+            </button>
             <span class="divider divider--circle"></span>
             <time>{{ toRelativeTime(homepageLayout.subfocus.createdAt) }}</time>
             <span class="divider divider--circle"></span>
              <span>{{ homepageLayout.subfocus.readingTime }} Min Read</span>
             <span class="divider divider--circle"></span>
             <RouterLink :to="`/tales?country=${homepageLayout.subfocus.country}`">
-              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
-              <span>{{ homepageLayout.subfocus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+              <span class="tale-subfocus__meta--spaced">{{ CountryFlags(homepageLayout.subfocus.country) }}</span>
+               <span>{{ CountryDescriptions[homepageLayout.subfocus.country] }}</span>
             </RouterLink>
 
           </div>
@@ -341,15 +353,17 @@ function handleJoinClick() {
               </h4>
               <p class="tale-subside__summary">{{ tale.summary }}</p>
                 <div class="tale-subside__meta">
-            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+              <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
+              {{ tale.creatorUsername }}
+            </button>
             <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <time>{{ toRelativeTime(tale.createdAt) }}</time>
             <span class="divider divider--circle"></span>
-             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+             <span>{{ tale.readingTime }} Min Read</span>
             <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
-              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
-              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            <RouterLink :to="`/tales?country=${tale.country}`">
+              <span class="tale-subside__meta--spaced">{{ CountryFlags(tale.country) }}</span>
+               <span>{{ CountryDescriptions[tale.country] }}</span>
             </RouterLink>
 
           </div>
@@ -391,15 +405,17 @@ function handleJoinClick() {
           </h4>
            <p class="tale-sidebar__summary">{{ tale.summary }}</p>
         <div class="tale-sidebar__meta">
-            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+            <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
+              {{ tale.creatorUsername }}
+            </button>
             <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <time>{{ toRelativeTime(tale.createdAt) }}</time>
             <span class="divider divider--circle"></span>
-             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+             <span>{{ tale.readingTime }} Min Read</span>
             <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
-              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
-              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            <RouterLink :to="`/tales?country=${tale.country}`">
+              <span class="tale-sidebar__meta--spaced">{{ CountryFlags(tale.country) }}</span>
+              <span>{{ CountryDescriptions[tale.country] }}</span>
             </RouterLink>
 
           </div>
@@ -416,13 +432,13 @@ function handleJoinClick() {
   </div>
 
   
-  <header class="homepage-header">
-    <h2 class="homepage-header__title">
+  <header class="page-header">
+    <h2 class="page-header__title">
       Top Categories
     </h2>
-    <div class="homepage-header__lines">
-      <p class="homepage-header__lines--item"></p>
-      <p class="homepage-header__lines--item"></p>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
     </div>
               <RouterLink to="/categories"  class="btn btn--primary">
                 Explore Categories
@@ -435,99 +451,34 @@ function handleJoinClick() {
   <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
 
   <div class="homepage-discoveries__focus">
+
+    <CategoryComponent 
+        :category="categorizedTales.focusCategory" 
+        type="focus" 
+      />
     
-      <article class="discovery-card discovery-card--focus">
-
-          <h3 class="discovery-card__title discovery-card__title--focus">
-
-            <span class="hash">#</span>{{ CategoryDescriptions[categorizedTales.focusCategory.category] }}
-            </h3>
-
-            <p class="discovery-card__summary discovery-card__summary--focus">
-              {{ CategorySummaries[categorizedTales.focusCategory.category] }}
-            </p>
-
-              <div class="discovery-card__actions discovery-card__actions--focus">
-
-                    <button 
-                        type="button" 
-                        class="btn btn--primary btn--outscribe"
-                        @click="modalStore.push('CreateTale', 'Create Tale', { category: categorizedTales.focusCategory.category })"
-                        title="OutScribe a new tale"
-                      >
-                      OutScribe
-                      </button>
-                       <RouterLink 
-                    :to="`/tales?category=${categorizedTales.focusCategory.category}`" 
-                    class="discovery-card__metric-link"
-                    :class="{ 'disabled': categorizedTales.focusCategory.talesCounter === 0 }"
-                    title="Filter Tales"
-                  >
-                    <span class="discovery-card__metric-value">{{ formatCounts(categorizedTales.focusCategory.talesCounter) }}</span>
-                    <span class="discovery-card__metric-label">Tales&rarr;</span>
-                  </RouterLink>
-
-              </div>
-
-      </article>
- 
-
   </div>
 
    <div class="homepage-discoveries__pills">
 
-       <article 
-          v-for="pill in categorizedTales.pillCategories" 
-          :key="pill.category"
-          class="discovery-card discovery-card--pill">
+    <CategoryComponent 
+        v-for="category in categorizedTales.pillCategories" 
+        :key="category.category"
+        :category="category" 
+        type="pill" 
+      />
 
-          <h3 class="discovery-card__title discovery-card__title--pill">
-
-            <span class="hash">#</span>{{ CategoryDescriptions[pill.category] }}
-            </h3>
-
-            <p class="discovery-card__summary discovery-card__summary--pill">
-              {{ CategorySummaries[pill.category] }}
-            </p>
-
-              <div class="discovery-card__actions discovery-card__actions--pill">
-                 
-                    <button 
-                        type="button" 
-                        class="btn btn--primary btn--outscribe"
-                        @click="modalStore.push('CreateTale', 'Create Tale', { category: pill.category })"
-                        title="OutScribe a new tale"
-                      >
-                      OutScribe
-                      </button>
-                        <RouterLink 
-                    :to="`/tales?category=${pill.category}`" 
-                    class="discovery-card__metric-link"
-                    :class="{ 'disabled': pill.talesCounter === 0 }"
-                    title="Filter Tales"
-                  >
-                    <span class="discovery-card__metric-value">{{ formatCounts(pill.talesCounter) }}</span>
-                    <span class="discovery-card__metric-label">Tales&rarr;</span>
-                  </RouterLink>
-
-              </div>
-
-      </article>
-    
   </div>
 
-  
- 
 </div>
 
-
- <header class="homepage-header">
-    <h2 class="homepage-header__title">
+ <header class="page-header">
+    <h2 class="page-header__title">
       Top Countries
     </h2>
-    <div class="homepage-header__lines">
-      <p class="homepage-header__lines--item"></p>
-      <p class="homepage-header__lines--item"></p>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
     </div>
               <RouterLink to="/countries"  class="btn btn--primary">
                 Explore Countries
@@ -539,90 +490,35 @@ function handleJoinClick() {
   <!-- 1. FOCUS COUNTRY (Most tales - styled prominently) -->
 
   <div class="homepage-discoveries__focus">
+
+      <CountryComponent 
+        :country="countriesTales.focusCountry" 
+        type="focus" 
+      />
     
-      <article class="discovery-card discovery-card--focus">
-
-          <h3 class="discovery-card__title discovery-card__title--focus">
-
-            <span class="flag">{{ CountryFlags(countriesTales.focusCountry.country) }}</span>{{ CountryDescriptions[countriesTales.focusCountry.country] }}
-
-            </h3>
-
-              <div class="discovery-card__actions discovery-card__actions--focus">
-
-                    <button 
-                        type="button" 
-                        class="btn btn--primary btn--outscribe"
-                        @click="modalStore.push('CreateTale', 'Create Tale', { country: countriesTales.focusCountry.country })"
-                        title="OutScribe a new tale"
-                      >
-                      OutScribe
-                      </button>
-                       <RouterLink 
-                    :to="`/tales?country=${countriesTales.focusCountry.country}`" 
-                    class="discovery-card__metric-link"
-                    :class="{ 'disabled': countriesTales.focusCountry.talesCounter === 0 }"
-                    title="Filter Tales"
-                  >
-                    <span class="discovery-card__metric-value">{{ formatCounts(countriesTales.focusCountry.talesCounter) }}</span>
-                    <span class="discovery-card__metric-label">Tales&rarr;</span>
-                  </RouterLink>
-
-              </div>
-
-      </article>
- 
-
   </div>
 
    <div class="homepage-discoveries__pills">
 
-       <article 
-          v-for="pill in countriesTales.pillCountries" 
-          :key="pill.country"
-          class="discovery-card discovery-card--pill">
+    <CountryComponent 
+        v-for="country in countriesTales.pillCountries" 
+        :key="country.country"
+        :country="country" 
+        type="pill" 
+      />
 
-          <h3 class="discovery-card__title discovery-card__title--pill">
-
-            <span class="flag">{{ CountryFlags(pill.country) }}</span>{{ CountryDescriptions[pill.country] }}
-            </h3>
-
-              <div class="discovery-card__actions discovery-card__actions--pill">
-                 
-                    <button 
-                        type="button" 
-                        class="btn btn--primary btn--outscribe"
-                        @click="modalStore.push('CreateTale', 'Create Tale', { country: pill.country })"
-                        title="OutScribe a new tale"
-                      >
-                      OutScribe
-                      </button>
-                        <RouterLink 
-                    :to="`/tales?country=${pill.country}`" 
-                    class="discovery-card__metric-link"
-                    :class="{ 'disabled': pill.talesCounter === 0 }"
-                    title="Filter Tales"
-                  >
-                    <span class="discovery-card__metric-value">{{ formatCounts(pill.talesCounter) }}</span>
-                    <span class="discovery-card__metric-label">Tales&rarr;</span>
-                  </RouterLink>
-
-              </div>
-
-      </article>
-    
   </div>
  
 </div>
 
 
-  <header class="homepage-header">
-    <h2 class="homepage-header__title">
+  <header class="page-header">
+    <h2 class="page-header__title">
       Top / Recent Writers
     </h2>
-    <div class="homepage-header__lines">
-      <p class="homepage-header__lines--item"></p>
-      <p class="homepage-header__lines--item"></p>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
     </div>
               <RouterLink to="/writers"  class="btn btn--primary">
                 Explore Writers
@@ -634,76 +530,24 @@ function handleJoinClick() {
   
    <div class="homepage-writers__pills">
 
-       <article 
-          v-for="writer in homepageStore.prolificWriters" 
-          :key="writer.creator.accountId"
-          class="discovery-card discovery-card--pill">
+     <WriterComponent 
+        v-for="writer in homepageStore.prolificWriters" 
+        :key="writer.creator.accountId"
+        :writer="writer" 
+        type="pill" 
+      />
 
-          <h3 class="discovery-card__title discovery-card__title--pill at">
-             {{ writer.creator.username }}
-            </h3>
-
-              <div class="discovery-card__actions discovery-card__actions--pill">
-                 
-                    <button 
-                      type="button" 
-                      class="btn btn--primary btn--is-outscribe"
-                      :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-                      @click="engage.favorite(writer.creator.engagement)"
-                    >
-                    {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
-                    </button>
-                        <RouterLink 
-                    :to="`/tales?username=${writer.creator.username}`" 
-                    class="discovery-card__metric-link"
-                    :class="{ 'disabled': writer.creator.talesCount === 0 }"
-                    title="Filter Tales"
-                  >
-                    <span class="discovery-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
-                    <span class="discovery-card__metric-label">Tales&rarr;</span>
-                  </RouterLink>
-
-              </div>
-
-      </article>
-    
   </div>
   
    <div class="homepage-writers__pills">
 
-       <article 
-          v-for="writer in homepageStore.newWriters" 
-          :key="writer.creator.accountId"
-          class="discovery-card discovery-card--pill">
+     <WriterComponent 
+        v-for="writer in homepageStore.newWriters" 
+        :key="writer.creator.accountId"
+        :writer="writer" 
+        type="pill" 
+      />
 
-          <h3 class="discovery-card__title discovery-card__title--pill at">
-             {{ writer.creator.username }}
-            </h3>
-
-              <div class="discovery-card__actions discovery-card__actions--pill">
-                 
-                    <button 
-                      type="button" 
-                      class="btn btn--primary btn--is-outscribe"
-                      :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-                      @click="engage.favorite(writer.creator.engagement)"
-                    >
-                    {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
-                    </button>
-                        <RouterLink 
-                    :to="`/tales?username=${writer.creator.username}`" 
-                    class="discovery-card__metric-link"
-                    :class="{ 'disabled': writer.creator.talesCount === 0 }"
-                    title="Filter Tales"
-                  >
-                    <span class="discovery-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
-                    <span class="discovery-card__metric-label">Tales&rarr;</span>
-                  </RouterLink>
-
-              </div>
-
-      </article>
-    
   </div>
  
 </div>
@@ -794,35 +638,6 @@ function handleJoinClick() {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 
-   .homepage-header{
-    width: @max-width;
-    max-width: calc(100% - 20px);
-    margin: 0 auto 1rem auto;
-    padding: 1rem 0;
-    display: flex;
-    align-items:center;
-
-    &__title{
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    &__lines{
-      display: flex;
-      flex-direction: column;
-      row-gap: 0.2rem;
-      justify-content: center;
-      flex-grow: 1;
-      margin: 0 0.5rem;
-
-      &--item{
-        height: 1px;
-        background-color: var(--border-color);
-        width: 100%;
-      }
-    }
-   }
-
 /* ==========================================================================
    1. HOMEPAGE HERO (Mesh Gradient Header)
    ================================================================---------- */
@@ -836,14 +651,19 @@ function handleJoinClick() {
   padding: 1rem;
   margin-bottom: 1rem;
   color:@white-color;
- 
+  background-image: url("@/assets/images/patterns-background(1).png");
+  background-position-x: right;
+  background-position-y: bottom;
+  background-repeat: no-repeat;
+  background-position: contain;
+
   &__wrapper{
     width: @max-width;
     max-width: calc(100% - 20px);
-     justify-content: center;
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
   }
  
   &__container {
@@ -908,19 +728,18 @@ function handleJoinClick() {
       line-height: 2.4rem;
     }
     @media @largeDevice {
-      font-size: 2.6rem;
-      line-height: 2.8rem;
+      font-size: 2.8rem;
+      line-height: 3rem;
     }
   }
 
   &__explainer {
     font-weight: 500;
-    font-size: clamp(1rem, 1.2vw + 1rem, 1.12rem);
+    font-size: clamp(1rem, 1.2vw + 1rem, 1.3rem);
     line-height: clamp(1.4rem, 1.2vw + 1rem, 1.5rem);
     margin-bottom: 0.75rem;
     text-align: center;
     margin-bottom: 1rem;
-    font-family: Inter, sans-serif;
   }
 
   &__cta-group {
@@ -944,10 +763,9 @@ function handleJoinClick() {
 
     &--join {
      background-color:@link-alt-color;
-     border-color:@link-alt-color;
 
       &:hover {
-        background-color: darken(#00a0ff, 5%);
+        background-color: darken(@link-alt-color, 10%);
         color: @white-color;
       }
     }
@@ -964,21 +782,20 @@ function handleJoinClick() {
   }
 }
 
-
 /* ==========================================================================
    2. TRENDING SECTION
    ================================================================---------- */
 
 .trending-section {
   width: 100%;
-  margin: 1rem 0 2rem 0;
-  padding-bottom:1rem;
-  border-bottom:1px solid var(--border-color);
+  margin: 1rem 0 3rem 0;
+  //padding-bottom:1rem;
+  //border-bottom:1px solid var(--border-color);
   
   &__wrapper{
   display:flex;
-  flex-wrap: wrap;
-  column-gap: 0.5rem;
+  flex-direction:column;
+  row-gap: 0.5rem;
    width: @max-width;
   max-width: calc(100% - 20px);
   margin: 0 auto;
@@ -988,8 +805,8 @@ function handleJoinClick() {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction:column;
     color: @red-color;
-    column-gap: 0.25rem;
   }
 
   &__title {
@@ -1144,7 +961,6 @@ function handleJoinClick() {
   display: flex;
   gap: 1.5rem;
   align-items: stretch;
- 
 
    @media @tablet {
      max-width: @mid-width; /* Card level dimension cap */
@@ -1196,7 +1012,12 @@ function handleJoinClick() {
   }
 
   &__meta{
-    font-size:0.85rem;
+    font-size:0.9rem;
+    line-height: 1.5rem;
+
+    &--spaced{
+      margin-right: 0.25rem
+    }
   }
 
 }
@@ -1279,7 +1100,13 @@ function handleJoinClick() {
   }
 
   &__meta{
-    font-size:0.85rem;
+    font-size:0.9rem;
+    line-height: 1.5rem;
+
+
+     &--spaced{
+      margin-right: 0.25rem
+    }
   }
 }
 
@@ -1344,7 +1171,13 @@ function handleJoinClick() {
   }
 
   &__meta{
-    font-size:0.85rem;
+   font-size:0.9rem;
+    line-height: 1.5rem;
+
+
+      &--spaced{
+      margin-right: 0.25rem
+    }
   }
 }
 
@@ -1414,7 +1247,13 @@ function handleJoinClick() {
   }
 
   &__meta{
-    font-size:0.85rem;
+    font-size:0.9rem;
+    line-height: 1.5rem;
+
+
+    &--spaced{
+      margin-right: 0.25rem
+    }
   }
 }
 
@@ -1475,7 +1314,13 @@ function handleJoinClick() {
   }
 
   &__meta{
-    font-size:0.85rem;
+    font-size:0.9rem;
+    line-height: 1.5rem;
+
+
+    &--spaced{
+      margin-right: 0.25rem
+    }
   }
 }
 
@@ -1563,13 +1408,15 @@ background-size: 40%;
     max-width: calc(100% - 20px);
     margin: 0 auto;
     display: flex;
-    gap: 2rem;
+    //gap: 2rem;
     margin-bottom: 3rem;
 
     @media @phablet, @phone{
   width: @min-width;
   flex-direction: column;
+
   }
+
 
     @media @tablet{
   width: @mid-width;
@@ -1584,6 +1431,40 @@ background-size: 40%;
       
       gap: 1rem;
       display: grid;
+
+      @media @phone, @phablet{
+        
+  &:first-child{
+    margin-bottom: 1.5px;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+
+  }
+
+   &:last-child{
+    margin-top: 1.5px;
+    padding-top: 1rem;
+    border-bottom: 1px solid var(--border-color);
+
+  }
+      }
+
+      
+  @media @desktop, @laptop, @tablet{
+    &:first-child{
+      margin-right: 1.5px;
+    padding-right: 1rem;
+    border-right: 1px solid var(--border-color);
+
+  }
+
+   &:last-child{
+    margin-left: 1.5px;
+    padding-left: 1rem;
+    border-left: 1px solid var(--border-color);
+
+  }
+  }
       
       @media @tablet, @phablet{
   width: 100%;
@@ -1605,110 +1486,6 @@ background-size: 40%;
      }
 
    }
-
-   
-
-
-/* ==========================================================================
-   DISCOVERY CARDS
-   ================================================================---------- */
-
-
-    .discovery-card {
-
-      &--focus{
-        
-        color:@white-color;
-        width: 100%;
-        height: auto;
-        padding: 1rem;
-       
-
-      &  .discovery-card__metric-link{
-          color:@white-color;
-        }
-       
-      }
-
-    &--pill{
-      border: 1px solid var(--border-color);
-      width: 100%;
-      padding: 1rem 0.5rem;
-      border-radius: 12px;
-      
-      }
-
-  &__title {
-   
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-
-    &--focus{
-      font-size: 1.5rem;
-    }
-
-     &--pill{
-      font-size: 1.1rem;
-    }
-  & span.hash{
-    font-size: 0.9rem;
-    font-weight: normal;
-  }
-
-  & span.flag{
-    margin-right: 0.5rem;
-  }
-  }
-
-&__summary{
- 
-
-    &--focus{
-      font-size: 1rem;
-    }
-
-  &--pill{
-     color: var(--muted-text-color);
-     font-size:0.9rem;
-  }
-}
-
-
-  &__metrics {
-    display: flex;
-    gap: 0.75rem;
-    
-  }
-
-  &__metric-link {
-   display: inline-flex;
-    align-items: center;
-    column-gap: 0.25rem;
-
-     &--categories{
-    color:@white-color;
-  }
-
-  }
-
-  &__metric-value {
-    font-weight: 700;
-  }
-
-  &__metric-label {
-    font-weight: 400;
-    
-  }
-
-  &__actions{
-    display: flex;
-    column-gap: 1rem;
-     margin-top: 1.5rem;
-
-  }
-
-}
-
 
    
 /* ==========================================================================

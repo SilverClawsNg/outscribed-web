@@ -212,8 +212,7 @@ async function upload() {
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                border: 2px solid var(--native-background-color);
-                border: 1px solid var(--thick-border-color);
+                border: 2px solid var(--background-color);
 
                 &:hover {
                     transform: scale(1.1);

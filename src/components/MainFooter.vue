@@ -133,6 +133,11 @@ footer.site-footer {
   font-size: 0.9rem;
   padding-bottom: 6rem;
   color:@white-color;
+  background-image: url("@/assets/images/patterns-background(1).png");
+  background-position-x: right;
+  background-position-y: bottom;
+  background-repeat: no-repeat;
+  background-position: contain;
 
   .footer-container {
    

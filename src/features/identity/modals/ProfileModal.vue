@@ -3,7 +3,7 @@ import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { APIError } from '@/api/apiTypes'
 import { formatCounts } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
-import { CountryDescriptions } from '@/utils/descriptors'
+import { CountryDescriptions, CountryFlags } from '@/utils/descriptors'
 import { mediaHelper } from '@/utils/mediaHelper'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
@@ -107,6 +107,10 @@ onUnmounted(() => {
       
         <div class="profile-details">
 
+          <div class="profile-details__shaded-background"></div>
+
+          <div class="profile-details__image-container">
+            
              <figure class="profile-image">
               <div class="profile-image__wrapper">
                 <template v-if="profileStore.profile.photo">
@@ -117,28 +121,29 @@ onUnmounted(() => {
                   />
                 </template>
                 <template v-else>
-                  <SvgIcons name="user" class="profile-iamge__avatar-placeholder" />
+                  <SvgIcons name="user" :size="80" class="profile-iamge__avatar-placeholder" />
                 </template>
               </div>
             </figure>
 
-           <header class="profile-header">
-            <h1 class="at profile-header__username">{{ profileStore.profile.username }}</h1>
-            <h2 class="profile-header__title">{{ profileStore.profile.title }}</h2>
-            <time class="profile-header__date">Joined {{ toShortDate(profileStore.profile.registeredAt) }}</time>
-
-              <template v-if="profileStore.profile.country">
-              <p class="profile-header__country">
-                <i class="profile-header__country-label">OutScribing from </i>
-                {{ CountryDescriptions[profileStore.profile.country] }}
+          </div>
+          
+        <div class="profile-details__personal">
+          
+        <h1 class="profile-details__username at">{{ profileStore.profile.username }}</h1>
+              <h2 v-if="profileStore.profile.title" class="profile-details__name">{{profileStore.profile.title }}</h2>
+              <time class="profile-details__date">Joined {{ toShortDate(profileStore.profile.registeredAt) }}</time>
+                <p class="profile-details__country" v-if="profileStore.profile.country">
+                  <i>OutScribing from </i>  
+                  <span class="flag">{{ CountryFlags(profileStore.profile.country) }}</span> 
+                  {{ CountryDescriptions[profileStore.profile.country] }}
               </p>
-            </template>
-            </header>
+        </div>
 
-            
+        
   <!-- Follow Statistics Bar -->
   <div class="profile-metadata">
-    <RouterLink :to="`/users/${profileStore.profile.username}/follows`" class="profile-metadata__item" title="Following">
+    <RouterLink to="/users/my/follows" class="profile-metadata__item" title="Following">
       <span class="profile-metadata__item--value">{{ formatCounts(profileStore.profile.followsCount) }}</span>
       <span class="profile-metadata__item--label">Following</span>
     </RouterLink>
@@ -155,99 +160,139 @@ onUnmounted(() => {
    
   </div>
 
-   <div class="profile-details__bio">
-                  <template v-if="profileStore.profile.bio">
-                    {{ profileStore.profile.bio }}
-                  </template>
-                </div>
-
-                
-  <!-- Quick Action Buttons -->
-  <div class="follow-btn">
+ <div class="action-wrapper">
     <button 
       type="button" 
       @click="engage.favorite(profileStore.profile.user.engagement)"
                   :title="profileStore.profile.user.engagement.isFavorite ? 'Unfollow User' : 'Follow User'"
                   :disabled="uiMeta.isFavoriteDisabled"
-                  class="btn btn--primary btn--has-icon"
+                  class="btn btn--secondary"
     >
      {{ uiMeta.favoriteAltText }}
-      <SvgIcons name="bookmark" :size="20" />
     </button>
 
   </div>
 
-  <!-- Activity Tabs & Lists -->
-  <div class="activity-box">
-  
-    <!-- Tab Navigation -->
-    <div class="activity-box__tabs">
-      <button 
+  <template v-if="profileStore.profile.bio">
+      <header class="section-header">
+     <h2>Bio</h2>
+    </header>
+    
+    <div class="profile-details__bio-card">
+   <div  class="profile-details__bio-card--text">{{ profileStore.profile.bio }}</div>
+</div>
+    </template>
+
+   <header class="section-header">
+        <button 
         type="button" 
-        class="activity-box__tab"
-        :class="{ 'activity-box__tab--active': activeActivityTab === 'tale' }"
+        class="section-header__cta"
+        :class="{ 'section-header__cta--active': activeActivityTab === 'tale' }"
         @click="activeActivityTab = 'tale'"
       >
         Tales
       </button>
       <button 
         type="button" 
-        class="activity-box__tab"
-        :class="{ 'activity-box__tab--active': activeActivityTab === 'comment' }"
+        class="section-header__cta"
+        :class="{ 'section-header__cta--active': activeActivityTab === 'comment' }"
         @click="activeActivityTab = 'comment'"
       >
         Comments
       </button>
-    </div>
-
-           
-    <!-- Activity Content Area -->
-    <div class="activity-box__content">
-      <!-- Tales Activity Panel -->
-      <div 
-        class="activity-box__panel"
-        :class="{ 'activity-box__panel--active': activeActivityTab === 'tale' }"
+      <button 
+        type="button" 
+        class="section-header__cta"
+        :class="{ 'section-header__cta--active': activeActivityTab === 'connect' }"
+        @click="activeActivityTab = 'connect'"
       >
-        <RouterLink :to="`/tales?username=${profileStore.profile.username}`" class="btn btn--primary" title="Tales">
-          <span class="activity-box__label">Published</span>
-          <span class="activity-box__value">{{ formatCounts(profileStore.profile.talesCount) }}</span>
+        Connect
+      </button>
+    </header>
+
+    
+<div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'tale' }">
+
+  <div class="profile-links__item">
+
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Published</span>
+          <span class="divider divider--circle"></span>
+          <span class="profile-links__text--value">{{ formatCounts(profileStore.profile.talesCount) }}</span>
+</p>
+
+<span class="profile-links__lines"></span>
+
+      <RouterLink 
+      :to="`/tales?username=${profileStore.profile.username}`" title="Tales"  
+      :disabled="profileStore.profile.talesCount == 0"
+      class="profile-links__text">
+         View
         </RouterLink>
-
-        <div class="divider-multi divider-multi--thick"><span></span></div>
-
-        <RouterLink :to="`/tales/${profileStore.profile.username}/reactions`" class="btn btn--primary" title="Tales Transformed Perspective">
-          <span class="activity-box__label">Recommended</span>
-          <span class="activity-box__value">{{ formatCounts(profileStore.profile.transformedPerspectivesCount) }}</span>
-        </RouterLink>
-
-      </div>
-
-      <!-- Comments Activity Panel -->
-      <div 
-        class="activity-box__panel"
-        :class="{ 'activity-box__panel--active': activeActivityTab === 'comment' }"
-      >
-        <RouterLink :to="`/comments?username=${profileStore.profile.username}`" class="btn btn--primary" title="Comments">
-          <span class="activity-box__label">Published</span>
-          <span class="activity-box__value">{{ formatCounts(profileStore.profile.commentsCount) }}</span>
-        </RouterLink>
-
-        <div class="divider-multi divider-multi--thick"><span></span></div>
-
-        <RouterLink :to="`/comments/${profileStore.profile.username}/reactions`" class="btn btn--primary" title="Comments Upvoted">
-          <span class="activity-box__label">Recommended</span>
-          <span class="activity-box__value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span>
-        </RouterLink>
-
-      </div>
-
-    </div>
-
   </div>
+ 
+   <div class="profile-links__item">
 
-     
-     <div class="profile-contacts" aria-label="Social and email contacts">
-      
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Transformed Perspectives</span>
+          <span class="divider divider--circle"></span>
+          <span class="profile-links__text--value">{{ formatCounts(profileStore.profile.transformedPerspectivesCount) }}</span>
+</p>
+
+<span class="profile-links__lines"></span>
+
+      <RouterLink 
+     :to="`/tales/${profileStore.profile.username}/reactions`" title="Tales Transformed Perspective"
+     :disabled="profileStore.profile.transformedPerspectivesCount == 0"
+      class="profile-links__text">
+         View
+        </RouterLink>
+  </div>
+  
+</div>
+ 
+<div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'comment' }">
+     <div class="profile-links__item">
+
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Published</span>
+          <span class="divider divider--circle"></span>
+          <span class="profile-links__text--value">{{ formatCounts(profileStore.profile.commentsCount) }}</span>
+</p>
+
+<span class="profile-links__lines"></span>
+
+      <RouterLink 
+      :to="`/comments?username=${profileStore.profile.username}`" title="Comments" 
+      :disabled="profileStore.profile.commentsCount == 0"
+      class="profile-links__text">
+         View
+        </RouterLink>
+  </div>
+  
+   <div class="profile-links__item">
+
+<p  class="profile-links__text">
+   <span class="profile-links__text--label">Upvoted</span>
+          <span class="divider divider--circle"></span>
+          <span class="profile-links__text--value">{{ formatCounts(profileStore.profile.commentUpvotesCount) }}</span>
+</p>
+
+<span class="profile-links__lines"></span>
+
+      <RouterLink 
+      :to="`/comments/${profileStore.profile.username}/reactions`" title="Comments Upvoted"
+      :disabled="profileStore.profile.commentUpvotesCount == 0"
+      class="profile-links__text">
+         View
+        </RouterLink>
+  </div>
+ 
+</div>
+
+<div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'connect' }">
+   
+  
   <!-- Facebook -->
   <div v-if="profileStore.facebook" class="profile-contacts__item">
     
@@ -412,6 +457,7 @@ onUnmounted(() => {
         </p>
 
       </div>
+
     </div>
 
   </div>
@@ -463,8 +509,9 @@ onUnmounted(() => {
     </div>
 
   </div>
+
 </div>
-    
+
     </div>
 
     </template>

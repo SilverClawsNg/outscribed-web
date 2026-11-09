@@ -357,7 +357,7 @@ nav.nav-header__editorial-links {
 
     &:hover{
       background-color:var(--light-background-color);
-      color:@white-color;
+      color:@link-color;
     }
 
 }

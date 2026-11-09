@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { APIError } from '@/api/apiTypes'
 import { useCountryStore } from '../stores/CountryStore.ts'; 
 
@@ -7,7 +7,7 @@ import { useCountryStore } from '../stores/CountryStore.ts';
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import CountryComponent from '../components/CountryComponent.vue';
-import { toLongDate } from '@/utils/dateExtensions'
+import { toLongDate, toRelativeTime } from '@/utils/dateExtensions'
 
 // 1. Setup Services & State
 const countryStore = useCountryStore();
@@ -51,6 +51,42 @@ onUnmounted(() => {
   countryStore.abort();
 });
 
+
+// Assuming store.countries contains objects like: { name: Country, talesCounter: number, slug: string }
+const countryTales = computed(() => {
+
+if(countryStore.countriesMetrics?.countries == null) return;
+
+  const countries = [...countryStore.countriesMetrics?.countries];
+
+  if (countries.length === 0) {
+    return {
+      focusCountry: null,
+      topPillCountries: [],
+      remainingCountries: []
+    };
+  }
+
+  // Sort descending by talesCounter
+  countries.sort((a, b) => b.talesCounter - a.talesCounter);
+
+  // 1. Top focus country (1 item)
+  const focusCountry = countries[0];
+
+  // 2. Next 4 countries for your primary grid (2fr, 1fr, 1fr)
+  const pillCountries = countries.slice(1, 5);
+
+  // 3. All remaining countries for your secondary grid (4 column, 1fr)
+  const remainingCountries = countries.slice(5);
+
+  return {
+    focusCountry,
+    pillCountries,
+    remainingCountries
+  };
+});
+
+
 </script>
 
 <template>
@@ -81,25 +117,60 @@ onUnmounted(() => {
 
          <template v-else-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
 
-           <header class="page-header">
-     <div class="page-header__contents">
-     <h1> Country Leaderboard</h1>
-      <time>Last Updated - {{ toLongDate(countryStore.countriesMetrics.lastUpdatedAt) }}</time>
-     </div>
-    </header>
-
-        <div class="container">
-
-           <CountryComponent 
-              v-for="(country, index) in countryStore.countriesMetrics.countries" 
-              :key="country.country"
-              :country="country" 
-              :index="index"
-            />
-
+        <header class="page-header">
+        <h2 class="page-header__title">
+          Top Countries
+        </h2>
+        <div class="page-header__lines">
+          <p class="page-header__lines--item"></p>
+          <p class="page-header__lines--item"></p>
         </div>
+          <time class="page-header__date">{{ toRelativeTime(countryStore.countriesMetrics.lastUpdatedAt) }}</time>
+        </header>
+     
+ <div class="top-segment" v-if="countryTales && countryTales.focusCountry">
+  
+  <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
 
-        <div class="page-closure"></div>
+  <div class="top-segment__focus">
+
+    <CategoryComponent 
+        :country="countryTales.focusCountry" 
+        type="focus" 
+      />
+    
+  </div>
+
+   <div class="top-segment__pills">
+
+    <CategoryComponent 
+        v-for="country in countryTales.pillCountries" 
+        :key="country.country"
+        :country="country" 
+        type="pill" 
+      />
+
+  </div>
+
+</div>
+
+ <div class="page-divider">
+    <div class="page-divider__lines">
+      <p class="page-divider__lines--item"></p>
+      <p class="page-divider__lines--item"></p>
+    </div>
+  </div>
+
+<div class="lower-segment"  v-if="countryTales && countryTales.remainingCountries.length">
+
+   <CategoryComponent 
+        v-for="country in countryTales.remainingCountries" 
+        :key="country.country"
+        :country="country" 
+        type="pill" 
+      />
+
+</div>
     
   </template>
 
