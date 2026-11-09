@@ -20,6 +20,7 @@ import TaleDetailComponent from '@/features/tales/components/TaleDetailComponent
 import CategoryComponent from '../components/CategoryComponent.vue';
 import CountryComponent from '../components/CountryComponent.vue';
 import WriterComponent from '../components/WriterComponent.vue';
+import TaleListComponent from '@/features/tales/components/TaleListComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -199,39 +200,14 @@ function handleJoinClick() {
 
       <!-- 1. FOCUS TALE (Must have image) -->
       <article class="tale-hero">
+      
+<div class="tale-hero__content">
 
-        <div class="tale-hero__content">
-            <p  class="categories">
-            <RouterLink :to="`/tales?category=${homepageLayout.focus.category}`"
-             :class="`categories__${CategoryClasses[homepageLayout.focus.category]}`">
-              <span>{{ CategoryDescriptions[homepageLayout.focus.category] }}</span>
-            </RouterLink>
-          </p>
-          <h1 class="tale-hero__title">
-            <RouterLink :to="`/tale/${homepageLayout.focus.slug}`">{{ homepageLayout.focus.title }}</RouterLink>
-          </h1>
-          <p class="tale-hero__summary">{{ homepageLayout.focus.summary }}</p>
-          <div class="tale-hero__meta">
-              <button class="at" @click="modalStore.push('Profile', 'Profile', homepageLayout.focus.creatorId)">
-              {{ homepageLayout.focus.creatorUsername }}
-            </button>
-            <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
-            <span class="divider divider--circle"></span>
-             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
-            <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
-              <span  class="tale-hero__meta--spaced">{{ CountryFlags(homepageLayout.focus.country) }}</span>
-              <span>{{ CountryDescriptions[homepageLayout.focus.country] }}</span>
-            </RouterLink>
+       <TaleListComponent 
+              :tale="homepageLayout.focus" 
+              type="focus" 
+            />
 
-          </div>
-           <footer class="tale-footer">
-            <RouterLink  class="tale-footer__read" :to="`/tale/${homepageLayout.focus.slug}`">Read&rarr;</RouterLink>
-            <button class="tale-footer__save" @click="engage.favorite(homepageLayout.focus.engagement)">
-              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
-            </button>
-          </footer>
         </div>
 
         <div v-if="homepageLayout.focus.photo" class="tale-hero__media">
@@ -242,6 +218,7 @@ function handleJoinClick() {
 
       <!-- 3. NONES STRIP (3 items - Enforces All-or-Nothing images Symmetry) -->
       <div class="tale-strip">
+
       <article 
     v-for="tale in homepageLayout.nones" 
     :key="tale.taleId" 
@@ -251,38 +228,17 @@ function handleJoinClick() {
     <div v-if="tale.photo" class="tale-strip__media">
       <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
     </div>
-    <div class="tale-strip__content">
-       <p  class="categories">
-            <RouterLink :to="`/tales?category=${tale.category}`"
-             :class="`categories__${CategoryClasses[tale.category]}`">
-              <span>{{ CategoryDescriptions[tale.category] }}</span>
-            </RouterLink>
-          </p>
-      <h3 class="tale-strip__title">
-        <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
-      </h3>
-      <p class="tale-strip__summary">{{ tale.summary }}</p>
-        <div class="tale-strip__meta">
-              <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-              {{ tale.creatorUsername }}
-            </button>
-            <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(tale.createdAt) }}</time>
-            <span class="divider divider--circle"></span>
-             <span>{{ tale.readingTime }} Min Read</span>
-            <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${tale.country}`">
-              <span class="tale-strip__meta--spaced">{{ CountryFlags(tale.country) }}</span>
-              <span>{{ CountryDescriptions[tale.country] }}</span>
-            </RouterLink>
-          </div>
-            <footer class="tale-footer">
-            <RouterLink  class="tale-footer__read" :to="`/tale/${tale.slug}`">Read&rarr;</RouterLink>
-            <button class="tale-footer__save" @click="engage.favorite(tale.engagement)">
-              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
-            </button>
-          </footer>
-      </div>
+
+      <div class="tale-strip__content">
+
+      <TaleListComponent 
+              :tale="tale" 
+              type="pill" 
+            />
+
+        </div>
+
+
       </article>
       </div>
 
@@ -291,44 +247,22 @@ function handleJoinClick() {
 
         <!-- 4. SUB-FOCUS (Must have image) -->
         <article v-if="homepageLayout.subfocus" class="tale-subfocus">
+
           <div class="tale-subfocus__media">
             <img :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
           </div>
-              <p  class="categories">
-            <RouterLink :to="`/tales?category=${homepageLayout.subfocus.category}`"
-             :class="`categories__${CategoryClasses[homepageLayout.subfocus.category]}`">
-              <span>{{ CategoryDescriptions[homepageLayout.subfocus.category] }}</span>
-            </RouterLink>
-          </p>
-          <div class="tale-subfocus__content">
-            
-            <h3 class="tale-subfocus__title">
-              <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`">{{ homepageLayout.subfocus.title }}</RouterLink>
-            </h3>
-          
-          <p class="tale-subfocus__summary">{{ homepageLayout.subfocus.summary }}</p>
-          <div class="tale-subfocus__meta">
-              <button class="at" @click="modalStore.push('Profile', 'Profile', homepageLayout.subfocus.creatorId)">
-              {{ homepageLayout.subfocus.creatorUsername }}
-            </button>
-            <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(homepageLayout.subfocus.createdAt) }}</time>
-            <span class="divider divider--circle"></span>
-             <span>{{ homepageLayout.subfocus.readingTime }} Min Read</span>
-            <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${homepageLayout.subfocus.country}`">
-              <span class="tale-subfocus__meta--spaced">{{ CountryFlags(homepageLayout.subfocus.country) }}</span>
-               <span>{{ CountryDescriptions[homepageLayout.subfocus.country] }}</span>
-            </RouterLink>
 
-          </div>
-            <footer class="tale-footer">
-            <RouterLink  class="tale-footer__read" :to="`/tale/${homepageLayout.subfocus.slug}`">Read&rarr;</RouterLink>
-            <button class="tale-footer__save" @click="engage.favorite(homepageLayout.subfocus.engagement)">
-              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
-            </button>
-          </footer>
-          </div>
+            <div class="tale-subfocus__content">
+
+            <TaleListComponent 
+              :tale="homepageLayout.subfocus" 
+              type="focus" 
+            />
+
+        </div>
+         
+            
+
         </article>
 
         <!-- 5. SUB-FOCUS SIDEBARS (2 items) -->
@@ -341,39 +275,17 @@ function handleJoinClick() {
             <div v-if="tale.photo" class="tale-subside__media">
               <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
             </div>
-            <div class="tale-subside__content">
-               <p  class="categories">
-                <RouterLink :to="`/tales?category=${tale.category}`"
-                :class="`categories__${CategoryClasses[tale.category]}`">
-                  <span>{{ CategoryDescriptions[tale.category] }}</span>
-                </RouterLink>
-              </p>
-              <h4 class="tale-subside__title">
-                <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
-              </h4>
-              <p class="tale-subside__summary">{{ tale.summary }}</p>
-                <div class="tale-subside__meta">
-              <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-              {{ tale.creatorUsername }}
-            </button>
-            <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(tale.createdAt) }}</time>
-            <span class="divider divider--circle"></span>
-             <span>{{ tale.readingTime }} Min Read</span>
-            <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${tale.country}`">
-              <span class="tale-subside__meta--spaced">{{ CountryFlags(tale.country) }}</span>
-               <span>{{ CountryDescriptions[tale.country] }}</span>
-            </RouterLink>
 
-          </div>
-           <footer class="tale-footer">
-            <RouterLink  class="tale-footer__read" :to="`/tale/${tale.slug}`">Read&rarr;</RouterLink>
-            <button class="tale-footer__save" @click="engage.favorite(tale.engagement)">
-              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
-            </button>
-          </footer>
-            </div>
+              <div class="tale-subside__content">
+
+           <TaleListComponent 
+              :tale="tale" 
+              type="pill" 
+            />
+
+        </div>
+
+          
           </article>
         </div>
 
@@ -393,44 +305,21 @@ function handleJoinClick() {
         <div v-if="tale.photo" class="tale-sidebar__media">
           <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
         </div>
-        <div class="tale-sidebar__content">
-           <p  class="categories">
-            <RouterLink :to="`/tales?category=${tale.category}`"
-             :class="`categories__${CategoryClasses[tale.category]}`">
-              <span>{{ CategoryDescriptions[tale.category] }}</span>
-            </RouterLink>
-          </p>
-          <h4 class="tale-sidebar__title">
-            <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
-          </h4>
-           <p class="tale-sidebar__summary">{{ tale.summary }}</p>
-        <div class="tale-sidebar__meta">
-            <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-              {{ tale.creatorUsername }}
-            </button>
-            <span class="divider divider--circle"></span>
-            <time>{{ toRelativeTime(tale.createdAt) }}</time>
-            <span class="divider divider--circle"></span>
-             <span>{{ tale.readingTime }} Min Read</span>
-            <span class="divider divider--circle"></span>
-            <RouterLink :to="`/tales?country=${tale.country}`">
-              <span class="tale-sidebar__meta--spaced">{{ CountryFlags(tale.country) }}</span>
-              <span>{{ CountryDescriptions[tale.country] }}</span>
-            </RouterLink>
 
-          </div>
-            <footer class="tale-footer">
-            <RouterLink  class="tale-footer__read" :to="`/tale/${tale.slug}`">Read&rarr;</RouterLink>
-            <button class="tale-footer__save" @click="engage.favorite(tale.engagement)">
-              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
-            </button>
-          </footer>
+        <div class="tale-sidebar__content">
+
+           <TaleListComponent 
+              :tale="tale" 
+              type="pill" 
+            />
+
         </div>
+        
       </article>
+
     </aside>
 
   </div>
-
   
   <header class="page-header">
     <h2 class="page-header__title">
@@ -446,11 +335,11 @@ function handleJoinClick() {
             </header>
 
 
-  <div class="homepage-discoveries" v-if="categorizedTales.focusCategory">
+  <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
   
   <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
 
-  <div class="homepage-discoveries__focus">
+  <div class="discovery-top-container__focus">
 
     <CategoryComponent 
         :category="categorizedTales.focusCategory" 
@@ -459,7 +348,7 @@ function handleJoinClick() {
     
   </div>
 
-   <div class="homepage-discoveries__pills">
+   <div class="discovery-top-container__pills">
 
     <CategoryComponent 
         v-for="category in categorizedTales.pillCategories" 
@@ -485,11 +374,11 @@ function handleJoinClick() {
               </RouterLink>
             </header>
 
-  <div class="homepage-discoveries" v-if="countriesTales.focusCountry">
+  <div class="discovery-top-container" v-if="countriesTales.focusCountry">
   
   <!-- 1. FOCUS COUNTRY (Most tales - styled prominently) -->
 
-  <div class="homepage-discoveries__focus">
+  <div class="discovery-top-container__focus">
 
       <CountryComponent 
         :country="countriesTales.focusCountry" 
@@ -498,7 +387,7 @@ function handleJoinClick() {
     
   </div>
 
-   <div class="homepage-discoveries__pills">
+   <div class="discovery-top-container__pills">
 
     <CountryComponent 
         v-for="country in countriesTales.pillCountries" 
@@ -637,6 +526,7 @@ function handleJoinClick() {
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
+@import "@/assets/css/discovery-container.less";
 
 /* ==========================================================================
    1. HOMEPAGE HERO (Mesh Gradient Header)
@@ -913,42 +803,6 @@ function handleJoinClick() {
     }
   }
 
-  & .categories{
-    margin-bottom: 0.5rem;
-  }
-
-  
-  & .tale-footer {
-    display: flex;
-    justify-content: flex-start;
-    align-items:center;
-    column-gap: 0.75rem;
-    width: 100%;
-    margin-top: 1rem;
-    font-weight: normal;
-     font-size: 0.9rem;
-    
-  &__read {
-     background-color: var(--background-color);
-     border:1px solid var(--border-color);
-     padding: 0.5rem 0.75rem;
-     border-radius: 99999px;
-     color: var(--muted-text-color);
-     
-
-      &:hover {
-        background-color: var(--light-background-color);
-        color: @link-color;
-      }
-    }
-
-    &__save{
-      display: flex;
-      align-items:center;
-      column-gap: 0.15rem;
-    }
-  
-  }
 
 }
 
@@ -997,29 +851,6 @@ function handleJoinClick() {
       flex: 0 0 311px;
     }
   }
-
-  &__title{
-    font-size:2rem;
-    line-height: 2.2rem;
-    font-weight:700;
-    margin-bottom: 0.5rem;
-
-  }
-
-  &__summary{
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
-  }
-
-  &__meta{
-    font-size:0.9rem;
-    line-height: 1.5rem;
-
-    &--spaced{
-      margin-right: 0.25rem
-    }
-  }
-
 }
 
 /* --------------------------------------------------------------------------
@@ -1077,37 +908,6 @@ function handleJoinClick() {
     }
   }
 
-  &__content {
-    
-    width: 100%;
-
-    @media @tablet, @phablet {
-      width: 55%;
-    }
-  }
-  
-     &__title{
-    font-size:1.2rem;
-    line-height: 1.4rem;
-    font-weight:700;
-    margin-bottom: 0.5rem;
-
-  }
-
-  &__summary{
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
-  }
-
-  &__meta{
-    font-size:0.9rem;
-    line-height: 1.5rem;
-
-
-     &--spaced{
-      margin-right: 0.25rem
-    }
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -1156,29 +956,6 @@ function handleJoinClick() {
     width: 100%;
   }
 
-   &__title{
-    font-size:2rem;
-    line-height: 2.2rem;
-    font-weight:700;
-
-  }
-
-
-  &__summary{
-    font-family: Inter, sans-serif;
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
-  }
-
-  &__meta{
-   font-size:0.9rem;
-    line-height: 1.5rem;
-
-
-      &--spaced{
-      margin-right: 0.25rem
-    }
-  }
 }
 
 /* 5. SUB-SIDEBAR GROUP & CARDS (Story Capped at 450px & Centralized) */
@@ -1233,28 +1010,6 @@ function handleJoinClick() {
     }
   }
 
-   &__title{
-    font-size:1.2rem;
-    line-height: 1.4rem;
-    font-weight:700;
-    margin-bottom: 0.5rem;
-
-  }
-
-  &__summary{
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
-  }
-
-  &__meta{
-    font-size:0.9rem;
-    line-height: 1.5rem;
-
-
-    &--spaced{
-      margin-right: 0.25rem
-    }
-  }
 }
 
 /* 2. SIDEBAR STORIES (Story Capped at 450px & Centralized) */
@@ -1299,109 +1054,12 @@ function handleJoinClick() {
 
   }
  
-     &__title{
-    font-size:1.2rem;
-    line-height: 1.4rem;
-    font-weight:700;
-    margin-bottom: 0.5rem;
-
-  }
-
-  &__summary{
-    font-family: Inter, sans-serif;
-    color: var(--muted-text-color);
-    margin-bottom: 0.5rem;
-  }
-
-  &__meta{
-    font-size:0.9rem;
-    line-height: 1.5rem;
-
-
-    &--spaced{
-      margin-right: 0.25rem
-    }
-  }
 }
 
 /* ==========================================================================
    DISCOVERIES
    ================================================================---------- */
 
-   .homepage-discoveries{
-   
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 3rem;
-
-    @media @phablet, @phone{
-  width: @min-width;
-  flex-direction: column;
-  }
-
-    @media @tablet{
-  width: @mid-width;
-  }
-    
-  @media @desktop, @laptop{
-  width: @max-width;
-  }
-
-     &__focus{
-      height: auto;
-     
-       background-color: @link-color;
-        border-radius: 21px;
-         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-         background-image: url("@/assets/images/patterns-background(1).png");
-  background-position-x: right;
-  background-position-y: bottom;
-  background-repeat: no-repeat;
-  background-position: contain;
-  
-
-  @media @phone{
-background-size: 40%;
-  }
-  
-    @media @tablet, @phablet, @phone{
-  width: 100%;
-  }
-
-  @media @desktop, @laptop{
- width: 35%;
-  }
-     }
-
-     &__pills{
-      
-      gap: 1rem;
-      display: grid;
-      
-      @media @tablet, @phablet{
-  width: 100%;
-  grid-template-columns: 1fr;
-
-  }
-      
-    @media @tablet, @phablet{
-  width: 100%;
-  grid-template-columns: 1fr 1fr;
-
-  }
-
-       @media @desktop, @laptop{
-    width: 65%;
-    grid-template-columns: 1fr 1fr;
-
-       }
-     }
-
-   }
 
    .homepage-writers{
    

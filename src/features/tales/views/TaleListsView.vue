@@ -209,7 +209,7 @@ onUnmounted(() => {
 
   <template v-if="taleStore.tales && taleStore.tales.length > 0">
 
-    <div class="main-contents">
+    <div class="content-container">
 
        <InfiniteScroller
         :has-next="taleStore.hasNext"
@@ -294,50 +294,33 @@ onUnmounted(() => {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 
-
-.main-contents {
-  width: @max-width;
+/* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
+.content-container {
   max-width: calc(100% - 20px);
-  
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
 
-  @media @smallDevice{
-    margin: 2rem auto;
+  @media @desktop, @laptop{
+    grid-template-columns: repeat(4, 1fr);
+    width: @max-width;
   }
 
-  @media @largeDevice{
-    margin: 2rem auto;
+  @media @tablet {
+    grid-template-columns: repeat(2, 1fr);
+    width: @mid-width;
   }
 
+   @media @phablet {
+    grid-template-columns: repeat(2, 1fr);
+    width: @mod-width;
+  }
+
+  @media @phone {
+    grid-template-columns: 1fr;
+     width: @min-width;
+  }
 }
-
-
-  // --- PILL TALES GRID ---
-  .pills-grid {
-    display: grid;
-    gap: 1rem;
-   
-
-    
-  @media @smallDevice{
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-
-       @media @tablet {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-
-    @media @laptop {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media @desktop {
-      grid-template-columns: repeat(3, 1fr); // 3 Columns (~300px each inside 940px)
-    }
-
-   
-  }
 
 
 </style>
