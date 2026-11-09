@@ -975,9 +975,9 @@ function handleJoinClick() {
   padding-bottom:1rem;
   border-bottom:1px solid var(--border-color);
   
-
   &__wrapper{
   display:flex;
+  flex-wrap: wrap;
   column-gap: 0.5rem;
    width: @max-width;
   max-width: calc(100% - 20px);
@@ -1517,6 +1517,11 @@ function handleJoinClick() {
   background-position-y: bottom;
   background-repeat: no-repeat;
   background-position: contain;
+  
+
+  @media @phone{
+background-size: 40%;
+  }
   
     @media @tablet, @phablet, @phone{
   width: 100%;
