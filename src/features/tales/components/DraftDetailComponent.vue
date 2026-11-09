@@ -46,6 +46,8 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
 
     </div>
 
+    <div class="divider-multi"><span></span></div>
+
     <!-- 3 Core Section Buttons -->
     <div class="draft-detail__menu">
 

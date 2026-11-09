@@ -2,7 +2,7 @@
 export type IconName =
   | 'logo' | 'search' | 'edit' | 'user' | 'maximize' | 'minimize' | 'broken-chain'
   | 'padlock' | 'bookmark' | 'upvote' | 'downvote' | 'share' | 'facebook' | 'twitter'
-  | 'linkedin' | 'email' | 'placeholder' | 'back-arrow' | 'globe' | 'tag' | 'clock'
+  | 'linkedin' | 'email' | 'placeholder' | 'frontarrow' | 'backarrow' | 'globe' | 'tag' | 'clock'
   | 'reply' | 'flag' | 'comment' | 'stats' | 'check' | 'archive' | 'unarchive' | 'uparrow'
   | 'downarrow' | 'inbox' | 'warning' | 'shield' | 'fail' | 'instagram' | 'tiktok'
   | 'whatsapp' | 'telephone' | 'website' | 'filter' | 'google' | 'microsoft' | 'apple' | 'menu'
@@ -249,12 +249,19 @@ const icons: Record<IconName, IconConfig> = {
       { d: 'M21 15l-5-5L5 21' }
     ]
   },
-  'back-arrow': {
+  'backarrow': {
     viewBox: '0 0 24 24',
     fill: 'none',
     stroke: 'currentColor',
     strokeWidth: 1,
     paths: [{ d: 'M15 18L9 12L15 6' }]
+  },
+  'frontarrow': {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [{ d: 'M5 12H19M19 12L12 5M19 12L12 19' }]
   },
   globe: {
     viewBox: '0 0 24 24',

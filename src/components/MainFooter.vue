@@ -116,7 +116,6 @@ function handleSavedDraftsClick() {
       <!-- Bottom Bar: Copyright -->
        <p class="copyright">&copy; {{ currentYear }} OutScribed. All rights reserved.</p>
     </div>
-     
 
     </div>
   </footer>
@@ -128,16 +127,12 @@ function handleSavedDraftsClick() {
 
 
 footer.site-footer {
-  background-color: var(--background-color);
-  background-color: var(--light-background-color);
   background-color: @link-color;
-  color:@white-color;
-  border-top: 1px solid var(--thick-border-color);
+  border-top: 1px solid var(--border-color);
   padding: 2.5rem 0;
   font-size: 0.9rem;
   padding-bottom: 6rem;
-
- 
+  color:@white-color;
 
   .footer-container {
    
@@ -169,7 +164,6 @@ footer.site-footer {
   }
 
   .footer-top {
-    color: @white-color;
     
     display: flex;
 
@@ -177,26 +171,22 @@ footer.site-footer {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid var(--border-color);
+       border-bottom: 1px solid @white-color;
     }
      @media @tablet {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid var(--border-color);
+       border-bottom: 1px solid @white-color;
     }
 
     @media @laptop {
           align-items: stretch;
-
     }
 
      @media @desktop {
          align-items: stretch;
-
     }
-  
-
   }
 
   .brand-block {
@@ -206,18 +196,17 @@ footer.site-footer {
     flex-direction: column;
     margin-bottom: 0.75rem;
     row-gap: 1rem;
-       text-align:center;
-
-    
-
+    text-align:center;
+   
     & h1.logo{
-        text-align:center;
-        color:@white-color;
+      text-align:center;
+      color:@white-color;
+
           & svg{
-      width: 100%;
-      height: auto;
-      fill: @white-color;
-    }
+            width: 100%;
+            height: auto;
+            fill: @white-color;
+          }
     }
       & .icon{
         margin-bottom: 0.5rem;
@@ -230,10 +219,7 @@ footer.site-footer {
 
     &__logo {
       margin-bottom: 0.5rem;
-
-
-     
-    }
+      }
 
     &__tagline {
       font-size: 0.85rem;
@@ -257,7 +243,6 @@ footer.site-footer {
   .footer-nav {
     display: grid;
     gap: 2rem;
-    
 
     @media @smallDevice {
     grid-template-columns: repeat(1, 1fr);
@@ -296,12 +281,12 @@ footer.site-footer {
 
       a, button {
         font-weight: 400;
-       color:@white-color;
         text-decoration: underline;
+        color:@white-color;
 
         &:hover,
         &:focus {
-          color: @link-color;
+          color: @white-color;
            text-decoration: none;
         }
       }
@@ -316,9 +301,9 @@ footer.site-footer {
       font-size: 0.9rem;
       text-align:center;
       margin-top: 2rem;
-         padding-top: 1rem;
-margin-top: 1rem;
-    border-top: 1px solid @white-color;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid @white-color;
     }
 }
 

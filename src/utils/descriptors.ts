@@ -119,6 +119,28 @@ export const AccountStatusClass: Record<AccountStatus, string> = {
   FamilyRelationships: 'Family & Relationships',
   Miscellaneous : 'Miscellaneous'
 } as const;
+
+
+  export const CategoryClasses: Record<Category, string> = {
+  Tributuary: 'tributuary',
+  Reflections: 'reflections',
+  DoomsDay: 'dooms-day',
+  PoliticsGovernance: 'politics-government',
+  SportsGaming: 'sports-gaming',
+  ScienceTechnology: 'science-technology',
+  Education: 'education',
+  BusinessEconomy : 'business-economy',
+  ArtsEntertainment : 'arts-entertainment',
+  MedicineHealthcare: 'medicine-healthcare',
+  LawOrder: 'law-order',
+  SocietalNormsValues: 'societal-norms-values',
+  HistoryCulture: 'history-culture',
+  EnvironmentClimate : 'environment-climate',
+  ReligionSpirituality: 'religion-spirituality',
+  FamilyRelationships: 'family-relationships',
+  Miscellaneous : 'miscellaneous'
+} as const;
+
 export const CategorySummaries: Record<Category, string> = {
   Tributuary:
     'Write a honoring narrative or commentary celebrating a living person’s character, achievements, and impact while they can still read and share it.',

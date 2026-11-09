@@ -8,13 +8,15 @@ import { type TaleListDto } from '@/features/tales/types/TalesTypes';
 // Sub-components & Stores
 import { useModalStore } from '@/stores/modalStore'
 import { mediaHelper } from '@/utils/mediaHelper'
-import { CategoryDescriptions, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
+import { CategoryClasses, CategoryDescriptions, CategorySummaries, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
 import { toRelativeTime } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement';
 import SvgIcons from '@/components/SvgIcons.vue';
 import { useLoginHint } from '@/utils/authHelper'
+import { curateHomepageTales } from '@/utils/curateHomepageTales';
+import TaleDetailComponent from '@/features/tales/components/TaleDetailComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -64,14 +66,38 @@ onUnmounted(() => {
   homepageStore.abort();
 });
 
-// 1. FOCUS TALE: Takes the very first tale in the collection
-const focusTale = computed<TaleListDto | null | undefined>(() => {
-  return homepageStore.tales.length > 0 ? homepageStore.tales[0] : null;
+const homepageLayout = computed(() => {
+  return curateHomepageTales(homepageStore.tales);
 });
 
-// 2. PILL DISPLAY TALES: Slices the rest of the array (from index 1 onward)
-const pillTales = computed<TaleListDto[]>(() => {
-  return homepageStore.tales.length > 1 ? homepageStore.tales.slice(1) : [];
+// Assuming homepageStore.categories is an array of objects like: { name: string, count: number, slug: string }
+const categorizedTales = computed(() => {
+  const categories = [...homepageStore.categories];
+  
+  if (categories.length === 0) return { focusCategory: null, pillCategories: [] };
+
+  // Sort descending by count to find the category with the most tales
+  categories.sort((a, b) => b.talesCounter - a.talesCounter);
+
+  const focusCategory = categories[0];
+  const pillCategories = categories.slice(1, 6); // Takes up to the next 5 top categories as pills
+
+  return { focusCategory, pillCategories };
+});
+
+// Assuming homepageStore.categories is an array of objects like: { name: string, count: number, slug: string }
+const countriesTales = computed(() => {
+  const countries = [...homepageStore.countries];
+  
+  if (countries.length === 0) return { focusCountry: null, pillCountries: [] };
+
+  // Sort descending by count to find the category with the most tales
+  countries.sort((a, b) => b.talesCounter - a.talesCounter);
+
+  const focusCountry = countries[0];
+  const pillCountries = countries.slice(1, 6); // Takes up to the next 5 top categories as pills
+
+  return { focusCountry, pillCountries };
 });
 
 function handleJoinClick() {
@@ -87,11 +113,19 @@ function handleJoinClick() {
 
   <div class="homepage-hero">
 
-    <div class="homepage-hero__container">
+    <div class="homepage-hero__wrapper">
 
+    <div class="homepage-hero__container">
+      
       <h1 class="homepage-hero__title">
         The reality you know is just one version.
       </h1>
+
+      <div class="homepage-hero__image">
+        <p></p>
+        <img src="@/assets/images/icon.png" />
+        <p></p>
+      </div>
       
       <h2 class="homepage-hero__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
@@ -107,12 +141,17 @@ function handleJoinClick() {
         </button>
       </div>
     </div>
+    </div>
+
   </div>
 
   <div class="trending-section">
+
+    <div class="trending-section__wrapper">
+
     <div class="trending-section__header">
-      <SvgIcons name="trending" :size="80" />
-      <h2 class="trending-section__title">Trending On OutScribed</h2>
+      <SvgIcons name="trending" :size="50" />
+      <h2 class="trending-section__title">trending </h2>
     </div>
 
     <div class="trending-section__tags">
@@ -131,385 +170,613 @@ function handleJoinClick() {
         <span class="tag-pill__name">More...</span>
       </RouterLink>
     </div>
-  </div>
-
-  <div class="main-layout">
-    <div class="main-layout__content">
-      <header class="page-header">
-        <h1>Recent Tales</h1>
-        <RouterLink to="/tales" class="btn btn--primary" title="Recent Tales"><span>View All</span></RouterLink>
-      </header>
-
-      <section class="focus-section">
-        <article class="focus-card" v-if="focusTale">
-          <div class="focus-card__content">
-            <div class="tale-card">
-              <h2 class="tale-card__title tale-card__title--large">
-                <RouterLink :to="`/tale/${focusTale.slug}`" class="tale-card__link">{{ focusTale.title }}</RouterLink>
-              </h2>
- 
-              <p class="tale-card__summary tale-card__summary--large">
-                {{ focusTale.summary.length > 500 ? focusTale.summary.substring(0, 500) + '...' : focusTale.summary }}
-              </p>
-
-              <div class="tale-card__meta">
-                <!-- Creator Profile -->
-                <button class="at" @click="modalStore.push('Profile', 'Profile', focusTale.creatorId)">
-                  {{ focusTale.creatorUsername }}
-                </button>
-                
-                <span class="divider divider--circle"></span>
-                
-                <!-- Relative Time -->
-                <time class="tale-card__date">{{ toRelativeTime(focusTale.createdAt) }}</time>
-                
-                <span class="divider divider--circle"></span>
-                
-                <!-- Reading Time -->
-                <span class="tale-card__read-time">{{ focusTale.readingTime }} Min Read</span>
-
-                <span class="divider divider--circle"></span>
-
-                <!-- Category Filter Link -->
-                <RouterLink 
-                  :to="`/tales?category=${focusTale.category}`" 
-                  class="tale-card__meta-link"
-                  :title="`View all ${CategoryDescriptions[focusTale.category]} tales`"
-                >
-                  {{ CategoryDescriptions[focusTale.category] }}
-                </RouterLink>
-                
-                <span class="divider divider--circle"></span>
-
-              <!-- Country Filter Link (with Flag Emoji) -->
-              <RouterLink 
-                :to="`/tales?country=${focusTale.country}`" 
-                class="tale-card__meta-link tale-card__meta-link--country"
-                :title="`View all tales from ${CountryDescriptions[focusTale.country]}`"
-              >
-                <span class="tale-card__flag">{{ CountryFlags(focusTale.country) }}</span>
-                <span v-if="focusTale.country != 'ZZ'" class="tale-card__country-name">{{ focusTale.country }}</span>
-                <span v-else class="tale-card__country-name">Global</span>
-
-              </RouterLink>
-              </div>
-      
-              <footer class="tale-card__footer">
-                <button 
-                  class="tale-card__save-btn"
-                  @click="engage.favorite(focusTale.engagement)"
-                  :title="focusTale.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-                >
-                  <SvgIcons name="bookmark" /> 
-                  <span>Add to Favorites</span>
-                </button>
-                <RouterLink class="btn btn--secondary" :to="`/tale/${focusTale.slug}`">View Tale</RouterLink>
-              </footer>
-            </div>
-          </div>
-
-          <div class="focus-card__media">
-            <img 
-              :src="mediaHelper.getUrl(focusTale.photo, 'tales', 'full') || undefined" 
-              :alt="focusTale.title" 
-              class="focus-card__image"
-            />
-          </div>
-        </article>
-      </section>
-
-      <div class="tales-grid">
-        <article v-for="tale in pillTales" :key="tale.taleId" class="grid-card">
-          <div class="grid-card__inner">
-            <div class="grid-card__media-wrap">
-              <img 
-                :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb') || undefined" 
-                :alt="tale.title" 
-                class="grid-card__image"
-              />
-            </div>
-            <div class="grid-card-body">
-              <div class="tale-card">
-                <h2 class="tale-card__title tale-card__title--small">
-                  <RouterLink :to="`/tale/${tale.slug}`" class="tale-card__link">{{ tale.title }}</RouterLink>
-                </h2>
- 
-                <p class="tale-card__summary tale-card__summary--small">
-                  {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
-                </p>
-
-                 <div class="tale-card__meta">
-                <!-- Creator Profile -->
-                <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
-                  {{ tale.creatorUsername }}
-                </button>
-                
-                <span class="divider divider--circle"></span>
-                
-                <!-- Relative Time -->
-                <time class="tale-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
-                
-                <span class="divider divider--circle"></span>
-                
-                <!-- Reading Time -->
-                <span class="tale-card__read-time">{{ tale.readingTime }} Min Read</span>
-
-                <span class="divider divider--circle"></span>
-
-                   <!-- Category Filter Link -->
-                <RouterLink 
-                  :to="`/tales?category=${tale.category}`" 
-                  class="tale-card__meta-link"
-                  :title="`View all ${CategoryDescriptions[tale.category]} tales`"
-                >
-                  {{ CategoryDescriptions[tale.category] }}
-                </RouterLink>
-                
-                <span class="divider divider--circle"></span>
-                              
-              <!-- Country Filter Link (with Flag Emoji) -->
-                <RouterLink 
-                  :to="`/tales?country=${tale.country}`" 
-                  class="tale-card__meta-link tale-card__meta-link--country"
-                  :title="`View all tales from ${CountryDescriptions[tale.country]}`"
-                >
-                  <span class="tale-card__flag">{{ CountryFlags(tale.country) }}</span>
-                  <span v-if="tale.country != 'ZZ'" class="tale-card__country-name">{{ tale.country }}</span>
-                   <span v-else class="tale-card__country-name">Global</span>
-                </RouterLink>
-
-              </div>
-      
-                <footer class="tale-card__footer">
-                  <button 
-                    class="tale-card__save-btn"
-                    @click="engage.favorite(tale.engagement)"
-                    :title="tale.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-                  >
-                    <SvgIcons name="bookmark" /> 
-                    <span>Add to Favorites</span>
-                  </button>
-                  <RouterLink class="btn btn--secondary" :to="`/tale/${tale.slug}`">View Tale</RouterLink>
-                </footer>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
     </div>
 
-    <aside class="sidebar">
-      <!-- Top Categories -->
-      <div class="sidebar-block">
-        <header class="sidebar-block__header">Top Categories</header>
-        <div class="sidebar-block__content">
-          <article v-for="category in homepageStore.categories" :key="category.category" class="discovery-card">
-            <h3 class="discovery-card__title">
-              <span class="discovery-card__symbol">#</span>{{ CategoryDescriptions[category.category] }}
-            </h3>
-            <div class="discovery-card__actions">
-              <RouterLink 
-                :to="`/tales?category=${category.category}`" 
-                class="discovery-card__link" 
-                :class="{ 'discovery-card__link--disabled': category.talesCounter === 0 }"
-                title="Filter Tales"
-              >
-                <span class="discovery-card__metric">{{ formatCounts(category.talesCounter) }}</span>
-                <span class="discovery-card__label">Tales&rarr;</span>
-              </RouterLink>
-              <button 
-                type="button" 
-                class="btn btn--primary btn--outscribe"
-                @click="modalStore.push('CreateTale', 'Create Tale', { category: category.category })"
-                title="OutScribe a new tale"
-              >
-                OutScribe
-              </button>
-            </div>
-          </article>
-        </div>
-        <footer class="sidebar-block__footer">
-          <RouterLink to="/categories" class="sidebar-block__footer-link">See All Categories</RouterLink>
-        </footer>
-      </div>
-
-      <!-- Top Countries -->
-      <div class="sidebar-block">
-        <header class="sidebar-block__header">Top Countries</header>
-        <div class="sidebar-block__content">
-          <article v-for="country in homepageStore.countries" :key="country.country" class="discovery-card">
-            <h3 class="discovery-card__title">
-              <span class="discovery-card__symbol">#</span>{{ CountryDescriptions[country.country] }}
-            </h3>
-            <div class="discovery-card__actions">
-              <RouterLink 
-                :to="`/tales?country=${country.country}`" 
-                class="discovery-card__link" 
-                :class="{ 'discovery-card__link--disabled': country.talesCounter === 0 }"
-                title="Filter Tales"
-              >
-                <span class="discovery-card__metric">{{ formatCounts(country.talesCounter) }}</span>
-                <span class="discovery-card__label">Tales&rarr;</span>
-              </RouterLink>
-              <button 
-                type="button"
-                class="btn btn--primary btn--outscribe" 
-                @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
-              >
-                OutScribe
-              </button>
-            </div>
-          </article>
-        </div>
-        <footer class="sidebar-block__footer">
-          <RouterLink to="/countries" class="sidebar-block__footer-link">See All Countries</RouterLink>
-        </footer>
-      </div>
-
-      <!-- Writers -->
-      <div class="sidebar-block">
-        <header class="sidebar-block__header sidebar-block__header--writers">
-          <span>Writers</span>
-          <div class="sidebar-block__selector">
-            <button class="sidebar-block__tab" :class="{ 'sidebar-block__tab--active': isRecent }" :aria-pressed="isRecent" @click="isRecent = true">Recent</button>
-            <button class="sidebar-block__tab" :class="{ 'sidebar-block__tab--active': !isRecent }" :aria-pressed="!isRecent" @click="isRecent = false">Popular</button>
-          </div>
-        </header>
-
-        <div class="sidebar-block__content">
-          <template v-if="isRecent">
-            <article 
-              v-for="writer in homepageStore.newWriters" 
-              :key="writer.creator.accountId" 
-              :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-              :class="{ 'discovery-card--disabled': getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled }"
-              @click="!getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled && engage.favorite(writer.creator.engagement)"
-              class="discovery-card"
-            >
-              <h3 class="discovery-card__title discovery-card__title--author">{{ writer.creator.username }}</h3>
-              <div class="discovery-card__actions">
-                <RouterLink 
-                  :to="`/tales?username=${writer.creator.username}`" 
-                  class="discovery-card__link" 
-                  :class="{ 'discovery-card__link--disabled': writer.creator.talesCount === 0 }"
-                  title="Filter Tales"
-                >
-                  <span class="discovery-card__metric">{{ formatCounts(writer.creator.talesCount) }}</span>
-                  <span class="discovery-card__label">Tales&rarr;</span>
-                </RouterLink>
-                <button 
-                  type="button" 
-                  class="btn btn--primary btn--outscribe"
-                  :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-                  @click.stop="engage.favorite(writer.creator.engagement)"
-                >
-                  {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
-                </button>
-              </div>
-            </article>
-          </template>
-
-          <template v-else>
-            <article 
-              v-for="writer in homepageStore.prolificWriters" 
-              :key="writer.creator.accountId" 
-              :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-              :class="{ 'discovery-card--disabled': getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled }"
-              @click="!getEngagementMetadata(writer.creator.engagement).isFavoriteDisabled && engage.favorite(writer.creator.engagement)"
-              class="discovery-card"
-            >
-              <h3 class="discovery-card__title discovery-card__title--author">{{ writer.creator.username }}</h3>
-              <div class="discovery-card__actions">
-                <RouterLink 
-                  :to="`/tales?username=${writer.creator.username}`" 
-                  class="discovery-card__link" 
-                  :class="{ 'discovery-card__link--disabled': writer.creator.talesCount === 0 }"
-                  title="Filter Tales"
-                >
-                  <span class="discovery-card__metric">{{ formatCounts(writer.creator.talesCount) }}</span>
-                  <span class="discovery-card__label">Tales&rarr;</span>
-                </RouterLink>
-                <button 
-                  type="button" 
-                  class="btn btn--primary"
-                  :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-                  @click.stop="engage.favorite(writer.creator.engagement)"
-                >
-                  {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
-                </button>
-              </div>
-            </article>
-          </template>
-        </div>
- 
-        <footer class="sidebar-block__footer">
-          <RouterLink to="/writers" class="sidebar-block__footer-link">See All Writers</RouterLink>
-        </footer>
-      </div>
-    </aside>
   </div>
 
+  <header class="homepage-header">
+    <h2 class="homepage-header__title">
+      Recent Tales
+    </h2>
+    <div class="homepage-header__lines">
+      <p class="homepage-header__lines--item"></p>
+      <p class="homepage-header__lines--item"></p>
+    </div>
+              <RouterLink to="/tales"  class="btn btn--primary">
+                Explore Tales
+              </RouterLink>
+            </header>
+
+  <div class="homepage-layout" v-if="homepageLayout.focus">
+
+    <!-- ==========================================
+         MAIN LEFT REGION (75% on Desktop)
+         ========================================== -->
+    <div class="homepage-layout__main">
+
+      <!-- 1. FOCUS TALE (Must have image) -->
+      <article class="tale-hero">
+        <div class="tale-hero__content">
+            <p  class="categories">
+            <RouterLink :to="`/tales?category=${homepageLayout.focus.category}`"
+             :class="`categories__${CategoryClasses[homepageLayout.focus.category]}`">
+              <span>{{ CategoryDescriptions[homepageLayout.focus.category] }}</span>
+            </RouterLink>
+          </p>
+          <h1 class="tale-hero__title">
+            <RouterLink :to="`/tale/${homepageLayout.focus.slug}`">{{ homepageLayout.focus.title }}</RouterLink>
+          </h1>
+          <p class="tale-hero__summary">{{ homepageLayout.focus.summary }}</p>
+          <div class="tale-hero__meta">
+            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+            <span class="divider divider--circle"></span>
+            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <span class="divider divider--circle"></span>
+             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+            <span class="divider divider--circle"></span>
+            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
+              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
+              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            </RouterLink>
+
+          </div>
+           <footer class="tale-footer">
+            <RouterLink  class="tale-footer__read" :to="`/tale/${homepageLayout.focus.slug}`">Read&rarr;</RouterLink>
+            <button class="tale-footer__save" @click="engage.favorite(homepageLayout.focus.engagement)">
+              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
+            </button>
+          </footer>
+        </div>
+        <div v-if="homepageLayout.focus.photo" class="tale-hero__media">
+          <img :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
+        </div>
+      </article>
+
+      <!-- 3. NONES STRIP (3 items - Enforces All-or-Nothing images Symmetry) -->
+      <div class="tale-strip">
+      <article 
+    v-for="tale in homepageLayout.nones" 
+    :key="tale.taleId" 
+    class="tale-strip__card"
+  >
+    <!-- Renders image only if ALL nones have images; otherwise hidden for uniform text layout -->
+    <div v-if="tale.photo" class="tale-strip__media">
+      <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+    </div>
+    <div class="tale-strip__content">
+       <p  class="categories">
+            <RouterLink :to="`/tales?category=${tale.category}`"
+             :class="`categories__${CategoryClasses[tale.category]}`">
+              <span>{{ CategoryDescriptions[tale.category] }}</span>
+            </RouterLink>
+          </p>
+      <h3 class="tale-strip__title">
+        <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
+      </h3>
+      <p class="tale-strip__summary">{{ tale.summary }}</p>
+        <div class="tale-strip__meta">
+            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+            <span class="divider divider--circle"></span>
+            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <span class="divider divider--circle"></span>
+             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+            <span class="divider divider--circle"></span>
+            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
+              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
+              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            </RouterLink>
+          </div>
+            <footer class="tale-footer">
+            <RouterLink  class="tale-footer__read" :to="`/tale/${tale.slug}`">Read&rarr;</RouterLink>
+            <button class="tale-footer__save" @click="engage.favorite(tale.engagement)">
+              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
+            </button>
+          </footer>
+      </div>
+      </article>
+      </div>
+
+      <!-- ANCHOR REGION (Sub-Focus + Sub-Focus Sidebars) -->
+      <div class="tale-anchor">
+
+        <!-- 4. SUB-FOCUS (Must have image) -->
+        <article v-if="homepageLayout.subfocus" class="tale-subfocus">
+          <div class="tale-subfocus__media">
+            <img :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
+          </div>
+              <p  class="categories">
+            <RouterLink :to="`/tales?category=${homepageLayout.subfocus.category}`"
+             :class="`categories__${CategoryClasses[homepageLayout.subfocus.category]}`">
+              <span>{{ CategoryDescriptions[homepageLayout.subfocus.category] }}</span>
+            </RouterLink>
+          </p>
+          <div class="tale-subfocus__content">
+            
+            <h3 class="tale-subfocus__title">
+              <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`">{{ homepageLayout.subfocus.title }}</RouterLink>
+            </h3>
+          
+          <p class="tale-subfocus__summary">{{ homepageLayout.subfocus.summary }}</p>
+          <div class="tale-subfocus__meta">
+            <span class="at">{{ homepageLayout.subfocus.creatorUsername }}</span>
+            <span class="divider divider--circle"></span>
+            <time>{{ toRelativeTime(homepageLayout.subfocus.createdAt) }}</time>
+            <span class="divider divider--circle"></span>
+             <span>{{ homepageLayout.subfocus.readingTime }} Min Read</span>
+            <span class="divider divider--circle"></span>
+            <RouterLink :to="`/tales?country=${homepageLayout.subfocus.country}`">
+              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
+              <span>{{ homepageLayout.subfocus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            </RouterLink>
+
+          </div>
+            <footer class="tale-footer">
+            <RouterLink  class="tale-footer__read" :to="`/tale/${homepageLayout.subfocus.slug}`">Read&rarr;</RouterLink>
+            <button class="tale-footer__save" @click="engage.favorite(homepageLayout.subfocus.engagement)">
+              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
+            </button>
+          </footer>
+          </div>
+        </article>
+
+        <!-- 5. SUB-FOCUS SIDEBARS (2 items) -->
+        <div class="tale-subside-group">
+          <article 
+            v-for="tale in homepageLayout.subside" 
+            :key="tale.taleId" 
+            class="tale-subside"
+          >
+            <div v-if="tale.photo" class="tale-subside__media">
+              <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+            </div>
+            <div class="tale-subside__content">
+               <p  class="categories">
+                <RouterLink :to="`/tales?category=${tale.category}`"
+                :class="`categories__${CategoryClasses[tale.category]}`">
+                  <span>{{ CategoryDescriptions[tale.category] }}</span>
+                </RouterLink>
+              </p>
+              <h4 class="tale-subside__title">
+                <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
+              </h4>
+              <p class="tale-subside__summary">{{ tale.summary }}</p>
+                <div class="tale-subside__meta">
+            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+            <span class="divider divider--circle"></span>
+            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <span class="divider divider--circle"></span>
+             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+            <span class="divider divider--circle"></span>
+            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
+              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
+              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            </RouterLink>
+
+          </div>
+           <footer class="tale-footer">
+            <RouterLink  class="tale-footer__read" :to="`/tale/${tale.slug}`">Read&rarr;</RouterLink>
+            <button class="tale-footer__save" @click="engage.favorite(tale.engagement)">
+              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
+            </button>
+          </footer>
+            </div>
+          </article>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==========================================
+         RIGHT SIDEBAR REGION (25% on Desktop - 3 items)
+         ========================================== -->
+    <aside class="homepage-layout__sidebar">
+      <article 
+        v-for="tale in homepageLayout.sidebar" 
+        :key="tale.taleId" 
+        class="tale-sidebar"
+      >
+        <div v-if="tale.photo" class="tale-sidebar__media">
+          <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+        </div>
+        <div class="tale-sidebar__content">
+           <p  class="categories">
+            <RouterLink :to="`/tales?category=${tale.category}`"
+             :class="`categories__${CategoryClasses[tale.category]}`">
+              <span>{{ CategoryDescriptions[tale.category] }}</span>
+            </RouterLink>
+          </p>
+          <h4 class="tale-sidebar__title">
+            <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
+          </h4>
+           <p class="tale-sidebar__summary">{{ tale.summary }}</p>
+        <div class="tale-sidebar__meta">
+            <span class="at">{{ homepageLayout.focus.creatorUsername }}</span>
+            <span class="divider divider--circle"></span>
+            <time>{{ toRelativeTime(homepageLayout.focus.createdAt) }}</time>
+            <span class="divider divider--circle"></span>
+             <span>{{ homepageLayout.focus.readingTime }} Min Read</span>
+            <span class="divider divider--circle"></span>
+            <RouterLink :to="`/tales?country=${homepageLayout.focus.country}`">
+              <span>{{ CountryFlags(homepageLayout.focus.country) }}</span>
+              <span>{{ homepageLayout.focus.country !== 'ZZ' ? homepageLayout.focus.country : 'Global' }}</span>
+            </RouterLink>
+
+          </div>
+            <footer class="tale-footer">
+            <RouterLink  class="tale-footer__read" :to="`/tale/${tale.slug}`">Read&rarr;</RouterLink>
+            <button class="tale-footer__save" @click="engage.favorite(tale.engagement)">
+              <SvgIcons name="bookmark" /> <span>Add to Favorites</span>
+            </button>
+          </footer>
+        </div>
+      </article>
+    </aside>
+
+  </div>
+
+  
+  <header class="homepage-header">
+    <h2 class="homepage-header__title">
+      Top Categories
+    </h2>
+    <div class="homepage-header__lines">
+      <p class="homepage-header__lines--item"></p>
+      <p class="homepage-header__lines--item"></p>
+    </div>
+              <RouterLink to="/categories"  class="btn btn--primary">
+                Explore Categories
+              </RouterLink>
+            </header>
+
+
+  <div class="homepage-discoveries" v-if="categorizedTales.focusCategory">
+  
+  <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
+
+  <div class="homepage-discoveries__focus">
+    
+      <article class="discovery-card discovery-card--focus">
+
+          <h3 class="discovery-card__title discovery-card__title--focus">
+
+            <span class="hash">#</span>{{ CategoryDescriptions[categorizedTales.focusCategory.category] }}
+            </h3>
+
+            <p class="discovery-card__summary discovery-card__summary--focus">
+              {{ CategorySummaries[categorizedTales.focusCategory.category] }}
+            </p>
+
+              <div class="discovery-card__actions discovery-card__actions--focus">
+
+                    <button 
+                        type="button" 
+                        class="btn btn--primary btn--outscribe"
+                        @click="modalStore.push('CreateTale', 'Create Tale', { category: categorizedTales.focusCategory.category })"
+                        title="OutScribe a new tale"
+                      >
+                      OutScribe
+                      </button>
+                       <RouterLink 
+                    :to="`/tales?category=${categorizedTales.focusCategory.category}`" 
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': categorizedTales.focusCategory.talesCounter === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(categorizedTales.focusCategory.talesCounter) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
+
+              </div>
+
+      </article>
+ 
+
+  </div>
+
+   <div class="homepage-discoveries__pills">
+
+       <article 
+          v-for="pill in categorizedTales.pillCategories" 
+          :key="pill.category"
+          class="discovery-card discovery-card--pill">
+
+          <h3 class="discovery-card__title discovery-card__title--pill">
+
+            <span class="hash">#</span>{{ CategoryDescriptions[pill.category] }}
+            </h3>
+
+            <p class="discovery-card__summary discovery-card__summary--pill">
+              {{ CategorySummaries[pill.category] }}
+            </p>
+
+              <div class="discovery-card__actions discovery-card__actions--pill">
+                 
+                    <button 
+                        type="button" 
+                        class="btn btn--primary btn--outscribe"
+                        @click="modalStore.push('CreateTale', 'Create Tale', { category: pill.category })"
+                        title="OutScribe a new tale"
+                      >
+                      OutScribe
+                      </button>
+                        <RouterLink 
+                    :to="`/tales?category=${pill.category}`" 
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': pill.talesCounter === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(pill.talesCounter) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
+
+              </div>
+
+      </article>
+    
+  </div>
+
+  
+ 
+</div>
+
+
+ <header class="homepage-header">
+    <h2 class="homepage-header__title">
+      Top Countries
+    </h2>
+    <div class="homepage-header__lines">
+      <p class="homepage-header__lines--item"></p>
+      <p class="homepage-header__lines--item"></p>
+    </div>
+              <RouterLink to="/countries"  class="btn btn--primary">
+                Explore Countries
+              </RouterLink>
+            </header>
+
+  <div class="homepage-discoveries" v-if="countriesTales.focusCountry">
+  
+  <!-- 1. FOCUS COUNTRY (Most tales - styled prominently) -->
+
+  <div class="homepage-discoveries__focus">
+    
+      <article class="discovery-card discovery-card--focus">
+
+          <h3 class="discovery-card__title discovery-card__title--focus">
+
+            <span class="flag">{{ CountryFlags(countriesTales.focusCountry.country) }}</span>{{ CountryDescriptions[countriesTales.focusCountry.country] }}
+
+            </h3>
+
+              <div class="discovery-card__actions discovery-card__actions--focus">
+
+                    <button 
+                        type="button" 
+                        class="btn btn--primary btn--outscribe"
+                        @click="modalStore.push('CreateTale', 'Create Tale', { country: countriesTales.focusCountry.country })"
+                        title="OutScribe a new tale"
+                      >
+                      OutScribe
+                      </button>
+                       <RouterLink 
+                    :to="`/tales?country=${countriesTales.focusCountry.country}`" 
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': countriesTales.focusCountry.talesCounter === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(countriesTales.focusCountry.talesCounter) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
+
+              </div>
+
+      </article>
+ 
+
+  </div>
+
+   <div class="homepage-discoveries__pills">
+
+       <article 
+          v-for="pill in countriesTales.pillCountries" 
+          :key="pill.country"
+          class="discovery-card discovery-card--pill">
+
+          <h3 class="discovery-card__title discovery-card__title--pill">
+
+            <span class="flag">{{ CountryFlags(pill.country) }}</span>{{ CountryDescriptions[pill.country] }}
+            </h3>
+
+              <div class="discovery-card__actions discovery-card__actions--pill">
+                 
+                    <button 
+                        type="button" 
+                        class="btn btn--primary btn--outscribe"
+                        @click="modalStore.push('CreateTale', 'Create Tale', { country: pill.country })"
+                        title="OutScribe a new tale"
+                      >
+                      OutScribe
+                      </button>
+                        <RouterLink 
+                    :to="`/tales?country=${pill.country}`" 
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': pill.talesCounter === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(pill.talesCounter) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
+
+              </div>
+
+      </article>
+    
+  </div>
+ 
+</div>
+
+
+  <header class="homepage-header">
+    <h2 class="homepage-header__title">
+      Top / Recent Writers
+    </h2>
+    <div class="homepage-header__lines">
+      <p class="homepage-header__lines--item"></p>
+      <p class="homepage-header__lines--item"></p>
+    </div>
+              <RouterLink to="/writers"  class="btn btn--primary">
+                Explore Writers
+              </RouterLink>
+            </header>
+
+
+  <div class="homepage-writers">
+  
+   <div class="homepage-writers__pills">
+
+       <article 
+          v-for="writer in homepageStore.prolificWriters" 
+          :key="writer.creator.accountId"
+          class="discovery-card discovery-card--pill">
+
+          <h3 class="discovery-card__title discovery-card__title--pill at">
+             {{ writer.creator.username }}
+            </h3>
+
+              <div class="discovery-card__actions discovery-card__actions--pill">
+                 
+                    <button 
+                      type="button" 
+                      class="btn btn--primary btn--is-outscribe"
+                      :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+                      @click="engage.favorite(writer.creator.engagement)"
+                    >
+                    {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
+                    </button>
+                        <RouterLink 
+                    :to="`/tales?username=${writer.creator.username}`" 
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': writer.creator.talesCount === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
+
+              </div>
+
+      </article>
+    
+  </div>
+  
+   <div class="homepage-writers__pills">
+
+       <article 
+          v-for="writer in homepageStore.newWriters" 
+          :key="writer.creator.accountId"
+          class="discovery-card discovery-card--pill">
+
+          <h3 class="discovery-card__title discovery-card__title--pill at">
+             {{ writer.creator.username }}
+            </h3>
+
+              <div class="discovery-card__actions discovery-card__actions--pill">
+                 
+                    <button 
+                      type="button" 
+                      class="btn btn--primary btn--is-outscribe"
+                      :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+                      @click="engage.favorite(writer.creator.engagement)"
+                    >
+                    {{ getEngagementMetadata(writer.creator.engagement).favoriteAltText }}
+                    </button>
+                        <RouterLink 
+                    :to="`/tales?username=${writer.creator.username}`" 
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': writer.creator.talesCount === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(writer.creator.talesCount) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
+
+              </div>
+
+      </article>
+    
+  </div>
+ 
+</div>
+
   <div class="roadmap-section">
-    <div class="roadmap-section__container">
-      <div class="roadmap-section__header">
-        <h3 class="roadmap-section__title">From Guest to OutScriber</h3>
+
+     <div class="roadmap-section__image-wrapper">
+
+      <div class="roadmap-section__image">
+      <img src="@/assets/images/writing-girl.png" />
+     
+      </div>
+
+        <div class="roadmap-section__header">
+        <h3 class="roadmap-section__title">Guest <SvgIcons name="frontarrow" :size=30 /> OutScriber</h3>
         <p class="roadmap-section__subtitle">
-          Start <button type="button" class="roadmap-section__action-trigger" @click="handleCreateDraftClick">OutScribing</button> in quick, simple steps.
+          Share your alternate realities. <br /> Start <button type="button" @click="handleCreateDraftClick">OutScribing</button> in quick, simple steps.
         </p>
       </div>
 
-      <div class="roadmap-section__grid">
-        <div class="roadmap-card roadmap-card--step-one">
-          <span class="roadmap-card__number">01</span>
-          <div class="roadmap-card__content">
+    </div>
+
+     <div class="roadmap-section__steps">
+
+         <div class="roadmap-card">
             <h4 class="roadmap-card__heading">Sign Up</h4>
-            <p class="roadmap-card__description">Easily verify your identity via Google, Microsoft, Apple, or an email security token.</p>
+            <ul class="roadmap-card__content">
+              <li>
+                Create a new account via Google, Microsoft, Apple, or an email security token.
+              </li>
+              <li>
+                Choose your unique OutScribed handle and password.
+              </li>
+              <li>
+                Agree to platform's legal & structural statements with a single check.
+              </li>
+            </ul>
           </div>
-        </div>
 
-        <div class="roadmap-card roadmap-card--step-two">
-          <span class="roadmap-card__number">02</span>
-          <div class="roadmap-card__content">
-            <h4 class="roadmap-card__heading">Choose Handle</h4>
-            <p class="roadmap-card__description">Choose your unique OutScribed username and secure password to access your account.</p>
-          </div>
-        </div>
-
-        <div class="roadmap-card roadmap-card--step-three">
-          <span class="roadmap-card__number">03</span>
-          <div class="roadmap-card__content">
-            <h4 class="roadmap-card__heading">Acknowledgement</h4>
-            <p class="roadmap-card__description">Agree to platform publishing guidelines with a single check.</p>
-          </div>
-        </div>
-
-        <div class="roadmap-card roadmap-card--step-four">
-          <span class="roadmap-card__number">04</span>
-          <div class="roadmap-card__content">
-            <h4 class="roadmap-card__heading">Create A Draft</h4>
-            <p class="roadmap-card__description">Get started with your story by selecting a category and a befitting title.</p>
-          </div>
-        </div>
-
-        <div class="roadmap-card roadmap-card--step-five">
-          <span class="roadmap-card__number">05</span>
-          <div class="roadmap-card__content">
+          <div class="roadmap-card">
             <h4 class="roadmap-card__heading">Build Story</h4>
-            <p class="roadmap-card__description">Use a rich text editor to write story. Complete basic information, reality check, and optional photo & tags.</p>
-          </div>
-        </div>
+            <ul class="roadmap-card__content">
+              <li>
+                Create a story draft with a title and category.
+              </li>
+              <li>
+                Move over to the <strong>Editor</strong> to write your story.
+              </li>
+              <li>
+                Complete story's basic information, reality check, and optional photo & tags.
+              </li>
+            </ul>          </div>
 
-        <div class="roadmap-card roadmap-card--step-six">
-          <span class="roadmap-card__number">06</span>
-          <div class="roadmap-card__content">
-            <h4 class="roadmap-card__heading">Go Live & Engage</h4>
-            <p class="roadmap-card__description">Launch your tale to the network and start inviting others to experience your world!</p>
+         <div class="roadmap-card">
+            <h4 class="roadmap-card__heading">Go Live</h4>
+             <ul class="roadmap-card__content">
+              <li>
+                Preview yoru story to ensure all Ts are crossed and Is dotted.
+              </li>
+              <li>
+                Publish your story to the world with a single click.
+              </li>
+              <li>
+                Invite others to read, rate, & join discussion threads via social networks and email.
+              </li>
+            </ul>
           </div>
-        </div>
+
+
+
       </div>
 
-      <div class="roadmap-section__footer">
-        <span class="roadmap-section__prompt">Ready?</span>
+        <div class="roadmap-section__footer">
         <button 
           type="button" 
           class="btn btn--secondary btn--prominent"
@@ -518,12 +785,43 @@ function handleJoinClick() {
           Start here
         </button>
       </div>
-    </div>
+
+
   </div>
+
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
+
+   .homepage-header{
+    width: @max-width;
+    max-width: calc(100% - 20px);
+    margin: 0 auto 1rem auto;
+    padding: 1rem 0;
+    display: flex;
+    align-items:center;
+
+    &__title{
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    &__lines{
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.2rem;
+      justify-content: center;
+      flex-grow: 1;
+      margin: 0 0.5rem;
+
+      &--item{
+        height: 1px;
+        background-color: var(--border-color);
+        width: 100%;
+      }
+    }
+   }
 
 /* ==========================================================================
    1. HOMEPAGE HERO (Mesh Gradient Header)
@@ -532,26 +830,31 @@ function handleJoinClick() {
   width: 100%;
   height: auto;
   position: relative;
-  justify-content: center;
-  display: flex;
-  align-items: center;
+ 
   margin-top: -1px;
   background-color: @link-color;
   padding: 1rem;
   margin-bottom: 1rem;
+  color:@white-color;
+ 
+  &__wrapper{
+    width: @max-width;
+    max-width: calc(100% - 20px);
+     justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  }
  
   &__container {
     position: relative;
     height: auto;
     z-index: 1;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    text-align: center;
-    max-width: 100%;
-    color: @white-color;
+    //text-align: center;
   
       padding: 2rem 0;
 
@@ -562,13 +865,38 @@ function handleJoinClick() {
         @media @largeDevice {
           width: 550px;
         }
-
   }
 
+  &__image{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    margin: 0.5rem 0;
+    width:100%;
+
+    & p{ 
+      flex-grow: 1;
+      height: 2px;
+      background-color: @white-color;
+    }
+
+    & img{
+     
+      height: auto;
+      margin: 0 0.5rem;
+
+      @media @smallDevice {
+        width: 2.5rem;
+      }
+       @media @largeDevice {
+        width: 3rem;
+      }
+    }
+  }
+  
   &__title {
     font-weight: 600;
     text-transform: uppercase;
-    margin-bottom: 1rem;
     text-align: center;
 
     @media @phone {
@@ -580,8 +908,8 @@ function handleJoinClick() {
       line-height: 2.4rem;
     }
     @media @largeDevice {
-      font-size: 2.8rem;
-      line-height: 3rem;
+      font-size: 2.6rem;
+      line-height: 2.8rem;
     }
   }
 
@@ -591,62 +919,77 @@ function handleJoinClick() {
     line-height: clamp(1.4rem, 1.2vw + 1rem, 1.5rem);
     margin-bottom: 0.75rem;
     text-align: center;
-     margin-bottom: 1rem;
+    margin-bottom: 1rem;
+    font-family: Inter, sans-serif;
   }
 
   &__cta-group {
     display: flex;
     justify-content: center;
     column-gap: 0.25rem;
-    width: auto;
+    width: 100%;
   }
 
   &__cta {
-    height: 3rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     padding: 0 1rem;
     font-weight: normal;
     text-transform: capitalize;
-    font-size: clamp(1rem, 1.2vw + 1rem, 1.2rem);
-    font-weight:600;
+    font-size: clamp(0.9rem, 0.95vw + 1rem, 1rem);
+    font-weight:700;
     color: @white-color;
+    //border: 2px solid @link-alt-color;
 
-    &--about {
-     background-color: @link-alt-color;
+    &--join {
+     background-color:@link-alt-color;
+     border-color:@link-alt-color;
 
       &:hover {
-       background-color: lighten(@link-alt-color, 5%);
+        background-color: darken(#00a0ff, 5%);
         color: @white-color;
       }
     }
    
-    &--join {
-      background-color: @logo-red;
+    &--about {
+      background-color:@white-color;
+      color:@link-color;
 
       &:hover {
-        background-color: lighten(@logo-red, 5%);
-         color: @white-color;
+         background-color: var(--light-background-color);
+        color:@link-color;
       }
     }
   }
 }
 
+
 /* ==========================================================================
    2. TRENDING SECTION
    ================================================================---------- */
+
 .trending-section {
-  width: @max-width;
+  width: 100%;
+  margin: 1rem 0 2rem 0;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--border-color);
+  
+
+  &__wrapper{
+  display:flex;
+  column-gap: 0.5rem;
+   width: @max-width;
   max-width: calc(100% - 20px);
-  margin: 1rem auto 2rem auto;
+  margin: 0 auto;
+  }
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    margin-bottom: 0.75rem;
     color: @red-color;
+    column-gap: 0.25rem;
   }
 
   &__title {
@@ -668,7 +1011,7 @@ function handleJoinClick() {
   align-items: center;
   column-gap: 0.25rem;
   padding: 0.5rem 0.75rem;
-  background-color: var(--light-background-color);
+  //background-color: var(--light-background-color);
   border: 1px solid var(--border-color);
   color: var(--muted-text-color);
   font-size: 0.9rem;
@@ -678,7 +1021,7 @@ function handleJoinClick() {
   text-decoration: none;
 
   &:hover {
-    background-color: var(--background-color);
+    background-color: var(--light-background-color);
     color: @link-color;
   }
 
@@ -698,565 +1041,788 @@ function handleJoinClick() {
 }
 
 /* ==========================================================================
-   3. MAIN LAYOUT CONTAINER & SIDEBAR
+   3. HOMEPAGE TALES LAYOUT (Card-Level Centralization & Dimension Caps)
    ================================================================---------- */
-.main-layout {
-  width: @max-width;
-  max-width: calc(100% - 20px);
-  margin: 2rem auto;
 
-  @media @largeDevice {
-    display: flex;
+.homepage-layout {
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  max-width: calc(100% - 20px);
+  margin-bottom: 3rem;
+
+  /* Device Max-Width Peaks & Container Centralization */
+  @media @phone {
+    width: @min-width;
+    flex-direction: column;
   }
 
-  &__content {
-    @media @smallDevice {
+  @media @tablet, @phablet {
+    width: @mid-width;
+    flex-direction: column;
+  }
+
+  @media @laptop, @desktop {
+    width: @max-width;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+
+    @media @tablet, @phablet, @phone {
+      width: 100%;
+      gap: 1.5rem;
+    }
+
+    @media @desktop, @laptop {
+      width: 75%;
+      gap: 4rem; 
+    }
+  }
+
+  &__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    @media @tablet, @phablet, @phone {
       width: 100%;
     }
-    @media @tablet {
-      border-right: 1px solid var(--border-color);
-      padding-right: 1rem;
-      width: 64%;
-    }
-    @media @laptop {
-      border-right: 1px solid var(--border-color);
-      padding-right: 1rem;
-      width: 70%;
-    }
-    @media @desktop {
-      border-right: 1px solid var(--border-color);
-      padding-right: 1rem;
-      width: 77%;
+
+    @media @desktop, @laptop {
+      width: 25%;
     }
   }
+
+  & .categories{
+    margin-bottom: 0.5rem;
+  }
+
+  
+  & .tale-footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items:center;
+    column-gap: 0.75rem;
+    width: 100%;
+    margin-top: 1rem;
+    font-weight: normal;
+     font-size: 0.9rem;
+    
+  &__read {
+     background-color: var(--background-color);
+     border:1px solid var(--border-color);
+     padding: 0.5rem 0.75rem;
+     border-radius: 99999px;
+     color: var(--muted-text-color);
+     
+
+      &:hover {
+        background-color: var(--light-background-color);
+        color: @link-color;
+      }
+    }
+
+    &__save{
+      display: flex;
+      align-items:center;
+      column-gap: 0.15rem;
+    }
+  
+  }
+
 }
 
-/* ==========================================================================
-   4. FOCUS & PILL TALES CARDS
-   ================================================================---------- */
-.focus-section {
+/* --------------------------------------------------------------------------
+   1. TALE HERO (Focus Story - Max-Width Capped at 750px & Centralized)
+   -------------------------------------------------------------------------- */
+
+.tale-hero {
   width: 100%;
-  padding-bottom: 2rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.focus-card {
   display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+ 
 
-  @media @smallDevice, @tablet, @laptop {
-    max-width: @mid-width;
-    margin: 0 auto;
-    row-gap: 1rem;
+   @media @tablet {
+     max-width: @mid-width; /* Card level dimension cap */
+  }
+
+   @media @tablet, @phablet, @phone {
+    margin: 0 auto;   /* Keeps entire story centralized */
+  }
+
+  @media @tablet, @phablet, @phone {
     flex-direction: column-reverse;
   }
 
-  @media @desktop {
-    column-gap: 1rem;
-    justify-content: space-between;
+
+  &__media {
+    flex: 1;
+    aspect-ratio: 750 / 562;
+    border-radius: 8px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
   }
 
   &__content {
-    display: flex;
-    justify-content: center;
+    
+    width: 100%;
 
-    @media @smallDevice, @tablet, @laptop {
-      width: 100%;
+    @media @desktop, @laptop {
+      flex: 0 0 311px;
     }
-    @media @desktop {
-      width: 32%;
+  }
+
+  &__title{
+    font-size:2rem;
+    line-height: 2.2rem;
+    font-weight:700;
+    margin-bottom: 0.5rem;
+
+  }
+
+  &__summary{
+    color: var(--muted-text-color);
+    margin-bottom: 0.5rem;
+  }
+
+  &__meta{
+    font-size:0.85rem;
+  }
+
+}
+
+/* --------------------------------------------------------------------------
+   3. TALE STRIP (Nones - Thumbnail Stories Capped at 450px)
+   -------------------------------------------------------------------------- */
+
+.tale-strip {
+  width: 100%;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  @media @tablet, @phablet, @phone {
+    flex-direction: column;
+  }
+
+   @media @desktop, @laptop{
+    margin: 4rem 0;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+
+    /* Card level dimension cap and centralization */
+    width: 100%;
+    max-width: @min-width;
+    margin: 0 auto;
+
+    @media @tablet, @phablet {
+      flex-direction: row;
+      max-width: @mid-width; /* Expands symmetrically on tablet when switching to row layout */
     }
   }
 
   &__media {
-    overflow: hidden;
-    position: relative;
-
-    @media @smallDevice, @tablet, @laptop {
-      width: 100%;
-    }
-    @media @desktop {
-      width: 68%;
-    }
-  }
-
-  &__image {
     width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover &__image {
-    transform: scale(1.02);
-  }
-}
-
-.tales-grid {
-  display: grid;
-  gap: 10px;
-   
-  @media @smallDevice, @tablet {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  @media @laptop {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media @desktop {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.grid-card {
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 2rem;
-
-  @media @smallDevice, @tablet {
-    width: 100%;
-    max-width: @min-width;
-    margin: 0 auto;
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  &__media-wrap {
-    width: 100%;
-    aspect-ratio: 4/3;
-    height: auto;
-    background-color: var(--light-background-color);
+    aspect-ratio: 450 / 337;
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 0.75rem;
+
+    @media @tablet, @phablet {
+      width: 45%;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
   }
 
-  &__image {
+  &__content {
+    
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.25s ease;
+
+    @media @tablet, @phablet {
+      width: 55%;
+    }
+  }
+  
+     &__title{
+    font-size:1.2rem;
+    line-height: 1.4rem;
+    font-weight:700;
+    margin-bottom: 0.5rem;
+
   }
 
-  &:hover &__image {
-    transform: scale(1.03);
+  &__summary{
+    color: var(--muted-text-color);
+    margin-bottom: 0.5rem;
+  }
+
+  &__meta{
+    font-size:0.85rem;
   }
 }
 
-/* Reusable Tale Card Block */
-.tale-card {
+/* --------------------------------------------------------------------------
+   ANCHOR REGION (Sub-Focus & Sub-Sidebars)
+   -------------------------------------------------------------------------- */
+
+.tale-anchor {
   width: 100%;
-  height: auto;
+  display: flex;
+  gap: 1.5rem;
 
- &__meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.35rem 0.5rem;
-    font-size: 0.875rem;
+  @media @tablet, @phablet, @phone {
+    flex-direction: column;
+  }
+}
+
+/* 4. SUB-FOCUS (Story Capped at 750px & Centralized) */
+.tale-subfocus {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: @mid-width;
+  margin: 0 auto;
+
+  @media @desktop, @laptop {
+    width: 65%;
+  }
+
+  &__media {
+    width: 100%;
+    aspect-ratio: 750 / 562;
+    border-radius: 8px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+
+  &__content {
+    
+    width: 100%;
+  }
+
+   &__title{
+    font-size:2rem;
+    line-height: 2.2rem;
+    font-weight:700;
+
+  }
+
+
+  &__summary{
+    font-family: Inter, sans-serif;
     color: var(--muted-text-color);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
-  &__meta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    text-decoration: none;
+  &__meta{
+    font-size:0.85rem;
+  }
+}
+
+/* 5. SUB-SIDEBAR GROUP & CARDS (Story Capped at 450px & Centralized) */
+.tale-subside-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+
+  @media @desktop, @laptop {
+    width: 35%;
+  }
+}
+
+.tale-subside {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: @min-width;
+  margin: 0 auto;
+
+  @media @tablet, @phablet {
+    flex-direction: row;
+    max-width: @mid-width;
+  }
+
+  &__media {
+    width: 100%;
+    aspect-ratio: 450 / 337;
+    border-radius: 8px;
+    overflow: hidden;
+
+    @media @tablet, @phablet {
+      width: 45%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+
+  &__content {
+    
+    width: 100%;
+
+    @media @tablet, @phablet {
+      width: 55%;
+    }
+  }
+
+   &__title{
+    font-size:1.2rem;
+    line-height: 1.4rem;
+    font-weight:700;
+    margin-bottom: 0.5rem;
+
+  }
+
+  &__summary{
     color: var(--muted-text-color);
-    font-weight: 600;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: var(--link-color);
-      text-decoration: underline;
-    }
-
-    &--country {
-      color: var(--text-color); // Gives geographic context a slightly stronger visual weight
-    }
+    margin-bottom: 0.5rem;
   }
 
-  &__flag {
-    font-size: 1rem;
-    line-height: 1;
+  &__meta{
+    font-size:0.85rem;
+  }
+}
+
+/* 2. SIDEBAR STORIES (Story Capped at 450px & Centralized) */
+.tale-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: @min-width;
+  margin: 0 auto;
+
+  @media @tablet, @phablet {
+    flex-direction: row;
+    max-width: @mid-width;
   }
 
-  &__country-name {
-    font-size: 0.85rem;
-    font-variant-numeric: tabular-nums;
-  }
+  &__media {
+    width: 100%;
+    aspect-ratio: 450 / 337;
+    border-radius: 8px;
+    overflow: hidden;
 
-  &__title {
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-    font-weight: normal;
-
-    &--small {
-      font-size: clamp(1.3rem, 5vw, 1.6rem);
-      line-height: 1.2;
+    @media @tablet, @phablet {
+      width: 45%;
     }
-    &--large {
-      font-size: clamp(1.4rem, 5vw, 1.8rem);
-      line-height: 1.2;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
     }
   }
 
-  &__link {
-    text-decoration: none;
-    color: var(--text-color);
-    &:hover {
-      color: var(--link-color);
+  &__content {
+    
+    width: 100%;
+
+    @media @tablet, @phablet {
+      width: 55%;
     }
+
   }
-     
-  &__summary {
-    margin-bottom: 1rem;
+ 
+     &__title{
+    font-size:1.2rem;
+    line-height: 1.4rem;
+    font-weight:700;
+    margin-bottom: 0.5rem;
+
+  }
+
+  &__summary{
+    font-family: Inter, sans-serif;
     color: var(--muted-text-color);
-
-    &--small, &--large {
-      font-size: clamp(0.95rem, 5vw, 1.1rem);
-      line-height: 1.4;
-    }
+    margin-bottom: 0.5rem;
   }
 
-  &__footer {
-    display: flex;
-    align-items: center;
-    column-gap: 1rem;
-    justify-content: space-between;
-  }
-
-  &__save-btn {
-    display: flex;
-    align-items: center;
-    column-gap: 0.25rem;
-    height: 40px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+  &__meta{
+    font-size:0.85rem;
   }
 }
 
 /* ==========================================================================
-   5. SIDEBAR & DISCOVERY BLOCKS
+   DISCOVERIES
    ================================================================---------- */
-.sidebar {
-  @media @smallDevice {
-    width: 100%;
-    padding-top: 1rem;
-    margin-top: 1rem;
-  }
-  @media @tablet {
-    width: 36%;
-    padding-left: 1rem;
-  }
-  @media @laptop {
-    width: 30%;
-    padding-left: 1rem;
-  }
-  @media @desktop {
-    width: 23%;
-    padding-left: 1rem;
-  }
 
-  &__block {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.5rem;
-    margin-bottom: 1.5rem;
-
-    @media @smallDevice {
-      width: @min-width;
-      max-width: 100%;
-      margin: 0 auto 1.5rem auto;
-    }
-  }
-}
-
-.sidebar-block {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.5rem;
-  margin-bottom: 1.5rem;
-
-  &__header {
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border-color);
-    
-    &--writers {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-
-  &__selector {
+   .homepage-discoveries{
+   
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
     display: flex;
-    gap: 0.5rem;
+    gap: 2rem;
+    margin-bottom: 3rem;
+
+    @media @phablet, @phone{
+  width: @min-width;
+  flex-direction: column;
   }
 
-  &__tab {
-    background: none;
-    border: none;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: var(--muted-text-color);
-    transition: color 0.2s ease;
-    text-decoration: underline;
-
-    &--active {
-      color: var(--link-color);
-      text-decoration: none;
-      pointer-events: none;
-    }
-
-    &:hover:not(&--active) {
-      color: var(--text-color);
-      text-decoration: none;
-    }
+    @media @tablet{
+  width: @mid-width;
+  }
+    
+  @media @desktop, @laptop{
+  width: @max-width;
   }
 
-  &__footer {
-    text-align: center;
-    margin-top: 1rem;
-    padding: 1rem 0;
-    border-top: 1px solid var(--border-color);
+     &__focus{
+      height: auto;
+     
+       background-color: @link-color;
+        border-radius: 21px;
+         display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+         background-image: url("@/assets/images/patterns-background(1).png");
+  background-position-x: right;
+  background-position-y: bottom;
+  background-repeat: no-repeat;
+  background-position: contain;
+  
+    @media @tablet, @phablet, @phone{
+  width: 100%;
   }
 
-  &__footer-link {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--link-color);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+  @media @desktop, @laptop{
+ width: 35%;
   }
-}
+     }
 
-.discovery-card {
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+     &__pills{
+      
+      gap: 1rem;
+      display: grid;
+      
+      @media @tablet, @phablet{
+  width: 100%;
+  grid-template-columns: 1fr;
 
-  &:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
   }
+      
+    @media @tablet, @phablet{
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+
+  }
+
+       @media @desktop, @laptop{
+    width: 65%;
+    grid-template-columns: 1fr 1fr;
+
+       }
+     }
+
+   }
+
+   .homepage-writers{
+   
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+
+    @media @phablet, @phone{
+  width: @min-width;
+  flex-direction: column;
+  }
+
+    @media @tablet{
+  width: @mid-width;
+  }
+    
+  @media @desktop, @laptop{
+  width: @max-width;
+  }
+
+  
+     &__pills{
+      
+      gap: 1rem;
+      display: grid;
+      
+      @media @tablet, @phablet{
+  width: 100%;
+  grid-template-columns: 1fr;
+
+  }
+      
+    @media @tablet, @phablet{
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+
+  }
+
+       @media @desktop, @laptop{
+    width: 50%;
+    grid-template-columns: 1fr 1fr;
+
+       }
+     }
+
+   }
+
+   
+
+
+/* ==========================================================================
+   DISCOVERY CARDS
+   ================================================================---------- */
+
+
+    .discovery-card {
+
+      &--focus{
+        
+        color:@white-color;
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+       
+
+      &  .discovery-card__metric-link{
+          color:@white-color;
+        }
+       
+      }
+
+    &--pill{
+      border: 1px solid var(--border-color);
+      width: 100%;
+      padding: 1rem 0.5rem;
+      border-radius: 12px;
+      
+      }
 
   &__title {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
+   
+    margin-bottom: 0.5rem;
     font-weight: 600;
 
-    &--author {
+    &--focus{
+      font-size: 1.5rem;
+    }
+
+     &--pill{
       font-size: 1.1rem;
     }
-  }
-
-  &__symbol {
+  & span.hash{
     font-size: 0.9rem;
     font-weight: normal;
   }
 
-  &__link {
-    display: inline-flex;
-    align-items: center;
-    column-gap: 0.25rem;
-    text-decoration: none;
-    color: var(--text-color);
+  & span.flag{
+    margin-right: 0.5rem;
+  }
+  }
 
-    &--disabled {
-      opacity: 0.5;
-      pointer-events: none;
+&__summary{
+ 
+
+    &--focus{
+      font-size: 1rem;
     }
-  }
 
-  &__metric {
-    font-weight: 700;
-  }
-
-  &__actions {
-    display: flex;
-    justify-content: space-between;
-    column-gap: 1rem;
-    align-items: center;
+  &--pill{
+     color: var(--muted-text-color);
+     font-size:0.9rem;
   }
 }
 
+
+  &__metrics {
+    display: flex;
+    gap: 0.75rem;
+    
+  }
+
+  &__metric-link {
+   display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+
+     &--categories{
+    color:@white-color;
+  }
+
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+    
+  }
+
+  &__actions{
+    display: flex;
+    column-gap: 1rem;
+     margin-top: 1.5rem;
+
+  }
+
+}
+
+
+   
 /* ==========================================================================
-   6. PUBLISHING ROADMAP SECTION
+   PATHWAY
    ================================================================---------- */
-.roadmap-section {
+
+.roadmap-section{
+  width: @mid-width;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
+  gap: 1.5rem;
 
-  &__container {
-    width: @max-width;
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
+   @media @phone{
+ width: @min-width;
+  }
 
-    @media @largeDevice {
-      padding: 2.5rem 2rem;
+  &__image-wrapper{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    width: 100%;
+  }
+  
+  &__image{
+       width: 300px;
+       
+
+    & img{
+      width: 100%;
+      height: auto;
+     
+
     }
   }
 
-  &__header {
+&__header {
     text-align: center;
-    margin-bottom: 2rem;
   }
 
   &__title {
     font-size: 1.35rem;
-    font-weight: 700;
+    font-weight: 900;
     letter-spacing: 0.05em;
     color: var(--text-color);
     margin-bottom: 0.3rem;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    column-gap: 0.5rem;
+
+    & svg{
+      stroke: @logo-red;
+      stroke-width: 2;
+    }
   }
 
   &__subtitle {
-    font-size: 0.95rem;
-    color: var(--text-color);
-    font-style: italic;
-    margin-bottom: 1rem;
-  }
-
-  &__action-trigger {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    border-bottom: 1px dotted var(--text-color);
-
-    &:hover {
-      border-bottom: none;
-    }
-  }
-
-  &__grid {
-    display: grid;
-    gap: 0.5rem;
-
-    @media @smallDevice {
-      grid-template-columns: 1fr;
-    }
-    @media @tablet {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @media @laptop, @desktop {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  &__footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-
-  &__prompt {
-    font-style: italic;
-  }
-}
-
-.roadmap-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.25rem;
-  border-radius: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-
-  &--step-one {
-    background-color: fade(@logo-red, 8%);
-    border: 1px solid fade(@logo-red, 35%);
-    .roadmap-card__number { background-color: @logo-red; color: @white-color; }
-    .roadmap-card__heading { color: darken(@logo-red, 10%); }
-  }
-  &--step-two {
-    background-color: fade(@logo-orange, 8%);
-    border: 1px solid fade(@logo-orange, 35%);
-    .roadmap-card__number { background-color: @logo-orange; color: @white-color; }
-    .roadmap-card__heading { color: darken(@logo-orange, 15%); }
-  }
-  &--step-three {
-    background-color: fade(@logo-yellow, 15%);
-    border: 1px solid fade(@logo-yellow, 35%);
-    .roadmap-card__number { background-color: darken(@logo-yellow, 20%); color: @white-color; }
-    .roadmap-card__heading { color: darken(@logo-yellow, 10%); }
-  }
-  &--step-four {
-    background-color: fade(@logo-purple, 8%);
-    border: 1px solid fade(@logo-purple, 35%);
-    .roadmap-card__number { background-color: @logo-purple; color: @white-color; }
-    .roadmap-card__heading { color: @logo-purple; }
-  }
-  &--step-five {
-    background-color: fade(@logo-green, 8%);
-    border: 1px solid fade(@logo-green, 35%);
-    .roadmap-card__number { background-color: @logo-green; color: @white-color; }
-    .roadmap-card__heading { color: darken(@logo-green, 10%); }
-  }
-  &--step-six {
-    background-color: fade(@link-color, 8%);
-    border: 1px solid fade(@link-color, 35%);
-    .roadmap-card__number { background-color: @link-color; color: @white-color; }
-    .roadmap-card__heading { color: darken(@link-color, 15%); font-weight: 700; }
-  }
-
-  &__number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 32px;
-    height: 32px;
-    font-weight: 700;
-    font-size: 0.85rem;
-    border-radius: 50%;
-  }
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  &__heading {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin: 0;
-  }
-
-  &__description {
-    font-size: 0.85rem;
     color: var(--muted-text-color);
-    margin: 0;
-    line-height: 1.4;
+
+    & button{
+      border-bottom: 2px dotted var(--border-color);
+      font-style: italic;
+
+      &:hover{
+       border-bottom-color: transparent;
+      }
+    }
   }
+
+  &__steps{
+    display: flex;
+    column-gap: 0.5rem;
+      padding: 1rem 0;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+
+       @media @phone{
+ flex-direction: column;
+
+  }
+  }
+
+  .roadmap-card{
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+
+    &__heading{
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    &__content{
+      list-style:square;
+      margin-left: 0.75rem;
+
+      & li{
+        font-size: 0.85rem;
+        color: var(--muted-text-color);
+        margin: 0;
+        line-height: 1.4;
+      }
+    }
+
+  }
+
+  
+    &__footer{
+    
+      text-align: center;
+    
+
+    }
+
+
 }
+
 </style>

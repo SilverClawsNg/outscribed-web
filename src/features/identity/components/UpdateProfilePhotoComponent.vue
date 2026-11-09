@@ -129,6 +129,8 @@ async function upload() {
       </div>
     </template>
 
+    <p class="lines"></p>
+
     <label class="small">
       
     <input type="file" accept="image/*" @change="handleFileSelection" style="display: none;" />
@@ -144,6 +146,8 @@ async function upload() {
         <SvgIcons name="edit" />
       </span>
     </label>
+
+     <p class="lines"></p>
 
   </div>
 
@@ -161,12 +165,11 @@ async function upload() {
     height: auto;
     display: flex;
     justify-content: center;
-    margin-bottom: 1.5rem;
     position: relative;
 
     & .wrapper {
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
         border-radius: 8px;
         background-color: var(--loading-background-color);
         z-index: 10;
@@ -177,23 +180,21 @@ async function upload() {
         left: 50%;
         transform: translateX(-50%);
         border-radius: 100%;
-
     }
 
 
     & label {
         cursor: pointer;
         display: block;
-        width: 150px;
-            height: 150px;
+        width: 120px;
+            height: 120px;
             position: relative;
             background-color: var(--light-background-color);
-            border: 1px solid var(--thick-border-color);
             border-radius: 100%;
 
             & img {
                 border-radius: 100%;
-                border: 3px solid var(--light-background-color);
+                border: 3px solid var(--background-color);
             }
 
             .edit-badge {

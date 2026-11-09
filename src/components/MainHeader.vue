@@ -180,19 +180,11 @@ function handleSearchClick() {
   //top: @body-top-offset;
   z-index: 5000;
   background-color: var(--background-color);
+ 
   width: 100%;
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
   
-  @media @smallDevice {
-    top: @body-top-offset-small; // Pushes standard document flow down cleanly
-  }
-
-  @media @largeDevice {
-    top: @body-top-offset-large; // Pushes standard document flow down cleanly
-  }
-
   /* Full-Bleed Top Bar Wrapper */
   &__utility-bar-wrapper {
     width: 100%;
@@ -362,6 +354,7 @@ function handleSearchClick() {
       //transition: padding-top 0.55s cubic-bezier(0.4, 0, 0.2, 1);
       background-color: var(--light-background-color);  
       background-color: var(--background-color);  
+      
 
     @media @smallDevice {
       grid-template-rows: 0fr; // Collapsed on mobile
