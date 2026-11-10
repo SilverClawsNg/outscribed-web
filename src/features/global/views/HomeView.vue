@@ -3,20 +3,15 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { APIError } from '@/api/apiTypes'
 import { useHomeStore } from '../stores/HomeStore'; 
-import { type TaleListDto } from '@/features/tales/types/TalesTypes';
 
 // Sub-components & Stores
 import { useModalStore } from '@/stores/modalStore'
 import { mediaHelper } from '@/utils/mediaHelper'
-import { CategoryClasses, CategoryDescriptions, CategorySummaries, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
 import { formatCounts } from '@/utils/stringHelpers'
-import { toRelativeTime } from '@/utils/dateExtensions'
-import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import { useEngagement } from '@/composables/useEngagement';
 import SvgIcons from '@/components/SvgIcons.vue';
 import { useLoginHint } from '@/utils/authHelper'
 import { curateHomepageTales } from '@/utils/curateHomepageTales';
-import TaleDetailComponent from '@/features/tales/components/TaleDetailComponent.vue';
 import CategoryComponent from '../components/CategoryComponent.vue';
 import CountryComponent from '../components/CountryComponent.vue';
 import WriterComponent from '../components/WriterComponent.vue';

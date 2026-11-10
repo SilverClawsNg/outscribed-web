@@ -1,19 +1,17 @@
 <script setup lang="ts"> 
 
 // --- IMPORTS ---
-import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
+import { ref, watch, computed, onUnmounted } from 'vue'
 import { useTaleListStore } from '../stores/TaleListStore'; 
 import { useTaleListFilterStore } from '../stores/TaleListFilterStore'; 
 import { useRouter, useRoute } from 'vue-router'
 import { APIError } from '@/api/apiTypes.ts'
-import TaleListComponent from '../components/TaleListComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
 import SvgIcons from '@/components/SvgIcons.vue'
 import type { SortType } from '@/utils/enumHelper.ts';
-import RegisterBanner from '@/components/RegisterBanner.vue';
 import { mediaHelper } from '@/utils/mediaHelper'
 import TaleTextComponent from '../components/TaleTextComponent.vue';
 
