@@ -185,7 +185,7 @@ onUnmounted(() => {
 
    <template v-else>
 
-      <header class="page-header">
+      <header class="page-header page-header--max">
         <h1 :class="{ at: creatorUsername }">  {{ pageTitle }}</h1>
         <button class="btn btn--secondary"  @click="modalStore.push('UserListFilter', 'Filter Lists')">Filter</button>
     </header>

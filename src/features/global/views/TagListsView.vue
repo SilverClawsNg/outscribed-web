@@ -106,7 +106,7 @@ onUnmounted(() => {
 
   <template v-else>
    
-      <header class="page-header">
+      <header class="page-header page-header--max">
      <div class="page-header__contents">
       <h1>Trending Tags</h1>
      </div>

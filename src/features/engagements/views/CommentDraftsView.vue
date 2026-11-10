@@ -167,6 +167,19 @@ async function setSort(sort: SortType) {
 
   <template v-if="commentStore.comments && commentStore.comments.length > 0">
 
+     <header class="page-header page-header--mid">
+    <h2 class="page-header__title">
+      Commentaries
+    </h2>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
+    </div>
+              <button type="button" @click="modalStore.push('DraftCommentsFilter', 'Filter Drafts')" class="btn btn--primary">
+                Filter
+              </button>
+            </header>
+
        <InfiniteScroller
         :has-next="commentStore.hasNext"
         :is-fetching="commentStore.isFetchingMore"

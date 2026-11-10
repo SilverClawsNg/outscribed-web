@@ -155,7 +155,7 @@ function handleJoinClick() {
 
     <div class="trending-section__header">
       <SvgIcons name="trending" :size="80" />
-      <h2 class="trending-section__title">Trending on OutScribed</h2>
+      <h2 class="trending-section__title">trending today</h2>
     </div>
 
     <div class="trending-section__tags">
@@ -178,7 +178,7 @@ function handleJoinClick() {
 
   </div>
 
-  <header class="page-header">
+  <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Recent Tales
     </h2>
@@ -321,7 +321,7 @@ function handleJoinClick() {
 
   </div>
   
-  <header class="page-header">
+  <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Categories
     </h2>
@@ -361,7 +361,7 @@ function handleJoinClick() {
 
 </div>
 
- <header class="page-header">
+ <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Countries
     </h2>
@@ -401,7 +401,7 @@ function handleJoinClick() {
 </div>
 
 
-  <header class="page-header">
+  <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top / Recent Writers
     </h2>
@@ -541,7 +541,7 @@ function handleJoinClick() {
   padding: 1rem;
   margin-bottom: 1rem;
   color:@white-color;
-  background-image: url("@/assets/images/patterns-background(1).png");
+  background-image: url("@/assets/images/patterns-background.png");
   background-position-x: right;
   background-position-y: bottom;
   background-repeat: no-repeat;
@@ -1106,7 +1106,7 @@ background-size: 40%;
    &:last-child{
     margin-top: 1.5px;
     padding-top: 1rem;
-    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
 
   }
       }

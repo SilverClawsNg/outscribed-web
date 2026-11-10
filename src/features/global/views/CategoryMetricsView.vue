@@ -115,7 +115,7 @@ if(categoryStore.categoriesMetrics?.categories == null) return;
 
   <template v-else-if="categoryStore.categoriesMetrics?.categories && categoryStore.categoriesMetrics.categories.length > 0">
     
-  <header class="page-header">
+  <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Categories
     </h2>

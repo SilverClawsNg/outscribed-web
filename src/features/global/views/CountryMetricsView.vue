@@ -117,7 +117,7 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
          <template v-else-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
 
-        <header class="page-header">
+        <header class="page-header page-header--max">
         <h2 class="page-header__title">
           Top Countries
         </h2>

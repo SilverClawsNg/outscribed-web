@@ -138,7 +138,7 @@ async function upload() {
       <img v-if="photoUrl" :src="photoUrl" alt="Staged Preview" />
       <img v-else-if="profile.photo" :src="mediaHelper.getUrl(profile.photo, 'profiles') || undefined" alt="Profile Photo" />
       <span v-else class="placeholder">
-         <SvgIcons name="placeholder" :size="60" />
+         <SvgIcons name="user" :size="60" />
         <span class="placeholder-text">No Photo!</span>
       </span>
 
@@ -206,13 +206,12 @@ async function upload() {
                 height: 32px;
                 background-color: var(--background-color);
                 color: var(--text-color);
-                font-size: 30px;
                 border-radius: 100%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                border: 2px solid var(--background-color);
+                border: 2px solid var(--border-color);
 
                 &:hover {
                     transform: scale(1.1);
@@ -261,7 +260,6 @@ async function upload() {
 
             & .placeholder-text {
                 color: var(--muted-text-color);
-                margin-top: 20px;
             }
 
         }

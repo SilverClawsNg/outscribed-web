@@ -131,13 +131,25 @@ footer.site-footer {
   border-top: 1px solid var(--border-color);
   padding: 2.5rem 0;
   font-size: 0.9rem;
-  padding-bottom: 6rem;
+  position:relative;
+   z-index: 5000;
   color:@white-color;
-  background-image: url("@/assets/images/patterns-background(1).png");
+  background-image: url("@/assets/images/patterns-background.png");
   background-position-x: right;
   background-position-y: bottom;
   background-repeat: no-repeat;
   background-position: contain;
+
+  &::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -58px;
+  height: 58px;
+  background: var(--background-color);
+  pointer-events:none;
+}
   
   @media @phone{
 background-size: 40%;

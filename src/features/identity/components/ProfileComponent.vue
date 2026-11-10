@@ -262,8 +262,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       :to="`/tales?username=${profile.username}`" title="Tales"  
-      :disabled="profile.talesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.talesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -279,8 +279,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/tales/my/saves" title="Tales Saved"  
-      :disabled="profile.taleFavoritesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.taleFavoritesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -296,8 +296,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/tales/my/shares" title="Tales Shared"  
-      :disabled="profile.taleSharesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.taleSharesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -313,8 +313,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/tales/my/flags" title="Tales Reported"
-      :disabled="profile.taleFlagsCount == 0"  
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.taleFlagsCount === 0 }"  
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -330,8 +330,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
      to="/tales/my/reactions?reactiontype=TransformedPerspective" title="Tales Transformed Perspective"
-     :disabled="profile.transformedPerspectivesCount == 0"
-      class="profile-links__text">
+     :class="{ 'is-disabled': profile.transformedPerspectivesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -347,8 +347,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=ExposesReality" title="Tales Exposes Realities"
-    :disabled="profile.exposesRealitiesCount == 0"
-      class="profile-links__text">
+    :class="{ 'is-disabled': profile.exposesRealitiesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -364,8 +364,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=SparksDebate" title="Tales Sparks Debates"
-    :disabled="profile.sparksDebatesCount == 0"
-      class="profile-links__text">
+    :class="{ 'is-disabled': profile.sparksDebatesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -381,8 +381,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=MissedCriticalContext" title="Tales Missed Critical Contexts"
-    :disabled="profile.missedCriticalContextsCount == 0"
-      class="profile-links__text">
+    :class="{ 'is-disabled': profile.missedCriticalContextsCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -398,8 +398,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
     to="/tales/my/reactions?reactiontype=LacksRealWorldRelevance" title="Tales Lacks Real World Relevance"
-    :disabled="profile.lacksRealWorldRelevancesCount == 0"
-      class="profile-links__text">
+    :class="{ 'is-disabled': profile.lacksRealWorldRelevancesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -418,8 +418,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       :to="`/comments?username=${profile.username}`" title="Comments" 
-      :disabled="profile.commentsCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.commentsCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -435,8 +435,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/comments/my/saves" title="Comments Saved"
-      :disabled="profile.commentFavoritesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.commentFavoritesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -452,8 +452,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/comments/my/flags" title="Comments Reported"
-      :disabled="profile.commentFlagsCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.commentFlagsCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -469,8 +469,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/comments/my/votes?reactiontype=Upvote" title="Comments Upvoted"
-      :disabled="profile.commentUpvotesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.commentUpvotesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -486,8 +486,8 @@ function handleEditContactClick(platform: ContactType) {
 
       <RouterLink 
       to="/comments/my/votes?reactiontype=Downvote" title="Comments Downvoted"
-      :disabled="profile.commentDownvotesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profile.commentDownvotesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>

@@ -170,6 +170,19 @@ async function setSort(sort: SortType) {
 
   <template v-if="writerStore.writers && writerStore.writers.length > 0">
 
+     <header class="page-header page-header--max">
+    <h2 class="page-header__title">
+      Writers
+    </h2>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
+    </div>
+              <button type="button" @click="modalStore.push('WriterFilter', 'Filter Writers')" class="btn btn--primary">
+                Filter
+              </button>
+            </header>
+
        <InfiniteScroller
         :has-next="writerStore.hasNext"
         :is-fetching="writerStore.isFetchingMore"

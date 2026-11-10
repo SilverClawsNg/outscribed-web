@@ -14,6 +14,8 @@ import { EngagementTypes, type RelationType } from '@/utils/anchorStorage';
 import SvgIcons from '@/components/SvgIcons.vue'
 import type { SortType } from '@/utils/enumHelper.ts';
 import RegisterBanner from '@/components/RegisterBanner.vue';
+import { mediaHelper } from '@/utils/mediaHelper'
+import TaleTextComponent from '../components/TaleTextComponent.vue';
 
 // --- INITIALIZE STORES & ROUTER ---
 const taleStore = useTaleListStore();
@@ -209,7 +211,20 @@ onUnmounted(() => {
 
   <template v-if="taleStore.tales && taleStore.tales.length > 0">
 
-    <div class="content-container">
+   
+  <header class="page-header page-header--max">
+    <h2 class="page-header__title">
+      Discover Tales
+    </h2>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
+    </div>
+              <button type="button" @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"  class="btn btn--primary">
+                Filter
+              </button>
+            </header>
+
 
        <InfiniteScroller
         :has-next="taleStore.hasNext"
@@ -218,14 +233,40 @@ onUnmounted(() => {
         @load-more="taleStore.loadMoreTales"
         @retry="taleStore.loadMoreTales">
 
-         <TaleListComponent 
-            v-for="tale in taleStore.tales" 
+         <div class="content-container">
+  <article 
+   v-for="tale in taleStore.tales" 
             :key="tale.taleId" 
-            :tale="tale"/>
+  class="tale-card">
+
+  <div class="tale-card__media">
+    <template  v-if="tale.photo">
+<img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+    </template>
+     <template v-else>
+       <div class="tale-card__media--empty">
+     <p> <SvgIcons name="nophoto" :size="60" /></p>
+    </div>
+    </template>
+  </div>
+   
+
+      <div class="tale-card__content">
+
+      <TaleTextComponent 
+              :tale="tale" 
+              type="pill" 
+            />
+
+        </div>
+
+      </article>
+
+    </div>
 
        </InfiniteScroller>
 
-    </div>
+
 
        <!-- Fixed Bottom Filter & Sort Footer -->
     <footer class="page-footer-bar">
@@ -265,7 +306,6 @@ onUnmounted(() => {
         </button>
       </div>
     </footer>
-
   </template>
 
   <template v-else>
@@ -289,13 +329,15 @@ onUnmounted(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
+@import "@/assets/css/discovery-container.less";
 
 /* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
 .content-container {
   max-width: calc(100% - 20px);
   margin: 0 auto;
   display: grid;
-  gap: 1rem;
+  gap: 2rem 1rem;
+  position: relative;
 
   @media @desktop, @laptop{
     grid-template-columns: repeat(4, 1fr);
@@ -318,5 +360,79 @@ onUnmounted(() => {
   }
 }
 
+
+.tale-strip {
+  width: 100%;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  @media @tablet, @phablet, @phone {
+    flex-direction: column;
+  }
+
+   @media @desktop, @laptop{
+    margin: 4rem 0;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+
+    /* Card level dimension cap and centralization */
+    width: 100%;
+    max-width: @min-width;
+    margin: 0 auto;
+
+    @media @tablet, @phablet {
+      flex-direction: row;
+      max-width: @mid-width; /* Expands symmetrically on tablet when switching to row layout */
+    }
+  }
+
+
+}
+
+
+
+.tale-card {
+  width: 100%;
+  height: auto;
+ 
+ 
+  &__media {
+    width: 100%;
+    aspect-ratio: 450 / 337;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--light-background-color);
+    position: relative;
+    margin-bottom: 1rem;
+
+    &--empty{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items:center;
+    }
+
+    @media @tablet, @phablet {
+      width: 45%;
+      height: auto;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+}
 
 </style>

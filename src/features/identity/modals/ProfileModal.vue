@@ -225,8 +225,8 @@ onUnmounted(() => {
 
       <RouterLink 
       :to="`/tales?username=${profileStore.profile.username}`" title="Tales"  
-      :disabled="profileStore.profile.talesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profileStore.profile.talesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -243,8 +243,8 @@ onUnmounted(() => {
 
       <RouterLink 
      :to="`/tales/${profileStore.profile.username}/reactions`" title="Tales Transformed Perspective"
-     :disabled="profileStore.profile.transformedPerspectivesCount == 0"
-      class="profile-links__text">
+     :class="{ 'is-disabled': profileStore.profile.transformedPerspectivesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -264,8 +264,8 @@ onUnmounted(() => {
 
       <RouterLink 
       :to="`/comments?username=${profileStore.profile.username}`" title="Comments" 
-      :disabled="profileStore.profile.commentsCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profileStore.profile.commentsCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
@@ -282,8 +282,8 @@ onUnmounted(() => {
 
       <RouterLink 
       :to="`/comments/${profileStore.profile.username}/reactions`" title="Comments Upvoted"
-      :disabled="profileStore.profile.commentUpvotesCount == 0"
-      class="profile-links__text">
+      :class="{ 'is-disabled': profileStore.profile.commentUpvotesCount === 0 }"
+      class="profile-links__cta">
          View
         </RouterLink>
   </div>
