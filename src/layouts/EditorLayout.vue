@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, onMounted, onUnmounted } from 'vue'
 
 import EditorAsideComponent from '@/features/tales/components/EditorAsideComponent.vue';
 import EditorMainCanvas from '@/features/tales/components/EditorMainCanvas.vue';
@@ -13,32 +13,38 @@ const taleStore = useTaleDraftStore()
 
 let scrollY = 0;
 
-watch(
-  () => taleStore.isAsideOpen,
-  (open) => {
-    // Dynamically check screen width at the exact moment of opening
-    const isMobile = window.matchMedia('(max-width: 991px)').matches;
+function updateScrollLock() {
+  const isMobile = window.matchMedia('(max-width: 991px)').matches;
+  const isOpen = taleStore.isAsideOpen;
 
-    if (open) {
+  if (isOpen && isMobile) {
+    // If open and on mobile, ensure the lock is applied
+    if (document.body.style.position !== 'fixed') {
       scrollY = window.scrollY;
-      
-      // If it's a desktop device (> 991px), bail out immediately
-      if (!isMobile) return;
-
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
-    } else {
-      // If it wasn't mobile when opened, no fixed styles were applied, so just return
-      const wasMobile = window.matchMedia('(max-width: 991px)').matches;
-      if (!wasMobile) return;
-
+    }
+  } else {
+    // If closed OR resized to desktop, remove the lock
+    if (document.body.style.position === 'fixed') {
       document.body.style.position = '';
       document.body.style.width = '';
       window.scrollTo(0, scrollY);
     }
   }
-);
+}
 
+// 1. Watch for menu open/close changes
+watch(() => taleStore.isAsideOpen, updateScrollLock);
+
+// 2. Watch for screen resizing/rotation dynamically
+onMounted(() => {
+  window.addEventListener('resize', updateScrollLock);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScrollLock);
+});
 
 </script>
 
