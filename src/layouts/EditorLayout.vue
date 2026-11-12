@@ -19,14 +19,18 @@ watch(
   () => taleStore.isAsideOpen,
   (open) => {
     if (open) {
+      scrollY = window.scrollY;
        if (!isMobile) return;
 
       document.body.style.position = 'fixed';
+      //document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
     } else {
       document.body.style.position = '';
+      //document.body.style.top = '';
       document.body.style.width = '';
 
+      window.scrollTo(0, scrollY);
     }
   }
 );
