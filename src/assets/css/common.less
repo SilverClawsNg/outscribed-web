@@ -9,11 +9,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scrollbar-gutter: stable;
-  overflow: hidden;
-  /* Prevents background layout shift on desktop when scrollbar disappears */
-  padding-right: var(--scrollbar-width, 0px); 
-  overscroll-behavior: none;
-  height: 100lvh;
+ 
 }
 
 body {
@@ -50,20 +46,8 @@ body {
 body.modal-open {
     overflow: hidden;
 }
+ 
 
-body.editor-menu-open {
-
-  @media @phone, @phablet, @tablet{
-    overflow: hidden;
-  /* Prevents background layout shift on desktop when scrollbar disappears */
-  padding-right: var(--scrollbar-width, 0px); 
-  overscroll-behavior: none;
-  height: 100lvh;
-    position: fixed;
-
-  }
-  
-}
 
 /* ==========================================================================
    Main

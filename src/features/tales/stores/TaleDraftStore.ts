@@ -47,7 +47,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
    // Studio Navigation State
   const  currentAsideView = ref<AsideView>('list');
   const currentMainView =  ref<MainCanvasView>('details'); // Default to rich text editor
-  const isAsideHidden = ref<boolean>(false);
+  const isAsideOpen  = ref<boolean>(false);
 
   const activeModalError = ref<APIError | null>(null)
 
@@ -83,19 +83,12 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
    // 2. Direct section navigation from anywhere (Strip, Detail Card, or Canvas)
    function toggleAside() {
-      if(isAsideHidden.value == true) {
-        isAsideHidden.value = false;
-        document.body.classList.remove('editor-menu-open');
-      }
-      else if(isAsideHidden.value == false) {
-        isAsideHidden.value = true;
-        document.body.classList.add('editor-menu-open');
-      }
-    }
+  isAsideOpen .value = !isAsideOpen .value;
+}
 
     function openAside() {
-      if(isAsideHidden.value == false) {
-        isAsideHidden.value = true;
+      if(isAsideOpen .value == false) {
+        isAsideOpen .value = true;
       }
     
     }
@@ -107,8 +100,8 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
 
       currentMainView.value = section;
 
-        if(window.innerWidth < 992 && isAsideHidden.value == true) {
-        isAsideHidden.value = false;
+        if(window.innerWidth < 992 && isAsideOpen .value == true) {
+        isAsideOpen .value = false;
       } 
     }
 
@@ -784,7 +777,7 @@ export const useTaleDraftStore = defineStore('taleDraft', () => {
   // 🎯 Cleaned return footprint exposing "create" precisely
   return {
     tales, activeTale, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute, currentAsideView, currentMainView,
-    isAsideHidden, isInitializing, loadingError, activeModalError, activeSnapshotId, openSnapshotModal, closeSnapshotModal,
+    isAsideOpen , isInitializing, loadingError, activeModalError, activeSnapshotId, openSnapshotModal, closeSnapshotModal,
     openModal, closeModal, hasAddendum, isArchived, openPostUpdateModal, closePostUpdateModal, activePostUpdateSection,
     createTale, setActiveTale, loadTales, loadMoreTales, updateTaleDetails, updateTaleBasic, 
     deleteTale, launchTale, archiveTale, unArchiveTale, addTaleTag, removeTaleTag, updateTalePhoto,

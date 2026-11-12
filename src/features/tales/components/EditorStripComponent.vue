@@ -25,9 +25,9 @@ function navigateHome() {
         class="editor-studio__strip-btn"
         @click="taleStore.toggleAside()"
           :class="{ 
-          'editor-strip__btn--active': !taleStore.isAsideHidden
+          'editor-strip__btn--active': !taleStore.isAsideOpen 
         }"
-        :title="taleStore.isAsideHidden ? 'Expand Sidebar' : 'Collapse Sidebar'"
+        :title="taleStore.isAsideOpen  ? 'Expand Sidebar' : 'Collapse Sidebar'"
       >
         <SvgIcons name="menu" :size="30" />
       </button>

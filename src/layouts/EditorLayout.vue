@@ -11,13 +11,33 @@ import { useTaleDraftStore } from '@/features/tales/stores/TaleDraftStore';
 
 const taleStore = useTaleDraftStore()
 
+let scrollY = 0;
+const isMobile = window.matchMedia('(max-width: 991px)').matches;
+
+
+watch(
+  () => taleStore.isAsideOpen,
+  (open) => {
+    if (open) {
+       if (!isMobile) return;
+
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.position = '';
+      document.body.style.width = '';
+
+    }
+  }
+);
+
 </script>
 
 <template>
 
   <div class="editor-workspace-wrapper">
 
-<div class="editor-layout" :class="{ 'editor-layout--aside-hidden': taleStore.isAsideHidden }">
+<div class="editor-layout" :class="{ 'editor-layout--aside-hidden': taleStore.isAsideOpen  }">
 
     <!-- In-Layout Modal -->
     <ProblemDefinitionModal />
