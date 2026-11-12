@@ -145,6 +145,10 @@ const taleStore = useTaleDraftStore()
     //box-shadow: var(--sidebar-box-shadow);
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+     -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;   /* key: stop scroll chaining */
+  overscroll-behavior-y: contain;
+
     
    @media @phone, @phablet, @tablet {
     min-height: 100svh;
@@ -204,7 +208,7 @@ const taleStore = useTaleDraftStore()
     max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
-  margin-left: 50px;
+    margin-left: 50px;
     
     position:relative;
     //padding-top: @body-top-offset;
