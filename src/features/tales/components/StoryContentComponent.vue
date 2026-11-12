@@ -158,17 +158,15 @@ const modalStore = useModalStore()
                 :href="realityCheckUrl ?? '#'"
                 target="_blank" 
                 rel="noopener noreferrer" 
-                class="btn btn--primary" 
                 @click="showExternalLink = false"
               >
-                Yes
+                Continue?
               </a>
               <button 
                 type="button" 
-                class="btn btn--secondary" 
                 @click="showExternalLink = false"
               >
-                No
+                Cancel
               </button>
             </div>
           </div>
@@ -467,7 +465,7 @@ const modalStore = useModalStore()
 
   // Element: Text
   &--text {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     color:@white-color;
 
     @media @smallDevice {
@@ -477,14 +475,40 @@ const modalStore = useModalStore()
   }
 
   // Element: Actions container
+  
   &--actions {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    align-items:center;
+    gap: 1rem;
+
+    & a, & button{
+
+       &:first-child{
+        background-color:@white-color;
+        border-radius: 4px;
+        color:@logo-red;
+        padding: 0.25rem 0.5rem;
+
+        &:hover{
+          background-color: var(--light-background-color);
+          color:@logo-red;
+        }
+
+      }
+
+      &:last-child{
+        text-decoration: underline;
+        color:@white-color;
+
+        &:hover{
+          text-decoration: none;
+        }
+
+      }
+    }
   }
 }
-
-
   
 }
 

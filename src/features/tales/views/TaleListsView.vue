@@ -241,7 +241,9 @@ onUnmounted(() => {
      
     <template  v-if="tale.photo">
        <div class="tale-card__media">
-      <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+           <RouterLink :to="`/tale/${tale.slug}`">
+               <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+          </RouterLink>
   </div>
     </template>
   
@@ -403,8 +405,7 @@ onUnmounted(() => {
 .tale-card {
   width: 100%;
   height: auto;
- 
- 
+  
   &__media {
     width: 100%;
     aspect-ratio: 450 / 337;
@@ -413,9 +414,16 @@ onUnmounted(() => {
     background-color: var(--light-background-color);
     position: relative;
     margin-bottom: 1rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+    will-change: transform;
+
+    // Hover State for Interactivity
+    &:hover {
+      transform: scale(1.03); // Subtle zoom effect indicating it's a link
+    }
+
 
     &.no-media{
-
        @media @phone {
       display: none !important;
     }

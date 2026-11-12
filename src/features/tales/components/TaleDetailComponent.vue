@@ -9,16 +9,10 @@ import { useEngagement } from '@/composables/useEngagement';
 import LatestCommentComponent from '@/features/engagements/components/LatestCommentComponent.vue'
 import { useContentCommentsStore } from '@/features/engagements/stores/ContentCommentsStore.ts';
 
-import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
-import { toRelativeTime, toShortDate } from '@/utils/dateExtensions'
-import { mediaHelper } from '@/utils/mediaHelper'
+import { formatCounts } from '@/utils/stringHelpers'
+import { toShortDate } from '@/utils/dateExtensions'
 import { getEngagementMetadata, type ActiveContentContext, type Engageable } from '@/features/engagements/types/EngagementTypes'
 import { type TaleDetailDto } from '../types/TalesTypes';
-import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors'
-import { sanitizeHtml } from '@/utils/markupHelper';
-import ShareBar from '@/components/ShareBar.vue';
-import Content from '@/components/Content.vue'
-import WriterStats from '@/components/WriterStats.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { postAsync } from '@/api/apiPostServices'
 import { useLoginHint } from '@/utils/authHelper'
@@ -400,7 +394,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
         <section class="story-credits">
 
            <p class="story-credits__intro">
-              Written By
+              OutScribed By
           </p>
 
             <p class="story-credits__username">
@@ -749,6 +743,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 .story-footer{
   background-color: var(--light-background-color);
   padding: 1.5rem 0.75rem;
+  border-top: 5px solid var(--thick-border-color);
 }
 
 .story-credits {
@@ -760,8 +755,8 @@ const socialLinks = computed<DirectShareLink[]>(() => [
     padding-bottom: 0.5rem;
 
       &__intro {
-          font-size: 0.85rem;
-          text-transform: uppercase;
+          font-size: 0.95rem;
+          font-weight: 600;
         }
  
     &__username{
@@ -819,7 +814,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
   }
 
-  }
+}
 
 .story-utility-wrapper {
   width: 100%;
