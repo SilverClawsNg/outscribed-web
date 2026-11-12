@@ -18,41 +18,43 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <article class="tag-card">
 
-   
- <header class="tag-card__header">
- 
-      <h2 class="tag-card__title">
-        <button 
+  <article class="discovery-card discovery-card--pill">
+
+      <h3 class="discovery-card__title discovery-card__title--pill">
+
+         <button 
           type="button" 
-          class="tag-card__trigger" 
+           class="discovery-card__title-link"
           title="View Tag Details"
+          :class="{ 'disabled': tag.talesCounter === 0 }"
           @click="modalStore.push('TagDetail', 'Tag Details', tag.tagId)"
         >
-          <span class="tag-card__pre">#</span><span class="tag-card__name">{{ tag.name }}</span>
+          <span class="hash">#</span>{{ tag.name }}
         </button>
-      </h2>
 
-      <time> {{ toShortDate(tag.date) }}</time>
+            </h3>
 
- </header>
+              <time class="discovery-card__date"> {{ toShortDate(tag.date) }}</time>
+              
+              <div class="discovery-card__actions discovery-card__actions--pill">
 
-      <!-- Metrics Navigation Links -->
-      <div class="tag-card__metrics">
-        <RouterLink 
-          :to="`/tales?tag=${tag.slug}`" 
-          class="tag-card__metric-link" 
-          title="Filter Tales"
-        >
-          <span class="tag-card__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
-          <span class="tag-card__metric-label">Tales&rarr;</span>
-        </RouterLink>
+                 
+                       <RouterLink 
+                   :to="`/tales?tag=${tag.slug}`"  
+                    class="discovery-card__metric-link"
+                    :class="{ 'disabled': tag.talesCounter === 0 }"
+                    title="Filter Tales"
+                  >
+                    <span class="discovery-card__metric-value">{{ formatCounts(tag.talesCounter) }}</span>
+                    <span class="discovery-card__metric-label">Tales&rarr;</span>
+                  </RouterLink>
 
-      </div>
+              </div>
+
   </article>
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/tag-card.less";
+@import "@/assets/css/discovery-card.less";
 </style>

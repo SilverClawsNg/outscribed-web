@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'pill'
 });
 
+
 </script>
 
 <template>

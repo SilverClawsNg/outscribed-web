@@ -106,11 +106,16 @@ onUnmounted(() => {
 
   <template v-else>
    
-      <header class="page-header page-header--max">
-     <div class="page-header__contents">
-      <h1>Trending Tags</h1>
-     </div>
-    </header>
+     <header class="page-header page-header--max">
+    <h2 class="page-header__title">
+      Trending Tags
+    </h2>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
+    </div>
+           
+            </header>
     
   <template v-if="tagStore.tags && tagStore.tags.length > 0">
 
@@ -121,7 +126,7 @@ onUnmounted(() => {
       @load-more="tagStore.loadmoretags"
       @retry="tagStore.loadmoretags">
 
-<div class="container">
+ <div class="grid-container">
 
       <TagComponent 
         v-for="tag in tagStore.tags" 
@@ -148,3 +153,7 @@ onUnmounted(() => {
   </template>
 
 </template>
+
+<style lang="less" scoped>
+@import "@/assets/css/grid-container.less";
+</style>
