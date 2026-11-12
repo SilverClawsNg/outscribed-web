@@ -533,14 +533,16 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
+ <header class="section-header section-header--no-margin">
+     <h2>Account Status</h2>
+    </header>
+
 <footer :class="['profile-footer', `profile-footer--${AccountStatusClass[profile.status]}`]">
  
   <div class="profile-footer__details">
    
     <p class="profile-footer__status">
-      <span class="profile-footer__status--label">Account Status</span>
-      <span class="divider divider--line"></span>
-      <span class="profile-footer__status--value">
+      <span class="profile-footer__status-label" :class="[`profile-footer__status-label--${AccountStatusClass[profile.status]}`]">
         {{ AccountStatusDescriptions[profile.status] }}
       </span>
     </p>
@@ -614,14 +616,13 @@ function handleEditContactClick(platform: ContactType) {
   display: flex;
   align-items: flex-start;
   gap: 1.25rem;
-  margin-top: 3rem;
   padding: 1.5rem;
   background-color: var(--light-background-color);
-  border-top: 1px solid var(--border-color);
   border-radius: 0 0 12px 12px;
   font-size: 0.95rem;
   flex-direction: column;
   gap: 1rem;
+  margin-top: -0.5rem;
 
   &__icon-wrapper {
     display: flex;
@@ -658,15 +659,34 @@ function handleEditContactClick(platform: ContactType) {
   }
 
   &__status{
-   display: flex;
-   align-items:center;
-   column-gap: 0.25rem;
-   text-transform: uppercase;
-   margin-bottom: 0.25rem;
+  display: flex;
+   margin-bottom: 0.5rem;
+   
 
-    &--value{
-      font-weight: 600;
+   &-label{
+ padding: 0.5rem 1.5rem;
+ border: 1px solid transparent;
+ border-radius: 99999px;
+ 
+    &--info{
+      background-color:@success-background-color;
+      color:@success-text-color;
+      border-color: @success-border-color;
     }
+
+     &--warning{
+      background-color:@warning-background-color;
+      color:@warning-text-color;
+      border-color: @warning-border-color;
+    }
+
+     &--danger{
+      background-color:@danger-background-color;
+      color:@danger-text-color;
+      border-color: @danger-border-color;
+    }
+   }
+
   }
 
   &__contact-links {

@@ -16,11 +16,9 @@ export interface ProgressState {
 const props = withDefaults(
   defineProps<{
     progress: ProgressState
-    isBoxed?: boolean
     isEditor?: boolean
   }>(),
   {
-    isBoxed: false,
     isEditor: false
   }
 )
@@ -77,7 +75,6 @@ function handleLogin() {
   <div
     v-else-if="progress.type === 'Success'"
     class="form-alert form-alert--success"
-    :class="{ 'form-alert--boxed': isBoxed }"
     role="status"
   >
     <div class="form-alert__content">
@@ -89,7 +86,6 @@ function handleLogin() {
   <div
     v-else-if="progress.type === 'Warning'"
     class="form-alert form-alert--warning"
-    :class="{ 'form-alert--boxed': isBoxed }"
     role="alert"
   >
     <div class="form-alert__content">
@@ -101,7 +97,6 @@ function handleLogin() {
   <div
     v-else-if="progress.type === 'Error'"
     class="form-alert form-alert--error"
-    :class="{ 'form-alert--boxed': isBoxed }"
     role="alert"
   >
     <div class="form-alert__content form-alert__content--row">
@@ -126,7 +121,6 @@ function handleLogin() {
   <div
     v-else-if="progress.type === 'Login'"
     class="form-alert form-alert--warning"
-    :class="{ 'form-alert--boxed': isBoxed }"
     role="alert"
   >
     <div class="form-alert__content form-alert__content--row">

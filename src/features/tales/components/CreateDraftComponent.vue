@@ -94,7 +94,7 @@ async function handleFormSubmission() {
 
   <div class="form-container">
 
-      <FormProgress :progress="progressState" />
+      <FormProgress :progress="progressState" :is-editor="true" />
 
       <form @submit.prevent="handleFormSubmission" autocomplete="off">
         <fieldset :disabled="progressState.type === 'Loading'">
