@@ -12,28 +12,33 @@ import { useTaleDraftStore } from '@/features/tales/stores/TaleDraftStore';
 const taleStore = useTaleDraftStore()
 
 let scrollY = 0;
-const isMobile = window.matchMedia('(max-width: 991px)').matches;
-
 
 watch(
   () => taleStore.isAsideOpen,
   (open) => {
+    // Dynamically check screen width at the exact moment of opening
+    const isMobile = window.matchMedia('(max-width: 991px)').matches;
+
     if (open) {
       scrollY = window.scrollY;
-       if (!isMobile) return;
+      
+      // If it's a desktop device (> 991px), bail out immediately
+      if (!isMobile) return;
 
       document.body.style.position = 'fixed';
-      //document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
     } else {
-      document.body.style.position = '';
-      //document.body.style.top = '';
-      document.body.style.width = '';
+      // If it wasn't mobile when opened, no fixed styles were applied, so just return
+      const wasMobile = window.matchMedia('(max-width: 991px)').matches;
+      if (!wasMobile) return;
 
+      document.body.style.position = '';
+      document.body.style.width = '';
       window.scrollTo(0, scrollY);
     }
   }
 );
+
 
 </script>
 
