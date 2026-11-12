@@ -232,7 +232,7 @@ function handleLogin() {
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: 6px;
-  cursor: pointer;
+  column-gap:0.5rem;
   white-space: nowrap;
   transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 
