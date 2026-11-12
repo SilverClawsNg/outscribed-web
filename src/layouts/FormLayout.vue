@@ -122,14 +122,14 @@ watch(() => route.path, () => modalStore.closeAll())
 
 
     main.form-layout {
-        width: @mid-width;
+        width: @min-width;
         height: auto;
         margin: 0 auto;
         max-width: calc(100% - 20px);
         background: var(--background-color);
-        border-radius: 28px;
-        padding: 2.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border-radius: 21px;
+        padding: 2.5rem 1rem;
+        box-shadow: var(--box-shadow);
         border:1px solid var(--border-color);
         position:relative;
         z-index:100;

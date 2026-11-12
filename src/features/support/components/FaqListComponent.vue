@@ -48,7 +48,7 @@ const showAnswer = ref(false)
   width: 100%;
   height: auto;
   padding: 1rem 0;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
    
   &__header {
     width: 100%;

@@ -1,6 +1,5 @@
 @import "variables";
 
-
 .discovery-card {
 
       &--focus{
@@ -14,7 +13,6 @@
       &  .discovery-card__metric-link{
           color:@white-color;
         }
-       
       }
 
     &--pill{
@@ -27,16 +25,32 @@
       }
 
   &__title {
-   
+  
     margin-bottom: 0.5rem;
     font-weight: 600;
 
     &--focus{
       font-size: 1.5rem;
+
+      & .at:before {
+        color: @white-color;
+    }
+      
+  & button,
+  & a{
+    color:@white-color;
+
+    &:hover{
+      opacity: 0.8;
+    }
+
+  }
+
     }
 
      &--pill{
       font-size: 1.1rem;
+
     }
   & span.hash{
     font-size: 0.9rem;
@@ -46,13 +60,19 @@
   & span.flag{
     margin-right: 0.5rem;
   }
+
+
+
   }
 
 &__summary{
  
-
     &--focus{
       font-size: 1rem;
+
+      @media @tablet{
+        max-width: 500px;
+      }
     }
 
   &--pill{
@@ -64,6 +84,10 @@
 &__date{
   color: var(--muted-text-color);
   font-size: 0.9rem;
+
+   &--focus{
+      color:@white-color;
+    }
 
   & span{
     font-style: italic;

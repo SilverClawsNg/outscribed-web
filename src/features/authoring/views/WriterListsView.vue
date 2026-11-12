@@ -191,7 +191,7 @@ async function setSort(sort: SortType) {
         @retry="writerStore.loadMoreWriters">
 
         
-  <div class="container container--offset-top">
+  <div class="content-container">
 
       <WriterListComponent 
         v-for="writer in writerStore.writers" 
@@ -260,3 +260,39 @@ async function setSort(sort: SortType) {
   </template>
 
 </template>
+
+
+<style lang="less" scoped>
+@import "@/assets/css/variables.less";
+
+/* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
+.content-container {
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem 1rem;
+  position: relative;
+  align-items: stretch;
+
+  @media @desktop, @laptop{
+    grid-template-columns: repeat(4, 1fr);
+    width: @max-width;
+  }
+
+  @media @tablet {
+    grid-template-columns: repeat(2, 1fr);
+    width: @mid-width;
+  }
+
+   @media @phablet {
+    grid-template-columns: repeat(2, 1fr);
+    width: @mod-width;
+  }
+
+  @media @phone {
+    grid-template-columns: 1fr;
+     width: @min-width;
+  }
+}
+
+</style>

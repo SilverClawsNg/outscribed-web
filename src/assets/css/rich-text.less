@@ -90,11 +90,26 @@
     padding-left: 0.25rem;
   }
 
-  blockquote {
-    margin: 1.25rem 0;
-    padding: 0.5rem 0 0.5rem 1rem;
-    border-left: 5px solid var(--border-color);
+blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem 1rem 1.5rem;
+    background-color: var(--light-background-color);
+    border-left: 4px solid @link-color;
+    border-radius: 8px;
     font-style: italic;
+    color: var(--text-color);
+
+    // Quill wraps blockquote text in <p> tags by default
+    p {
+      margin: 0;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    // Handle back-to-back or nested quotes gracefully
+    & + blockquote {
+      margin-top: -0.75rem;
+    }
   }
 }
 

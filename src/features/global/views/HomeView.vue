@@ -144,6 +144,8 @@ function handleJoinClick() {
 
   </div>
 
+<template v-if="homepageStore.tags.length > 0">
+
   <div class="trending-section">
 
     <div class="trending-section__wrapper">
@@ -173,6 +175,11 @@ function handleJoinClick() {
 
   </div>
 
+
+  </template>
+
+  <template v-if="homepageStore.tales.length > 0">
+
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Recent Tales
@@ -184,7 +191,7 @@ function handleJoinClick() {
               <RouterLink to="/tales"  class="btn btn--primary">
                 Explore Tales
               </RouterLink>
-            </header>
+  </header>
 
   <div class="homepage-layout" v-if="homepageLayout.focus">
 
@@ -193,8 +200,8 @@ function handleJoinClick() {
          ========================================== -->
     <div class="homepage-layout__main">
 
-      <!-- 1. FOCUS TALE (Must have image) -->
-      <article class="tale-hero">
+    <!-- 1. FOCUS TALE (Must have image) -->
+    <article class="tale-hero">
       
     <div class="tale-hero__content">
 
@@ -205,8 +212,10 @@ function handleJoinClick() {
 
         </div>
 
-        <div v-if="homepageLayout.focus.photo" class="tale-hero__media">
-          <img :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
+        <div class="homepage-layout__media tale-hero__media">
+           <RouterLink :to="`/tale/${homepageLayout.focus.slug}`" v-if="homepageLayout.focus.photo">
+          <img  :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
+          </RouterLink>
         </div>
 
       </article>
@@ -220,8 +229,10 @@ function handleJoinClick() {
     class="tale-strip__card"
   >
     <!-- Renders image only if ALL nones have images; otherwise hidden for uniform text layout -->
-    <div v-if="tale.photo" class="tale-strip__media">
+    <div v-if="tale.photo" class="homepage-layout__media tale-strip__media">
+        <RouterLink :to="`/tale/${tale.slug}`">
       <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+          </RouterLink>
     </div>
 
       <div class="tale-strip__content">
@@ -243,8 +254,10 @@ function handleJoinClick() {
         <!-- 4. SUB-FOCUS (Must have image) -->
         <article v-if="homepageLayout.subfocus" class="tale-subfocus">
 
-          <div class="tale-subfocus__media">
-            <img :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
+          <div class="homepage-layout__media tale-subfocus__media">
+               <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`" v-if="homepageLayout.subfocus.photo" >
+            <img  :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
+          </RouterLink>
           </div>
 
             <div class="tale-subfocus__content">
@@ -255,9 +268,7 @@ function handleJoinClick() {
             />
 
         </div>
-         
-            
-
+      
         </article>
 
         <!-- 5. SUB-FOCUS SIDEBARS (2 items) -->
@@ -267,8 +278,10 @@ function handleJoinClick() {
             :key="tale.taleId" 
             class="tale-subside"
           >
-            <div v-if="tale.photo" class="tale-subside__media">
+            <div v-if="tale.photo" class="homepage-layout__media tale-subside__media">
+               <RouterLink :to="`/tale/${tale.slug}`">
               <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+          </RouterLink>
             </div>
 
               <div class="tale-subside__content">
@@ -297,8 +310,10 @@ function handleJoinClick() {
         :key="tale.taleId" 
         class="tale-sidebar"
       >
-        <div v-if="tale.photo" class="tale-sidebar__media">
+        <div v-if="tale.photo" class="homepage-layout__media tale-sidebar__media">
+           <RouterLink :to="`/tale/${tale.slug}`">
           <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+          </RouterLink>
         </div>
 
         <div class="tale-sidebar__content">
@@ -316,6 +331,8 @@ function handleJoinClick() {
 
   </div>
   
+  </template>
+
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Categories
@@ -327,8 +344,7 @@ function handleJoinClick() {
               <RouterLink to="/categories"  class="btn btn--primary">
                 Explore Categories
               </RouterLink>
-            </header>
-
+  </header>
 
   <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
   
@@ -354,7 +370,9 @@ function handleJoinClick() {
 
   </div>
 
-</div>
+  </div>
+
+<template v-if="homepageStore.newWriters.length > 0 || homepageStore.prolificWriters.length > 0">
 
  <header class="page-header page-header--max">
     <h2 class="page-header__title">
@@ -394,8 +412,10 @@ function handleJoinClick() {
   </div>
  
 </div>
-
-
+</template>
+           
+  <template v-if="homepageStore.newWriters.length > 0 || homepageStore.prolificWriters.length > 0">
+    
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top / Recent Writers
@@ -407,8 +427,7 @@ function handleJoinClick() {
               <RouterLink to="/writers"  class="btn btn--primary">
                 Explore Writers
               </RouterLink>
-            </header>
-
+  </header>
 
   <div class="homepage-writers">
   
@@ -435,6 +454,8 @@ function handleJoinClick() {
   </div>
  
 </div>
+
+  </template>
 
   <div class="roadmap-section">
 
@@ -802,6 +823,25 @@ background-size: 40%;
     }
   }
 
+  &__media {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--light-background-color);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+    will-change: transform;
+
+    // Hover State for Interactivity
+    &:hover {
+      transform: scale(1.03); // Subtle zoom effect indicating it's a link
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
 
 }
 
@@ -831,15 +871,7 @@ background-size: 40%;
   &__media {
     flex: 1;
     aspect-ratio: 750 / 562;
-    border-radius: 8px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+  
   }
 
   &__content {
@@ -891,20 +923,12 @@ background-size: 40%;
   &__media {
     width: 100%;
     aspect-ratio: 450 / 337;
-    border-radius: 8px;
-    overflow: hidden;
-
+   
     @media @tablet, @phablet {
       width: 45%;
       height: auto;
     }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
   }
 
 }
@@ -939,15 +963,7 @@ background-size: 40%;
   &__media {
     width: 100%;
     aspect-ratio: 750 / 562;
-    border-radius: 8px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+  
   }
 
   &__content {
@@ -985,19 +1001,11 @@ background-size: 40%;
   &__media {
     width: 100%;
     aspect-ratio: 450 / 337;
-    border-radius: 8px;
-    overflow: hidden;
-
+   
     @media @tablet, @phablet {
       width: 45%;
     }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
   }
 
   &__content {
@@ -1028,19 +1036,11 @@ background-size: 40%;
   &__media {
     width: 100%;
     aspect-ratio: 450 / 337;
-    border-radius: 8px;
-    overflow: hidden;
-
+   
     @media @tablet, @phablet {
       width: 45%;
     }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
   }
 
   &__content {
@@ -1059,91 +1059,80 @@ background-size: 40%;
    DISCOVERIES
    ================================================================---------- */
 
+.homepage-writers {
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  display: flex;
+  margin-bottom: 3rem;
 
-   .homepage-writers{
-   
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
-    display: flex;
-    //gap: 2rem;
-    margin-bottom: 3rem;
-
-    @media @phablet, @phone{
-  width: @min-width;
-  flex-direction: column;
-
+  @media @phone {
+    width: @min-width;
+    flex-direction:column;
   }
 
-
-    @media @tablet{
-  width: @mid-width;
-  }
-    
-  @media @desktop, @laptop{
-  width: @max-width;
+  @media @phablet {
+    width: @mod-width;
+    flex-direction:column;
   }
 
-  
-     &__pills{
+  @media @tablet {
+    width: @mid-width;
+    flex-direction:column;
+  }
       
-      gap: 1rem;
-      display: grid;
-
-      @media @phone, @phablet{
-        
-  &:first-child{
-    margin-bottom: 1.5px;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-
+  @media @desktop, @laptop {
+    width: @max-width;
   }
 
-   &:last-child{
-    margin-top: 1.5px;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+  &__pills {
+    display: grid;
+    gap: 1rem;
+    align-items: start; // <--- THIS PREVENTS VERTICAL STRETCHING
 
-  }
+    @media @phone, @phablet, @tablet {
+      &:first-child {
+        margin-bottom: 1.5px; // Fixed potential typo from 1.5px
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
       }
 
+      &:last-child {
+        margin-top: 1.5px; // Fixed potential typo from 1.5px
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+    }
       
-  @media @desktop, @laptop, @tablet{
-    &:first-child{
-      margin-right: 1.5px;
-    padding-right: 1rem;
-    border-right: 1px solid var(--border-color);
+    @media @desktop, @laptop {
+      &:first-child {
+        margin-right: 1.5px;
+        padding-right: 1rem;
+        border-right: 1px solid var(--border-color);
+      }
 
-  }
-
-   &:last-child{
-    margin-left: 1.5px;
-    padding-left: 1rem;
-    border-left: 1px solid var(--border-color);
-
-  }
-  }
+      &:last-child {
+        margin-left: 1.5px;
+        padding-left: 1rem;
+        border-left: 1px solid var(--border-color);
+      }
+    }
       
-      @media @tablet, @phablet{
-  width: 100%;
-  grid-template-columns: 1fr;
-
-  }
+    @media @phone {
+      width: 100%;
+      grid-template-columns: 1fr;
+    }
       
-    @media @tablet, @phablet{
-  width: 100%;
-  grid-template-columns: 1fr 1fr;
+    @media @tablet, @phablet {
+      width: 100%;
+      grid-template-columns: 1fr 1fr;
+    }
 
+    @media @desktop, @laptop {
+      width: 50%;
+      grid-template-columns: 1fr 1fr;
+    }
   }
-
-       @media @desktop, @laptop{
-    width: 50%;
-    grid-template-columns: 1fr 1fr;
-
-       }
-     }
-
-   }
-
+}
    
 /* ==========================================================================
    PATHWAY
@@ -1152,7 +1141,7 @@ background-size: 40%;
 .roadmap-section{
   width: @mid-width;
   max-width: calc(100% - 20px);
-  margin: 0 auto;
+  margin: 1rem auto 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

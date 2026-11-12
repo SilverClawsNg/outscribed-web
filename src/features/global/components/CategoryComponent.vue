@@ -27,7 +27,15 @@ const props = withDefaults(defineProps<Props>(), {
           <h3 class="discovery-card__title"
             :class="[type === 'focus' ? 'discovery-card__title--focus' : 'discovery-card__title--pill']">
 
-            <span class="hash">#</span>{{ CategoryDescriptions[category.category] }}
+               <RouterLink 
+                    :to="`/tales?category=${category.category}`" 
+                    class="discovery-card__title-link"
+                    :class="{ 'disabled': category.talesCounter === 0 }"
+                    title="Filter Tales"
+                  >
+                   <span class="hash">#</span>{{ CategoryDescriptions[category.category] }}
+                  </RouterLink>
+           
             </h3>
 
             <p class="discovery-card__summary"

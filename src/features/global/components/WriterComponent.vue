@@ -65,7 +65,6 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
                         <span class="discovery-card__metric-label">Tales&rarr;</span>
                       </RouterLink>
 
-
               </div>
 
       </article>

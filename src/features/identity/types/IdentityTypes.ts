@@ -1,8 +1,6 @@
-// src/features/profile/types/profile.types.ts
 import type { Country, AccountStatus, ContactType } from '@/utils/enumHelper'
 import { type Engageable, createDefaultUiState } from '@/features/engagements/types/EngagementTypes' // 🎯 Import your clean semantics
 import { reactive } from 'vue';
-import { APIError } from '@/api/apiTypes.ts'
 
 export interface ContactDto {
   title: string
@@ -10,7 +8,6 @@ export interface ContactDto {
 }
 
 export interface GetMyProfileResponse {
-  // 📋 Core Properties (Auto-hydrated from Server JSON payload)
   accountId: string;
   registeredAt : string
   username : string
@@ -67,17 +64,17 @@ export interface ChangePasswordRequest {
 }
 
 export interface CreatorDto {
-  accountId: string
+    accountId: string
     username: string; 
     talesCount: number
-  commentsCount: number
+    commentsCount: number
     engagement: Engageable | any
 }
 
 export interface UserDto {
-  accountId: string
-  username: string; 
-  engagement: Engageable | any
+    accountId: string
+    username: string; 
+    engagement: Engageable | any
 }
 
 export interface GetUserProfileResponse {
@@ -95,7 +92,7 @@ export interface GetUserProfileResponse {
   commentsCount : number
   viewsCount : number
   
-   transformedPerspectivesCount : number
+  transformedPerspectivesCount : number
   commentUpvotesCount : number
   
   followersCount : number
@@ -187,12 +184,10 @@ export function initializeUserListEngagement(rawAccount: any): UserListDto {
   };
 }
 
-
 export interface UpdatePhotoRequest {
   base64String: string;
   contentType: string;
 }
-
 
 export interface ArchiveProfileRequest {
   confirm: boolean;

@@ -15,8 +15,7 @@
     position: relative;
     text-transform: capitalize;
     font-size: 0.9rem;
-     border: 2px solid transparent;
-
+    border: 2px solid transparent;
    
 /* Secondary Button */
 &--primary {
@@ -47,6 +46,26 @@
  
     &:hover {
         background: linear-gradient(180deg, @link-color 0%, @link-alt-color 100%);
+    }
+}
+
+&--danger {
+    color: @danger-text-color;
+    background: @danger-background-color;
+    border-color:@danger-border-color;
+ 
+    &:hover {
+        background: darken(@danger-background-color, 10%);
+    }
+}
+
+&--success {
+    color: @success-text-color;
+    background: @success-background-color;
+    border-color:@success-border-color;
+ 
+    &:hover {
+        background: darken(@success-background-color, 10%);
     }
 }
 

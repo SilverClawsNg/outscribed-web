@@ -114,7 +114,7 @@ function handleSearchClick() {
             <span class="mobile-only">Meet The Writers</span>
           </router-link>
           <router-link to="/faqs" class="nav-header__editorial-link" @click="isMenuOpen = false">
-             <span class="web-only">About</span>
+             <span class="web-only">About Us</span>
             <span class="mobile-only">Learn More About OutScribed</span>
           </router-link>
           <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
@@ -324,7 +324,6 @@ nav.nav-header__editorial-links {
 .nav-header__editorial-link {
   display: flex;
   align-items: center;
-  
   width: 100%;
  
   //font-family: IBM Plex Mono, Arial, sans-serif;
@@ -332,6 +331,10 @@ nav.nav-header__editorial-links {
   font-weight: normal;
   line-height: 150%;
   text-transform: capitalize;
+ 
+
+  
+
 
   &--icon{
     column-gap: 0.5rem;
@@ -340,18 +343,33 @@ nav.nav-header__editorial-links {
 
     @media @smallDevice{
       height: 3rem;
-       padding: 0 0.5rem;
-       font-size: 1.2rem;
+      padding: 0 0.5rem;
+      font-size: 1.2rem;
+       border-left: 5px solid transparent;
+
+       &.router-link-exact-active {
+     border-left-color: @link-color;
+     pointer-events: none;
+     opacity: 0.6;
+    }
        
     }
 
    @media @largeDevice{
     height: 40px;
       justify-content: center;
+        border-bottom: 3px solid transparent;
+
+        &.router-link-exact-active {
+      border-bottom-color: @link-color;
+      pointer-events: none;
+       opacity: 0.6;
+      }
 
      border-right: 1px solid var(--border-color);
         &:first-child {
     border-left: 1px solid var(--border-color);
+    
   }
     }
 

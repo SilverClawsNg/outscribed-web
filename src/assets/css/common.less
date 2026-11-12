@@ -367,10 +367,17 @@ h1.logo {
    .page-header{
     
     max-width: calc(100% - 20px);
-    margin: 2rem auto;
     padding: 1rem 0;
     display: flex;
     align-items:center;
+
+    @media @smallDevice{
+      margin: 1rem auto;
+    }
+
+    @media @largeDevice{
+       margin: 2rem auto;
+    }
 
     &--max{
       width: @max-width;
@@ -546,7 +553,7 @@ h1.logo {
   &__inner {
     width: @min-width;
     max-width: calc(100% - 20px);
-    background-color: var(--text-color);
+    background-color: @link-color;
     border-radius: 99999px;
     backdrop-filter: blur(8px);
     margin: 0 auto;
@@ -564,8 +571,8 @@ h1.logo {
   border: none;
   font-size: 0.8375rem;
   font-weight: 500;
-  color: var(--background-color);
-  padding: 0.5rem 0.75rem;
+  color: @white-color;
+  padding: 0.25rem 0.75rem;
   border-radius: 6px;
   transition: all 0.2s ease;
   display: inline-flex;
@@ -573,8 +580,8 @@ h1.logo {
   gap: 0.4rem;
 
   &:hover {
-    color: @link-color;
-    background-color: var(--light-background-color);
+    color: @white-color;
+    background-color: @link-alt-color;
   }
 
   &.active {
@@ -589,8 +596,8 @@ h1.logo {
 }
 
 .footer-divider {
-  color: var(--background-color);
-  font-weight: 300;
+  color: @white-color;
+  font-weight: 600;
   user-select: none;
 }
 
@@ -824,61 +831,6 @@ h1.logo {
 /* ==========================================================================
    POP Down
    ========================================================================== */
-
-// Keyframe animation specific to the popdown block
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-// Block
-.popdown {
-  position: absolute;
-  top: calc(100% + 12px); /* Space above the button */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  background-color: var(--light-background-color);
-  box-shadow: var(--box-shadow);
-  padding: 1rem 0.25rem;
-  z-index: 100;
-  text-align: center;
-  animation: popIn 0.2s ease-out;
-
-  // Element: Arrow
-  &__arrow {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--light-background-color);
-  }
-
-  // Element: Text
-  &__text {
-    margin-bottom: 0.5rem;
-
-    @media @smallDevice {
-      font-size: 0.9rem;
-      line-height: 1.2rem;
-    }
-  }
-
-  // Element: Actions container
-  &__actions {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-}
 
 /* ==========================================================================
   SVG

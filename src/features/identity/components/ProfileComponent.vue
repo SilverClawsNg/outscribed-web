@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { AccountStatusDescriptions, CountryDescriptions, AccountStatusClass, CountryFlags } from '@/utils/descriptors'
+import { AccountStatusClass, AccountStatusDescriptions, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
 import { type ContactType } from '@/utils/enumHelper.ts'
-import { formatCounts, truncateText } from '@/utils/stringHelpers'
+import { formatCounts } from '@/utils/stringHelpers'
 import { toShortDate } from '@/utils/dateExtensions'
 import UpdateProfilePhotoComponent from './UpdateProfilePhotoComponent.vue'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { computed } from 'vue'
 import { useProfileStore } from '../stores/ProfileStore.ts' // 🚀 Import Profile Store
-import WriterStats from '@/components/WriterStats.vue'
-import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 const profileStore = useProfileStore() // 💡 Instantiate Store
 const profile = computed(() => profileStore.profile!)
@@ -495,7 +493,6 @@ function handleEditContactClick(platform: ContactType) {
 
 <div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'connect' }">
    
-   
     <div 
       v-for="item in contactDisplayList" 
       :key="item.type" 
@@ -536,9 +533,155 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
+<footer :class="['profile-footer', `profile-footer--${AccountStatusClass[profile.status]}`]">
+ 
+  <div class="profile-footer__details">
+   
+    <p class="profile-footer__status">
+      <span class="profile-footer__status--label">Account Status</span>
+      <span class="divider divider--line"></span>
+      <span class="profile-footer__status--value">
+        {{ AccountStatusDescriptions[profile.status] }}
+      </span>
+    </p>
+
+  <div class="profile-footer__description">
+    <!-- Render appropriate buttons or contact links based on status -->
+    <template v-if="profile.status === 'Active'">
+      <p>
+        Your profile is public and visible. Archiving hides your profile page while keeping your published tales fully accessible.
+        Archiving is easily reversible.
+      </p>
+    </template>
+    
+    <template v-else-if="profile.status === 'SelfArchived'">
+       <p>
+        Your profile is currently hidden from public view. Your published tales remain active. You can reactivate your profile at any time.
+      </p>
+    </template>
+
+     <template v-else-if="profile.status === 'HiddenByModeration'">
+       <p>
+        Your profile was automatically hidden because your content accumulated community moderation penalty points past the threshold. An administrator will review your account for reinstatement or penalties.
+      </p>
+    </template>
+
+     <template v-else-if="profile.status === 'SuspendedByAdmin'">
+       <p>
+        Your account has been temporarily suspended by an administrator. If you believe this is a mistake, you can make a plea for pardon by reaching out directly.
+      </p>
+    </template>
+
+     <template v-else-if="profile.status === 'BannedByAdmin'">
+       <p>
+        Your account has been permanently restricted due to policy violations. You may submit a formal appeal to the admin team if you wish to plead your case.
+      </p>
+    </template>
+
+  </div>
+  </div>
+
+  <div class="profile-footer__actions">
+
+    <template v-if="profile.status === 'Active'">
+      <button type="button" class="btn btn--danger">
+        Archive Profile
+      </button>
+    </template>
+    
+    <template v-else-if="profile.status === 'SelfArchived'">
+      <button type="button" class="btn btn--success">
+        Reactivate Profile
+      </button>
+    </template>
+
+    <template v-else-if="profile.status === 'SuspendedByAdmin' || profile.status === 'BannedByAdmin'">
+      <div class="profile-footer__contact-links">
+        <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://facebook.com/yourhandle" target="_blank" rel="noopener">Facebook</a>
+        <a href="mailto:support@outscribed.com">Email Admin</a>
+      </div>
+    </template>
+  </div>
+</footer>
 </div>
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/profile.less";
+
+.profile-footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: var(--light-background-color);
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 12px 12px;
+  font-size: 0.95rem;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__icon-wrapper {
+    display: flex;
+    align-items: center;
+    padding-top: 0.2rem;
+  }
+
+  &__details {
+    flex: 1;
+  }
+
+  &__title {
+    margin: 0 0 0.35rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__description {
+    margin: 0;
+    line-height: 1.5;
+    color: var(--muted-text-color);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+
+    @media @phone, @phablet {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  &__status{
+   display: flex;
+   align-items:center;
+   column-gap: 0.25rem;
+   text-transform: uppercase;
+   margin-bottom: 0.25rem;
+
+    &--value{
+      font-weight: 600;
+    }
+  }
+
+  &__contact-links {
+    display: flex;
+    gap: 1rem;
+    font-weight: 500;
+
+    a {
+      color: var(--primary-color, #2563eb);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
 </style>

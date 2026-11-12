@@ -237,18 +237,22 @@ onUnmounted(() => {
             :key="tale.taleId" 
   class="tale-card">
 
-  <div class="tale-card__media">
+   <div class="tale-card__media"  :class="{ 'no-media': !tale.photo }">
+     
     <template  v-if="tale.photo">
-<img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+       <div class="tale-card__media">
+      <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+  </div>
     </template>
+  
      <template v-else>
        <div class="tale-card__media--empty">
      <p> <SvgIcons name="nophoto" :size="60" /></p>
     </div>
     </template>
   </div>
+ 
    
-
       <div class="tale-card__content">
 
       <TaleTextComponent 
@@ -410,6 +414,13 @@ onUnmounted(() => {
     position: relative;
     margin-bottom: 1rem;
 
+    &.no-media{
+
+       @media @phone {
+      display: none !important;
+    }
+    }
+
     &--empty{
       position: absolute;
       width: 100%;
@@ -417,11 +428,6 @@ onUnmounted(() => {
       display: flex;
       justify-content: center;
       align-items:center;
-    }
-
-    @media @tablet, @phablet {
-      width: 45%;
-      height: auto;
     }
 
     img {

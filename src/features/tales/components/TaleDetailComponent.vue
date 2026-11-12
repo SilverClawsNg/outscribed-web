@@ -245,7 +245,6 @@ const socialLinks = computed<DirectShareLink[]>(() => [
               :is-bordered="true"
             />
       </template>
-
       
      <div class="story-options">
 
@@ -260,7 +259,6 @@ const socialLinks = computed<DirectShareLink[]>(() => [
               <span class="story-options__btn--dot"></span>
             </button>
      </div>
-
 
 <StoryContent 
       :title="tale.title"
@@ -280,17 +278,10 @@ const socialLinks = computed<DirectShareLink[]>(() => [
       :addendum="tale.addendum"
       :addendum-date="tale.addendumDate"
     />
-
-
-
-
-
-
       
   <section class="story-reactions">
 
     <h3 class="story-reactions__title">How did this tale impact you?</h3>
-
 
     <div class="story-reactions__grid">
       <div
@@ -351,20 +342,25 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   </section>
  
   <section class="story-comments">
-    
-      <!-- Recent Comments Enrichment Block -->
-  <header class="page-header inline">
-       <h1>Recent Comments</h1>
-        <button 
+
+    <header class="page-header page-header--max">
+    <h2 class="page-header__title">
+     Recent Comments
+    </h2>
+    <div class="page-header__lines">
+      <p class="page-header__lines--item"></p>
+      <p class="page-header__lines--item"></p>
+    </div>
+             <button 
           type="button"
-          class="btn btn--secondary"  
+          class="btn btn--primary"  
           :disabled="tale.engagement.commentsCount === 0"
           @click="viewComments"
         >
           View {{ formatCounts(tale.engagement.commentsCount) }}
         </button>
-    </header>
-
+            </header>
+   
       <div :class="['story-comments__recent', taleStore.hasLoadedEnrichment ? 'story-comments__recent--visible' : '']">
         <template v-if="taleStore.hasLoadedEnrichment && taleStore.latestComments?.length">
           <LatestCommentComponent 
@@ -386,14 +382,16 @@ const socialLinks = computed<DirectShareLink[]>(() => [
         <p class="story-comments__action--prompt">
         Comments help diagnose the causes of rots exposed by tales. Join ongoing discussions and share your perspective on variety of issues raised by this tale.
         </p>
-        <button 
+       <p class="story-comments__action--btn">
+         <button 
           type="button" 
-          class="btn btn--secondary btn--has-icon"
+          class="btn btn--secondary btn--outscribe"
           :disabled="tale.isArchived"
           @click="createComment"
         >
-          <SvgIcons name="edit" /> Write a comment
+         Write a comment
         </button>
+       </p>
       </div>
   </section>
 
@@ -401,63 +399,43 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
         <section class="story-credits">
 
-          <div class="story-credits__heading">
+           <p class="story-credits__intro">
+              Written By
+          </p>
 
-          <div class="story-credits__meta">
-        
-            <p class="story-credits__meta-item">
-                  <span>Written By </span>
-          <button 
-            type="button"
-            class="story-credits__meta-username at"
-            @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
-          >
-          {{ tale.creator.username }}
-          </button>
+            <p class="story-credits__username">
+              <button 
+                type="button"
+                class="at"
+                @click="modalStore.push('Profile', 'Profile', tale.creator.accountId)"
+              >
+              {{ tale.creator.username }}
+              </button>
             </p>
-             <p class="story-credits__meta-item">
-                   <span> On </span>
-          <time class="story-credits__meta-date">{{toShortDate(tale.createdAt)}}</time>
-            </p>
+
+             <time class="story-credits__date">{{toShortDate(tale.createdAt)}}</time>
         
-        </div>
-        
-          <div class="story-credits__stats">
-        
-              <RouterLink 
+        <div class="story-credits__actions">
+
+             <button 
+                type="button"
+                class="btn btn--primary"
+                title="Follow Creator"
+                :disabled="creatorUiMeta.isFavoriteDisabled"
+                @click="engage.favorite(tale.creator.engagement)"
+              >
+              {{ creatorUiMeta.favoriteAltText }}
+            </button>
+
+            <RouterLink 
+             class="story-credits__metric-link"
               :to="`/tales?username=${tale.creator.username}`" 
               :disabled="tale.creator.talesCount <= 0"
               title="Tales"
             >
-              <span class="story-credits__value">{{ formatCounts(tale.creator.talesCount  || 0) }} </span> 
-              <span class="story-credits__label">Tales</span>
+              <span class="story-credits__metric-value">{{ formatCounts(tale.creator.talesCount  || 0) }} </span> 
+              <span class="story-credits__metric-label">Tales&rarr;</span>
             </RouterLink>
-          <span class="divider divider--circle"></span>
-           <RouterLink 
-            :to="`/comments?username=${tale.creator.username}`" 
-            :disabled="tale.creator.commentsCount <= 0"
-            title="Comments"
-          >
-            <span class="story-credits__value">{{ formatCounts(tale.creator.commentsCount || 0) }} </span> 
-            <span class="story-credits__label">Comments</span>
-          </RouterLink>
-
-        </div>
-
-
-          </div>
-
-        <div class="story-credits__actions">
-
-            <button 
-              type="button"
-               class="btn btn--secondary"
-              title="Follow Creator"
-              :disabled="creatorUiMeta.isFavoriteDisabled"
-              @click="engage.favorite(tale.creator.engagement)"
-            >
-            {{ creatorUiMeta.favoriteAltText }}
-            </button>
 
         </div>
 
@@ -775,56 +753,72 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
 .story-credits {
     display: flex;
-    justify-content: space-between;
-    align-items:center;
-    column-gap: 1rem;
-    padding-bottom: 0.5rem;
-  
-   
-    color:var(--muted-text-color);
-    
-  &__credits-stats,
-  &__credits-meta{
-    display: flex;
-    align-items:center;
+    justify-content: center;
     flex-direction: column;
+    align-items:center;
+    row-gap: 0.25rem;
+    padding-bottom: 0.5rem;
 
-    & a{
-      display: flex;
-      column-gap: 0.25rem;
-
-    }
-
-  }
-
-  &__credits-meta{
-    margin-bottom: 1rem;
-  }
-
-  
-    &__meta-username{
-       font-size: clamp(1rem, 5vw, 1.2rem);
-    }
-
-  
-    &__value {
-        margin-right: 0.25rem;
-        }
-
-        &__label {
+      &__intro {
           font-size: 0.85rem;
-          font-weight: normal;
+          text-transform: uppercase;
         }
+ 
+    &__username{
+      & button{
+        font-size: clamp(1.2rem, 3vw, 1.6rem);
+      }
+       
+    }
 
-  &__credits-date{
-    color: var(--muted-text-color);
-    font-size: 0.9rem;
+
+&__date{
+  color: var(--muted-text-color);
+  font-size: 0.9rem;
+
+   &--focus{
+      color:@white-color;
+    }
+
+  & span{
+    font-style: italic;
   }
+}
 
-  &__credits-actions{
+
+  &__metrics {
     display: flex;
-    column-gap: 0.5rem;
+    gap: 0.75rem;
+    
   }
+
+  &__metric-link {
+   display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+
+     &--categories{
+    color:@white-color;
+  }
+
+  }
+
+  &__metric-value {
+    font-weight: 700;
+  }
+
+  &__metric-label {
+    font-weight: 400;
+    
+  }
+
+  &__actions{
+    display: flex;
+    column-gap: 1rem;
+     margin-top: 1.5rem;
+
+  }
+
   }
 
 .story-utility-wrapper {
@@ -929,6 +923,12 @@ padding-top: 0.5rem;
       color:var(--muted-text-color);
       line-height: 1.4;
       margin-bottom: 0.75rem;
+    }
+
+    &--btn{
+      display: flex;
+      justify-content: flex-end;
+
     }
   }
 }

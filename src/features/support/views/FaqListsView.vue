@@ -35,7 +35,7 @@ const modalStore = useModalStore()
           <p><strong>out·scribe:</strong> <i>verb</i> | /aʊtˈskraɪb/</p>
           <p><strong>Inflections:</strong> outscribe, outscribed, outscribing, outscribes</p>
           <p><strong>Etymology:</strong> Blend of <i>out-</i> (expressing outward projection) + <i>-scribe</i> (from Latin <i>scribere</i>, to write).</p>
-          <p><strong>Definition:</strong> To express, reframe, or dramatize a real-world event, systemic issue, or human truth by adopting an alternate narrative perspective rather than writing a standard report or opinion piece.</p>
+          <p><strong>Definition:</strong> To express, reframe, or dramatize a real-world event, systemic issue, or human truth by adopting an alternate narrative perspective rather than writing as oneself.</p>
          
         </div>
       
@@ -44,16 +44,20 @@ const modalStore = useModalStore()
       
 <div class="rich-text">
   <h1>What is OutScribed?</h1>
-   <p>OutScribed is a story-driven publishing platform where real-world situations are explored through imaginative fiction. By stepping into hypothetical scenarios and third-person perspectives, writers can unpack complex truths, ask bold 'what-if?' questions, and explore human experiences without the constraints of traditional news or commentary.</p>
+   <p>OutScribed is a story-driven publishing platform where real-world situations are explored through imaginative fiction. By stepping into hypothetical scenarios and third-person perspectives, writers can unpack complex truths, ask bold 'what-if?' questions, and explore human experiences without the constraints of personal inhibitions & traits.</p>
    <h2>The Anatomy of a Tale</h2>      
-   <p>Every story on OutScribed—known as a <strong>Tale</strong>—operates at the intersection of imagination and logic:</p>
-          <ul><li><strong>The Narrative (The Fiction):</strong> Immersive stories, dramatic scenarios, and character-driven plots inspired by real-world trends, historical pivots, or current events.</li><li><strong>The Reality Check (The Anchor):</strong> Every Tale is paired with context, real-world source anchors, or background facts that reveal the exact truth or event that sparked the story.</li></ul>
+   <p>Stories on OutScribed, known as <strong>tales</strong>, operates at the intersection of imagination and logic:</p>
+          <ul><li><strong>The Narrative (The Fiction):</strong> Immersive stories, dramatic scenarios, and character-driven plots inspired by real-world trends, historical pivots, or current events.</li>
+            <li><strong>The Reality Check (The Anchor):</strong> Real-world sources or background facts that reveal the exact truth or event that sparked the story.</li></ul>
            <h2>The OutScribed Code: Creative Freedom with Integrity</h2>   
-          <p>OutScribed uses narrative storytelling to illuminate reality from new angles. We maintain quality and trust through three guiding principles:</p>
-          <ul><li><strong>Anchored in Reality:</strong> Stories are grounded in plausible logic, real human dynamics, and verifiable events—never aimless sensationalism.</li><li><strong>Exploration Over Agendas:</strong> We focus on systems, societal shifts, and human choices rather than launching personal attacks or targeted harassment.</li><li><strong>Freedom Through Perspective:</strong> Storytelling allows creators to address sensitive, complex, or taboo topics safely and constructively by focusing on the narrative rather than personal identity.</li></ul>
+          <p>OutScribed uses narrative storytelling to illuminate reality from new angles. Quality and trust are maintained through three guiding principles:</p>
+          <ul><li><strong>Anchored in Reality:</strong> Stories are grounded in plausible logic, real human dynamics, and verifiable events—never aimless sensationalism.</li>
+            <li><strong>Exploration Over Agendas:</strong> Focus are placed on systems, societal shifts, and human choices rather than launching personal attacks or targeted harassment.</li>
+            <li><strong>Freedom Through Perspective:</strong> Storytelling allows creators to address sensitive, complex, or taboo topics safely and constructively by focusing on the narrative rather than personal identity.</li></ul>
 
            <h2>Use cases for OutScribing</h2>    
-          <p>OutScribed gives people a safe, story-driven medium to express complex realities, examine systems, and articulate deeply held beliefs. By reframing actualities through characters, hypothetical settings, or alternate timelines, creators can navigate challenging topics with total honesty. Here is how people use OutScribed:</p>
+          <p>OutScribed gives people a safe, story-driven medium to express complex realities, examine systems, and articulate deeply held beliefs. By reframing actualities through characters, hypothetical settings, or alternate timelines, creators can navigate challenging topics with total honesty.</p>
+          <p>Here are some ways people use OutScribed:</p>
 
 <ul>
   <li><strong>Reframing Personal Struggles:</strong> Process painful memories, life lessons, or personal regrets by externalizing your experience into a character's journey.</li>

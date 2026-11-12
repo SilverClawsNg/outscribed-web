@@ -131,6 +131,7 @@ const modalStore = useModalStore()
             </h3>
 
             <p class="reality-check__summary">
+
             <span  v-if="realityCheckSource" class="reality-check__source">{{ realityCheckSource }} — </span>
             {{ realityCheckSummary }}
             </p>
@@ -148,8 +149,29 @@ const modalStore = useModalStore()
           </div>
           <p v-else class="reality-check__footer--placeholder"></p>
 
-
-
+           
+          <div v-if="showExternalLink" class="reality-check__popdown">
+            <div class="reality-check__popdown--arrow"></div>
+            <p class="reality-check__popdown--text">You will be redirected to {{ realityCheckUrl }}</p>
+            <div class="reality-check__popdown--actions">
+              <a 
+                :href="realityCheckUrl ?? '#'"
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="btn btn--primary" 
+                @click="showExternalLink = false"
+              >
+                Yes
+              </a>
+              <button 
+                type="button" 
+                class="btn btn--secondary" 
+                @click="showExternalLink = false"
+              >
+                No
+              </button>
+            </div>
+          </div>
 
         </div>
 
@@ -157,6 +179,7 @@ const modalStore = useModalStore()
 
     <!-- SECTION 6 & 7: ALWAYS PRESENT TAXONOMY -->
     <div class="story-taxonomy">
+
       <div class="story-taxonomy__group story-taxonomy__group--meta">
         <RouterLink :to="`/tales?category=${category}`" class="story-taxonomy__item story-taxonomy__item--meta">
            <SvgIcons name="tag" />
@@ -169,8 +192,11 @@ const modalStore = useModalStore()
         </RouterLink>
       </div>
 
-      <div v-if="tags?.length" class="story-taxonomy__group story-taxonomy__group--tags">
+      <template v-if="tags && tags.length > 0">
+        
                     <div class="divider-multi"><span></span></div>
+
+      <div class="story-taxonomy__group story-taxonomy__group--tags">
 
          <button 
           v-for="tag in tags" 
@@ -182,6 +208,8 @@ const modalStore = useModalStore()
           </button>
 
       </div>
+      </template>
+
     </div>
 </template>
 
@@ -411,6 +439,51 @@ const modalStore = useModalStore()
 
   }
 
+  
+// Block
+&__popdown {
+  position: absolute;
+  top: calc(100% + 12px); /* Space above the button */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  background-color: @logo-red;
+  box-shadow: var(--box-shadow);
+  padding: 1rem 0.25rem;
+  z-index: 100;
+  text-align: center;
+  animation: popIn 0.2s ease-out;
+
+  // Element: Arrow
+  &--arrow {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid @logo-red;
+  }
+
+  // Element: Text
+  &--text {
+    margin-bottom: 0.5rem;
+    color:@white-color;
+
+    @media @smallDevice {
+      font-size: 0.9rem;
+      line-height: 1.2rem;
+    }
+  }
+
+  // Element: Actions container
+  &--actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
 
   
 }
@@ -467,8 +540,8 @@ const modalStore = useModalStore()
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.35rem 0.75rem;
-    background-color: var(--light-background-color);
+    padding: 0.5rem 0.75rem;
+    background-color: var(--background-color);
     border: 1px solid var(--border-color);
     color: var(--muted-text-color);
     //color:@link-color;
@@ -483,5 +556,17 @@ const modalStore = useModalStore()
 
 }
 
+
+// Keyframe animation specific to the popdown block
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 
 </style>

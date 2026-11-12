@@ -222,7 +222,6 @@ function returnAncestor() {
       
     </section>
 
-
     <!-- 4. Engagement Actions (Upvote, Downvote, Reply, Favorite) -->
     <footer class="comment-inline-card__actions">
        <button 
