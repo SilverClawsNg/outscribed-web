@@ -557,7 +557,8 @@ function handleJoinClick() {
 
   padding: 1rem;
   margin-bottom: 1rem;
-  
+  font-family: 'Palatino Linotype', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
 
   &__wrapper{
     width: @max-width;
@@ -617,16 +618,19 @@ function handleJoinClick() {
   }
   
   &__title {
-    font-weight: 600;
-    text-transform: uppercase;
+    font-weight: 400;
+    text-transform: capitalize;
     text-align: center;
+   
+
+
 
     @media @phone {
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       line-height: 2rem;
     }
     @media @phablet {
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       line-height: 2.4rem;
     }
     @media @largeDevice {
@@ -637,8 +641,8 @@ function handleJoinClick() {
 
   &__explainer {
     font-weight: 500;
-    font-size: clamp(1rem, 1.2vw + 1rem, 1.3rem);
-    line-height: clamp(1.4rem, 1.2vw + 1rem, 1.5rem);
+    font-size: clamp(1rem, 1.2vw + 1rem, 1.2rem);
+    line-height: clamp(1.3rem, 1.4vw + 1rem, 1.5rem);
     margin-bottom: 0.75rem;
     text-align: center;
     margin-bottom: 1rem;
