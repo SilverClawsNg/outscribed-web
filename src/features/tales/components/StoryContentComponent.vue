@@ -7,7 +7,7 @@ import { sanitizeHtml } from '@/utils/markupHelper';
 import type { TagDetailDto, TagDto } from '@/features/global/types/GlobalTypes';
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue';
-import { CategoryDescriptions, CountryDescriptions } from '@/utils/descriptors';
+import { CategoryDescriptions, CountryDescriptions, CountryFlags } from '@/utils/descriptors';
 import type { Category, Country } from '@/utils/enumHelper';
 import { toRelativeTime } from '@/utils/dateExtensions';
 import { formatAddendum } from '@/utils/stringHelpers';
@@ -184,9 +184,7 @@ const modalStore = useModalStore()
             {{ CategoryDescriptions[category] }}
         </RouterLink>
          <RouterLink :to="`/tales?country=${country}`" class="story-taxonomy__item story-taxonomy__item--meta">
-           <SvgIcons name="globe" />
-            {{ CountryDescriptions[country] }}
-
+           <span class="flag">{{ CountryFlags(country) }}</span>{{ CountryDescriptions[country] }}
         </RouterLink>
       </div>
 
@@ -475,7 +473,7 @@ const modalStore = useModalStore()
   }
 
   // Element: Actions container
-  
+
   &--actions {
     display: flex;
     justify-content: center;

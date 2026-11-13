@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
                     <button 
                         type="button" 
                         class="btn btn--primary btn--outscribe"
-                         :class="[type === 'focus' ? 'btn--primary-white' : null]"
+                        :class="[type === 'focus' ? 'btn--primary-white' : null]"
                         @click="modalStore.push('CreateTale', 'Create Tale', { country: country.country })"
                         title="OutScribe a new tale"
                       >
@@ -56,7 +56,6 @@ const props = withDefaults(defineProps<Props>(), {
               </div>
 
       </article>
-
    
 </template>
 

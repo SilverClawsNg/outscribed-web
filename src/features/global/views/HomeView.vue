@@ -372,7 +372,7 @@ function handleJoinClick() {
 
   </div>
 
-<template v-if="homepageStore.newWriters.length > 0 || homepageStore.prolificWriters.length > 0">
+<template v-if="homepageStore.countries.length > 0 || homepageStore.countries.length > 0">
 
  <header class="page-header page-header--max">
     <h2 class="page-header__title">
