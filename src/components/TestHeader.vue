@@ -223,12 +223,16 @@ function handleSearchClick() {
   &__menu-toggle{
     border-radius: 4px;
     height: 2.5rem;
-    color: var(--muted-text-color);
-    border: 2px solid var(--muted-text-color);
-    box-shadow: var(--box-shadow);
     display: flex;
 align-items:center;
 padding: 0 0.5rem;
+
+ color: var(--text-color);
+    background: var(--background-color);
+    border: 2px solid var(--border-color);
+    box-shadow: var(--box-shadow);
+    background-color:@white-color;
+    color:@black-color;
 
 &:hover{
   color:@link-color;
