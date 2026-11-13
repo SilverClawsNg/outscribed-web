@@ -147,7 +147,7 @@ onUnmounted(() => {
     top: 0;
     
     /* Aligns to the left edge of the centered 1300px wrapper */
-    left: max(0px, calc((100vw - @max-width) / 2));
+    left: max(0px, calc((100% - @max-width) / 2));
    padding-bottom: 5rem;
 
    @media @phone, @phablet, @tablet {
@@ -250,7 +250,6 @@ onUnmounted(() => {
     //flex: 1 1 auto;
     width: calc(100% - 50px);
     min-width: 0;
-    max-width: calc(100vw - 50px);
     height:auto;
     background-color: var(--background-color);
     margin-left: 50px;
@@ -259,7 +258,6 @@ onUnmounted(() => {
     //padding-top: @body-top-offset;
 
       @media @phone{
-      max-width: calc(100vw - 40px);
       width: calc(100% - 40px);
       margin-left: 40px;
       }
@@ -277,13 +275,13 @@ onUnmounted(() => {
   /* Responsive Adjustments */
   @media @phablet, @tablet {
     .editor-layout__canvas-container {
-      margin-left: calc(100vw - 50px);
+      margin-left: calc(100% - 50px);
     }
   }
 
    @media @phone {
     .editor-layout__canvas-container {
-      margin-left: calc(100vw - 40px);
+      margin-left: calc(100% - 40px);
     }
   }
 
@@ -293,7 +291,7 @@ onUnmounted(() => {
   @media @phablet, @tablet {
     &__aside {
       left: 0;
-      width: calc(100vw - 50px);
+      width: calc(100% - 50px);
       
     }
 
@@ -305,7 +303,7 @@ onUnmounted(() => {
     @media @phone{
         &__aside {
       left: 0;
-      width: calc(100vw - 40px);
+      width: calc(100% - 40px);
       
     }
      &__canvas-container {

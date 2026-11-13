@@ -80,8 +80,8 @@ async function handleActionClick() {
   z-index: 99999;
   
   /* Enforce width bounds: capped at @min-width, guaranteed at least 20px shorter than viewport */
-  width: min(@min-width, calc(100vw - 20px));
-  max-width: calc(100vw - 20px);
+  width: min(@min-width, calc(100% - 20px));
+  max-width: calc(100% - 20px);
   box-sizing: border-box;
 
   &__wrapper {

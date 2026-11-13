@@ -419,7 +419,7 @@ onBeforeUnmount(() => {
 :deep(.ql-tooltip) {
   /* Clamp left position so it never drops below 0px (or padding offset) */
   left: max(16px, var(--quill-left, 16px)) !important;
-  max-width: calc(100vw - 32px) !important;
+  max-width: calc(100% - 32px) !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   background-color: var(--background-color);

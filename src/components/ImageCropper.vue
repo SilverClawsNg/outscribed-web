@@ -193,7 +193,7 @@ function handleTouchMove(e: TouchEvent) {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100lvh;
   background: var(--modal-background-color);
   display: flex;
