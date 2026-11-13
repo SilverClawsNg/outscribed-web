@@ -618,7 +618,7 @@ function handleJoinClick() {
   }
   
   &__title {
-    font-weight: 400;
+    font-weight: 600;
     text-transform: capitalize;
     text-align: center;
    
