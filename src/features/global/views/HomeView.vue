@@ -132,11 +132,11 @@ function handleJoinClick() {
       </h2>
 
       <div class="homepage-hero__cta-group">
-        <RouterLink class="homepage-hero__cta homepage-hero__cta--about" to="/faqs">
+        <RouterLink class="btn btn--primary" to="/faqs">
           About Us
         </RouterLink>
-        <button class="homepage-hero__cta homepage-hero__cta--join" @click="handleJoinClick">
-          Join
+        <button class="btn btn--secondary btn--outscribe" @click="handleJoinClick">
+          Join Us
         </button>
       </div>
     </div>
@@ -459,7 +459,7 @@ function handleJoinClick() {
 
   <div class="roadmap-section">
 
-     <div class="roadmap-section__image-wrapper">
+    <div class="roadmap-section__image-wrapper">
 
       <div class="roadmap-section__image">
       <img src="@/assets/images/writing-girl.png" />
@@ -475,7 +475,7 @@ function handleJoinClick() {
 
     </div>
 
-     <div class="roadmap-section__steps">
+    <div class="roadmap-section__steps">
 
          <div class="roadmap-card">
             <h4 class="roadmap-card__heading">Sign Up</h4>
@@ -523,9 +523,9 @@ function handleJoinClick() {
 
 
 
-      </div>
+    </div>
 
-        <div class="roadmap-section__footer">
+    <div class="roadmap-section__footer">
         <button 
           type="button" 
           class="btn btn--secondary btn--prominent"
@@ -533,8 +533,7 @@ function handleJoinClick() {
         >
           Start here
         </button>
-      </div>
-
+    </div>
 
   </div>
 
@@ -553,19 +552,12 @@ function handleJoinClick() {
   position: relative;
  
   margin-top: -1px;
-  background-color: @link-color;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+
   padding: 1rem;
   margin-bottom: 1rem;
-  color:@white-color;
-  background-image: url("@/assets/images/patterns-background.png");
-  background-position-x: right;
-  background-position-y: bottom;
-  background-repeat: no-repeat;
-  background-position: contain;
   
-  @media @phone{
-background-size: 40%;
-  }
 
   &__wrapper{
     width: @max-width;
@@ -606,8 +598,8 @@ background-size: 40%;
 
     & p{ 
       flex-grow: 1;
-      height: 2px;
-      background-color: @white-color;
+      height: 1px;
+      background-color: var(--border-color);
     }
 
     & img{

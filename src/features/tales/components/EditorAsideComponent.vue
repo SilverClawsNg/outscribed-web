@@ -232,7 +232,7 @@ function navigateToAside(section: AsideView) {
             icon="inbox"
             :is-standalone="true">
                 <template #actions>
-                <button class="btn btn--primary btn--is-outscribe"  @click="taleStore.currentAsideView = 'create'">
+                <button class="btn btn--primary btn--outscribe"  @click="taleStore.currentAsideView = 'create'">
                     OutScribe
                 </button>
                  <button class="btn btn--secondary"  @click="taleStore.currentAsideView = 'filter'">

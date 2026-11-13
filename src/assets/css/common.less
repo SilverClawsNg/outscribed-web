@@ -20,13 +20,11 @@ body {
   position: relative;
   margin: 0;
   
-   -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   @media @phone {
     font-size: 90%;
-    
   }
 
   @media @phablet {
@@ -723,35 +721,6 @@ h1.logo {
 /* ==========================================================================
    Site Icon
    ========================================================================== */
-
-.site-icon {
-    position: fixed;
-    bottom: 10px;
-    left: 0;
-    padding: 0.25rem;
-    border-radius: 0 21px 21px 0;
-    background-color: var(--background-color);
-    z-index: 9999;
-    box-shadow: var(--box-shadow);
-    border: 1px solid @link-color;
-    border-left: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & img {
-
-        @media @smallDevice {
-            width: 28px;
-            height: 28px;
-        }
-
-        @media @largeDevice {
-            width: 30px;
-            height: 30px;
-        }
-    }
-}
 
 /* ==========================================================================
    POP Down
