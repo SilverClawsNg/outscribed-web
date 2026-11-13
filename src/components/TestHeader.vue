@@ -39,7 +39,7 @@ function handleSearchClick() {
 
 <template>
 
-<header class="test-header">
+<header class="main-header">
 
     <div class="top-header-wrapper">
 
@@ -77,7 +77,7 @@ function handleSearchClick() {
         <div class="top-header__studio-slot">
 
            <button type="button" @click="handleSavedDraftsClick" class="btn btn--primary web-only">
-           Saved Drafts
+            Saved Drafts
            </button>
 
           <button 
@@ -97,9 +97,11 @@ function handleSearchClick() {
             >
               <SvgIcons name="menu" :size="25" />
             </button>
+
         </div>
 
     </div>
+
     </div>
 
     <div class="nav-wrapper" :class="{ 'nav-wrapper--expanded': isMenuOpen }">
@@ -157,7 +159,6 @@ function handleSearchClick() {
 
           </div>
 
-
         </nav>
 
     </div>
@@ -185,7 +186,7 @@ function handleSearchClick() {
   }
 }
 
-.test-header{
+.main-header{
   position: fixed;
   z-index: 5000;
   background-color: var(--background-color);
@@ -194,23 +195,18 @@ function handleSearchClick() {
 }
 
 .top-header-wrapper{
- 
   height: 60px;
   width: 100%;
   border-bottom: 1px solid var(--border-color);
-
 }
-
-
 
 .top-header{
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  width: 1300px;
+  width: @max-width;
   max-width: calc(100% - 20px);
-  //border-bottom: 1px solid var(--border-color);
   margin: 0 auto;
 
   &__consolidated{
@@ -280,19 +276,17 @@ function handleSearchClick() {
 
 }
 
-
 .nav-wrapper{
   width: 100%;
-  
   border-bottom: 1px solid var(--border-color);
-   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media @smallDevice {
       height: 0; // Collapsed on mobile
       overflow: hidden;
       
       &--expanded {
-        height: calc(100lvh - 50px);
+        height: calc(100lvh - 60px);
         overflow-y: auto;
       }
     }
@@ -307,13 +301,11 @@ nav.nav-header__editorial-links {
   display: flex;
   justify-content: center;
   align-items: center;
- 
   margin: 0 auto;
 
   @media @smallDevice{
        flex-direction: column;
        width: 100%;
-
     }
 
    @media @largeDevice{
@@ -327,60 +319,50 @@ nav.nav-header__editorial-links {
   display: flex;
   align-items: center;
   width: 100%;
- 
-  //font-family: IBM Plex Mono, Arial, sans-serif;
   font-size: 1.1rem;
   font-weight: normal;
   line-height: 150%;
   text-transform: capitalize;
  
-
-  
-
-
   &--icon{
     column-gap: 0.5rem;
   }
  
-
     @media @smallDevice{
       height: 3rem;
       padding: 0 0.5rem;
       font-size: 1.2rem;
-       border-left: 5px solid transparent;
+      border-left: 5px solid transparent;
 
        &.router-link-exact-active {
-     border-left-color: @link-color;
-     pointer-events: none;
-     opacity: 0.6;
-    }
+        border-left-color: @link-color;
+        pointer-events: none;
+        opacity: 0.6;
+      }
        
     }
 
    @media @largeDevice{
     height: 40px;
-      justify-content: center;
-        border-bottom: 3px solid transparent;
+    justify-content: center;
+    border-bottom: 3px solid transparent;
+    border-right: 1px solid var(--border-color);
+
+        &:first-child {
+          border-left: 1px solid var(--border-color);
+        }
 
         &.router-link-exact-active {
-      border-bottom-color: @link-color;
-      pointer-events: none;
-       opacity: 0.6;
-      }
-
-     border-right: 1px solid var(--border-color);
-        &:first-child {
-    border-left: 1px solid var(--border-color);
-    
-  }
+          border-bottom-color: @link-color;
+          pointer-events: none;
+          opacity: 0.6;
+        }
     }
 
     &:hover{
       background-color:var(--light-background-color);
       color:@link-color;
     }
-
 }
-
 
 </style>

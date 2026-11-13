@@ -25,7 +25,7 @@ watch(() => route.path, () => modalStore.closeAll())
 
     <ModalContainer />
     
-    <TestHeader />
+    <MainHeader />
 
     <main class="main-layout">
       <RouterView />

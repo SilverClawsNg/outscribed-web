@@ -499,12 +499,13 @@ function handleJoinClick() {
                 Create a story draft with a title and category.
               </li>
               <li>
-                Move over to the <strong>Editor</strong> to write your story.
+                Move over to the <strong>Tales' Editor</strong> to write your story.
               </li>
               <li>
                 Complete story's basic information, reality check, and optional photo & tags.
               </li>
-            </ul>          </div>
+            </ul>          
+          </div>
 
          <div class="roadmap-card">
             <h4 class="roadmap-card__heading">Go Live</h4>
@@ -557,7 +558,7 @@ function handleJoinClick() {
 
   padding: 1rem;
   margin-bottom: 1rem;
-  font-family: 'Palatino Linotype', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  //font-family: 'Palatino Linotype', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
 
   &__wrapper{

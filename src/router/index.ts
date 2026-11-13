@@ -68,8 +68,6 @@ const router = createRouter({
           component: () => import('@/features/tales/views/TaleDetailView.vue'),
           meta: { requiresAuth: true, authContext: 'archived_tales' }
         },
-         
-      
         {
           path: 'comments', // Renders at outscribed.com/comments
           name: 'CommentLists',
@@ -243,8 +241,8 @@ const router = createRouter({
      component: EditorLayout,
       children: [
         {
-          path: 'editor',
-          name: 'editor',
+          path: 'studio',
+          name: 'write-studio',
           component: () => import('@/features/tales/views/TaleDraftsView.vue'),
           meta: { requiresAuth: true, authContext: 'create_tales' }
         }
