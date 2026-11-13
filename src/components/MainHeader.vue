@@ -132,7 +132,7 @@ function handleSearchClick() {
               <SvgIcons name="edit" :size="22" /> Create A New Tale Draft
             </button>
           <button type="button" @click="handleSavedDraftsClick" class="nav-header__editorial-link nav-header__editorial-link--icon">
-            <SvgIcons name="archive" :size="22" /> Create, View, Update, & Manage Tales
+            <SvgIcons name="archive" :size="22" /> Manage Your Tales
           </button>
 
             <div class="divider-multi"><span></span></div>
