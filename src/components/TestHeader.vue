@@ -219,15 +219,13 @@ function handleSearchClick() {
     gap: 2rem;
   }
 
-
   &__menu-toggle{
     border-radius: 4px;
     height: 2.5rem;
     display: flex;
-align-items:center;
-padding: 0 0.5rem;
-
- color: var(--text-color);
+    align-items:center;
+    padding: 0 0.5rem;
+    color: var(--text-color);
     background: var(--background-color);
     border: 2px solid var(--border-color);
     box-shadow: var(--box-shadow);
