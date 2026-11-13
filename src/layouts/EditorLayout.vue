@@ -174,9 +174,34 @@ onUnmounted(() => {
       width: 380px;
     }
 
-    -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;   /* key: stop scroll chaining */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   overscroll-behavior-y: contain;
+
+  /* --- Modern Slim Scroller Styling --- */
+  
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color, #cbd5e1) transparent;
+
+  /* WebKit (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    width: 6px; // Thin width
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; // Invisible track
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--border-color, #cbd5e1);
+    border-radius: 3px;
+
+    &:hover {
+      background-color: var(--text-muted, #94a3b8);
+    }
+  }
     
   }
 
