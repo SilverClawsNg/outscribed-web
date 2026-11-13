@@ -341,9 +341,9 @@ function handleJoinClick() {
       <p class="page-header__lines--item"></p>
       <p class="page-header__lines--item"></p>
     </div>
-              <RouterLink to="/categories"  class="btn btn--primary">
-                Explore Categories
-              </RouterLink>
+    <RouterLink to="/categories"  class="btn btn--primary">
+      Explore Categories
+    </RouterLink>
   </header>
 
   <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
@@ -385,7 +385,7 @@ function handleJoinClick() {
               <RouterLink to="/countries"  class="btn btn--primary">
                 Explore Countries
               </RouterLink>
-            </header>
+ </header>
 
   <div class="discovery-top-container" v-if="countriesTales.focusCountry">
   
@@ -487,7 +487,7 @@ function handleJoinClick() {
                 Choose your unique OutScribed handle and password.
               </li>
               <li>
-                Agree to platform's legal & structural statements with a single check.
+                Agree to platform's legal & structural statements with a single click.
               </li>
             </ul>
           </div>
@@ -920,13 +920,18 @@ background-size: 40%;
     }
   }
 
+  &__content{
+      @media @tablet, @phablet {
+      width: 50%;
+    }
+  }
+
   &__media {
     width: 100%;
     aspect-ratio: 450 / 337;
    
     @media @tablet, @phablet {
-      width: 45%;
-      height: auto;
+      width: 50%;
     }
 
   }
@@ -1003,7 +1008,7 @@ background-size: 40%;
     aspect-ratio: 450 / 337;
    
     @media @tablet, @phablet {
-      width: 45%;
+      width: 50%;
     }
 
   }
@@ -1013,7 +1018,7 @@ background-size: 40%;
     width: 100%;
 
     @media @tablet, @phablet {
-      width: 55%;
+      width: 50%;
     }
   }
 
@@ -1038,7 +1043,7 @@ background-size: 40%;
     aspect-ratio: 450 / 337;
    
     @media @tablet, @phablet {
-      width: 45%;
+      width: 50%;
     }
 
   }
@@ -1048,7 +1053,7 @@ background-size: 40%;
     width: 100%;
 
     @media @tablet, @phablet {
-      width: 55%;
+      width: 50%;
     }
 
   }

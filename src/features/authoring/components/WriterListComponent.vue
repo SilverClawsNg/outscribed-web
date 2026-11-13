@@ -50,7 +50,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
                     <button 
                         type="button" 
-                        class="btn btn--primary"
+                        class="btn btn--primary btn--primary-white"
                         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
                         :disabled="uiMeta.isFavoriteDisabled"
                         @click="engage.favorite(writer.creator.engagement)"

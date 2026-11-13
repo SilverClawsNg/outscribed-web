@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, onUnmounted } from 'vue'
+import { watch, onMounted, onUnmounted, onBeforeUnmount } from 'vue'
 
 import EditorAsideComponent from '@/features/tales/components/EditorAsideComponent.vue';
 import EditorMainCanvas from '@/features/tales/components/EditorMainCanvas.vue';
@@ -33,6 +33,21 @@ function updateScrollLock() {
     }
   }
 }
+
+onBeforeUnmount(() => {
+  // Remove the resize listener immediately
+  window.removeEventListener('resize', updateScrollLock);
+
+  // Force-unlock the body the second the component starts unmounting
+  if (document.body.style.position === 'fixed') {
+    document.body.style.position = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  }
+  
+  // Optional: auto-close the aside state in the store so it's fresh if they return
+  taleStore.isAsideOpen = false;
+});
 
 // 1. Watch for menu open/close changes
 watch(() => taleStore.isAsideOpen, updateScrollLock);

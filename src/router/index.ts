@@ -278,6 +278,13 @@ router.onError((error, to) => {
   }
 });
 
+router.afterEach(() => {
+  if (document.body.style.position === 'fixed') {
+    document.body.style.position = '';
+    document.body.style.width = '';
+  }
+});
+
 // src/router/index.ts
 router.beforeEach((to, from) => {
   const hasUserHint = checkIsLoggedIn()
