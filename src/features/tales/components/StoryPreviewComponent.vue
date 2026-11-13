@@ -98,8 +98,8 @@ const readTimeText = computed(() => calculateReadingTime(preparedBody.value))
 
 
 .story {
-  width: @mid-width;
-  max-width: calc(100% - 20px);
+  width:calc(100% - 20px);
+  max-width: @mid-width;
   margin: 0 auto;
   padding: 3rem 0;
   background-color: var(--background-color);

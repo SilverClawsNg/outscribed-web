@@ -249,6 +249,7 @@ onUnmounted(() => {
   &__canvas {
     //flex: 1 1 auto;
     width: calc(100% - 50px);
+    max-width: calc(100% - 50px);
     min-width: 0;
     height:auto;
     background-color: var(--background-color);
