@@ -278,7 +278,7 @@ function handleSearchClick() {
 
 .nav-wrapper{
   width: 100%;
-  border-bottom: 1px solid var(--border-color);
+ 
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media @smallDevice {
@@ -293,6 +293,7 @@ function handleSearchClick() {
 
     @media @largeDevice{
        height: 40px;
+        border-bottom: 1px solid var(--border-color);
     }
 
 }

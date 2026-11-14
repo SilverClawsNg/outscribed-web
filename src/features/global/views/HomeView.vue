@@ -556,7 +556,7 @@ function handleJoinClick() {
  
   margin-top: -1px;
   background-color: var(--background-color);
-  border-bottom: 1px solid var(--border-color);
+  //border-bottom: 1px solid var(--border-color);
 
   padding: 1rem;
   margin-bottom: 1rem;
@@ -655,6 +655,7 @@ function handleJoinClick() {
     justify-content: center;
     column-gap: 0.25rem;
     width: 100%;
+
   }
 
   &__cta {
@@ -663,7 +664,7 @@ function handleJoinClick() {
     align-items: center;
     padding: 0 1rem;
     font-weight: normal;
-    text-transform: capitalize;
+    text-transform: uppercase;
     font-size: clamp(0.9rem, 0.95vw + 1rem, 1rem);
     font-weight:700;
     color: @white-color;
