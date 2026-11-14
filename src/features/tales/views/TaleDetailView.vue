@@ -193,7 +193,7 @@ onUnmounted(() => {
             icon="archive"
             :is-standalone="true">
             <template #actions>
-              <button class="btn btn--primary"  @click="router.push(`/tale/archives/${taleId}`)">Continue to archives</button>
+              <button class="btn btn--primary"  @click="router.push(`/tales/archives/${taleId}`)">Continue to archives</button>
             </template>
           </PageStatusMessage>
       </template>
