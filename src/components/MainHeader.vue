@@ -188,7 +188,7 @@ function handleSearchClick() {
 
 .main-header{
   position: fixed;
-  z-index: 5000;
+  z-index: 5001;
   background-color: var(--background-color);
   width: 100%;
   height: auto;

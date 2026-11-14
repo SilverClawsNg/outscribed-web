@@ -112,20 +112,22 @@ function handleJoinClick() {
 
   <div class="homepage-hero">
 
+    <div class="page__pattern"></div>
+    <div class="page__fade page__fade--top"></div>
+    <div class="page__fade page__fade--bottom"></div>
+     
     <div class="homepage-hero__wrapper">
 
     <div class="homepage-hero__container">
+      
+      <div class="homepage-hero__image">
+        <img src="@/assets/images/icon.png" />
+      </div>
       
       <h1 class="homepage-hero__title">
         The reality you know is just one version.
       </h1>
 
-      <div class="homepage-hero__image">
-        <p></p>
-        <img src="@/assets/images/icon.png" />
-        <p></p>
-      </div>
-      
       <h2 class="homepage-hero__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
         reframe the present, and sculpt futures.
@@ -577,7 +579,8 @@ function handleJoinClick() {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: center; 
+    row-gap: 1rem;
     //text-align: center;
   
       padding: 2rem 0;
@@ -595,7 +598,6 @@ function handleJoinClick() {
     display: flex;
     justify-content: center;
     align-items:center;
-    margin: 0.5rem 0;
     width:100%;
 
     & p{ 
@@ -646,7 +648,6 @@ function handleJoinClick() {
     line-height: clamp(1.3rem, 1.4vw + 1rem, 1.5rem);
     margin-bottom: 0.75rem;
     text-align: center;
-    margin-bottom: 1rem;
   }
 
   &__cta-group {
