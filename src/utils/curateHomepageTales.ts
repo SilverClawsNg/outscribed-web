@@ -1,36 +1,18 @@
 import { type TaleListDto } from '@/features/tales/types/TalesTypes';
 
 interface CuratedHomepageLayout {
-  focus: TaleListDto | null;
-  subfocus: TaleListDto | null;
-  sidebar: TaleListDto[];
-  nones: TaleListDto[];
-  subside: TaleListDto[];
-  allNonesHaveImages: boolean; // Flag indicating if the entire nones strip is image-backed
+  focus: TaleListDto | null;        // 'a'
+  subfocus: TaleListDto | null;     // 'h'
+  sidebar: TaleListDto | null;      // 'e' (Top Level sidebar card)
+  nones: TaleListDto[];             // 'b, c, d, f' (Level 2: Exactly 4 items for grid symmetry)
+  subside: TaleListDto[];           // 'i, j' (Level 3 Stack items)
+  sideCard: TaleListDto | null;     // 'g' (Level 3 Rightmost card)
+  allNonesHaveImages: boolean;      // Flag indicating if the entire Level 2 nones strip is image-backed
 }
 
 export function curateHomepageTales(tales: TaleListDto[]): CuratedHomepageLayout {
-  let pool = [...tales.slice(0, 10)];
-
-  // 1. FOCUS (Must have image)
-  const focusIndex = pool.findIndex(t => !!t.photo);
-  let focus: TaleListDto | null = null;
-  if (focusIndex !== -1) {
-    const [selectedFocus] = pool.splice(focusIndex, 1);
-    focus = selectedFocus ?? null;
-  } else {
-    focus = pool.shift() ?? null;
-  }
-
-  // 2. SUBFOCUS (Must have image)
-  const subfocusIndex = pool.findIndex(t => !!t.photo);
-  let subfocus: TaleListDto | null = null;
-  if (subfocusIndex !== -1) {
-    const [selectedSubfocus] = pool.splice(subfocusIndex, 1);
-    subfocus = selectedSubfocus ?? null;
-  } else {
-    subfocus = pool.shift() ?? null;
-  }
+  // Grab a working pool of top candidates (expanded to support 9 slotted items)
+  let pool = [...tales.slice(0, 12)];
 
   // Helper for photo preference allocation
   const takeWithPhotoPreference = (count: number, sourcePool: TaleListDto[]): TaleListDto[] => {
@@ -40,9 +22,8 @@ export function curateHomepageTales(tales: TaleListDto[]): CuratedHomepageLayout
       const photoIdx = sourcePool.findIndex(t => !!t.photo);
       if (photoIdx !== -1) {
         const [selected] = sourcePool.splice(photoIdx, 1);
-        const next = selected ?? sourcePool.shift();
-        if (next) {
-          result.push(next);
+        if (selected) {
+          result.push(selected);
         }
       } else {
         const next = sourcePool.shift();
@@ -54,23 +35,55 @@ export function curateHomepageTales(tales: TaleListDto[]): CuratedHomepageLayout
     return result;
   };
 
-  // 3. SIDEBAR (Prefers images)
-  const sidebar = takeWithPhotoPreference(3, pool);
+  // 1. FOCUS (Level 1 'a' - Must have image if available)
+  const focusIndex = pool.findIndex(t => !!t.photo);
+  let focus: TaleListDto | null = null;
+  if (focusIndex !== -1) {
+    const [selectedFocus] = pool.splice(focusIndex, 1);
+    focus = selectedFocus ?? null;
+  } else {
+    focus = pool.shift() ?? null;
+  }
 
-  // 4. SUB-SIDEBARS (Prefers images)
-  const subside = takeWithPhotoPreference(2, pool);
+  // 2. SIDEBAR (Level 1 'e' - Prefers images)
+  const sidebarArr = takeWithPhotoPreference(1, pool);
+  const sidebar = sidebarArr[0] ?? null;
 
-  // 5. NONES (Remaining 3 items)
-  let nones = pool.splice(0, 3);
+  // 3. NONES (Level 2 'b, c, d, f' - Exactly 4 items required for the 4-column grid row)
+  let nones = takeWithPhotoPreference(4, pool);
 
-  // --- ALL-OR-NOTHING SYMMETRY RULE FOR NONES ---
+  // --- ALL-OR-NOTHING SYMMETRY RULE FOR LEVEL 2 NONES ---
   const allNonesHaveImages = nones.length > 0 && nones.every(t => !!t.photo);
 
-  if (!allNonesHaveImages) {
-    // If false (1, 2, or all 3 lack images), strip photos from all nones for strict symmetry
-    // Keep photo as an empty string so it still matches TaleListDto's string type while behaving as "no image".
+  if (!allNonesHaveImages && nones.length > 0) {
+    // If any item lacks an image, strip photos from all nones for strict layout symmetry
     nones = nones.map(t => ({ ...t, photo: '' }));
   }
 
-  return { focus, subfocus, sidebar, nones, subside, allNonesHaveImages };
+  // 4. SUBFOCUS (Level 3 'h' - Must have image if available)
+  const subfocusIndex = pool.findIndex(t => !!t.photo);
+  let subfocus: TaleListDto | null = null;
+  if (subfocusIndex !== -1) {
+    const [selectedSubfocus] = pool.splice(subfocusIndex, 1);
+    subfocus = selectedSubfocus ?? null;
+  } else {
+    subfocus = pool.shift() ?? null;
+  }
+
+  // 5. SUB-SIDEBAR / STACK (Level 3 'i, j' - Prefers images)
+  const subside = takeWithPhotoPreference(2, pool);
+
+  // 6. SIDE CARD (Level 3 'g' - Rightmost card matching level 1 'e' alignment)
+  const sideCardArr = takeWithPhotoPreference(1, pool);
+  const sideCard = sideCardArr[0] ?? null;
+
+  return { 
+    focus, 
+    subfocus, 
+    sidebar, 
+    nones, 
+    subside, 
+    sideCard, 
+    allNonesHaveImages 
+  };
 }

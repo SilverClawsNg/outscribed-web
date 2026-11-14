@@ -112,17 +112,9 @@ function handleJoinClick() {
 
   <div class="homepage-hero">
 
-    <div class="page__pattern"></div>
-    <div class="page__fade page__fade--top"></div>
-    <div class="page__fade page__fade--bottom"></div>
-     
-    <div class="homepage-hero__wrapper">
-
+    
     <div class="homepage-hero__container">
       
-      <div class="homepage-hero__image">
-        <img src="@/assets/images/icon.png" />
-      </div>
       
       <h1 class="homepage-hero__title">
         The reality you know is just one version.
@@ -141,8 +133,15 @@ function handleJoinClick() {
           Join Us
         </button>
       </div>
+      
     </div>
-    </div>
+    
+      <div class="homepage-hero__image">
+        <p></p>
+        <img src="@/assets/images/icon.png" />
+         <p></p>
+      </div>
+
 
   </div>
 
@@ -153,7 +152,7 @@ function handleJoinClick() {
     <div class="trending-section__wrapper">
 
     <div class="trending-section__header">
-      <SvgIcons name="trending" :size="80" />
+      
       <h2 class="trending-section__title">trending today</h2>
     </div>
 
@@ -195,144 +194,120 @@ function handleJoinClick() {
               </RouterLink>
   </header>
 
-  <div class="homepage-layout" v-if="homepageLayout.focus">
 
-    <!-- ==========================================
-         MAIN LEFT REGION (75% on Desktop)
-         ========================================== -->
-    <div class="homepage-layout__main">
 
-    <!-- 1. FOCUS TALE (Must have image) -->
-    <article class="tale-hero">
-      
-    <div class="tale-hero__content">
+<div class="home-layout" v-if="homepageLayout.focus">
 
-       <TaleTextComponent 
-              :tale="homepageLayout.focus" 
-              type="focus" 
-            />
+  <!-- =============================================================
+       LEVEL 1: Focus (Item 'a') + Sidebar (Item 'e')
+       ============================================================= -->
+  <section class="home-layout__level home-layout__level--focus">
+    
+    <!-- FOCUS CARD (a) - Spans 3 columns -->
+    <article class="card card--focus">
+      <div class="card__media">
+        <RouterLink :to="`/tale/${homepageLayout.focus.slug}`" v-if="homepageLayout.focus.photo">
+          <img :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
+        </RouterLink>
+      </div>
+      <div class="card__content">
+        <TaleTextComponent :tale="homepageLayout.focus" type="focus" />
+      </div>
+    </article>
 
-        </div>
+    <!-- SIDEBAR CARD (e) - Occupies 4th column -->
+    <article class="card card--sidebar" v-if="homepageLayout.sidebar">
+      <div v-if="homepageLayout.sidebar.photo" class="card__media">
+        <RouterLink :to="`/tale/${homepageLayout.sidebar.slug}`">
+          <img :src="mediaHelper.getUrl(homepageLayout.sidebar.photo, 'tales', 'thumb')" :alt="homepageLayout.sidebar.title" />
+        </RouterLink>
+      </div>
+      <div class="card__content">
+        <TaleTextComponent :tale="homepageLayout.sidebar" type="pill" />
+      </div>
+    </article>
 
-        <div class="homepage-layout__media tale-hero__media">
-           <RouterLink :to="`/tale/${homepageLayout.focus.slug}`" v-if="homepageLayout.focus.photo">
-          <img  :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
-          </RouterLink>
-        </div>
+  </section>
 
-      </article>
 
-      <!-- 3. NONES STRIP (3 items - Enforces All-or-Nothing images Symmetry) -->
-      <div class="tale-strip">
-
-      <article 
-    v-for="tale in homepageLayout.nones" 
-    :key="tale.taleId" 
-    class="tale-strip__card"
-  >
-    <!-- Renders image only if ALL nones have images; otherwise hidden for uniform text layout -->
-    <div v-if="tale.photo" class="homepage-layout__media tale-strip__media">
+  <!-- =============================================================
+       LEVEL 2: Nones Strip (4 items: b, c, d, f) - All-or-Nothing Symmetry
+       ============================================================= -->
+  <section class="home-layout__level home-layout__level--nons">
+    <article 
+      v-for="tale in homepageLayout.nones" 
+      :key="tale.taleId" 
+      class="card card--none"
+    >
+      <!-- Media renders only if allNonesHaveImages is true across the entire strip -->
+      <div v-if="tale.photo" class="card__media">
         <RouterLink :to="`/tale/${tale.slug}`">
-      <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
-          </RouterLink>
-    </div>
-
-      <div class="tale-strip__content">
-
-      <TaleTextComponent 
-              :tale="tale" 
-              type="pill" 
-            />
-
-        </div>
-
-
-      </article>
-      </div>
-
-      <!-- ANCHOR REGION (Sub-Focus + Sub-Focus Sidebars) -->
-      <div class="tale-anchor">
-
-        <!-- 4. SUB-FOCUS (Must have image) -->
-        <article v-if="homepageLayout.subfocus" class="tale-subfocus">
-
-          <div class="homepage-layout__media tale-subfocus__media">
-               <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`" v-if="homepageLayout.subfocus.photo" >
-            <img  :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
-          </RouterLink>
-          </div>
-
-            <div class="tale-subfocus__content">
-
-            <TaleTextComponent 
-              :tale="homepageLayout.subfocus" 
-              type="focus" 
-            />
-
-        </div>
-      
-        </article>
-
-        <!-- 5. SUB-FOCUS SIDEBARS (2 items) -->
-        <div class="tale-subside-group">
-          <article 
-            v-for="tale in homepageLayout.subside" 
-            :key="tale.taleId" 
-            class="tale-subside"
-          >
-            <div v-if="tale.photo" class="homepage-layout__media tale-subside__media">
-               <RouterLink :to="`/tale/${tale.slug}`">
-              <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
-          </RouterLink>
-            </div>
-
-              <div class="tale-subside__content">
-
-           <TaleTextComponent 
-              :tale="tale" 
-              type="pill" 
-            />
-
-        </div>
-
-          
-          </article>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- ==========================================
-         RIGHT SIDEBAR REGION (25% on Desktop - 3 items)
-         ========================================== -->
-    <aside class="homepage-layout__sidebar">
-      <article 
-        v-for="tale in homepageLayout.sidebar" 
-        :key="tale.taleId" 
-        class="tale-sidebar"
-      >
-        <div v-if="tale.photo" class="homepage-layout__media tale-sidebar__media">
-           <RouterLink :to="`/tale/${tale.slug}`">
           <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
+        </RouterLink>
+      </div>
+      <div class="card__content">
+        <TaleTextComponent :tale="tale" type="pill" />
+      </div>
+    </article>
+  </section>
+
+
+  <!-- =============================================================
+       LEVEL 3: Subfocus (h) + Stacked Cards (i, j) + Side Card (g)
+       ============================================================= -->
+  <section class="home-layout__level home-layout__level--subfocus">
+    
+    <!-- SUBFOCUS CARD (h) - Spans 2 columns -->
+    <article class="card card--subfocus" v-if="homepageLayout.subfocus">
+      <div class="card__media" v-if="homepageLayout.subfocus.photo">
+        <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`">
+          <img :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
+        </RouterLink>
+      </div>
+      <div class="card__content">
+        <TaleTextComponent :tale="homepageLayout.subfocus" type="focus" />
+      </div>
+    </article>
+
+    <!-- STACKED SUB-SIDEBARS (i, j) - Occupies 3rd column -->
+    <div class="home-layout__stack" v-if="homepageLayout.subside.length">
+      <article 
+        v-for="tale in homepageLayout.subside" 
+        :key="tale.taleId" 
+        class="card card--stack-item"
+      >
+        <div v-if="tale.photo" class="card__media">
+          <RouterLink :to="`/tale/${tale.slug}`">
+            <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
           </RouterLink>
         </div>
-
-        <div class="tale-sidebar__content">
-
-           <TaleTextComponent 
-              :tale="tale" 
-              type="pill" 
-            />
-
+        <div class="card__content">
+          <TaleTextComponent :tale="tale" type="pill" />
         </div>
-        
       </article>
+    </div>
 
-    </aside>
+    <!-- RIGHT SIDE CARD (g) - Occupies 4th column (aligned with Level 1 'e') -->
+    <article class="card card--side-card" v-if="homepageLayout.sideCard">
+      <div v-if="homepageLayout.sideCard.photo" class="card__media">
+        <RouterLink :to="`/tale/${homepageLayout.sideCard.slug}`">
+          <img :src="mediaHelper.getUrl(homepageLayout.sideCard.photo, 'tales', 'thumb')" :alt="homepageLayout.sideCard.title" />
+        </RouterLink>
+      </div>
+      <div class="card__content">
+        <TaleTextComponent :tale="homepageLayout.sideCard" type="pill" />
+      </div>
+    </article>
 
-  </div>
-  
+  </section>
+
+</div>
+
+
+
+
+
+
   </template>
 
   <header class="page-header page-header--max">
@@ -559,7 +534,7 @@ function handleJoinClick() {
   //border-bottom: 1px solid var(--border-color);
 
   padding: 1rem;
-  margin-bottom: 1rem;
+  //margin-bottom: 1rem;
   //font-family: 'Palatino Linotype', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
 
@@ -573,6 +548,12 @@ function handleJoinClick() {
   }
  
   &__container {
+     width: @mid-width;
+    max-width: calc(100% - 20px);
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
     position: relative;
     height: auto;
     z-index: 1;
@@ -599,6 +580,9 @@ function handleJoinClick() {
     justify-content: center;
     align-items:center;
     width:100%;
+    margin-top:1rem;
+    width: @max-width;
+     margin: 0 auto;
 
     & p{ 
       flex-grow: 1;
@@ -769,295 +753,176 @@ function handleJoinClick() {
 /* ==========================================================================
    3. HOMEPAGE TALES LAYOUT (Card-Level Centralization & Dimension Caps)
    ================================================================---------- */
+@gutter-pct: (20 / 1300) * 100%; // 1.5384615%
 
-.homepage-layout {
-  margin: 0 auto;
+.home-layout {
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
   max-width: calc(100% - 20px);
-  margin-bottom: 3rem;
+  margin: 0 auto;
 
-  /* Device Max-Width Peaks & Container Centralization */
-  @media @phone {
-    width: @min-width;
-    flex-direction: column;
-  }
-
-  @media @tablet, @phablet {
-    width: @mid-width;
-    flex-direction: column;
-  }
-
-  @media @laptop, @desktop {
+  
+  @media @desktop, @laptop{
     width: @max-width;
   }
 
-  &__main {
-    display: flex;
-    flex-direction: column;
-    height: auto;
+   @media @tablet{
+    width: @mid-width;
+  }
 
-    @media @tablet, @phablet, @phone {
-      width: 100%;
-      gap: 1.5rem;
-    }
+   @media @phablet{
+    width: @mod-width;
+  }
 
-    @media @desktop, @laptop {
-      width: 75%;
-      gap: 4rem; 
+   @media @phone{
+    width: @min-width;
+  }
+
+
+
+  &__level {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); // Desktop/Laptop (> 991px)
+    column-gap: @gutter-pct;
+    row-gap: 1.5rem;
+    align-items: start;
+
+    /* Tablet & Phablet (600px - 991px) AND Phone (< 600px): Single 100% Column */
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
     }
   }
 
-  &__sidebar {
+  /* =============================================================
+   * UNIVERSAL CARD RESPONSIVE BEHAVIOR
+   * ============================================================= */
+  .card {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    row-gap: 0.5rem;
+    flex-direction: column; // Desktop/Laptop: Image stacked above text
+    width: 100%;
 
-    @media @tablet, @phablet, @phone {
+    /* Tablet & Phablet (600px - 991px): 100% card width, 50/50 row split */
+    @media @phablet, @tablet {
+      flex-direction: row;
+      column-gap: 1.25rem;
+      align-items: flex-start;
+      max-width: 100%; // Uncapped 100% width
+    }
+
+    /* Phone (< 600px): Stacked column, capped at 450px */
+    @media @phone {
+      flex-direction: column;
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    &__media {
       width: 100%;
-    }
-
-    @media @desktop, @laptop {
-      width: 25%;
-    }
-  }
-
-  &__media {
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--light-background-color);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
-    will-change: transform;
+      aspect-ratio: 450 / 337;
+      overflow: hidden;
+      flex-shrink: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: var(--light-background-color);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+      will-change: transform;
 
     // Hover State for Interactivity
     &:hover {
       transform: scale(1.03); // Subtle zoom effect indicating it's a link
     }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 8px;
+      }
+
+      /* Tablet & Phablet: Media takes exact 50% of the 100%-wide card */
+      @media @phablet, @tablet {
+        width: 50%;
+      }
+    }
+
+    &__content {
+      flex: 1 1 auto; // Takes remaining 50% alongside image, or 100% when no image exists
+      min-width: 0;
     }
   }
 
-}
+  /* =============================================================
+   * LEVEL 1: Focus (640px Image + 20px Gap + 310px Text) + Sidebar (310px)
+   * ============================================================= */
 
-/* --------------------------------------------------------------------------
-   1. TALE HERO (Focus Story - Max-Width Capped at 750px & Centralized)
-   -------------------------------------------------------------------------- */
+  &__level--focus {
+    .card--focus {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: 640fr 310fr;
+      column-gap: (20 / 970) * 100%;
+      align-items: start;
 
-.tale-hero {
-  width: 100%;
-  display: flex;
-  gap: 1.5rem;
-  align-items: stretch;
+      @media (max-width: 991px) {
+        grid-column: span 1;
+        display: flex;
+        flex-direction: column; // Focus stacks image (full width) above text on tablet & phone
+        max-width: 100%;
+        gap: 1rem;
+      }
 
-   @media @tablet {
-     max-width: @mid-width; /* Card level dimension cap */
-  }
+      .card__media {
+        aspect-ratio: 750 / 562;
 
-   @media @tablet, @phablet, @phone {
-    margin: 0 auto;   /* Keeps entire story centralized */
-  }
-
-  @media @tablet, @phablet, @phone {
-    flex-direction: column-reverse;
-  }
-
-
-  &__media {
-    flex: 1;
-    aspect-ratio: 750 / 562;
-  
-  }
-
-  &__content {
-    
-    width: 100%;
-
-    @media @desktop, @laptop {
-      flex: 0 0 311px;
+        @media @phablet, @tablet {
+          width: 100%; // Overrides standard 50% tablet media rule so focus stays monumental
+        }
+      }
     }
   }
-}
 
-/* --------------------------------------------------------------------------
-   3. TALE STRIP (Nones - Thumbnail Stories Capped at 450px)
-   -------------------------------------------------------------------------- */
-
-.tale-strip {
-  width: 100%;
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-
-  @media @tablet, @phablet, @phone {
-    flex-direction: column;
+  /* =============================================================
+   * LEVEL 2: Nones Strip
+   * ============================================================= */
+  &__level--nons {
+    align-items: stretch;
   }
 
-   @media @desktop, @laptop{
-    margin: 4rem 0;
+  /* =============================================================
+   * LEVEL 3: Subfocus (640px) + Stack (310px) + Side Card (310px)
+   * ============================================================= */
+  &__level--subfocus {
+    .card--subfocus {
+      grid-column: span 2;
+
+      @media (max-width: 991px) {
+        grid-column: span 1;
+        flex-direction: column; // Subfocus also keeps image full-width above text on tablet & phone
+        max-width: 100%;
+        gap: 1rem;
+      }
+
+      .card__media {
+        aspect-ratio: 750 / 562;
+
+        @media @phablet, @tablet {
+          width: 100%;
+        }
+      }
+    }
   }
 
-  &__card {
+  &__stack {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    flex: 1;
-    min-width: 0;
-
-    /* Card level dimension cap and centralization */
-    width: 100%;
-    max-width: @min-width;
-    margin: 0 auto;
-
-    @media @tablet, @phablet {
-      flex-direction: row;
-      max-width: @mid-width; /* Expands symmetrically on tablet when switching to row layout */
-    }
-  }
-
-  &__content{
-      @media @tablet, @phablet {
-      width: 50%;
-    }
-  }
-
-  &__media {
-    width: 100%;
-    aspect-ratio: 450 / 337;
-   
-    @media @tablet, @phablet {
-      width: 50%;
-    }
-
-  }
-
-}
-
-/* --------------------------------------------------------------------------
-   ANCHOR REGION (Sub-Focus & Sub-Sidebars)
-   -------------------------------------------------------------------------- */
-
-.tale-anchor {
-  width: 100%;
-  display: flex;
-  gap: 1.5rem;
-
-  @media @tablet, @phablet, @phone {
-    flex-direction: column;
+    gap: 1.5rem;
   }
 }
 
-/* 4. SUB-FOCUS (Story Capped at 750px & Centralized) */
-.tale-subfocus {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: @mid-width;
-  margin: 0 auto;
-
-  @media @desktop, @laptop {
-    width: 65%;
-  }
-
-  &__media {
-    width: 100%;
-    aspect-ratio: 750 / 562;
-  
-  }
-
-  &__content {
-    
-    width: 100%;
-  }
-
-}
-
-/* 5. SUB-SIDEBAR GROUP & CARDS (Story Capped at 450px & Centralized) */
-.tale-subside-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-
-  @media @desktop, @laptop {
-    width: 35%;
-  }
-}
-
-.tale-subside {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  max-width: @min-width;
-  margin: 0 auto;
-
-  @media @tablet, @phablet {
-    flex-direction: row;
-    max-width: @mid-width;
-  }
-
-  &__media {
-    width: 100%;
-    aspect-ratio: 450 / 337;
-   
-    @media @tablet, @phablet {
-      width: 50%;
-    }
-
-  }
-
-  &__content {
-    
-    width: 100%;
-
-    @media @tablet, @phablet {
-      width: 50%;
-    }
-  }
-
-}
-
-/* 2. SIDEBAR STORIES (Story Capped at 450px & Centralized) */
-.tale-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  max-width: @min-width;
-  margin: 0 auto;
-
-  @media @tablet, @phablet {
-    flex-direction: row;
-    max-width: @mid-width;
-  }
-
-  &__media {
-    width: 100%;
-    aspect-ratio: 450 / 337;
-   
-    @media @tablet, @phablet {
-      width: 50%;
-    }
-
-  }
-
-  &__content {
-    
-    width: 100%;
-
-    @media @tablet, @phablet {
-      width: 50%;
-    }
-
-  }
- 
-}
 
 /* ==========================================================================
    DISCOVERIES
