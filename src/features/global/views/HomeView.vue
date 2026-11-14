@@ -195,18 +195,13 @@ function handleJoinClick() {
   </header>
 
 
-
 <div class="home-layout" v-if="homepageLayout.focus">
 
-  <!-- =============================================================
-       LEVEL 1: Focus (Item 'a') + Sidebar (Item 'e')
-       ============================================================= -->
+  <!-- LEVEL 1: Full-Breadth Focus (750px Image + 20px Gutter + 530px Text) -->
   <section class="home-layout__level home-layout__level--focus">
-    
-    <!-- FOCUS CARD (a) - Spans 3 columns -->
     <article class="card card--focus">
-      <div class="card__media">
-        <RouterLink :to="`/tale/${homepageLayout.focus.slug}`" v-if="homepageLayout.focus.photo">
+      <div class="card__media" v-if="homepageLayout.focus.photo">
+        <RouterLink :to="`/tale/${homepageLayout.focus.slug}`">
           <img :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
         </RouterLink>
       </div>
@@ -214,32 +209,15 @@ function handleJoinClick() {
         <TaleTextComponent :tale="homepageLayout.focus" type="focus" />
       </div>
     </article>
-
-    <!-- SIDEBAR CARD (e) - Occupies 4th column -->
-    <article class="card card--sidebar" v-if="homepageLayout.sidebar">
-      <div v-if="homepageLayout.sidebar.photo" class="card__media">
-        <RouterLink :to="`/tale/${homepageLayout.sidebar.slug}`">
-          <img :src="mediaHelper.getUrl(homepageLayout.sidebar.photo, 'tales', 'thumb')" :alt="homepageLayout.sidebar.title" />
-        </RouterLink>
-      </div>
-      <div class="card__content">
-        <TaleTextComponent :tale="homepageLayout.sidebar" type="pill" />
-      </div>
-    </article>
-
   </section>
 
-
-  <!-- =============================================================
-       LEVEL 2: Nones Strip (4 items: b, c, d, f) - All-or-Nothing Symmetry
-       ============================================================= -->
+  <!-- LEVEL 2: Nones Strip (4 Equal Cards) -->
   <section class="home-layout__level home-layout__level--nons">
     <article 
       v-for="tale in homepageLayout.nones" 
       :key="tale.taleId" 
       class="card card--none"
     >
-      <!-- Media renders only if allNonesHaveImages is true across the entire strip -->
       <div v-if="tale.photo" class="card__media">
         <RouterLink :to="`/tale/${tale.slug}`">
           <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
@@ -251,13 +229,8 @@ function handleJoinClick() {
     </article>
   </section>
 
-
-  <!-- =============================================================
-       LEVEL 3: Subfocus (h) + Stacked Cards (i, j) + Side Card (g)
-       ============================================================= -->
+  <!-- LEVEL 3: Subfocus (Left 2 Cols) + 2x2 Supporting Cards (Right 2 Cols) -->
   <section class="home-layout__level home-layout__level--subfocus">
-    
-    <!-- SUBFOCUS CARD (h) - Spans 2 columns -->
     <article class="card card--subfocus" v-if="homepageLayout.subfocus">
       <div class="card__media" v-if="homepageLayout.subfocus.photo">
         <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`">
@@ -269,12 +242,11 @@ function handleJoinClick() {
       </div>
     </article>
 
-    <!-- STACKED SUB-SIDEBARS (i, j) - Occupies 3rd column -->
-    <div class="home-layout__stack" v-if="homepageLayout.subside.length">
+    <div class="home-layout__subside-grid" v-if="homepageLayout.subside.length">
       <article 
         v-for="tale in homepageLayout.subside" 
         :key="tale.taleId" 
-        class="card card--stack-item"
+        class="card card--subside"
       >
         <div v-if="tale.photo" class="card__media">
           <RouterLink :to="`/tale/${tale.slug}`">
@@ -286,19 +258,6 @@ function handleJoinClick() {
         </div>
       </article>
     </div>
-
-    <!-- RIGHT SIDE CARD (g) - Occupies 4th column (aligned with Level 1 'e') -->
-    <article class="card card--side-card" v-if="homepageLayout.sideCard">
-      <div v-if="homepageLayout.sideCard.photo" class="card__media">
-        <RouterLink :to="`/tale/${homepageLayout.sideCard.slug}`">
-          <img :src="mediaHelper.getUrl(homepageLayout.sideCard.photo, 'tales', 'thumb')" :alt="homepageLayout.sideCard.title" />
-        </RouterLink>
-      </div>
-      <div class="card__content">
-        <TaleTextComponent :tale="homepageLayout.sideCard" type="pill" />
-      </div>
-    </article>
-
   </section>
 
 </div>
@@ -755,6 +714,9 @@ function handleJoinClick() {
    ================================================================---------- */
 @gutter-pct: (20 / 1300) * 100%; // 1.5384615%
 
+@max-width: 1300px;
+@gutter-pct: (20 / 1300) * 100%; // 1.5384615%
+
 .home-layout {
   display: flex;
   flex-direction: column;
@@ -781,39 +743,37 @@ function handleJoinClick() {
   }
 
 
-
   &__level {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); // Desktop/Laptop (> 991px)
+    grid-template-columns: repeat(4, 1fr); // 310px tracks at 1300px
     column-gap: @gutter-pct;
     row-gap: 1.5rem;
     align-items: start;
 
-    /* Tablet & Phablet (600px - 991px) AND Phone (< 600px): Single 100% Column */
-    @media (max-width: 991px) {
+    @media @phone, @phablet, @tablet {
       grid-template-columns: 1fr;
     }
   }
 
   /* =============================================================
-   * UNIVERSAL CARD RESPONSIVE BEHAVIOR
+   * UNIVERSAL CARD RESPONSIVE RULES
    * ============================================================= */
   .card {
     display: flex;
+    flex-direction: column;
     row-gap: 0.5rem;
-    flex-direction: column; // Desktop/Laptop: Image stacked above text
     width: 100%;
 
-    /* Tablet & Phablet (600px - 991px): 100% card width, 50/50 row split */
+    /* Tablet & Phablet (600px - 991px): 100% width row split */
     @media @phablet, @tablet {
       flex-direction: row;
-      column-gap: 1.25rem;
+      gap: 1.25rem;
       align-items: flex-start;
-      max-width: 100%; // Uncapped 100% width
+      max-width: 100%;
     }
 
-    /* Phone (< 600px): Stacked column, capped at 450px */
-    @media @phone {
+    /* Phone (< 600px): Column capped at 450px */
+    @media (max-width: 599px) {
       flex-direction: column;
       max-width: 450px;
       margin: 0 auto;
@@ -835,6 +795,7 @@ function handleJoinClick() {
       transform: scale(1.03); // Subtle zoom effect indicating it's a link
     }
 
+
       img {
         width: 100%;
         height: 100%;
@@ -843,34 +804,33 @@ function handleJoinClick() {
         border-radius: 8px;
       }
 
-      /* Tablet & Phablet: Media takes exact 50% of the 100%-wide card */
       @media @phablet, @tablet {
         width: 50%;
       }
     }
 
     &__content {
-      flex: 1 1 auto; // Takes remaining 50% alongside image, or 100% when no image exists
+      flex: 1 1 auto;
       min-width: 0;
     }
   }
 
-  /* =============================================================
-   * LEVEL 1: Focus (640px Image + 20px Gap + 310px Text) + Sidebar (310px)
+ 
+ /* =============================================================
+   * LEVEL 1: Full-Width Focus (Top-Aligned for Natural Reading)
    * ============================================================= */
-
   &__level--focus {
     .card--focus {
-      grid-column: span 3;
+      grid-column: span 4;
       display: grid;
-      grid-template-columns: 640fr 310fr;
-      column-gap: (20 / 970) * 100%;
-      align-items: start;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: @gutter-pct;
+      align-items: start; // <--- Changed from center to start for top-down flow
 
       @media (max-width: 991px) {
         grid-column: span 1;
         display: flex;
-        flex-direction: column; // Focus stacks image (full width) above text on tablet & phone
+        flex-direction: column;
         max-width: 100%;
         gap: 1rem;
       }
@@ -878,30 +838,30 @@ function handleJoinClick() {
       .card__media {
         aspect-ratio: 750 / 562;
 
-        @media @phablet, @tablet {
-          width: 100%; // Overrides standard 50% tablet media rule so focus stays monumental
+        @media (min-width: 600px) and (max-width: 991px) {
+          width: 100%;
         }
       }
     }
   }
 
   /* =============================================================
-   * LEVEL 2: Nones Strip
+   * LEVEL 2: Nones Strip (4 Columns)
    * ============================================================= */
   &__level--nons {
     align-items: stretch;
   }
 
   /* =============================================================
-   * LEVEL 3: Subfocus (640px) + Stack (310px) + Side Card (310px)
+   * LEVEL 3: Subfocus (640px) + 2x2 Supporting Cards (640px)
    * ============================================================= */
   &__level--subfocus {
     .card--subfocus {
-      grid-column: span 2;
+      grid-column: span 2; // 640px
 
-      @media (max-width: 991px) {
+      @media @phone, @phablet, @tablet {
         grid-column: span 1;
-        flex-direction: column; // Subfocus also keeps image full-width above text on tablet & phone
+        flex-direction: column;
         max-width: 100%;
         gap: 1rem;
       }
@@ -916,12 +876,30 @@ function handleJoinClick() {
     }
   }
 
-  &__stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  /* Right half of Level 3: Two levels of two 310px cards */
+  &__subside-grid {
+    grid-column: span 2; // 640px total (310px + 20px + 310px)
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: (20 / 640) * 100%; // Exact 20px gutter inside the 640px sub-grid
+    row-gap: 1.5rem;
+    align-items: start;
+
+    @media @phone, @phablet, @tablet {
+      grid-column: span 1;
+      grid-template-columns: 1fr;
+    }
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 /* ==========================================================================
