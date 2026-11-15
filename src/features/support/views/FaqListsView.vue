@@ -1,16 +1,45 @@
 <script setup lang="ts"> 
 
 // --- IMPORTS ---
+import { ref, onMounted } from 'vue'
+
 import FaqListComponent from '../components/FaqListComponent.vue'
 import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import faqData from '../data/faqs.json'
 import SvgIcons from '@/components/SvgIcons.vue'
+import { useRoute } from 'vue-router';
 
 // --- INITIALIZE STORES ---
 const modalStore = useModalStore()
 
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
+const route = useRoute();
+const faqSection = ref<HTMLElement | null>(null);
+
+const scrollToFaq = () => {
+  if (!faqSection.value) return;
+
+  // Adjust offset (e.g., 80px) to clear your sticky navbar cleanly
+  const headerOffset = 80;
+  const elementPosition = faqSection.value.getBoundingClientRect().top;
+  const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: 'smooth'
+  });
+
+  // Shift focus for keyboard/screen-reader accessibility without jumping scroll again
+  faqSection.value.focus({ preventScroll: true });
+};
+
+// Also handle direct navigation to /faqs#faq
+onMounted(() => {
+  if (route.hash === '#faq') {
+    setTimeout(scrollToFaq, 100);
+  }
+});
 
 </script>
 
@@ -40,7 +69,19 @@ const modalStore = useModalStore()
         </div>
       
       </div>
-
+      
+<!-- Editorial Jump Trigger -->
+      <div class="about-page__jump">
+        <a 
+          href="#faq" 
+          class="about-page__jump-link" 
+          @click.prevent="scrollToFaq"
+        >
+        
+        <span class="svg-holder"> <SvgIcons name="downarrow" :size="20" /></span>
+          <span>Jump to Frequently Asked Questions</span>
+        </a>
+      </div>
       
 <div class="rich-text">
   <h1>What is OutScribed?</h1>
@@ -73,10 +114,6 @@ const modalStore = useModalStore()
 <p>At its core, OutScribed is built on clarity through perspective. It allows you to step into an alternate reality, tell an engaging tale, and shed light on real-world facts without fear.</p>
 </div>
 
-
-
-</div>
-
   <header class="page-header page-header--mid">
     <h2 class="page-header__title">
       Frequently Asked Questions
@@ -85,19 +122,21 @@ const modalStore = useModalStore()
       <p class="page-header__lines--item"></p>
       <p class="page-header__lines--item"></p>
     </div>
-            
-            </header>
+  </header>
  
   <template v-if="faqData.length > 0">
 
-       <div class="container">
+       <section id="faq" 
+      ref="faqSection" 
+      class="about-page__faq"
+      tabindex="-1">
 
       <FaqListComponent 
          v-for="faq in faqData" 
         :key="faq.id" 
         :faq="faq"/>
 
-  </div>
+       </section>
 
   </template>
 
@@ -110,6 +149,8 @@ const modalStore = useModalStore()
       />
   </template>
 
+</div>
+
 </template>
 
 <style scoped lang="less">
@@ -118,9 +159,9 @@ const modalStore = useModalStore()
 
 .about-page {
   padding-top: 3rem;
- width: @mid-width;
-    max-width: calc(100% - 20px);
-    margin: 0 auto;
+  width: @mid-width;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
 
   .about-header {
     text-align: center;
@@ -139,8 +180,31 @@ const modalStore = useModalStore()
       line-height: 1.5;
     }
   }
-}
 
+   &__jump {
+    margin: 1.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 0.5rem;
+
+      & svg{
+        fill: var(--text-color);
+        vertical-align: middle;
+      }
+
+    &:hover{
+       & svg{
+        fill: @link-color;
+      }
+    }
+  }
+  
+   &__faq {
+    scroll-margin-top: 80px; // Native CSS fallback for hash navigation
+    outline: none; // Prevents focus ring when programmatically focused via tabindex="-1"
+  }
+}
 
   // Self-Service FAQ Box
   .faq-banner {

@@ -178,7 +178,7 @@ function handleJoinClick() {
     </div>
 
     <p class="editorial-masthead__byline">
-      The Truth, The Fiction, &amp; Everything In-between
+      The Truth, The Fiction, <br /> &amp; Everything In-between
     </p>
   </div>
 </header>
