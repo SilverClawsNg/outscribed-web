@@ -18,7 +18,7 @@ const engage = useEngagement()
 
 interface Props {
    tale: TaleListDto,
-  type?: 'focus' | 'pill';
+   type?: 'focus' | 'pill';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -142,6 +142,8 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
     margin-top: 1rem;
     font-weight: normal;
      font-size: 0.9rem;
+     position: relative;
+     z-index: 10;
     
   &--read {
      background-color: var(--background-color);

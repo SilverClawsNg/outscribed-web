@@ -203,7 +203,9 @@ function handleJoinClick() {
       
       <!-- Bottom-anchored translucent text overlay -->
       <div class="card__overlay-content">
+           <div class="card__overlay-content--wrapper">
         <TaleTextComponent :tale="homepageLayout.focus" type="focus" />
+      </div>
       </div>
     </div>
   </article>
@@ -215,7 +217,7 @@ function handleJoinClick() {
         Guest <SvgIcons name="frontarrow" :size="24" /> OutScriber
       </h3>
       <p class="roadmap-section__subtitle">
-        Share your alternate realities. Start 
+        As an OutScriber, you get super powers to create and rule your own world. Start 
         <button type="button" @click="handleCreateDraftClick">OutScribing</button> 
         in quick, simple steps.
       </p>
@@ -738,7 +740,6 @@ function handleJoinClick() {
   }
 }
 
-
 /* ==========================================================================
    1. HOMEPAGE HERO (Mesh Gradient Header)
    ================================================================---------- */
@@ -827,9 +828,6 @@ function handleJoinClick() {
     text-transform: capitalize;
     text-align: center;
    
-
-
-
     @media @phone {
       font-size: 1.7rem;
       line-height: 2rem;
@@ -1148,14 +1146,19 @@ function handleJoinClick() {
         transparent 100%
       );
       color: #ffffff;
-      pointer-events: none;
+      //pointer-events: none;
 
       a, button {
         pointer-events: auto;
       }
 
       --text-color: #ffffff;
-      --muted-text-color: rgba(255, 255, 255, 0.85);
+      --muted-text-color: #ffffff;
+      --background-color: transparent;
+
+      &--wrapper{
+        max-width: @mod-width;
+      }
     }
 
   @media (max-width: 599px) {
@@ -1166,6 +1169,7 @@ function handleJoinClick() {
         color: var(--text-color);
         --text-color: inherit;
         --muted-text-color: inherit;
+        --background-color: inherit
       }
     }
   }
