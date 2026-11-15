@@ -110,76 +110,160 @@ function handleJoinClick() {
 
 <template>
 
-  <div class="homepage-hero">
-
+ <header class="editorial-masthead">
+  <div class="editorial-masthead__inner">
     
-    <div class="homepage-hero__container">
-      
-      
-      <h1 class="homepage-hero__title">
-        The reality you know is just one version.
-      </h1>
+    <!-- LEFT TRACK (750px / 57.69%): Left-Aligned Brand Manifesto -->
+    <div class="editorial-masthead__hero">
+    
 
-      <h2 class="homepage-hero__explainer">
+      <h1 class="editorial-masthead__title">
+  The reality you know is <span class="editorial-masthead__highlight">just one version.</span>
+</h1>
+
+      <p class="editorial-masthead__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
         reframe the present, and sculpt futures.
-      </h2>
+      </p>
 
-      <div class="homepage-hero__cta-group">
-        <RouterLink class="btn btn--primary" to="/faqs">
-          About Us
-        </RouterLink>
+      <div class="editorial-masthead__cta-group">
         <button class="btn btn--secondary btn--outscribe" @click="handleJoinClick">
           Join Us
         </button>
+        <RouterLink class="btn btn--primary" to="/faqs">
+          About Us
+        </RouterLink>
       </div>
-      
     </div>
-    
-      <div class="homepage-hero__image">
-        <p></p>
-        <img src="@/assets/images/icon.png" />
-         <p></p>
+
+    <!-- RIGHT TRACK (530px / 40.77%): Docked Live Pulse (Hidden gracefully if empty) -->
+    <aside 
+      v-if="homepageStore.tags.length > 0" 
+      class="editorial-masthead__trending"
+      aria-label="Trending Topics"
+    >
+      <div class="editorial-masthead__trending-header">
+        <span class="editorial-masthead__pulse-dot"></span>
+        <h2 class="editorial-masthead__trending-title">Trending Today</h2>
       </div>
 
+      <div class="editorial-masthead__tags">
+        <RouterLink
+          v-for="tag in homepageStore.tags" 
+          :key="tag.tagId" 
+          :to="`/tales?tag=${tag.slug}`" 
+          class="tag-pill"
+        >
+          <span class="tag-pill__name">
+            <span class="tag-pill__symbol">#</span>{{ tag.name }}
+          </span>
+          <span class="divider divider--circle"></span>
+          <span class="tag-pill__metric">{{ formatCounts(tag.talesCounter) }}</span>
+        </RouterLink>
+
+        <RouterLink to="/tags" class="tag-pill tag-pill--more">
+          <span class="tag-pill__name">Explore all &rarr;</span>
+        </RouterLink>
+      </div>
+    </aside>
 
   </div>
 
-<template v-if="homepageStore.tags.length > 0">
-
-  <div class="trending-section">
-
-    <div class="trending-section__wrapper">
-
-    <div class="trending-section__header">
-      
-      <h2 class="trending-section__title">trending today</h2>
+  <!-- FULL-WIDTH EDITORIAL RULE (1300px) -->
+ <div class="editorial-masthead__footer">
+    <div class="editorial-masthead__divider">
+      <span class="editorial-masthead__rule"></span>
+      <img src="@/assets/images/icon.png" alt="" aria-hidden="true" />
+      <span class="editorial-masthead__rule"></span>
     </div>
 
-    <div class="trending-section__tags">
-      <RouterLink
-        v-for="tag in homepageStore.tags" 
-        :key="tag.tagId" 
-        :to="`/tales?tag=${tag.slug}`" 
-        class="tag-pill"
-      >
-        <span class="tag-pill__name"><span class="tag-pill__symbol">#</span>{{ tag.name }}</span>
-        <span class="divider divider--circle"></span>
-        <span class="tag-pill__metric">{{ formatCounts(tag.talesCounter) }}</span>
-      </RouterLink>
-
-      <RouterLink to="/tags" class="tag-pill tag-pill--more">
-        <span class="tag-pill__name">More...</span>
-      </RouterLink>
-    </div>
-    </div>
-
+    <p class="editorial-masthead__byline">
+      The Truth, The Fiction, &amp; Everything In-between
+    </p>
   </div>
-
-
-  </template>
+</header>
+ 
 
   <template v-if="homepageStore.tales.length > 0">
+
+<div class="home-layout" v-if="homepageLayout.focus">
+
+<!-- LEVEL 1: Focus Hero (Left) + Vertical Roadmap Steps (Right) -->
+<section class="home-layout__level home-layout__level--focus">
+  
+  <!-- LEFT: FOCUS TALE -->
+  <article class="card card--focus">
+    <div class="card__media" v-if="homepageLayout.focus.photo">
+      <RouterLink :to="`/tale/${homepageLayout.focus.slug}`">
+        <img 
+          :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" 
+          :alt="homepageLayout.focus.title" 
+        />
+      </RouterLink>
+      
+      <!-- Bottom-anchored translucent text overlay -->
+      <div class="card__overlay-content">
+        <TaleTextComponent :tale="homepageLayout.focus" type="focus" />
+      </div>
+    </div>
+  </article>
+
+  <!-- RIGHT: VERTICAL STEPPED ROADMAP -->
+  <aside class="roadmap-section roadmap-section--hero">
+    <div class="roadmap-section__header">
+      <h3 class="roadmap-section__title">
+        Guest <SvgIcons name="frontarrow" :size="24" /> OutScriber
+      </h3>
+      <p class="roadmap-section__subtitle">
+        Share your alternate realities. Start 
+        <button type="button" @click="handleCreateDraftClick">OutScribing</button> 
+        in quick, simple steps.
+      </p>
+    </div>
+
+    <!-- Vertical column display for maximum text visibility -->
+    <div class="roadmap-section__steps">
+      <div class="roadmap-card">
+        <h4 class="roadmap-card__heading">1. Sign Up</h4>
+        <ul class="roadmap-card__content">
+          <li>Create an account via Google, Microsoft, Apple, or email token.</li>
+          <li>Choose your unique OutScribed handle and password.</li>
+          <li>Accept the platform's legal &amp; structural statements in one click.</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-card">
+        <h4 class="roadmap-card__heading">2. Build Story</h4>
+        <ul class="roadmap-card__content">
+          <li>Start a draft with a title and category.</li>
+          <li>Open the <strong>Write Studio</strong> to craft your narrative.</li>
+          <li>Complete reality checks, optional photo, and tags.</li>
+        </ul>
+      </div>
+
+      <div class="roadmap-card">
+        <h4 class="roadmap-card__heading">3. Go Live</h4>
+        <ul class="roadmap-card__content">
+          <li>Preview your story to ensure all Ts are crossed and Is dotted.</li>
+          <li>Publish to the world with a single click.</li>
+          <li>Invite readers to rate and join discussion threads.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-section__footer">
+      <button 
+        type="button" 
+        class="btn btn--secondary btn--prominent"
+        @click="handleCreateDraftClick"
+      >
+        Start here
+      </button>
+    </div>
+  </aside>
+
+</section>
+
 
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
@@ -195,21 +279,6 @@ function handleJoinClick() {
   </header>
 
 
-<div class="home-layout" v-if="homepageLayout.focus">
-
-  <!-- LEVEL 1: Full-Breadth Focus (750px Image + 20px Gutter + 530px Text) -->
-  <section class="home-layout__level home-layout__level--focus">
-    <article class="card card--focus">
-      <div class="card__media" v-if="homepageLayout.focus.photo">
-        <RouterLink :to="`/tale/${homepageLayout.focus.slug}`">
-          <img :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" :alt="homepageLayout.focus.title" />
-        </RouterLink>
-      </div>
-      <div class="card__content">
-        <TaleTextComponent :tale="homepageLayout.focus" type="focus" />
-      </div>
-    </article>
-  </section>
 
   <!-- LEVEL 2: Nones Strip (4 Equal Cards) -->
   <section class="home-layout__level home-layout__level--nons">
@@ -261,11 +330,6 @@ function handleJoinClick() {
   </section>
 
 </div>
-
-
-
-
-
 
   </template>
 
@@ -393,92 +457,287 @@ function handleJoinClick() {
 
   </template>
 
-  <div class="roadmap-section">
-
-    <div class="roadmap-section__image-wrapper">
-
-      <div class="roadmap-section__image">
-      <img src="@/assets/images/writing-girl.png" />
-     
-      </div>
-
-        <div class="roadmap-section__header">
-        <h3 class="roadmap-section__title">Guest <SvgIcons name="frontarrow" :size=30 /> OutScriber</h3>
-        <p class="roadmap-section__subtitle">
-          Share your alternate realities. <br /> Start <button type="button" @click="handleCreateDraftClick">OutScribing</button> in quick, simple steps.
-        </p>
-      </div>
-
-    </div>
-
-    <div class="roadmap-section__steps">
-
-         <div class="roadmap-card">
-            <h4 class="roadmap-card__heading">Sign Up</h4>
-            <ul class="roadmap-card__content">
-              <li>
-                Create a new account via Google, Microsoft, Apple, or an email security token.
-              </li>
-              <li>
-                Choose your unique OutScribed handle and password.
-              </li>
-              <li>
-                Agree to platform's legal & structural statements with a single click.
-              </li>
-            </ul>
-          </div>
-
-          <div class="roadmap-card">
-            <h4 class="roadmap-card__heading">Build Story</h4>
-            <ul class="roadmap-card__content">
-              <li>
-                Create a story draft with a title and category.
-              </li>
-              <li>
-                Move over to the <strong>Tales' Editor</strong> to write your story.
-              </li>
-              <li>
-                Complete story's basic information, reality check, and optional photo & tags.
-              </li>
-            </ul>          
-          </div>
-
-         <div class="roadmap-card">
-            <h4 class="roadmap-card__heading">Go Live</h4>
-             <ul class="roadmap-card__content">
-              <li>
-                Preview yoru story to ensure all Ts are crossed and Is dotted.
-              </li>
-              <li>
-                Publish your story to the world with a single click.
-              </li>
-              <li>
-                Invite others to read, rate, & join discussion threads via social networks and email.
-              </li>
-            </ul>
-          </div>
-
-
-
-    </div>
-
-    <div class="roadmap-section__footer">
-        <button 
-          type="button" 
-          class="btn btn--secondary btn--prominent"
-          @click="handleCreateDraftClick"
-        >
-          Start here
-        </button>
-    </div>
-
-  </div>
-
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 @import "@/assets/css/discovery-container.less";
+
+@gutter-pct: (20 / 1300) * 100%;  // 1.53846% (20px at 1300px)
+@focus-pct: (750 / 1300) * 100%;   // 57.6923% (750px at 1300px)
+@roadmap-pct: (530 / 1300) * 100%; // 40.7692% (530px at 1300px)
+
+.editorial-masthead {
+  width: @max-width;
+  max-width: calc(100% - 20px);
+  margin: 0 auto 3.5rem auto;
+  padding: 1.75rem 0 0 0;
+  background-color: var(--background-color);
+
+  /* =============================================================
+   * SPLIT FLEX ROW (Matches Level 1 Focus + Roadmap Proportions)
+   * ============================================================= */
+  &__inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end; // Anchors both bottoms cleanly to the icon divider
+    gap: @gutter-pct;
+    width: 100%;
+
+    @media (max-width: 991px) {
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 750px; // Matches Level 1's 750px stacked column below
+      margin: 0 auto;
+      gap: 1.75rem;
+    }
+  }
+
+  /* =============================================================
+   * LEFT: LEFT-ALIGNED HERO (57.69% / 750px)
+   * ============================================================= */
+  &__hero {
+    flex: 1 1 @focus-pct; // Expands to 100% gracefully if Trending has 0 tags
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.75rem;
+
+    @media (max-width: 991px) {
+      flex: none;
+      width: 100%;
+    }
+  }
+
+
+  &__title {
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--text-color);
+    max-width: 18ch; // Forces an intentional, authoritative 2-line editorial break
+
+    @media @phone {
+      font-size: 1.85rem;
+      line-height: 2.15rem;
+    }
+    @media @phablet, @tablet {
+      font-size: 2.35rem;
+      line-height: 2.65rem;
+    }
+    @media @largeDevice {
+      font-size: 2.95rem;
+      line-height: 3.2rem;
+    }
+  }
+
+  
+   &__highlight {
+    color: @link-color; // Or @logo-red if you prefer warm editorial crimson over blue
+    text-decoration: none;
+  }
+
+  &__explainer {
+    margin: 0;
+    font-weight: 400;
+    font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
+    line-height: 1.55;
+    color: var(--muted-text-color);
+    max-width: 56ch; // Optimal reading line length
+  }
+
+  &__cta-group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 0.35rem;
+  }
+
+  /* =============================================================
+   * RIGHT: TRENDING TODAY DOCK (40.77% / 530px)
+   * ============================================================= */
+  &__trending {
+    flex: 0 0 @roadmap-pct; // Aligns its left edge directly with the Roadmap below
+    min-width: 0;
+    padding-left: 1.25rem;
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    @media (max-width: 991px) {
+      flex: none;
+      width: 100%;
+      padding-left: 0;
+      padding-top: 1.25rem;
+      border-left: none;
+      border-top: 1px solid var(--border-color);
+    }
+  }
+
+  &__trending-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: @red-color;
+    flex-shrink: 0;
+  }
+
+  &__trending-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: @red-color;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  /* =============================================================
+   * FULL-WIDTH EDITORIAL ICON DIVIDER
+   * ============================================================= */
+  &__divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 1.75rem;
+
+    @media (max-width: 991px) {
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    img {
+      height: auto;
+      margin: 0 0.75rem;
+      opacity: 0.85;
+
+      @media @smallDevice {
+        width: 2.25rem;
+      }
+      @media @largeDevice {
+        width: 2.75rem;
+      }
+    }
+  }
+
+  &__rule {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--border-color);
+  }
+
+  /* =============================================================
+   * FULL-WIDTH EDITORIAL RULE & BYLINE BRIDGE
+   * ============================================================= */
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 1.75rem;
+    gap: 0.65rem;
+
+    @media (max-width: 991px) {
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &__divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    img {
+      height: auto;
+      margin: 0 0.75rem;
+      opacity: 0.85;
+
+      @media @smallDevice {
+        width: 2.25rem;
+      }
+      @media @largeDevice {
+        width: 2.75rem;
+      }
+    }
+  }
+
+  &__rule {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--border-color);
+  }
+
+  &__byline {
+    margin: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-text-color);
+  }
+}
+
+/* =============================================================
+ * REFINED TAG PILLS
+ * ============================================================= */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border-color);
+  color: var(--muted-text-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6rem;
+  height: 1.9rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--light-background-color);
+    border-color: var(--text-color);
+    color: @link-color;
+  }
+
+  &--more {
+    border-style: dashed;
+    color: var(--text-color);
+  }
+
+  &__symbol {
+    font-size: 0.82rem;
+    font-weight: 400;
+    opacity: 0.75;
+  }
+
+  &__metric {
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+}
+
 
 /* ==========================================================================
    1. HOMEPAGE HERO (Mesh Gradient Header)
@@ -815,36 +1074,203 @@ function handleJoinClick() {
     }
   }
 
- 
- /* =============================================================
-   * LEVEL 1: Full-Width Focus (Top-Aligned for Natural Reading)
-   * ============================================================= */
-  &__level--focus {
-    .card--focus {
-      grid-column: span 4;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: @gutter-pct;
-      align-items: start; // <--- Changed from center to start for top-down flow
+ @max-width: 1300px;
+@gutter-pct: (20 / 1300) * 100%; // 1.5384615%
+@focus-pct: (750 / 1300) * 100%;  // 57.6923077%
+@roadmap-pct: (530 / 1300) * 100%; // 40.7692308%
+
+/* =============================================================
+ * LEVEL 1: Fluid 750px Focus + 530px Roadmap -> 750px Column <= 991px
+ * ============================================================= */
+.home-layout__level--focus {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: @gutter-pct; // 20px at 1300px, scales smoothly down to ~15px at 992px
+  width: 100%;
+
+  /* At 991px and below: Stack into a centered 750px max-width column */
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: center;
+    max-width: 750px;
+    margin: 0 auto;
+    gap: 1.5rem;
+  }
+
+  .card--focus {
+    flex: 0 0 @focus-pct; // Exact 750px at 1300px; shrinks proportionally to ~572px at 992px
+    min-width: 0;
+    display: block;
+    position: relative;
+
+    @media (max-width: 991px) {
+      flex: none;
+      width: 100%; // Holds 750px from 991px down to 750px, then shrinks fluidly with viewport
+    }
+
+   .card__media {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 750 / 562;
+      border-radius: 6px;
+      overflow: hidden;
 
       @media (max-width: 991px) {
-        grid-column: span 1;
-        display: flex;
-        flex-direction: column;
-        max-width: 100%;
-        gap: 1rem;
+        height: auto;
       }
 
-      .card__media {
-        aspect-ratio: 750 / 562;
+      /* Release aspect-ratio & overflow lock on small phones so stacked text expands freely */
+      @media (max-width: 599px) {
+        aspect-ratio: auto;
+        overflow: visible;
 
-        @media (min-width: 600px) and (max-width: 991px) {
-          width: 100%;
+        a,
+        img {
+          aspect-ratio: 750 / 562;
+          border-radius: 6px;
+          overflow: hidden;
+          display: block;
+        }
+      }
+    }
+
+    .card__overlay-content {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 2.5rem 1.25rem 1.25rem;
+      background: linear-gradient(
+        to top,
+        rgba(15, 23, 42, 0.92) 0%,
+        rgba(15, 23, 42, 0.72) 60%,
+        transparent 100%
+      );
+      color: #ffffff;
+      pointer-events: none;
+
+      a, button {
+        pointer-events: auto;
+      }
+
+      --text-color: #ffffff;
+      --muted-text-color: rgba(255, 255, 255, 0.85);
+    }
+
+  @media (max-width: 599px) {
+      .card__overlay-content {
+        position: static;
+        padding: 1rem 0 0;
+        background: var(--background-color);
+        color: var(--text-color);
+        --text-color: inherit;
+        --muted-text-color: inherit;
+      }
+    }
+  }
+}
+
+/* =============================================================
+ * RIGHT-HAND / STACKED ROADMAP
+ * ============================================================= */
+.roadmap-section--hero {
+  flex: 1 1 @roadmap-pct; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+
+  @media (max-width: 991px) {
+    flex: none;
+    width: 100%; // Matches the 750px Focus card width cleanly when stacked
+  }
+
+  .roadmap-section__header {
+    text-align: left;
+  }
+
+  .roadmap-section__title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: var(--text-color);
+    margin: 0 0 0.3rem 0;
+    display: flex;
+    align-items: center;
+    column-gap: 0.4rem;
+
+    svg {
+      stroke: @logo-red;
+      stroke-width: 2;
+    }
+  }
+
+  .roadmap-section__subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--muted-text-color);
+
+    button {
+      border-bottom: 2px dotted var(--border-color);
+      font-style: italic;
+      color: var(--text-color);
+
+      &:hover {
+        border-bottom-color: transparent;
+      }
+    }
+  }
+
+  .roadmap-section__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .roadmap-card {
+    &__heading {
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      font-weight: 900;
+      margin: 0 0 0.25rem 0;
+      color: var(--text-color);
+    }
+
+    &__content {
+      list-style: square;
+      margin: 0 0 0 1rem;
+      padding: 0;
+
+      li {
+        font-size: 0.875rem;
+        color: var(--muted-text-color);
+        line-height: 1.4;
+        margin-bottom: 0.2rem;
+
+        &:last-child {
+          margin-bottom: 0;
         }
       }
     }
   }
 
+  .roadmap-section__footer {
+    text-align: left;
+  }
+}
   /* =============================================================
    * LEVEL 2: Nones Strip (4 Columns)
    * ============================================================= */
@@ -985,119 +1411,5 @@ function handleJoinClick() {
    PATHWAY
    ================================================================---------- */
 
-.roadmap-section{
-  width: @mid-width;
-  max-width: calc(100% - 20px);
-  margin: 1rem auto 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-   @media @phone{
- width: @min-width;
-  }
-
-  &__image-wrapper{
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    flex-direction: column;
-    row-gap: 0.5rem;
-    width: 100%;
-  }
-  
-  &__image{
-       width: 300px;
-       
-
-    & img{
-      width: 100%;
-      height: auto;
-     
-
-    }
-  }
-
-&__header {
-    text-align: center;
-  }
-
-  &__title {
-    font-size: 1.35rem;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    color: var(--text-color);
-    margin-bottom: 0.3rem;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    column-gap: 0.5rem;
-
-    & svg{
-      stroke: @logo-red;
-      stroke-width: 2;
-    }
-  }
-
-  &__subtitle {
-    color: var(--muted-text-color);
-
-    & button{
-      border-bottom: 2px dotted var(--border-color);
-      font-style: italic;
-
-      &:hover{
-       border-bottom-color: transparent;
-      }
-    }
-  }
-
-  &__steps{
-    display: flex;
-    column-gap: 0.5rem;
-      padding: 1rem 0;
-      border-top: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color);
-
-       @media @phone{
- flex-direction: column;
-
-  }
-  }
-
-  .roadmap-card{
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%;
-
-    &__heading{
-      font-size: 1.8rem;
-      text-transform: uppercase;
-      font-weight: 900;
-    }
-
-    &__content{
-      list-style:square;
-      margin-left: 0.75rem;
-
-      & li{
-        font-size: 0.85rem;
-        color: var(--muted-text-color);
-        margin: 0;
-        line-height: 1.4;
-      }
-    }
-
-  }
-
-  
-    &__footer{
-    
-      text-align: center;
-    
-
-    }
-
-
-}
 
 </style>
