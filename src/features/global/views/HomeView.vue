@@ -538,9 +538,10 @@ function handleJoinClick() {
   &__title {
     grid-area: title;
     margin: 0 0 0.5rem 0;
-   
+     text-align: left;
+    justify-self: flex-start;
     font-weight: 400;
-    text-transform:lowercase;
+    //text-transform:lowercase;
     letter-spacing: -0.02em;
     color: var(--text-color);
     //max-width: 22ch;
@@ -549,8 +550,8 @@ function handleJoinClick() {
       font-size: 1.85rem;
       line-height: 2.15rem;
       max-width: 22ch;
-       text-align: center;
-    justify-self: center;
+       //text-align: center;
+    //justify-self: center;
     max-width: 80%;
     }
     @media @phablet, @tablet {
@@ -640,7 +641,7 @@ function handleJoinClick() {
     line-height: 1.6;
     color: var(--muted-text-color);
     max-width: 54ch;
-    text-align: center;
+    text-align: left;
 
     @media (min-width: 992px) {
       text-align: left;
@@ -653,7 +654,7 @@ function handleJoinClick() {
     justify-content: center;
     gap: 0.75rem;
     width: 100%;
-
+justify-content: flex-start;
     @media (min-width: 992px) {
       justify-content: flex-start;
     }
@@ -672,7 +673,7 @@ function handleJoinClick() {
     gap: 0.65rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--border-color);
-
+align-items: flex-start;
     @media (min-width: 992px) {
       align-items: flex-start;
       padding-top: 0;
@@ -688,7 +689,7 @@ function handleJoinClick() {
     gap: 0.45rem;
     align-items: center;
     justify-content: center;
-
+justify-content: flex-start;
     @media (min-width: 992px) {
       justify-content: flex-start;
     }
