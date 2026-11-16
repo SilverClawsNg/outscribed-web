@@ -47,7 +47,17 @@ function handleSearchClick() {
 
         <div class="top-header__consolidated">
 
+          
+
     <div class="top-header__brand-slot">
+        <button 
+              class="top-header__menu-toggle mobile-only" 
+              :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
+              aria-label="Toggle Navigation Menu"
+              @click="isMenuOpen = !isMenuOpen"
+            >
+              <SvgIcons name="menu" :size="25" />
+            </button>
         <router-link to="/" class="top-header__brand-link" title="OutScribed Home">
             <SvgIcons name="logo"  />
           </router-link>
@@ -89,14 +99,7 @@ function handleSearchClick() {
             OutScribe
             </button>
 
-            <button 
-              class="top-header__menu-toggle mobile-only" 
-              :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
-              aria-label="Toggle Navigation Menu"
-              @click="isMenuOpen = !isMenuOpen"
-            >
-              <SvgIcons name="menu" :size="25" />
-            </button>
+          
 
         </div>
 
@@ -209,6 +212,12 @@ function handleSearchClick() {
   max-width: calc(100% - 20px);
   margin: 0 auto;
 
+  &__brand-slot{
+    display: flex;
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+
   &__consolidated{
     display: flex;
     align-items: center;
@@ -223,9 +232,9 @@ function handleSearchClick() {
     padding: 0 0.5rem;
     color: var(--text-color);
     background: var(--background-color);
-    border: 2px solid var(--border-color);
-    box-shadow: var(--box-shadow);
-    background-color:@white-color;
+    //border: 2px solid var(--border-color);
+    //box-shadow: var(--box-shadow);
+    background-color:var(--background-color);
     color:@black-color;
 
 &:hover{

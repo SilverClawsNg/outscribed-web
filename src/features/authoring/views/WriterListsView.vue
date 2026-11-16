@@ -268,6 +268,19 @@ async function setSort(sort: SortType) {
       font-size: 2.25rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+
+    @media @phone {
+      font-size: 1.85rem;
+      line-height: 2.15rem;
+    }
+    @media @phablet, @tablet {
+      font-size: 2.35rem;
+      line-height: 2.65rem;
+    }
+    @media @largeDevice {
+      font-size: 2.95rem;
+      line-height: 3.2rem;
+    }
     }
 
     &__subtitle {
@@ -275,6 +288,8 @@ async function setSort(sort: SortType) {
       max-width: 80%;
       margin: 0 auto;
       line-height: 1.5;
+             max-width: 18ch; // Forces an intentional, authoritative 2-line editorial break
+
 
       & a{
         text-decoration: underline;

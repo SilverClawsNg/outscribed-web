@@ -111,40 +111,42 @@ function handleJoinClick() {
 <template>
 
  <header class="editorial-masthead">
-  <div class="editorial-masthead__inner">
-    
-    <!-- LEFT TRACK (750px / 57.69%): Left-Aligned Brand Manifesto -->
-    <div class="editorial-masthead__hero">
-    
+  <div 
+    class="editorial-masthead__grid"
+    :class="{ 'editorial-masthead__grid--no-trending': homepageStore.tags.length === 0 }"
+  >
+    <!-- 1. CENTRALIZED TITLE -->
+    <h1 class="editorial-masthead__title">
+      The reality you know is <span class="editorial-masthead__highlight">just one version.</span>
+    </h1>
 
-      <h1 class="editorial-masthead__title">
-  The reality you know is <span class="editorial-masthead__highlight">just one version.</span>
-</h1>
-
+    <!-- 2. LEFT TRACK (Explainer with Balanced Kicker Title) -->
+    <div class="editorial-masthead__left-track">
+     
       <p class="editorial-masthead__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
         reframe the present, and sculpt futures.
       </p>
-
+      
       <div class="editorial-masthead__cta-group">
         <button class="btn btn--secondary btn--outscribe" @click="handleJoinClick">
           Join Us
         </button>
         <RouterLink class="btn btn--primary" to="/faqs">
-          About Us
+          More About Us
         </RouterLink>
       </div>
     </div>
 
-    <!-- RIGHT TRACK (530px / 40.77%): Docked Live Pulse (Hidden gracefully if empty) -->
+    <!-- 3. RIGHT TRACK (Trending Today Pulse) -->
     <aside 
       v-if="homepageStore.tags.length > 0" 
       class="editorial-masthead__trending"
       aria-label="Trending Topics"
     >
-      <div class="editorial-masthead__trending-header">
+      <div class="editorial-masthead__subheader">
         <span class="editorial-masthead__pulse-dot"></span>
-        <h2 class="editorial-masthead__trending-title">Trending Today</h2>
+        <h2 class="editorial-masthead__subtitle">Trending today</h2>
       </div>
 
       <div class="editorial-masthead__tags">
@@ -169,21 +171,19 @@ function handleJoinClick() {
 
   </div>
 
-  <!-- FULL-WIDTH EDITORIAL RULE (1300px) -->
- <div class="editorial-masthead__footer">
+  <!-- 4. FOOTER ANCHOR (Divider + Byline as unified rear unit) -->
+  <div class="editorial-masthead__footer">
     <div class="editorial-masthead__divider">
       <span class="editorial-masthead__rule"></span>
       <img src="@/assets/images/icon.png" alt="" aria-hidden="true" />
       <span class="editorial-masthead__rule"></span>
     </div>
-
-    <p class="editorial-masthead__byline">
-      The Truth, The Fiction, <br /> &amp; Everything In-between
-    </p>
+ <h2 class="editorial-masthead__byline">
+        The Facts, The Fiction, <br /> & Everything In-Betwen
+      </h2>
   </div>
 </header>
  
-
   <template v-if="homepageStore.tales.length > 0">
 
 <div class="home-layout" v-if="homepageLayout.focus">
@@ -212,20 +212,28 @@ function handleJoinClick() {
 
   <!-- RIGHT: VERTICAL STEPPED ROADMAP -->
   <aside class="roadmap-section roadmap-section--hero">
-    <div class="roadmap-section__header">
-      <h3 class="roadmap-section__title">
-        Guest <SvgIcons name="frontarrow" :size="24" /> OutScriber
-      </h3>
-      <p class="roadmap-section__subtitle">
-        As an OutScriber, you get super powers to create and rule your own world. Start 
-        <button type="button" @click="handleCreateDraftClick">OutScribing</button> 
-        in quick, simple steps.
-      </p>
-    </div>
+
+ <div class="roadmap-section__header">
+   <div class="roadmap-section__header-image">
+    <img src="@/assets/images/writing-girl.png" alt="" />
+  </div>
+  <div class="roadmap-section__header-text">
+    <h3 class="roadmap-section__title">
+      Guest <SvgIcons name="frontarrow" :size="24" /> OutScriber
+    </h3>
+    <p class="roadmap-section__subtitle">
+      As an OutScriber, you get super powers to create and rule your own world. Start 
+      <button type="button" @click="handleCreateDraftClick">OutScribing</button> 
+      in quick, simple steps.
+    </p>
+  </div>
+ 
+</div>
 
     <!-- Vertical column display for maximum text visibility -->
     <div class="roadmap-section__steps">
-      <div class="roadmap-card">
+
+      <div class="roadmap-card roadmap-card--step1">
         <h4 class="roadmap-card__heading">1. Sign Up</h4>
         <ul class="roadmap-card__content">
           <li>Create an account via Google, Microsoft, Apple, or email token.</li>
@@ -234,7 +242,7 @@ function handleJoinClick() {
         </ul>
       </div>
 
-      <div class="roadmap-card">
+      <div class="roadmap-card roadmap-card--step1">
         <h4 class="roadmap-card__heading">2. Build Story</h4>
         <ul class="roadmap-card__content">
           <li>Start a draft with a title and category.</li>
@@ -243,7 +251,7 @@ function handleJoinClick() {
         </ul>
       </div>
 
-      <div class="roadmap-card">
+      <div class="roadmap-card roadmap-card--step1">
         <h4 class="roadmap-card__heading">3. Go Live</h4>
         <ul class="roadmap-card__content">
           <li>Preview your story to ensure all Ts are crossed and Is dotted.</li>
@@ -256,7 +264,7 @@ function handleJoinClick() {
     <div class="roadmap-section__footer">
       <button 
         type="button" 
-        class="btn btn--secondary btn--prominent"
+        class="btn btn--secondary"
         @click="handleCreateDraftClick"
       >
         Start here
@@ -469,62 +477,80 @@ function handleJoinClick() {
 @focus-pct: (750 / 1300) * 100%;   // 57.6923% (750px at 1300px)
 @roadmap-pct: (530 / 1300) * 100%; // 40.7692% (530px at 1300px)
 
+@max-width: 1300px;
+@gutter-pct: (20 / 1300) * 100%;  
+@focus-pct: (750 / 1300) * 100%;   
+@roadmap-pct: (530 / 1300) * 100%; 
+
 .editorial-masthead {
-  width: @max-width;
-  max-width: calc(100% - 20px);
+  width: 100%;
+  max-width: @max-width;
   margin: 0 auto 3.5rem auto;
-  padding: 1.75rem 0 0 0;
+  padding: 2rem 0 0 0;
   background-color: var(--background-color);
 
+  @media (max-width: 1320px) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   /* =============================================================
-   * SPLIT FLEX ROW (Matches Level 1 Focus + Roadmap Proportions)
+   * GRID CHOREOGRAPHY
    * ============================================================= */
-  &__inner {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end; // Anchors both bottoms cleanly to the icon divider
-    gap: @gutter-pct;
+  &__grid {
+    display: grid;
     width: 100%;
 
-    @media (max-width: 991px) {
-      flex-direction: column;
-      align-items: flex-start;
-      max-width: 750px; // Matches Level 1's 750px stacked column below
-      margin: 0 auto;
-      gap: 1.75rem;
+    // SMALL DEVICES (< 992px): Title -> Left Track -> Trending (Last)
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "left"
+      "trending";
+    row-gap: 1.5rem;
+    justify-items: center;
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto;
+
+    // LARGE DEVICES (>= 992px): Title -> (Left Track + Trending side-by-side)
+    @media (min-width: 992px) {
+      max-width: 100%;
+      grid-template-columns: @focus-pct @roadmap-pct;
+      column-gap: @gutter-pct;
+      row-gap: 1.75rem;
+      grid-template-areas:
+        "title    title"
+        "left     trending";
+      align-items: start; // Aligns top of both columns cleanly
+    }
+
+    &--no-trending {
+      @media (min-width: 992px) {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "title"
+          "left";
+      }
     }
   }
-
-  /* =============================================================
-   * LEFT: LEFT-ALIGNED HERO (57.69% / 750px)
-   * ============================================================= */
-  &__hero {
-    flex: 1 1 @focus-pct; // Expands to 100% gracefully if Trending has 0 tags
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    gap: 0.75rem;
-
-    @media (max-width: 991px) {
-      flex: none;
-      width: 100%;
-    }
-  }
-
 
   &__title {
-    margin: 0;
-    font-weight: 900;
+    grid-area: title;
+    margin: 0 0 0.5rem 0;
+   
+    font-weight: 400;
+    text-transform:lowercase;
     letter-spacing: -0.02em;
     color: var(--text-color);
-    max-width: 18ch; // Forces an intentional, authoritative 2-line editorial break
+    //max-width: 22ch;
 
     @media @phone {
       font-size: 1.85rem;
       line-height: 2.15rem;
+      max-width: 22ch;
+       text-align: center;
+    justify-self: center;
     }
     @media @phablet, @tablet {
       font-size: 2.35rem;
@@ -533,54 +559,13 @@ function handleJoinClick() {
     @media @largeDevice {
       font-size: 2.95rem;
       line-height: 3.2rem;
+       text-align: left;
+    justify-self: flex-start;
     }
   }
 
   
-   &__highlight {
-    color: @link-color; // Or @logo-red if you prefer warm editorial crimson over blue
-    text-decoration: none;
-  }
-
-  &__explainer {
-    margin: 0;
-    font-weight: 400;
-    font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
-    line-height: 1.55;
-    color: var(--muted-text-color);
-    max-width: 56ch; // Optimal reading line length
-  }
-
-  &__cta-group {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    margin-top: 0.35rem;
-  }
-
-  /* =============================================================
-   * RIGHT: TRENDING TODAY DOCK (40.77% / 530px)
-   * ============================================================= */
-  &__trending {
-    flex: 0 0 @roadmap-pct; // Aligns its left edge directly with the Roadmap below
-    min-width: 0;
-    padding-left: 1.25rem;
-    border-left: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-
-    @media (max-width: 991px) {
-      flex: none;
-      width: 100%;
-      padding-left: 0;
-      padding-top: 1.25rem;
-      border-left: none;
-      border-top: 1px solid var(--border-color);
-    }
-  }
-
-  &__trending-header {
+  &__subheader {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -594,13 +579,106 @@ function handleJoinClick() {
     flex-shrink: 0;
   }
 
-  &__trending-title {
+  &__subtitle {
     margin: 0;
-    font-size: 0.85rem;
-    font-weight: 800;
+    font-size: 0.95rem;
+    font-weight: 600;
     letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: @red-color;
+    text-transform: capitalize;
+    color: @logo-red;
+  }
+
+
+  &__highlight {
+    color: @link-color;
+    font-weight: 600;
+  }
+
+  /* =============================================================
+   * LEFT TRACK (Balanced with a matching header and inline CTAs)
+   * ============================================================= */
+  &__left-track {
+    grid-area: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    
+
+    @media (min-width: 992px) {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  &__track-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__explainer-title {
+   font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--text-color); // Or muted color to match trending header size/weight rhythm
+
+    @media @phablet, @tablet {
+      & span{
+        display: inline-block;
+      }
+
+    }
+  }
+
+  &__explainer {
+    margin: 0 0 0.5rem 0;
+    font-weight: 400;
+    font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
+    line-height: 1.6;
+    color: var(--muted-text-color);
+    max-width: 54ch;
+    text-align: center;
+
+    @media (min-width: 992px) {
+      text-align: left;
+    }
+  }
+
+  &__cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+
+    @media (min-width: 992px) {
+      justify-content: flex-start;
+    }
+  }
+
+  /* =============================================================
+   * RIGHT TRACK (Trending Today Pulse)
+   * ============================================================= */
+  &__trending {
+    grid-area: trending;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+
+    @media (min-width: 992px) {
+      align-items: flex-start;
+      padding-top: 0;
+      padding-left: 1.25rem;
+      border-top: none;
+      border-left: 1px solid var(--border-color);
+    }
   }
 
   &__tags {
@@ -608,53 +686,22 @@ function handleJoinClick() {
     flex-wrap: wrap;
     gap: 0.45rem;
     align-items: center;
-    justify-content: flex-start;
-  }
+    justify-content: center;
 
-  /* =============================================================
-   * FULL-WIDTH EDITORIAL ICON DIVIDER
-   * ============================================================= */
-  &__divider {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin-top: 1.75rem;
-
-    @media (max-width: 991px) {
-      max-width: 750px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    img {
-      height: auto;
-      margin: 0 0.75rem;
-      opacity: 0.85;
-
-      @media @smallDevice {
-        width: 2.25rem;
-      }
-      @media @largeDevice {
-        width: 2.75rem;
-      }
+    @media (min-width: 992px) {
+      justify-content: flex-start;
     }
   }
 
-  &__rule {
-    flex-grow: 1;
-    height: 1px;
-    background-color: var(--border-color);
-  }
-
   /* =============================================================
-   * FULL-WIDTH EDITORIAL RULE & BYLINE BRIDGE
+   * REAR FOOTER ANCHOR (Icon divider + Byline acting as one unit)
    * ============================================================= */
   &__footer {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-top: 1.75rem;
+    margin-top: 2.25rem;
     gap: 0.65rem;
 
     @media (max-width: 991px) {
@@ -699,7 +746,6 @@ function handleJoinClick() {
     color: var(--muted-text-color);
   }
 }
-
 /* =============================================================
  * REFINED TAG PILLS
  * ============================================================= */
@@ -941,7 +987,7 @@ function handleJoinClick() {
   border: 1px solid var(--border-color);
   color: var(--muted-text-color);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 400;
   border-radius: 6rem;
   height: 2rem;
   text-decoration: none;
@@ -1184,7 +1230,7 @@ function handleJoinClick() {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   background-color: var(--background-color);
@@ -1192,17 +1238,64 @@ function handleJoinClick() {
   flex-direction: column;
   justify-content: space-between;
   gap: 1.25rem;
-
+  
   @media (max-width: 991px) {
     flex: none;
     width: 100%; // Matches the 750px Focus card width cleanly when stacked
   }
 
-  .roadmap-section__header {
-    text-align: left;
+  .roadmap-section {
+  &__header {
+    position: relative;
+    //overflow: hidden;
+    display: flex;
+    flex-direction: column; // Image first, text second on all screen sizes
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+
+    @media (min-width: 992px) {
+      max-width: 750px; // Keeps the column neatly constrained and readable on large screens
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
-  .roadmap-section__title {
+  &__header-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    img {
+      display: block;
+      margin-top: -3rem;
+      width: 100%;
+      max-width: 280px; // Control max width so the image doesn't scale too large
+      height: auto;
+      object-fit: contain;
+      position:relative;
+      z-index:10;
+
+      @media (min-width: 992px) {
+        max-width: 340px; // Slightly larger showcase size on desktop
+      }
+    }
+  }
+
+  &__header-text {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+
+    .roadmap-section__subtitle {
+      max-width: 60ch; // Optimal reading measure for the paragraph
+      margin: 0 auto;
+    }
+  }
+   
+  &__title {
     font-size: 1.25rem;
     font-weight: 900;
     letter-spacing: 0.04em;
@@ -1218,7 +1311,7 @@ function handleJoinClick() {
     }
   }
 
-  .roadmap-section__subtitle {
+  &__subtitle {
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.4;
@@ -1234,6 +1327,9 @@ function handleJoinClick() {
       }
     }
   }
+}
+
+
 
   .roadmap-section__steps {
     display: flex;

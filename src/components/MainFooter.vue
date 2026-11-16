@@ -43,7 +43,7 @@ function handleSavedDraftsClick() {
            <h1 class="logo">
              <SvgIcons name="logo" />
            </h1>
-             <p class="brand-block__tagline">The Facts, The Fiction, &amp; Everything In-between</p>
+             <p class="brand-block__tagline">The Facts, The Fiction, <br /> &amp; Everything In-between</p>
           </div>
         
         </div>
