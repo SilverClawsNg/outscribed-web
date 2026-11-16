@@ -1141,7 +1141,7 @@ justify-content: flex-start;
     flex-direction: column;
     align-items: center;
     max-width: 750px;
-    margin: 0 auto 2rem auto;
+    margin: 0 auto;
     gap: 1.5rem;
   }
 
@@ -1153,6 +1153,7 @@ justify-content: flex-start;
 
     @media (max-width: 991px) {
       flex: none;
+      margin-bottom: 3rem;
       width: 100%; // Holds 750px from 991px down to 750px, then shrinks fluidly with viewport
     }
 
