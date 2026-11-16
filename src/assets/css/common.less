@@ -476,7 +476,7 @@ h1.logo {
   &__inner {
     width: @min-width;
     max-width: calc(100% - 20px);
-    background-color: @link-color;
+    background-color: var(--text-color);
     border-radius: 99999px;
     backdrop-filter: blur(8px);
     margin: 0 auto;
@@ -484,7 +484,6 @@ h1.logo {
     align-items: center;
     justify-content: center;
     height: 42px;
-    gap: 1rem;
   }
 }
 
@@ -494,22 +493,34 @@ h1.logo {
   border: none;
   font-size: 0.8375rem;
   font-weight: 500;
-  color: @white-color;
+  color: var(--background-color);
   padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  width: calc(100% / 3);
+  height: 100%;
+  justify-content: center;
+  border-right: 2px solid var(--alt-background-hover-color);
+
+  &:first-child{
+    border-radius: 99999px 0 0 99999px;
+  }
+
+   &:last-child{
+    border-radius: 0 99999px 99999px 0;
+    border-right: none;
+  }
 
   &:hover {
-    color: @white-color;
-    background-color: @link-alt-color;
+    color: var(--background-color);
+    background-color: var(--alt-background-hover-color);
   }
 
   &.active {
     pointer-events: none;
-    font-weight: normal;
+    color: var(--background-color);
+    background-color: var(--alt-background-hover-color);
   }
 
   &--more {

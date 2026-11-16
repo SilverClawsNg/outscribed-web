@@ -210,18 +210,13 @@ onUnmounted(() => {
   <template v-if="taleStore.tales && taleStore.tales.length > 0">
 
    
-  <header class="page-header page-header--max">
-    <h2 class="page-header__title">
-      Discover Tales
-    </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
-    </div>
-              <button type="button" @click="modalStore.push('TaleListFilter', 'Filter Lists', type)"  class="btn btn--primary">
-                Filter
-              </button>
-            </header>
+     <header class="header">
+        <h1 class="header__title">Discover Tales</h1>
+        <p class="header__subtitle">
+          Tales are re-imaginative, interpretative, and predictive stories that aims to break down complex issues through ficticious stories.
+          <br /> Begin your own OuScribed journey now. <router-link to="/register">Sign Up</router-link>
+        </p>
+      </header>
 
 
        <InfiniteScroller
@@ -270,8 +265,6 @@ onUnmounted(() => {
 
        </InfiniteScroller>
 
-
-
        <!-- Fixed Bottom Filter & Sort Footer -->
     <footer class="page-footer-bar">
       <div class="page-footer-bar__inner">
@@ -285,8 +278,6 @@ onUnmounted(() => {
           Newest
         </button>
 
-        <span class="footer-divider">|</span>
-
         <!-- Quick Sort: Oldest -->
         <button 
           type="button" 
@@ -296,8 +287,6 @@ onUnmounted(() => {
         >
           Oldest
         </button>
-
-        <span class="footer-divider">|</span>
 
         <!-- More Filters Modal Trigger -->
         <button 
@@ -334,6 +323,37 @@ onUnmounted(() => {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 @import "@/assets/css/discovery-container.less";
+
+
+  .header {
+    text-align: center;
+    margin: 2.5rem auto;
+    width: @mid-width;
+    max-width: calc(100% - 20px);
+    
+
+    &__title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    &__subtitle {
+      font-size: 1.05rem;
+      max-width: 80%;
+      margin: 0 auto;
+      line-height: 1.5;
+
+      & a{
+        text-decoration: underline;
+
+        &:hover{
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
 
 /* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
 .content-container {

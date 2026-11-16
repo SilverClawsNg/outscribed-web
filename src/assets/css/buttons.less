@@ -21,14 +21,15 @@
 &--primary {
     color: var(--text-color);
     background: var(--background-color);
-    border: 2px solid var(--border-color);
-    box-shadow: var(--box-shadow);
-    font-weight: 400;
+    border: 1px solid var(--border-color);
+    //box-shadow: var(--box-shadow);
+    font-weight: 600;
     background-color:@white-color;
     color:@black-color;
+    //background: var(--light-background-color);
 
     &-white{
-      box-shadow:0 2px 10px rgba(0, 0, 0, 0.05);
+      //box-shadow:0 2px 10px rgba(0, 0, 0, 0.05);
       border-color:#d1d9e0;
     }
         
@@ -42,7 +43,9 @@
 &--secondary {
     color: @white-color;
     background: linear-gradient(180deg, @link-alt-color 0%, @link-color 100%);
-    border-color: rgba(255,255,255,0.25);
+    //border-color: rgba(255,255,255,0.25);
+    background: @link-color;
+
  
     &:hover {
         background: linear-gradient(180deg, @link-color 0%, @link-alt-color 100%);

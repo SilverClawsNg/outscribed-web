@@ -97,7 +97,7 @@ onMounted(() => {
             <li><strong>Freedom Through Perspective:</strong> Storytelling allows creators to address sensitive, complex, or taboo topics safely and constructively by focusing on the narrative rather than personal identity.</li></ul>
 
            <h2>Use cases for OutScribing</h2>    
-          <p>OutScribed gives people a safe, story-driven medium to express complex realities, examine systems, and articulate deeply held beliefs. By reframing actualities through characters, hypothetical settings, or alternate timelines, creators can navigate challenging topics with total honesty.</p>
+          <p>OutScribed gives people a safe, story-driven medium to express complex realities, speculate alternative scenarios, examine systems, and articulate deeply held beliefs. By reframing actualities through characters, hypothetical settings, or alternate timelines, creators can navigate challenging topics with total honesty.</p>
           <p>Here are some ways people use OutScribed:</p>
 
 <ul>

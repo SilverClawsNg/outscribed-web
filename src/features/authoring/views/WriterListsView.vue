@@ -170,18 +170,13 @@ async function setSort(sort: SortType) {
 
   <template v-if="writerStore.writers && writerStore.writers.length > 0">
 
-     <header class="page-header page-header--max">
-    <h2 class="page-header__title">
-      Writers
-    </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
-    </div>
-              <button type="button" @click="modalStore.push('WriterFilter', 'Filter Writers')" class="btn btn--primary">
-                Filter
-              </button>
-            </header>
+     <header class="header">
+        <h1 class="header__title">Meet OutScribed's Writers</h1>
+        <p class="header__subtitle">
+          Our writers utilize artistic tools such as allegory, satire, etc. and logical trends to re-imagine. reframe, and predict.
+          <br /> Begin your own OuScribed journey now. <router-link to="/register">Sign Up</router-link>
+        </p>
+      </header>
 
        <InfiniteScroller
         :has-next="writerStore.hasNext"
@@ -210,13 +205,11 @@ async function setSort(sort: SortType) {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: writerFilterStore.sort === 'MostRecent' }"
+          :class="{ active: writerFilterStore.sort === '-1' || writerFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
           Newest
         </button>
-
-        <span class="footer-divider">|</span>
 
         <!-- Quick Sort: Oldest -->
         <button 
@@ -228,8 +221,6 @@ async function setSort(sort: SortType) {
           Oldest
         </button>
 
-        <span class="footer-divider">|</span>
-
         <!-- More Filters Modal Trigger -->
         <button 
           type="button" 
@@ -237,7 +228,7 @@ async function setSort(sort: SortType) {
           @click="modalStore.push('WriterFilter', 'Filter Writers')"
         >
          
-          <span>More</span>  <SvgIcons name="filter" :size="20" />
+          More Filters
         </button>
       </div>
     </footer>
@@ -264,4 +255,35 @@ async function setSort(sort: SortType) {
 
 <style lang="less" scoped>
 @import "@/assets/css/grid-container.less";
+
+
+  .header {
+    text-align: center;
+    margin: 2.5rem auto;
+    width: @mid-width;
+    max-width: calc(100% - 20px);
+    
+
+    &__title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    &__subtitle {
+      font-size: 1.05rem;
+      max-width: 80%;
+      margin: 0 auto;
+      line-height: 1.5;
+
+      & a{
+        text-decoration: underline;
+
+        &:hover{
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
 </style>

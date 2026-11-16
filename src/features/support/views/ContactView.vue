@@ -15,7 +15,6 @@ import SvgIcons from '@/components/SvgIcons.vue'
           We are here to help you navigate OutScribed, troubleshoot account issues, or address legal and editorial queries.
         </p>
       </div>
-
       
       <!-- FAQ Self-Service Banner -->
       <div class="faq-banner">
