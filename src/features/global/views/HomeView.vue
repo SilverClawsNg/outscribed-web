@@ -551,6 +551,7 @@ function handleJoinClick() {
       max-width: 22ch;
        text-align: center;
     justify-self: center;
+    max-width: 80%;
     }
     @media @phablet, @tablet {
       font-size: 2.35rem;
