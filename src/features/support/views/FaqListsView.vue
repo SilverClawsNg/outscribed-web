@@ -166,6 +166,8 @@ onMounted(() => {
   .about-header {
     text-align: center;
     margin-bottom: 2.5rem;
+    max-width: @min-width;
+     margin: 0 auto 2.5rem auto;
 
     &__title {
       font-size: 2.25rem;
@@ -175,8 +177,6 @@ onMounted(() => {
 
     &__subtitle {
       font-size: 1.05rem;
-      max-width: 80%;
-      margin: 0 auto;
       line-height: 1.5;
     }
   }

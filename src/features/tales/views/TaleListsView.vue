@@ -324,11 +324,10 @@ onUnmounted(() => {
 @import "@/assets/css/variables.less";
 @import "@/assets/css/discovery-container.less";
 
-
   .header {
     text-align: center;
     margin: 2.5rem auto;
-    width: @mid-width;
+    width: @min-width;
     max-width: calc(100% - 20px);
     
 
@@ -340,8 +339,6 @@ onUnmounted(() => {
 
     &__subtitle {
       font-size: 1.05rem;
-      max-width: 80%;
-      margin: 0 auto;
       line-height: 1.5;
 
       & a{

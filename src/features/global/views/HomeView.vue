@@ -122,7 +122,7 @@ function handleJoinClick() {
 
     <!-- 2. LEFT TRACK (Explainer with Balanced Kicker Title) -->
     <div class="editorial-masthead__left-track">
-     
+      
       <p class="editorial-masthead__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
         reframe the present, and sculpt futures.
@@ -577,7 +577,7 @@ function handleJoinClick() {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background-color: @red-color;
+    background-color: @logo-red;
     flex-shrink: 0;
   }
 
@@ -603,14 +603,14 @@ function handleJoinClick() {
     grid-area: left;
     display: flex;
     flex-direction: column;
-    align-items: center;
+     align-items: flex-start;
+      text-align: left;
     gap: 0.75rem;
     width: 100%;
     
 
     @media (min-width: 992px) {
-      align-items: flex-start;
-      text-align: left;
+     
     }
   }
 
@@ -654,7 +654,8 @@ function handleJoinClick() {
     justify-content: center;
     gap: 0.75rem;
     width: 100%;
-justify-content: flex-start;
+    justify-content: flex-start;
+
     @media (min-width: 992px) {
       justify-content: flex-start;
     }
@@ -673,7 +674,8 @@ justify-content: flex-start;
     gap: 0.65rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--border-color);
-align-items: flex-start;
+    align-items: flex-start;
+
     @media (min-width: 992px) {
       align-items: flex-start;
       padding-top: 0;
@@ -689,7 +691,8 @@ align-items: flex-start;
     gap: 0.45rem;
     align-items: center;
     justify-content: center;
-justify-content: flex-start;
+    justify-content: flex-start;
+
     @media (min-width: 992px) {
       justify-content: flex-start;
     }
@@ -963,7 +966,7 @@ justify-content: flex-start;
     align-items: center;
     justify-content: center;
     flex-direction:column;
-    color: @red-color;
+    color: @logo-red;
   }
 
   &__title {

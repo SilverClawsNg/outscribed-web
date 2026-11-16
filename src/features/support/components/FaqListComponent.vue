@@ -52,6 +52,7 @@ const showAnswer = ref(false)
    
   &__header {
     width: 100%;
+    max-width: @min-width;
     display: flex;
     align-items: center;
     justify-content: space-between;
