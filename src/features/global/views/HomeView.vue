@@ -1141,7 +1141,7 @@ justify-content: flex-start;
     flex-direction: column;
     align-items: center;
     max-width: 750px;
-    margin: 0 auto;
+    margin: 0 auto 2rem auto;
     gap: 1.5rem;
   }
 
