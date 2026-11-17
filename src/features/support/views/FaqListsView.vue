@@ -187,6 +187,14 @@ onMounted(() => {
     align-items: center;
     justify-content: flex-end;
     column-gap: 0.5rem;
+    
+
+    & a{
+
+      text-decoration: underline;
+      font-weight: 400;
+    }
+    
 
       & svg{
         fill: var(--text-color);
@@ -194,6 +202,10 @@ onMounted(() => {
       }
 
     &:hover{
+     
+      & a{
+         text-decoration: none;
+      }
        & svg{
         fill: @link-color;
       }

@@ -268,6 +268,10 @@ function handleJoinClick() {
       >
         Start here
       </button>
+      <span>OR</span>
+        <router-link to="/faqs#faq" class="roadmap-section__faq-link">
+           View Frequently Asked Questions
+          </router-link>
     </div>
   </aside>
 
@@ -342,8 +346,6 @@ function handleJoinClick() {
 
   </template>
 
-  <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
-  
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Categories
@@ -356,6 +358,8 @@ function handleJoinClick() {
       Explore Categories
     </RouterLink>
   </header>
+  <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
+  
 
   <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
 
@@ -383,9 +387,6 @@ function handleJoinClick() {
 
 <template v-if="homepageStore.countries.length > 0 || homepageStore.countries.length > 0">
 
-
-  <div class="discovery-top-container" v-if="countriesTales.focusCountry">
-  
  <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Countries
@@ -398,6 +399,9 @@ function handleJoinClick() {
                 Explore Countries
               </RouterLink>
  </header>
+
+  <div class="discovery-top-container" v-if="countriesTales.focusCountry">
+  
   <!-- 1. FOCUS COUNTRY (Most tales - styled prominently) -->
 
   <div class="discovery-top-container__focus">
@@ -425,9 +429,6 @@ function handleJoinClick() {
            
   <template v-if="homepageStore.newWriters.length > 0 || homepageStore.prolificWriters.length > 0">
     
-
-  <div class="homepage-writers">
-  
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top / Recent Writers
@@ -440,6 +441,9 @@ function handleJoinClick() {
                 Explore Writers
               </RouterLink>
   </header>
+
+  <div class="homepage-writers">
+  
    <div class="homepage-writers__pills">
 
      <WriterComponent 
@@ -685,6 +689,43 @@ function handleJoinClick() {
       justify-content: flex-start;
     }
   }
+  
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border-color);
+  color: var(--muted-text-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6rem;
+  height: 1.9rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--light-background-color);
+    color: @link-color;
+  }
+
+  &--more {
+    border-style: dashed;
+    color: var(--text-color);
+  }
+
+  &__symbol {
+    font-size: 0.82rem;
+    font-weight: 400;
+    opacity: 0.75;
+  }
+
+  &__metric {
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+}
+
 
   /* =============================================================
    * REAR FOOTER ANCHOR (Icon divider + Byline acting as one unit)
@@ -737,45 +778,6 @@ function handleJoinClick() {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted-text-color);
-  }
-}
-/* =============================================================
- * REFINED TAG PILLS
- * ============================================================= */
-.tag-pill {
-  display: inline-flex;
-  align-items: center;
-  column-gap: 0.3rem;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--border-color);
-  color: var(--muted-text-color);
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 6rem;
-  height: 1.9rem;
-  text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-
-  &:hover {
-    background-color: var(--light-background-color);
-    border-color: var(--text-color);
-    color: @link-color;
-  }
-
-  &--more {
-    border-style: dashed;
-    color: var(--text-color);
-  }
-
-  &__symbol {
-    font-size: 0.82rem;
-    font-weight: 400;
-    opacity: 0.75;
-  }
-
-  &__metric {
-    font-weight: 700;
-    font-size: 0.8rem;
   }
 }
 
@@ -1353,7 +1355,18 @@ function handleJoinClick() {
   }
 
   .roadmap-section__footer {
-    text-align: left;
+    display: flex;
+    align-items:center;
+    gap: 1rem;
+  }
+
+  .roadmap-section__faq-link{
+    text-decoration: underline;
+    font-weight: normal;
+
+    &:hover{
+      text-decoration: none;
+    }
   }
 }
   /* =============================================================
