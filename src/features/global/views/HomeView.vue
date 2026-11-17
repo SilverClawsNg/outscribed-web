@@ -110,25 +110,24 @@ function handleJoinClick() {
 
 <template>
 
- <header class="editorial-masthead">
-  <div 
-    class="editorial-masthead__grid"
-    :class="{ 'editorial-masthead__grid--no-trending': homepageStore.tags.length === 0 }"
-  >
-    <!-- 1. CENTRALIZED TITLE -->
-    <h1 class="editorial-masthead__title">
-      The reality you know is <span class="editorial-masthead__highlight">just one version.</span>
-    </h1>
+ <div class="hero">
 
-    <!-- 2. LEFT TRACK (Explainer with Balanced Kicker Title) -->
-    <div class="editorial-masthead__left-track">
+  <header class="hero__header">
+    <h1 class="hero__title">
+      The reality you know is <span class="hero__highlight">just one version.</span>
+    </h1>
+  </header>
+
+  <div class="hero__contents">
+
+     <div class="hero__left-contents">
       
-      <p class="editorial-masthead__explainer">
+      <p class="hero__explainer">
         Blending logic and artistic freedoms, our stories re-imagine the past, 
         reframe the present, and sculpt futures.
       </p>
       
-      <div class="editorial-masthead__cta-group">
+      <div class="hero__cta-group">
         <button class="btn btn--secondary btn--outscribe" @click="handleJoinClick">
           Join Us
         </button>
@@ -138,18 +137,17 @@ function handleJoinClick() {
       </div>
     </div>
 
-    <!-- 3. RIGHT TRACK (Trending Today Pulse) -->
-    <aside 
+       <aside 
       v-if="homepageStore.tags.length > 0" 
-      class="editorial-masthead__trending"
+      class="hero__trending"
       aria-label="Trending Topics"
     >
-      <div class="editorial-masthead__subheader">
-        <span class="editorial-masthead__pulse-dot"></span>
-        <h2 class="editorial-masthead__subtitle">Trending today</h2>
+      <div class="hero__trending-header">
+        <SvgIcons name="trending" :size="30" />
+        <h2 class="hero__trending-title">Trending today</h2>
       </div>
 
-      <div class="editorial-masthead__tags">
+      <div class="hero__tags">
         <RouterLink
           v-for="tag in homepageStore.tags" 
           :key="tag.tagId" 
@@ -172,17 +170,18 @@ function handleJoinClick() {
   </div>
 
   <!-- 4. FOOTER ANCHOR (Divider + Byline as unified rear unit) -->
-  <div class="editorial-masthead__footer">
-    <div class="editorial-masthead__divider">
-      <span class="editorial-masthead__rule"></span>
+  <div class="hero__footer">
+    <div class="hero__divider">
+      <span class="hero__rule"></span>
       <img src="@/assets/images/icon.png" alt="" aria-hidden="true" />
-      <span class="editorial-masthead__rule"></span>
+      <span class="hero__rule"></span>
     </div>
- <h2 class="editorial-masthead__byline">
+ <h2 class="hero__byline">
         The Facts, The Fiction, <br /> & Everything In-Betwen
       </h2>
   </div>
-</header>
+
+</div>
  
   <template v-if="homepageStore.tales.length > 0">
 
@@ -343,6 +342,8 @@ function handleJoinClick() {
 
   </template>
 
+  <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
+  
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Categories
@@ -356,8 +357,6 @@ function handleJoinClick() {
     </RouterLink>
   </header>
 
-  <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
-  
   <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
 
   <div class="discovery-top-container__focus">
@@ -384,6 +383,9 @@ function handleJoinClick() {
 
 <template v-if="homepageStore.countries.length > 0 || homepageStore.countries.length > 0">
 
+
+  <div class="discovery-top-container" v-if="countriesTales.focusCountry">
+  
  <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top Countries
@@ -396,9 +398,6 @@ function handleJoinClick() {
                 Explore Countries
               </RouterLink>
  </header>
-
-  <div class="discovery-top-container" v-if="countriesTales.focusCountry">
-  
   <!-- 1. FOCUS COUNTRY (Most tales - styled prominently) -->
 
   <div class="discovery-top-container__focus">
@@ -426,6 +425,9 @@ function handleJoinClick() {
            
   <template v-if="homepageStore.newWriters.length > 0 || homepageStore.prolificWriters.length > 0">
     
+
+  <div class="homepage-writers">
+  
   <header class="page-header page-header--max">
     <h2 class="page-header__title">
       Top / Recent Writers
@@ -438,9 +440,6 @@ function handleJoinClick() {
                 Explore Writers
               </RouterLink>
   </header>
-
-  <div class="homepage-writers">
-  
    <div class="homepage-writers__pills">
 
      <WriterComponent 
@@ -473,123 +472,76 @@ function handleJoinClick() {
 @import "@/assets/css/variables.less";
 @import "@/assets/css/discovery-container.less";
 
-@gutter-pct: (20 / 1300) * 100%;  // 1.53846% (20px at 1300px)
-@focus-pct: (750 / 1300) * 100%;   // 57.6923% (750px at 1300px)
-@roadmap-pct: (530 / 1300) * 100%; // 40.7692% (530px at 1300px)
+@gutter: (20 / 1300) * 100%;  // 1.53846% (20px at 1300px)
+@left-container: (750 / 1300) * 100%;   // 57.6923% (750px at 1300px)
+@right-container: (530 / 1300) * 100%; // 40.7692% (530px at 1300px)
 
-@max-width: 1300px;
-@gutter-pct: (20 / 1300) * 100%;  
-@focus-pct: (750 / 1300) * 100%;   
-@roadmap-pct: (530 / 1300) * 100%; 
-
-.editorial-masthead {
-  width: 100%;
-  max-width: @max-width;
-  margin: 0 auto 3.5rem auto;
-  padding: 2rem 0 0 0;
+.hero {
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  padding: 3.5rem 0;
   background-color: var(--background-color);
 
-  @media (max-width: 1320px) {
-    padding-left: 10px;
-    padding-right: 10px;
+   @media @desktop, @laptop{
+    width: @max-width;
+  }
+
+   @media @tablet{
+    width: @mid-width;
+  }
+
+   @media @phablet{
+    width: @mod-width;
+  }
+
+   @media @phone{
+    width: @min-width;
   }
 
   /* =============================================================
-   * GRID CHOREOGRAPHY
+   * HERO HEADER
    * ============================================================= */
-  &__grid {
-    display: grid;
+    
+  &__header{
     width: 100%;
+   
 
-    // SMALL DEVICES (< 992px): Title -> Left Track -> Trending (Last)
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "title"
-      "left"
-      "trending";
-    row-gap: 1.5rem;
-    justify-items: center;
-    text-align: center;
-    max-width: 750px;
-    margin: 0 auto;
 
-    // LARGE DEVICES (>= 992px): Title -> (Left Track + Trending side-by-side)
-    @media (min-width: 992px) {
-      max-width: 100%;
-      grid-template-columns: @focus-pct @roadmap-pct;
-      column-gap: @gutter-pct;
-      row-gap: 1.75rem;
-      grid-template-areas:
-        "title    title"
-        "left     trending";
-      align-items: start; // Aligns top of both columns cleanly
+    @media @phone, @phablet, @tablet{
+ margin-bottom: 2.5rem;
     }
 
-    &--no-trending {
-      @media (min-width: 992px) {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "title"
-          "left";
-      }
+     @media @desktop, @laptop {
+     margin-bottom: 3.5rem;
     }
+
   }
-
+  
   &__title {
-    grid-area: title;
-    margin: 0 0 0.5rem 0;
-     text-align: left;
-    justify-self: flex-start;
-    font-weight: 400;
-    //text-transform:lowercase;
     letter-spacing: -0.02em;
-    color: var(--text-color);
-    //max-width: 22ch;
 
     @media @phone {
       font-size: 1.85rem;
       line-height: 2.15rem;
-      max-width: 22ch;
-       //text-align: center;
-    //justify-self: center;
-    max-width: 80%;
+      max-width: 80%;
     }
-    @media @phablet, @tablet {
+
+    @media @phablet {
       font-size: 2.35rem;
       line-height: 2.65rem;
+      max-width: 80%;
     }
-    @media @largeDevice {
+
+    @media@tablet {
+      font-size: 2.65rem;
+      line-height: 2.95rem;
+    }
+
+    @media @desktop, @laptop {
       font-size: 2.95rem;
       line-height: 3.2rem;
-       text-align: left;
-    justify-self: flex-start;
     }
   }
-
-  
-  &__subheader {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  &__pulse-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: @logo-red;
-    flex-shrink: 0;
-  }
-
-  &__subtitle {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: capitalize;
-    color: @logo-red;
-  }
-
 
   &__highlight {
     color: @link-color;
@@ -597,21 +549,37 @@ function handleJoinClick() {
   }
 
   /* =============================================================
-   * LEFT TRACK (Balanced with a matching header and inline CTAs)
+   * HERO CONTENTS
    * ============================================================= */
-  &__left-track {
-    grid-area: left;
-    display: flex;
-    flex-direction: column;
-     align-items: flex-start;
-      text-align: left;
-    gap: 0.75rem;
+  
+   &__contents{
+   display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: @gutter;
     width: 100%;
-    
 
-    @media (min-width: 992px) {
-     
+    @media @phone, @phablet, @tablet{
+      flex-direction: column;
     }
+
+  }
+
+  &__left-contents {
+    min-width: 0;
+    position: relative;
+
+    @media @phone, @phablet, @tablet {
+      flex: none;
+      margin-bottom: 3rem;
+      width: 100%; 
+    }
+   
+     @media @desktop, @laptop {
+      flex: 0 0 @left-container; // Exact 750px at 1300px; shrinks proportionally to ~572px at 992px
+    }
+  
   }
 
   &__track-header {
@@ -620,54 +588,44 @@ function handleJoinClick() {
     gap: 0.5rem;
   }
 
-  &__explainer-title {
-   font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
-    line-height: 1.6;
-    font-weight: 600;
-    color: var(--text-color); // Or muted color to match trending header size/weight rhythm
-
-    @media @phablet, @tablet {
-      & span{
-        display: inline-block;
-      }
-
-    }
-  }
-
   &__explainer {
-    margin: 0 0 0.5rem 0;
-    font-weight: 400;
-    font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
-    line-height: 1.6;
     color: var(--muted-text-color);
-    max-width: 54ch;
-    text-align: left;
+    margin-bottom: 1.5rem;
 
-    @media (min-width: 992px) {
-      text-align: left;
+     @media @phone {
+      font-size: 1.15rem;
+       line-height: 1.4;
+    }
+
+    @media @phablet {
+      font-size: 1.2rem;
+       line-height: 1.4;
+    }
+
+    @media@tablet {
+      font-size: 1.3rem;
+       line-height: 1.6;
+    }
+
+    @media @desktop, @laptop {
+      font-size: 1.15rem;
+       line-height: 1.5;
+      max-width: 54ch;
     }
   }
 
   &__cta-group {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
-    justify-content: flex-start;
-
-    @media (min-width: 992px) {
-      justify-content: flex-start;
-    }
+   
   }
 
   /* =============================================================
    * RIGHT TRACK (Trending Today Pulse)
    * ============================================================= */
   &__trending {
-    grid-area: trending;
-    width: 100%;
-    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -675,6 +633,14 @@ function handleJoinClick() {
     padding-top: 1.25rem;
     border-top: 1px solid var(--border-color);
     align-items: flex-start;
+
+     @media @phone, @phablet, @tablet {
+      width: 100%;
+    }
+
+    @media @desktop, @laptop {
+      width: @left-container;
+    }
 
     @media (min-width: 992px) {
       align-items: flex-start;
@@ -684,6 +650,28 @@ function handleJoinClick() {
       border-left: 1px solid var(--border-color);
     }
   }
+
+  
+  &__trending-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: @logo-red;
+
+    & svg{
+      stroke-width: 1.5;
+    }
+  }
+
+  &__trending-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: capitalize;
+   
+  }
+
 
   &__tags {
     display: flex;
@@ -709,7 +697,7 @@ function handleJoinClick() {
     margin-top: 2.25rem;
     gap: 0.65rem;
 
-    @media (max-width: 991px) {
+    @media @smallDevice {
       max-width: 750px;
       margin-left: auto;
       margin-right: auto;
@@ -947,10 +935,11 @@ function handleJoinClick() {
    ================================================================---------- */
 
 .trending-section {
+  flex: 1 1 @right-container; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
+  min-width: 0;
   width: 100%;
-  margin: 1rem 0 3rem 0;
-  //padding-bottom:1rem;
-  //border-bottom:1px solid var(--border-color);
+  max-width: 100%;
+  margin: 0;
   
   &__wrapper{
   display:flex;
@@ -988,7 +977,6 @@ function handleJoinClick() {
   align-items: center;
   column-gap: 0.25rem;
   padding: 0.5rem 0.75rem;
-  //background-color: var(--light-background-color);
   border: 1px solid var(--border-color);
   color: var(--muted-text-color);
   font-size: 0.9rem;
@@ -1020,10 +1008,6 @@ function handleJoinClick() {
 /* ==========================================================================
    3. HOMEPAGE TALES LAYOUT (Card-Level Centralization & Dimension Caps)
    ================================================================---------- */
-@gutter-pct: (20 / 1300) * 100%; // 1.5384615%
-
-@max-width: 1300px;
-@gutter-pct: (20 / 1300) * 100%; // 1.5384615%
 
 .home-layout {
   display: flex;
@@ -1054,7 +1038,7 @@ function handleJoinClick() {
   &__level {
     display: grid;
     grid-template-columns: repeat(4, 1fr); // 310px tracks at 1300px
-    column-gap: @gutter-pct;
+    column-gap: @gutter;
     row-gap: 1.5rem;
     align-items: start;
 
@@ -1123,11 +1107,6 @@ function handleJoinClick() {
     }
   }
 
- @max-width: 1300px;
-@gutter-pct: (20 / 1300) * 100%; // 1.5384615%
-@focus-pct: (750 / 1300) * 100%;  // 57.6923077%
-@roadmap-pct: (530 / 1300) * 100%; // 40.7692308%
-
 /* =============================================================
  * LEVEL 1: Fluid 750px Focus + 530px Roadmap -> 750px Column <= 991px
  * ============================================================= */
@@ -1136,11 +1115,11 @@ function handleJoinClick() {
   flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
-  gap: @gutter-pct; // 20px at 1300px, scales smoothly down to ~15px at 992px
+  gap: @gutter; // 20px at 1300px, scales smoothly down to ~15px at 992px
   width: 100%;
 
   /* At 991px and below: Stack into a centered 750px max-width column */
-  @media (max-width: 991px) {
+  @media @phone, @phablet, @tablet {
     flex-direction: column;
     align-items: center;
     max-width: 750px;
@@ -1149,12 +1128,12 @@ function handleJoinClick() {
   }
 
   .card--focus {
-    flex: 0 0 @focus-pct; // Exact 750px at 1300px; shrinks proportionally to ~572px at 992px
+    flex: 0 0 @left-container; // Exact 750px at 1300px; shrinks proportionally to ~572px at 992px
     min-width: 0;
     display: block;
     position: relative;
 
-    @media (max-width: 991px) {
+    @media @phone, @phablet, @tablet {
       flex: none;
       margin-bottom: 3rem;
       width: 100%; // Holds 750px from 991px down to 750px, then shrinks fluidly with viewport
@@ -1168,7 +1147,7 @@ function handleJoinClick() {
       border-radius: 6px;
       overflow: hidden;
 
-      @media (max-width: 991px) {
+      @media @smallDevice {
         height: auto;
       }
 
@@ -1231,7 +1210,7 @@ function handleJoinClick() {
  * RIGHT-HAND / STACKED ROADMAP
  * ============================================================= */
 .roadmap-section--hero {
-  flex: 1 1 @roadmap-pct; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
+  flex: 1 1 @right-container; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
   min-width: 0;
   width: 100%;
   max-width: 100%;
@@ -1245,7 +1224,7 @@ function handleJoinClick() {
   justify-content: space-between;
   gap: 1.25rem;
   
-  @media (max-width: 991px) {
+  @media @smallDevice {
     flex: none;
     width: 100%; // Matches the 750px Focus card width cleanly when stacked
   }

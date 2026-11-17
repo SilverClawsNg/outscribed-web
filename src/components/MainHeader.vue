@@ -50,6 +50,7 @@ function handleSearchClick() {
           
 
     <div class="top-header__brand-slot">
+
         <button 
               class="top-header__menu-toggle mobile-only" 
               :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
@@ -225,23 +226,18 @@ function handleSearchClick() {
   }
 
   &__menu-toggle{
-    border-radius: 4px;
     height: 2.5rem;
     display: flex;
     align-items:center;
     padding: 0 0.5rem;
     color: var(--text-color);
-    background: var(--background-color);
-    //border: 2px solid var(--border-color);
-    //box-shadow: var(--box-shadow);
     background-color:var(--background-color);
-    color:@black-color;
 
-&:hover{
-  color:@link-color;
-  background-color: var(--light-background-color);
-}
-    
+    &:hover{
+      color:@link-color;
+      background-color: var(--light-background-color);
+    }
+        
   }
   
   &__brand-link {
