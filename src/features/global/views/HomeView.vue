@@ -268,30 +268,26 @@ function handleJoinClick() {
       >
         Start here
       </button>
-      <span>OR</span>
         <router-link to="/faqs#faq" class="roadmap-section__faq-link">
-           View Frequently Asked Questions
+          View FAQs
           </router-link>
     </div>
   </aside>
 
 </section>
 
-
-  <header class="page-header page-header--max">
-    <h2 class="page-header__title">
+  <header class="section-header section-header--max">
+    <h2 class="section-header__title">
       Recent Tales
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
               <RouterLink to="/tales"  class="btn btn--primary">
                 Explore Tales
               </RouterLink>
   </header>
-
-
 
   <!-- LEVEL 2: Nones Strip (4 Equal Cards) -->
   <section class="home-layout__level home-layout__level--nons">
@@ -346,13 +342,13 @@ function handleJoinClick() {
 
   </template>
 
-  <header class="page-header page-header--max">
-    <h2 class="page-header__title">
+  <header class="section-header section-header--max">
+    <h2 class="section-header__title">
       Top Categories
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
     <RouterLink to="/categories"  class="btn btn--primary">
       Explore Categories
@@ -387,13 +383,13 @@ function handleJoinClick() {
 
 <template v-if="homepageStore.countries.length > 0 || homepageStore.countries.length > 0">
 
- <header class="page-header page-header--max">
-    <h2 class="page-header__title">
+ <header class="section-header section-header--max">
+    <h2 class="section-header__title">
       Top Countries
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
               <RouterLink to="/countries"  class="btn btn--primary">
                 Explore Countries
@@ -429,13 +425,13 @@ function handleJoinClick() {
            
   <template v-if="homepageStore.newWriters.length > 0 || homepageStore.prolificWriters.length > 0">
     
-  <header class="page-header page-header--max">
-    <h2 class="page-header__title">
+  <header class="section-header section-header--max">
+    <h2 class="section-header__title">
       Top / Recent Writers
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
               <RouterLink to="/writers"  class="btn btn--primary">
                 Explore Writers
@@ -508,11 +504,9 @@ function handleJoinClick() {
     
   &__header{
     width: 100%;
-   
-
-
+  
     @media @phone, @phablet, @tablet{
- margin-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
     }
 
      @media @desktop, @laptop {
@@ -584,12 +578,6 @@ function handleJoinClick() {
       flex: 0 0 @left-container; // Exact 750px at 1300px; shrinks proportionally to ~572px at 992px
     }
   
-  }
-
-  &__track-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
   }
 
   &__explainer {
@@ -676,7 +664,6 @@ function handleJoinClick() {
    
   }
 
-
   &__tags {
     display: flex;
     flex-wrap: wrap;
@@ -693,39 +680,36 @@ function handleJoinClick() {
 .tag-pill {
   display: inline-flex;
   align-items: center;
-  column-gap: 0.3rem;
-  padding: 0.35rem 0.75rem;
+  column-gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
   color: var(--muted-text-color);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 400;
   border-radius: 6rem;
-  height: 1.9rem;
+  height: 2rem;
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
   &:hover {
     background-color: var(--light-background-color);
     color: @link-color;
   }
 
-  &--more {
-    border-style: dashed;
-    color: var(--text-color);
+  &__name {
+    display: inline-flex;
+    align-items: center;
   }
 
   &__symbol {
-    font-size: 0.82rem;
-    font-weight: 400;
-    opacity: 0.75;
+    font-size: 0.9rem;
+    font-weight: normal;
   }
 
   &__metric {
     font-weight: 700;
-    font-size: 0.8rem;
   }
+  
 }
-
 
   /* =============================================================
    * REAR FOOTER ANCHOR (Icon divider + Byline acting as one unit)
@@ -781,231 +765,6 @@ function handleJoinClick() {
   }
 }
 
-/* ==========================================================================
-   1. HOMEPAGE HERO (Mesh Gradient Header)
-   ================================================================---------- */
-.homepage-hero {
-  width: 100%;
-  height: auto;
-  position: relative;
- 
-  margin-top: -1px;
-  background-color: var(--background-color);
-  //border-bottom: 1px solid var(--border-color);
-
-  padding: 1rem;
-  //margin-bottom: 1rem;
-  //font-family: 'Palatino Linotype', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-
-  &__wrapper{
-    width: @max-width;
-    max-width: calc(100% - 20px);
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-  }
- 
-  &__container {
-     width: @mid-width;
-    max-width: calc(100% - 20px);
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-    position: relative;
-    height: auto;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center; 
-    row-gap: 1rem;
-    //text-align: center;
-  
-      padding: 2rem 0;
-
-        @media @smallDevice {
-          width: 500px;
-        }
-
-        @media @largeDevice {
-          width: 550px;
-        }
-  }
-
-  &__image{
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    width:100%;
-    margin-top:1rem;
-    width: @max-width;
-     margin: 0 auto;
-
-    & p{ 
-      flex-grow: 1;
-      height: 1px;
-      background-color: var(--border-color);
-    }
-
-    & img{
-     
-      height: auto;
-      margin: 0 0.5rem;
-
-      @media @smallDevice {
-        width: 2.5rem;
-      }
-       @media @largeDevice {
-        width: 3rem;
-      }
-    }
-  }
-  
-  &__title {
-    font-weight: 600;
-    text-transform: capitalize;
-    text-align: center;
-   
-    @media @phone {
-      font-size: 1.7rem;
-      line-height: 2rem;
-    }
-    @media @phablet {
-      font-size: 2.1rem;
-      line-height: 2.4rem;
-    }
-    @media @largeDevice {
-      font-size: 2.8rem;
-      line-height: 3rem;
-    }
-  }
-
-  &__explainer {
-    font-weight: 500;
-    font-size: clamp(1rem, 1.2vw + 1rem, 1.2rem);
-    line-height: clamp(1.3rem, 1.4vw + 1rem, 1.5rem);
-    margin-bottom: 0.75rem;
-    text-align: center;
-  }
-
-  &__cta-group {
-    display: flex;
-    justify-content: center;
-    column-gap: 0.25rem;
-    width: 100%;
-
-  }
-
-  &__cta {
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    font-weight: normal;
-    text-transform: uppercase;
-    font-size: clamp(0.9rem, 0.95vw + 1rem, 1rem);
-    font-weight:700;
-    color: @white-color;
-    //border: 2px solid @link-alt-color;
-
-    &--join {
-     background-color:@link-alt-color;
-
-      &:hover {
-        background-color: darken(@link-alt-color, 10%);
-        color: @white-color;
-      }
-    }
-   
-    &--about {
-      background-color:@white-color;
-      color:@link-color;
-
-      &:hover {
-         background-color: var(--light-background-color);
-        color:@link-color;
-      }
-    }
-  }
-}
-
-/* ==========================================================================
-   2. TRENDING SECTION
-   ================================================================---------- */
-
-.trending-section {
-  flex: 1 1 @right-container; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
-  min-width: 0;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  
-  &__wrapper{
-  display:flex;
-  flex-direction:column;
-  row-gap: 0.5rem;
-   width: @max-width;
-  max-width: calc(100% - 20px);
-  margin: 0 auto;
-  }
-
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction:column;
-    color: @logo-red;
-  }
-
-  &__title {
-    font-size: 1.1rem;
-    font-weight: 700;
-  }
-
-  &__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.tag-pill {
-  display: inline-flex;
-  align-items: center;
-  column-gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--border-color);
-  color: var(--muted-text-color);
-  font-size: 0.9rem;
-  font-weight: 400;
-  border-radius: 6rem;
-  height: 2rem;
-  text-decoration: none;
-
-  &:hover {
-    background-color: var(--light-background-color);
-    color: @link-color;
-  }
-
-  &__name {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  &__symbol {
-    font-size: 0.9rem;
-    font-weight: normal;
-  }
-
-  &__metric {
-    font-weight: 700;
-  }
-}
 
 /* ==========================================================================
    3. HOMEPAGE TALES LAYOUT (Card-Level Centralization & Dimension Caps)
@@ -1211,8 +970,9 @@ function handleJoinClick() {
 /* =============================================================
  * RIGHT-HAND / STACKED ROADMAP
  * ============================================================= */
-.roadmap-section--hero {
-  flex: 1 1 @right-container; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
+
+  .roadmap-section {
+    flex: 1 1 @right-container; // Takes remaining 530px at 1300px, shrinking proportionally alongside Focus
   min-width: 0;
   width: 100%;
   max-width: 100%;
@@ -1230,8 +990,6 @@ function handleJoinClick() {
     flex: none;
     width: 100%; // Matches the 750px Focus card width cleanly when stacked
   }
-
-  .roadmap-section {
   &__header {
     position: relative;
     //overflow: hidden;
@@ -1316,8 +1074,6 @@ function handleJoinClick() {
   }
 }
 
-
-
   .roadmap-section__steps {
     display: flex;
     flex-direction: column;
@@ -1368,7 +1124,7 @@ function handleJoinClick() {
       text-decoration: none;
     }
   }
-}
+
   /* =============================================================
    * LEVEL 2: Nones Strip (4 Columns)
    * ============================================================= */

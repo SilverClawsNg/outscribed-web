@@ -73,12 +73,10 @@ export interface TagDetailDto {
 // Helper type for response
 export interface GetCountriesResponse {
   countries: CountryMetricsDto[];
-  lastUpdatedAt: string;
 }
 
 export interface GetCategoriesResponse {
   categories: CategoryMetricsDto[];
-  lastUpdatedAt: string;
 }
 
 // Helper type for response

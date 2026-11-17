@@ -1,10 +1,12 @@
 import type{ Country, Category, SortType, ContentType, TaleStatus, ActivityType, GeneralSortType,
-  ReactionType, CommentStatus, FlagType, LimitedContentType
+  ReactionType, CommentStatus, FlagType, LimitedContentType,
+  TagSortType
  } from '@/utils/enumHelper'
 import { CountryDescriptions,  CategoryDescriptions, SortTypeDescriptions, ContentTypeDescriptions,
   TaleStatusDescriptions, ActivityTypeDescriptions, GeneralSortTypeDescriptions, ReactionTypeDescriptions,
   CommentStatusDescriptions, FlagTypeDescriptions,
-  LimitedContentTypeDescriptions
+  LimitedContentTypeDescriptions,
+  TagSortTypeDescriptions
  } from '@/utils/descriptors'
 
 /**
@@ -91,6 +93,19 @@ export function getValidSortType(code: string | null | undefined): SortType | nu
   return matchedKey || null
 }
 
+
+// 🌟 FIX: Find the correct PascalCase value case-insensitively
+export function getValidTagSortType(code: string | null | undefined): TagSortType | null {
+  if (!code || code === '-1') return null
+
+  const keys = Object.keys(TagSortTypeDescriptions) as TagSortType[]
+  
+  // Look for the element where the lowercase strings align perfectly
+  const matchedKey = keys.find(key => key.toLowerCase() === code.toLowerCase())
+  
+  // Returns 'Account' (PascalCase) even if the browser sent 'account' (lowercase)
+  return matchedKey || null
+}
 
 // 🌟 FIX: Find the correct PascalCase value case-insensitively
 export function getValidGeneralSortType(code: string | null | undefined): GeneralSortType | null {

@@ -1,5 +1,6 @@
 import type { ContentType, ActivityType, Category, AccountStatus, ContactType, Country, TaleStatus, 
-SortType, GeneralSortType, ReactionType, CommentStatus, LimitedContentType, FlagType
+SortType, GeneralSortType, ReactionType, CommentStatus, LimitedContentType, FlagType,
+TagSortType
  } from '@/utils/enumHelper'
   
   export const ReactionTypeDescriptions: Record<ReactionType, string> = {
@@ -22,6 +23,13 @@ SortType, GeneralSortType, ReactionType, CommentStatus, LimitedContentType, Flag
   MostUpvoted: 'By Votes',
   MostFavorited: 'By Saves',
   MostShared: 'By Shares'
+} as const;
+
+export const TagSortTypeDescriptions: Record<TagSortType, string> = {
+  MostRecent: 'Newest',
+  LeastRecent: 'Oldest',
+  MostPopular: 'Most Popular',
+  Alphabeutical: 'Alphabeutical Order'
 } as const;
   
   export const GeneralSortTypeDescriptions: Record<GeneralSortType, string> = {

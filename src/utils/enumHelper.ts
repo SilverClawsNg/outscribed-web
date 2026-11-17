@@ -379,7 +379,6 @@ export type TaleStatus =
   | 'LaunchedToArchivedByCreator'
   | 'CertifiedToArchivedByCreator'
 
-
 export type SortType =
   | 'MostRecent'
   | 'LeastRecent'
@@ -394,8 +393,12 @@ export type SortType =
   | 'MostRecent'
   | 'LeastRecent'
  
-
-  
+  export type TagSortType =
+  | 'MostRecent'
+  | 'LeastRecent'
+  | 'MostPopular'
+  | 'Alphabeutical'
+ 
 export type CommentStatus =
   | 'Active'
   | 'HiddenByModeration'

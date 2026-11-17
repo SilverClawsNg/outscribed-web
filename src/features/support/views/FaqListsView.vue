@@ -48,9 +48,9 @@ onMounted(() => {
   <div class="about-page">
       
       <!-- Header Section -->
-      <div class="about-header">
-        <h1 class="about-header__title">About Us</h1>
-        <p class="about-header__subtitle">
+      <div class="page-header">
+        <h1 class="page-header__title">About Us</h1>
+        <p class="page-header__subtitle">
           A quick guide to our storytelling philosophy, the anatomy of tales, opening & managing accounts, and publishing guidelines.
         </p>
       </div>
@@ -114,13 +114,13 @@ onMounted(() => {
 <p>At its core, OutScribed is built on clarity through perspective. It allows you to step into an alternate reality, tell an engaging tale, and shed light on real-world facts without fear.</p>
 </div>
 
-  <header class="page-header page-header--mid">
-    <h2 class="page-header__title">
+  <header class="section-header section-header--mid">
+    <h2 class="section-header__title">
       Frequently Asked Questions
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
   </header>
  
@@ -162,24 +162,6 @@ onMounted(() => {
   width: @mid-width;
   max-width: calc(100% - 20px);
   margin: 0 auto;
-
-  .about-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    max-width: @min-width;
-     margin: 0 auto 2.5rem auto;
-
-    &__title {
-      font-size: 2.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    &__subtitle {
-      font-size: 1.05rem;
-      line-height: 1.5;
-    }
-  }
 
    &__jump {
     margin: 1.25rem 0;

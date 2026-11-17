@@ -7,6 +7,7 @@ import SvgIcons from '@/components/SvgIcons.vue'
 import LoginModal from '@/features/authentication/modals/LoginModal.vue'
 import RegisterModal from '@/features/authentication/modals/RegisterModal.vue'
 import ResetModal from '@/features/authentication/modals/ResetModal.vue'
+import TagFilterModal from '@/features/global/modals/TagFilterModal.vue'
 
 import UpdateContactModal from '@/features/identity/modals/UpdateContactModal.vue'
 import UpdateProfileModal from '@/features/identity/modals/UpdateProfileModal.vue'
@@ -78,6 +79,7 @@ const componentMap: Record<string, any> = {
 
 TaleListFilter: TaleListFilterModal,
 TaleStats: TaleStatsModal,
+TagFilter: TagFilterModal,
 
 ContentComments: ContentCommentsModal,
 CreateComment: CreateCommentModal,

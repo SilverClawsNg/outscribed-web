@@ -337,13 +337,13 @@ const socialLinks = computed<DirectShareLink[]>(() => [
  
   <section class="story-comments">
 
-    <header class="page-header page-header--max">
-    <h2 class="page-header__title">
+    <header class="section-header section-header--max">
+    <h2 class="section-header__title">
      Recent Comments
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
              <button 
           type="button"

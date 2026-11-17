@@ -132,7 +132,7 @@ onUnmounted(() => {
 
    <template v-else>
    
-     <header class="page-header page-header--max">
+     <header class="section-header section-header--max">
         <h1>Tale Drafts</h1>
           <button type="button" class="btn btn--secondary"  
       @click="modalStore.push('TaleDraftFilter', 'Filter Drafts')">Filter</button>

@@ -119,6 +119,15 @@ function handleSearchClick() {
              <span class="web-only">Writers</span>
             <span class="mobile-only">Meet The Writers</span>
           </router-link>
+           <router-link to="/categories" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            Browse Categories
+          </router-link>
+           <router-link to="/countries" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            Browse Countries
+          </router-link>
+           <router-link to="/tags" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            Browse Trending Tags
+          </router-link>
           <router-link to="/faqs" class="nav-header__editorial-link" @click="isMenuOpen = false">
              <span class="web-only">About Us</span>
             <span class="mobile-only">Learn More About OutScribed</span>

@@ -1,9 +1,11 @@
 import { ContentTypeDescriptions, CategoryDescriptions, CountryDescriptions,
   GeneralSortTypeDescriptions, SortTypeDescriptions, ActivityTypeDescriptions, TaleStatusDescriptions, 
   CommentStatusDescriptions, LimitedContentTypeDescriptions,
+  TagSortTypeDescriptions,
  } from '../utils/descriptors' // 🎯 Import your clean semantics
 import type { ContentType, Category, Country, SortType, GeneralSortType, ActivityType,
-  TaleStatus, CommentStatus, LimitedContentType, 
+  TaleStatus, CommentStatus, LimitedContentType,
+  TagSortType, 
  } from './enumHelper' // 🎯 Import your clean semantics
 
 interface SelectItem<T = string> {
@@ -55,6 +57,13 @@ export const SortTypeSelectItems = (
 ).map((key): SelectItem<SortType> => ({
   value: key,
   label: SortTypeDescriptions[key]
+}))
+
+export const TagSortTypeSelectItems = (
+  Object.keys(TagSortTypeDescriptions) as TagSortType[]
+).map((key): SelectItem<TagSortType> => ({
+  value: key,
+  label: TagSortTypeDescriptions[key]
 }))
 
 export const GeneralSortTypeSelectItems = (

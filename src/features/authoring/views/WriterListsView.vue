@@ -168,15 +168,18 @@ async function setSort(sort: SortType) {
 
     </template>
 
+
   <template v-if="writerStore.writers && writerStore.writers.length > 0">
 
-     <header class="header">
-        <h1 class="header__title">Meet OutScribed's Writers</h1>
-        <p class="header__subtitle">
+    
+     <header class="page-header">
+        <h1 class="page-header__title">Meet OutScribed's Writers</h1>
+        <p class="page-header__subtitle">
           Our writers utilize artistic tools such as allegory, satire, etc. and logical trends to re-imagine. reframe, and predict.
           <br /> Begin your own OuScribed journey now. <router-link to="/register">Sign Up</router-link>
         </p>
       </header>
+      
 
        <InfiniteScroller
         :has-next="writerStore.hasNext"
@@ -255,46 +258,4 @@ async function setSort(sort: SortType) {
 
 <style lang="less" scoped>
 @import "@/assets/css/grid-container.less";
-
-
-  .header {
-    text-align: center;
-    margin: 2.5rem auto;
-    width: @min-width;
-    max-width: calc(100% - 20px);
-    
-
-    &__title {
-      font-size: 2.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-
-    @media @phone {
-      font-size: 1.85rem;
-      line-height: 2.15rem;
-    }
-    @media @phablet, @tablet {
-      font-size: 2.35rem;
-      line-height: 2.65rem;
-    }
-    @media @largeDevice {
-      font-size: 2.95rem;
-      line-height: 3.2rem;
-    }
-    }
-
-    &__subtitle {
-      font-size: 1.05rem;
-      line-height: 1.5;
-
-      & a{
-        text-decoration: underline;
-
-        &:hover{
-          text-decoration: none;
-        }
-      }
-    }
-  }
-
 </style>

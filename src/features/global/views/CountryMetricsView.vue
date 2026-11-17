@@ -117,17 +117,13 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
          <template v-else-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
 
-        <header class="page-header page-header--max">
-        <h2 class="page-header__title">
-          Top Countries
-        </h2>
-        <div class="page-header__lines">
-          <p class="page-header__lines--item"></p>
-          <p class="page-header__lines--item"></p>
-        </div>
-          <time class="page-header__date">{{ toRelativeTime(countryStore.countriesMetrics.lastUpdatedAt) }}</time>
-        </header>
-     
+      <header class="page-header">
+        <h1 class="page-header__title">Browse Countries</h1>
+        <p class="page-header__subtitle">
+          OutScribed stories may raise global issues as well as focus on specific countries.
+        </p>
+      </header>
+    
  <div class="discovery-top-container" v-if="countryTales && countryTales.focusCountry">
   
   <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->

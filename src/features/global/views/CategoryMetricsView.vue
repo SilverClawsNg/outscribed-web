@@ -115,16 +115,12 @@ if(categoryStore.categoriesMetrics?.categories == null) return;
 
   <template v-else-if="categoryStore.categoriesMetrics?.categories && categoryStore.categoriesMetrics.categories.length > 0">
     
-  <header class="page-header page-header--max">
-    <h2 class="page-header__title">
-      Top Categories
-    </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
-    </div>
-       <time class="page-header__date">{{ toRelativeTime(categoryStore.categoriesMetrics.lastUpdatedAt) }}</time>
-    </header>
+      <header class="page-header">
+        <h1 class="page-header__title">Browse Categories</h1>
+        <p class="page-header__subtitle">
+          OutScribed stories covers a wide range of categories from climate change and relationships to politics and tributuaries.
+        </p>
+      </header>
 
  <div class="discovery-top-container" v-if="categorizedTales && categorizedTales.focusCategory">
   

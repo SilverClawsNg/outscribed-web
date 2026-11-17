@@ -156,13 +156,13 @@ async function setSort(sort: SortType) {
 
   <template v-if="timelineStore.timelines && timelineStore.timelines.length > 0">
 
-    <header class="page-header page-header--mid">
-    <h2 class="page-header__title">
+    <header class="section-header section-header--mid">
+    <h2 class="section-header__title">
       Timelines
     </h2>
-    <div class="page-header__lines">
-      <p class="page-header__lines--item"></p>
-      <p class="page-header__lines--item"></p>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
     </div>
               <button type="button" @click="modalStore.push('TimelineFilter', 'Filter Timelines')" class="btn btn--primary">
                 Filter

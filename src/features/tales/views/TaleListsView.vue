@@ -210,9 +210,9 @@ onUnmounted(() => {
   <template v-if="taleStore.tales && taleStore.tales.length > 0">
 
    
-     <header class="header">
-        <h1 class="header__title">Discover Tales</h1>
-        <p class="header__subtitle">
+     <header class="page-header">
+        <h1 class="page-header__title">Discover Tales</h1>
+        <p class="page-header__subtitle">
           Tales are re-imaginative, interpretative, and predictive stories that aims to break down complex issues through ficticious stories.
           <br /> Begin your own OuScribed journey now. <router-link to="/register">Sign Up</router-link>
         </p>
@@ -323,33 +323,6 @@ onUnmounted(() => {
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 @import "@/assets/css/discovery-container.less";
-
-  .header {
-    text-align: center;
-    margin: 2.5rem auto;
-    width: @min-width;
-    max-width: calc(100% - 20px);
-    
-
-    &__title {
-      font-size: 2.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    &__subtitle {
-      font-size: 1.05rem;
-      line-height: 1.5;
-
-      & a{
-        text-decoration: underline;
-
-        &:hover{
-          text-decoration: none;
-        }
-      }
-    }
-  }
 
 
 /* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
