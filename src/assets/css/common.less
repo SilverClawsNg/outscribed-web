@@ -338,10 +338,16 @@ h1.logo {
   
   .page-header {
     text-align: center;
-    margin: 2.5rem auto;
     width: @min-width;
     max-width: calc(100% - 20px);
     
+     @media@smallDevice {
+      margin: 1.5rem auto;
+    }
+
+    @media @largeDevice {
+      margin: 2.5rem auto;
+    }
 
     &__title {
       font-size: 2.25rem;
@@ -351,13 +357,11 @@ h1.logo {
        @media @phone {
       font-size: 1.85rem;
       line-height: 2.2rem;
-      max-width: 80%;
     }
 
     @media @phablet {
       font-size: 1.95rem;
       line-height: 2.3rem;
-      max-width: 80%;
     }
 
     @media@tablet {
