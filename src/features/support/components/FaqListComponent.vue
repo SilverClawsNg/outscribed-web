@@ -3,40 +3,41 @@ import { ref } from 'vue'
 import type { FaqItem } from '../types/SupportTypes';
 import { sanitizeHtml } from '@/utils/markupHelper';
 
-// Declare compile-time parameter contract boundaries
-
+// 1. Define props and emits
 defineProps<{
   faq: FaqItem;
+  isOpen: boolean;
 }>();
 
-// 3. Reactive Component States (Replaces private fields)
-const showAnswer = ref(false)
+const emit = defineEmits<{
+  (e: 'toggle', id: number): void;
+}>();
 
 </script>
 
 <template>
   <article class="faq-card">
-    <button
+  <button
       type="button"
       class="faq-card__header"
-      :class="{ 'faq-card__header--active': showAnswer }"
-      :aria-expanded="showAnswer"
+      :class="{ 'faq-card__header--active': isOpen }"
+      :aria-expanded="isOpen"
       :aria-controls="`faq-content-${faq.id}`"
-      @click="showAnswer = !showAnswer"
+      @click="emit('toggle', faq.id)"
     >
       <h3 class="faq-card__question">
         {{ faq.question }}
       </h3>
       <span class="faq-card__indicator" aria-hidden="true"></span>
     </button>
-
     <div
       :id="`faq-content-${faq.id}`"
       class="faq-card__content"
-      :class="{ 'faq-card__content--show': showAnswer }"
+      :class="{ 'faq-card__content--show': isOpen }"
     >
       <div class="faq-card__body rich-text rich-text--faq" v-html="sanitizeHtml(faq.answer)"></div>
     </div>
+    
   </article>
 </template>
 
@@ -52,7 +53,7 @@ const showAnswer = ref(false)
    
   &__header {
     width: 100%;
-    max-width: @min-width;
+    max-width: @mid-width;
     display: flex;
     align-items: center;
     justify-content: space-between;

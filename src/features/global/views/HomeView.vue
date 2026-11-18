@@ -131,7 +131,7 @@ function handleJoinClick() {
         <button class="btn btn--secondary btn--outscribe" @click="handleJoinClick">
           Join Us
         </button>
-        <RouterLink class="btn btn--primary" to="/faqs">
+        <RouterLink class="btn btn--primary" to="/about-us">
           More About Us
         </RouterLink>
       </div>
@@ -268,7 +268,7 @@ function handleJoinClick() {
       >
         Start here
       </button>
-        <router-link to="/faqs#faq" class="roadmap-section__faq-link">
+        <router-link to="/faqs" class="roadmap-section__faq-link">
           View FAQs
           </router-link>
     </div>

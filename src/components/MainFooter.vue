@@ -110,7 +110,9 @@ function handleSavedDraftsClick() {
         <div class="nav-column">
           <h3 class="nav-column__title">Resources</h3>
           <ul class="nav-column__list">
-            <li><router-link to="/faqs">About OutScribed</router-link></li>
+            <li><router-link to="/about-us">About OutScribed</router-link></li>
+            <li><router-link to="/faqs">Frequently Asked Questions</router-link></li>
+            <li><router-link to="/use-cases">Use Cases For OutScribed</router-link></li>
             <li><router-link to="/contact-us">Contact &amp; Support</router-link></li>
           </ul>
         </div>

@@ -96,9 +96,19 @@ const router = createRouter({
           component: () => import('@/features/authoring/views/WriterListsView.vue')
         },
         {
-          path: 'faqs', // Renders at outscribed.com/tales
+          path: 'faqs', // Renders at outscribed.com/faqs
           name: 'FaqLists',
           component: () => import('@/features/support/views/FaqListsView.vue')
+        },
+        {
+          path: 'about-us', // Renders at outscribed.com/about-us
+          name: 'AboutUs',
+          component: () => import('@/features/support/views/AboutUsView.vue')
+        },
+         {
+          path: 'use-cases', // Renders at outscribed.com/use-cases
+          name: 'UseCases',
+          component: () => import('@/features/support/views/UseCasesView.vue')
         },
          {
           path: 'users/my/:relationType', 

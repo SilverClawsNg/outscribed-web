@@ -119,7 +119,29 @@ function handleSearchClick() {
              <span class="web-only">Writers</span>
             <span class="mobile-only">Meet The Writers</span>
           </router-link>
-           <router-link to="/categories" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+          <router-link to="/about-us" class="nav-header__editorial-link" @click="isMenuOpen = false">
+             <span class="web-only">About Us</span>
+            <span class="mobile-only">Learn More About OutScribed</span>
+          </router-link>
+            <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
+             <span class="web-only">Search</span>
+            <span class="mobile-only">Search OutScribed</span>
+          </button>
+
+          <div class="divider-multi"><span></span></div>
+
+          <router-link to="/faqs" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            View Frequently Asked Questions
+          </router-link>
+          <router-link to="/use-cases" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            View Use Cases For OutScribed
+          </router-link>
+
+          <div class="mobile-only mobile-only--stretch">
+
+          <div class="divider-multi"><span></span></div>
+
+             <router-link to="/categories" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
             Browse Categories
           </router-link>
            <router-link to="/countries" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
@@ -128,16 +150,6 @@ function handleSearchClick() {
            <router-link to="/tags" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
             Browse Trending Tags
           </router-link>
-          <router-link to="/faqs" class="nav-header__editorial-link" @click="isMenuOpen = false">
-             <span class="web-only">About Us</span>
-            <span class="mobile-only">Learn More About OutScribed</span>
-          </router-link>
-          <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
-             <span class="web-only">Search</span>
-            <span class="mobile-only">Search OutScribed</span>
-          </button>
-
-          <div class="mobile-only mobile-only--stretch">
 
             <div class="divider-multi"><span></span></div>
 

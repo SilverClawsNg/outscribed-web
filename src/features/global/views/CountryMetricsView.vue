@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue'
 import { APIError } from '@/api/apiTypes'
 import { useCountryStore } from '../stores/CountryStore.ts'; 
 
@@ -8,6 +8,10 @@ import PageStatusMessage from '@/components/PageStatusMessage.vue'
 import { useModalStore } from '@/stores/modalStore'
 import CountryComponent from '../components/CountryComponent.vue';
 import { toLongDate, toRelativeTime } from '@/utils/dateExtensions'
+import type { TagSortType } from '@/utils/enumHelper.ts';
+import { CountryDescriptions } from '@/utils/descriptors.ts';
+import { CountrySelectItems } from '@/utils/selectItemHelper.ts';
+import SvgIcons from '@/components/SvgIcons.vue';
 
 // 1. Setup Services & State
 const countryStore = useCountryStore();
@@ -16,8 +20,18 @@ const modalStore = useModalStore()
 // --- DEFINE & INITIALIZE LOCAL VARIABLES ---
 const isLoading = ref(true)
 const loadingError = ref<APIError | null>(null)
+type SortType = 'alphabetical-asc' | 'alphabetical-desc' | 'popularity-desc' | 'popularity-asc';
+const currentSort = ref<SortType>('popularity-desc'); // Default default
+
+  // --- SORT & JUMP STATE ---
+type SortDirection = 'desc' | 'asc';
+
+const sortDirection = ref<SortDirection>('desc');
+const selectedJumpCountry = ref<string>('');
+const countryCardRefs = ref<Record<string, HTMLElement | null>>({});
 
 // --- DEFINE PAGE INITIALIZATION ---
+
 async function initPage() {
 
   // 1. Fetch from store
@@ -51,42 +65,61 @@ onUnmounted(() => {
   countryStore.abort();
 });
 
+// --- TOGGLE SORT HANDLERS ---
+function setSort(sortType: SortType) {
+  currentSort.value = sortType;
+}
 
-// Assuming store.countries contains objects like: { name: Country, talesCounter: number, slug: string }
+// --- JUMP TO COUNTRY HANDLER ---
+async function handleJumpToCountry(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const countryCode = selectElement.value;
+  if (!countryCode) return;
+
+  // Ensure sorting is reset or matches view if needed, then scroll into view
+  await nextTick();
+  const el = countryCardRefs.value[countryCode];
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('discovery-card--highlight');
+    setTimeout(() => el.classList.remove('discovery-card--highlight'), 2000);
+  }
+  selectedJumpCountry.value = ''; // Reset select after jump
+}
+
+// --- COMPUTED PROCESSED COUNTRIES ---
 const countryTales = computed(() => {
+  if (!countryStore.countriesMetrics?.countries) return null;
 
-if(countryStore.countriesMetrics?.countries == null) return;
-
-  const countries = [...countryStore.countriesMetrics?.countries];
+  const countries = [...countryStore.countriesMetrics.countries];
 
   if (countries.length === 0) {
-    return {
-      focusCountry: null,
-      topPillCountries: [],
-      remainingCountries: []
-    };
+    return { focusCountry: null, pillCountries: [], remainingCountries: [] };
   }
 
-  // Sort descending by talesCounter
-  countries.sort((a, b) => b.talesCounter - a.talesCounter);
+  // 1. Apply the exact selected sort strategy
+  countries.sort((a, b) => {
+    if (currentSort.value === 'alphabetical-asc' || currentSort.value === 'alphabetical-desc') {
+      const nameA = CountryDescriptions[a.country] || a.country;
+      const nameB = CountryDescriptions[b.country] || b.country;
+      const comparison = nameA.localeCompare(nameB);
+      return currentSort.value === 'alphabetical-asc' ? comparison : -1 * comparison;
+    } else {
+      // Popularity (talesCounter)
+      const comparison = b.talesCounter - a.talesCounter;
+      // popularity-desc: highest first (b - a)
+      // popularity-asc: lowest first (a - b)
+      return currentSort.value === 'popularity-desc' ? comparison : -1 * comparison;
+    }
+  });
 
-  // 1. Top focus country (1 item)
+  // 2. Slice into structural layout tiers
   const focusCountry = countries[0];
-
-  // 2. Next 4 countries for your primary grid (2fr, 1fr, 1fr)
   const pillCountries = countries.slice(1, 5);
-
-  // 3. All remaining countries for your secondary grid (4 column, 1fr)
   const remainingCountries = countries.slice(5);
 
-  return {
-    focusCountry,
-    pillCountries,
-    remainingCountries
-  };
+  return { focusCountry, pillCountries, remainingCountries };
 });
-
-
 </script>
 
 <template>
@@ -115,60 +148,108 @@ if(countryStore.countriesMetrics?.countries == null) return;
 
   </template>
 
-         <template v-else-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
+  <template v-else-if="countryStore.countriesMetrics?.countries && countryStore.countriesMetrics.countries.length > 0">
+  <header class="page-header">
+    <h1 class="page-header__title">Browse Countries</h1>
+    <p class="page-header__subtitle">
+      OutScribed stories may raise global issues as well as focus on specific countries.
+    </p>
+  </header>
 
-      <header class="page-header">
-        <h1 class="page-header__title">Browse Countries</h1>
-        <p class="page-header__subtitle">
-          OutScribed stories may raise global issues as well as focus on specific countries.
-        </p>
-      </header>
-    
- <div class="discovery-top-container" v-if="countryTales && countryTales.focusCountry">
-  
-  <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
+  <!-- TOP CONTAINER (Focus Card + 4 Pill Cards) -->
+  <div class="discovery-top-container" v-if="countryTales && countryTales.focusCountry">
 
-  <div class="discovery-top-container__focus">
-
-    <CountryComponent
+    <div class="discovery-top-container__focus">
+      <CountryComponent
         :country="countryTales.focusCountry" 
         type="focus" 
       />
-    
-  </div>
+    </div>
 
-   <div class="discovery-top-container__pills">
-
-    <CountryComponent 
+    <div class="discovery-top-container__pills">
+      <CountryComponent 
         v-for="country in countryTales.pillCountries" 
         :key="country.country"
         :country="country" 
         type="pill" 
       />
-
+    </div>
   </div>
 
-</div>
-
- <div class="page-divider">
+  <div class="page-divider" v-if="countryTales?.remainingCountries.length">
     <div class="page-divider__lines">
       <p class="page-divider__lines--item"></p>
       <p class="page-divider__lines--item"></p>
     </div>
   </div>
 
-<div class="discovery-lower-container"  v-if="countryTales && countryTales.remainingCountries.length">
+  <!-- LOWER CONTAINER (Remaining Countries Grid) -->
+  <div class="discovery-lower-container" v-if="countryTales && countryTales.remainingCountries.length">
+    <CountryComponent 
+      v-for="country in countryTales.remainingCountries" 
+      :key="country.country"
+      :country="country" 
+      type="pill" 
+    />
+  </div>
 
-   <CountryComponent 
-        v-for="country in countryTales.remainingCountries" 
-        :key="country.country"
-        :country="country" 
-        type="pill" 
-      />
+  <!-- FIXED BOTTOM SORT FOOTER BAR (4 Compact Actions) -->
+    <footer class="page-footer-bar">
+      <div class="page-footer-bar__inner">
+        
+        <!-- 1. A-Z Sort -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: currentSort === 'alphabetical-asc' }"
+          @click="setSort('alphabetical-asc')"
+          title="Alphabetical A-Z"
+        >
+          <span class="footer-filter-label">A-Z</span>
+        </button>
 
-</div>
-    
-  </template>
+        <!-- 2. Z-A Sort -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: currentSort === 'alphabetical-desc' }"
+          @click="setSort('alphabetical-desc')"
+          title="Alphabetical Z-A"
+        >
+          <span class="footer-filter-label">Z-A</span>
+        </button>
+
+        <!-- 3. Most Popular (Up Arrow / Highest Tales) -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: currentSort === 'popularity-desc' }"
+          @click="setSort('popularity-desc')"
+          title="Most Popular"
+        >
+          <SvgIcons name="uparrow" :size="16" />
+          <span class="footer-filter-label-responsive">Popular</span>
+        </button>
+
+        <!-- 4. Least Popular (Down Arrow / Lowest Tales) -->
+        <button 
+          type="button" 
+          class="footer-filter-btn" 
+          :class="{ active: currentSort === 'popularity-asc' }"
+          @click="setSort('popularity-asc')"
+          title="Least Popular"
+        >
+          <SvgIcons name="downarrow" :size="16" />
+          <span class="footer-filter-label-responsive">Quiet</span>
+        </button>
+
+      </div>
+    </footer>
+
+ 
+  
+  <!-- Fixed Footer Bar with Sort Icons & Jump-To Select... -->
+</template>
 
     <template v-else>
 
