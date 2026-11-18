@@ -128,30 +128,9 @@ function handleSearchClick() {
             <span class="mobile-only">Search OutScribed</span>
           </button>
 
-          <div class="divider-multi"><span></span></div>
-
-          <router-link to="/faqs" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            View Frequently Asked Questions
-          </router-link>
-          <router-link to="/use-cases" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            View Use Cases For OutScribed
-          </router-link>
-
           <div class="mobile-only mobile-only--stretch">
 
           <div class="divider-multi"><span></span></div>
-
-             <router-link to="/categories" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            Browse Categories
-          </router-link>
-           <router-link to="/countries" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            Browse Countries
-          </router-link>
-           <router-link to="/tags" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            Browse Trending Tags
-          </router-link>
-
-            <div class="divider-multi"><span></span></div>
 
               <button type="button" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="handleCreateDraftClick">
               <SvgIcons name="edit" :size="22" /> Create A New Tale Draft
@@ -180,8 +159,32 @@ function handleSearchClick() {
             <router-link to="/register"  class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
              <SvgIcons name="archive" :size="22" />  Sign Up For Free
             </router-link>
+
           </template>
 
+            <div class="mobile-only">
+              
+          <div class="divider-multi"><span></span></div>
+
+          <router-link to="/faqs" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            View Frequently Asked Questions
+          </router-link>
+          <router-link to="/use-cases" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            View Use Cases For OutScribed
+          </router-link>
+
+             <router-link to="/categories" class="nav-header__editorial-link" @click="isMenuOpen = false">
+            Browse Categories
+          </router-link>
+           <router-link to="/countries" class="nav-header__editorial-link" @click="isMenuOpen = false">
+            Browse Countries
+          </router-link>
+           <router-link to="/tags" class="nav-header__editorial-link" @click="isMenuOpen = false">
+            Browse Trending Tags
+          </router-link>
+          
+            </div>
+            
           </div>
 
         </nav>
@@ -329,10 +332,12 @@ nav.nav-header__editorial-links {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  
 
   @media @smallDevice{
        flex-direction: column;
        width: 100%;
+       padding-bottom: 5rem;
     }
 
    @media @largeDevice{
