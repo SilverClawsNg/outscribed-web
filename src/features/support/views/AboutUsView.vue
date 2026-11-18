@@ -105,7 +105,6 @@ onMounted(() => {
 @import "@/assets/css/rich-text.less";
 
 .about-page {
-  padding-top: 3rem;
   width: @mid-width;
   max-width: calc(100% - 20px);
   margin: 0 auto;

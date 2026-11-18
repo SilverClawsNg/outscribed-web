@@ -52,7 +52,6 @@ function handleToggle(id: number) {
 @import "@/assets/css/variables.less";
 
 .use-cases-page {
-  padding-top: 3rem;
   width: @mid-width;
   max-width: calc(100% - 20px);
   margin: 0 auto;
