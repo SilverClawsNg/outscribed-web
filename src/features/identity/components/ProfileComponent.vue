@@ -643,7 +643,7 @@ function handleEditContactClick(platform: ContactType) {
   &__description {
     margin: 0;
     line-height: 1.5;
-    color: var(--muted-text-color);
+    
   }
 
   &__actions {

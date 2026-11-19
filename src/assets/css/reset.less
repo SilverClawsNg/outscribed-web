@@ -38,19 +38,19 @@ a {
     text-decoration: none;
     outline: none;
     user-select: none;
-    color: var(--text-color);
+    color: var(--heading-text-color);
     cursor: pointer;
+    
 
-
-    &:not(.btn) {
+    &:not(.btn, .image) {
         font-weight: 600;
 
         &:hover {
-            color:  @link-color;
+          opacity: 0.65;
         }
 
          &.active {
-            color:  var(--text-color);
+           color: var(--muted-text-color);
         }
     }
 
@@ -92,8 +92,19 @@ button {
     line-height: inherit;
     font-size: inherit;
     font-weight: 600;
-       color: var(--muted-text-color);
+       
 
+    &:not(.btn, .image) {
+        font-weight: 600;
+
+        &:hover {
+          opacity: 0.65;
+        }
+
+         &.active {
+           color: var(--muted-text-color);
+        }
+    }
 
     &:disabled {
         cursor: not-allowed;

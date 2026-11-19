@@ -259,7 +259,7 @@ async function upload() {
             }
 
             & .placeholder-text {
-                color: var(--muted-text-color);
+                
             }
 
         }

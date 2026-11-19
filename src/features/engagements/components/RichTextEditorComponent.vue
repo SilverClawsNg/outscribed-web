@@ -180,7 +180,7 @@ onBeforeUnmount(() => {
       border: none !important;
         font-family: @font-family;
         font-size: 1rem;
-        color: var(--muted-text-color);
+        
     }
 
     
@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
         font-style: normal;
         left: 0;
         font-size: 1rem;
-        color: var(--muted-text-color);
+        
         font-style: italic;
       }
 

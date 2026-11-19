@@ -768,7 +768,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
 
 &__date{
-  color: var(--muted-text-color);
+  
   font-size: 0.9rem;
 
    &--focus{

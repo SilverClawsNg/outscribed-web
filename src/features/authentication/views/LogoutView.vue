@@ -149,7 +149,7 @@ function handleLogout() {
     margin: 0 0 0 1.7rem;
     font-size: 0.9rem;
     line-height: 1.4;
-    color: var(--muted-text-color);
+    
     transition: color 0.2s ease;
   }
 }

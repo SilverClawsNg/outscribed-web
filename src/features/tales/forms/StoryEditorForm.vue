@@ -396,7 +396,7 @@ onBeforeUnmount(() => {
   font-family: @font-family;
   font-size: 1.1rem;
   line-height: 1.5;
-  color: var(--muted-text-color);
+  
 
 }
 

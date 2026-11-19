@@ -30,6 +30,8 @@ function handleSavedDraftsClick() {
 
   <footer class="site-footer">
 
+    <div class="site-footer__wrapper">
+
     <div class="footer-container">
       
       <!-- Top Section: Brand & Disclaimer -->
@@ -123,6 +125,9 @@ function handleSavedDraftsClick() {
     </div>
 
     </div>
+
+    </div>
+
   </footer>
 </template>
 
@@ -131,10 +136,10 @@ function handleSavedDraftsClick() {
 @import "@/assets/css/variables.less";
 
 
-footer.site-footer {
+.site-footer {
   background-color: var(--background-color);
-  border-top: 1px solid var(--border-color);
-  padding: 2.5rem 0;
+ 
+  padding-top: 58px;
   font-size: 0.9rem;
   position:relative;
   z-index: 5000;
@@ -148,7 +153,16 @@ footer.site-footer {
   top: -58px;
   height: 58px;
   background: var(--background-color);
+   
   pointer-events:none;
+}
+
+&__wrapper{
+  width: 100%;
+  height: auto;
+  padding: 58px 0 2.5rem 0;
+  border-top: 1px solid var(--border-color);
+   position: relative;
 }
  
   .footer-container {
@@ -220,7 +234,7 @@ footer.site-footer {
       //color:@white-color;
 
           & svg{
-            width: 100%;
+            //width: 100%;
             height: auto;
             //fill: @white-color;
           }
@@ -310,6 +324,7 @@ footer.site-footer {
 
   .footer-bottom {
     width: auto;
+    flex-grow: 1;
   }
 
     p.copyright {

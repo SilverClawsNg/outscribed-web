@@ -237,7 +237,7 @@ const { success, error } = await draftStore.updateCommentDetails(formData.value.
     .character-counter {
       font-size: 0.85rem;
       font-weight: 500;
-      color: var(--muted-text-color);
+      
       pointer-events: none; // Allows clicks to pass through to the input
       font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
 

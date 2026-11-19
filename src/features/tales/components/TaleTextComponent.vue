@@ -33,9 +33,9 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
 <template>
    
     <div class="content">
-       <p class="content__categories">
+       <p class="content__category">
             <RouterLink :to="`/tales?category=${tale.category}`"
-             :class="`categories__${CategoryClasses[tale.category]}`">
+             class="content__category-link">
               <span>{{ CategoryDescriptions[tale.category] }}</span>
             </RouterLink>
           </p>
@@ -79,32 +79,36 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
  .content {
     width: 100%;
 
-    &__categories{
-      margin-bottom: 0.5rem;
+    &__category{
+      margin-bottom: 0.5rem;  
 
-  // Base pill styling
-  a {
-    display: inline-block;
-    padding: 1px 2px;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    font-size: 0.725rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: opacity 0.2s ease;
+      &-link{
+         display: inline-block;
+          padding: 1px 2px;
+          border-radius: 4px;
+          border: 1px solid var(--surface-border-color);
+          background-color: var(--surface-background-color);
+          font-size: 0.725rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          transition: opacity 0.2s ease;
+
+          --body-text-color: #52525B;
 
     &:hover {
       opacity: 0.85;
     }
-  }
 
+      }
     }
 
+    
   &__title{
     font-weight:700;
     margin-bottom: 0.5rem;
 
     &--focus{
+      color:@white-color;
 
       @media @phone{
          font-size:1.2rem;
@@ -127,13 +131,21 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
   }
 
   &__summary{
-    color: var(--muted-text-color);
+    
     margin-bottom: 0.5rem;
+
+    
   }
 
   &__meta{
     font-size:0.9rem;
     line-height: 1.5rem;
+
+    & .at{
+      &:before{
+        color:@white-color;
+      }
+    }
 
     &--spaced{
       margin-right: 0.25rem
@@ -157,12 +169,10 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
      border:1px solid var(--border-color);
      padding: 0.5rem 0.75rem;
      border-radius: 99999px;
-     color: var(--muted-text-color);
-     
-
+   
       &:hover {
-        background-color: var(--light-background-color);
-        color: @link-color;
+        background-color: var(--surface-background-color);
+        border-color: var(--surface-border-color);
       }
     }
 
@@ -176,111 +186,5 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
 
 }
 
-  .categories {
-  display: inline-flex;
-
-  // Mapped Modifiers matching your CategoryClasses keys
-  &__tributuary {
-    background-color: @tributuary-background-color;
-    border-color: @tributuary-border-color;
-    color: @tributuary-text-color;
-  }
-
-  &__reflections {
-    background-color: @reflections-background-color;
-    border-color: @reflections-border-color;
-    color: @reflections-text-color;
-  }
-
-  &__dooms-day {
-    background-color: @dooms-day-background-color;
-    border-color: @dooms-day-border-color;
-    color: @dooms-day-text-color;
-  }
-
-  &__politics-government {
-    background-color: @politics-government-background-color;
-    border-color: @politics-government-border-color;
-    color: @politics-government-text-color;
-  }
-
-  &__sports-gaming {
-    background-color: @sports-gaming-background-color;
-    border-color: @sports-gaming-border-color;
-    color: @sports-gaming-text-color;
-  }
-
-  &__science-technology {
-    background-color: @science-technology-background-color;
-    border-color: @science-technology-border-color;
-    color: @science-technology-text-color;
-  }
-
-  &__education {
-    background-color: @education-background-color;
-    border-color: @education-border-color;
-    color: @education-text-color;
-  }
-
-  &__business-economy {
-    background-color: @business-economy-background-color;
-    border-color: @business-economy-border-color;
-    color: @business-economy-text-color;
-  }
-
-  &__arts-entertainment {
-    background-color: @arts-entertainment-background-color;
-    border-color: @arts-entertainment-border-color;
-    color: @arts-entertainment-text-color;
-  }
-
-  &__medicine-healthcare {
-    background-color: @medicine-healthcare-background-color;
-    border-color: @medicine-healthcare-border-color;
-    color: @medicine-healthcare-text-color;
-  }
-
-  &__law-order {
-    background-color: @law-order-background-color;
-    border-color: @law-order-border-color;
-    color: @law-order-text-color;
-  }
-
-  &__societal-norms-values {
-    background-color: @societal-norms-values-background-color;
-    border-color: @societal-norms-values-border-color;
-    color: @societal-norms-values-text-color;
-  }
-
-  &__history-culture {
-    background-color: @history-culture-background-color;
-    border-color: @history-culture-border-color;
-    color: @history-culture-text-color;
-  }
-
-  &__environment-climate {
-    background-color: @environment-climate-background-color;
-    border-color: @environment-climate-border-color;
-    color: @environment-climate-text-color;
-  }
-
-  &__religion-spirituality {
-    background-color: @religion-spirituality-background-color;
-    border-color: @religion-spirituality-border-color;
-    color: @religion-spirituality-text-color;
-  }
-
-  &__family-relationships {
-    background-color: @family-relationships-background-color;
-    border-color: @family-relationships-border-color;
-    color: @family-relationships-text-color;
-  }
-
-  &__miscellaneous {
-    background-color: @miscellaneous-background-color;
-    border-color: @miscellaneous-border-color;
-    color: @miscellaneous-text-color;
-  }
-}
 
 </style>

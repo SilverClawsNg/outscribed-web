@@ -3,21 +3,16 @@
 .discovery-card {
 
       &--focus{
-        
-        color:@white-color;
+     
         width: 100%;
         height: auto;
         padding: 1rem;
-       
-
-      &  .discovery-card__metric-link{
-          color:@white-color;
-        }
+     
       }
 
     &--pill{
       border: 1px solid var(--border-color);
-      border-left: 5px solid @link-color;
+      border-left-width: 5px;
       width: 100%;
       padding: 1rem 0.5rem;
       border-radius: 12px;
@@ -31,20 +26,6 @@
 
     &--focus{
       font-size: 1.5rem;
-
-      & .at:before {
-        color: @white-color;
-    }
-      
-  & button,
-  & a{
-    color:@white-color;
-
-    &:hover{
-      opacity: 0.8;
-    }
-
-  }
 
     }
 
@@ -76,18 +57,14 @@
     }
 
   &--pill{
-     color: var(--muted-text-color);
+     
      font-size:0.9rem;
   }
 }
 
 &__date{
-  color: var(--muted-text-color);
+  
   font-size: 0.9rem;
-
-   &--focus{
-      color:@white-color;
-    }
 
   & span{
     font-style: italic;
@@ -105,10 +82,6 @@
    display: inline-flex;
     align-items: center;
     column-gap: 0.25rem;
-
-     &--categories{
-    color:@white-color;
-  }
 
   }
 

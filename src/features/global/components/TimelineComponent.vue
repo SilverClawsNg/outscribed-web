@@ -78,7 +78,7 @@ const contentTypeClass = computed(() => {
   &__date {
     text-transform: capitalize;
     font-size: 0.9rem;
-    color: var(--muted-text-color);
+    
   }
 
   &__type {

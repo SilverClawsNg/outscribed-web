@@ -202,7 +202,7 @@
     }
 
     p {
-      color: var(--muted-text-color);
+      
     }
   }
 }
@@ -225,7 +225,7 @@
       background-color: var(--background-color);
       padding: 0.15rem 0.35rem;
       border-radius: 4px;
-      color: var(--muted-text-color);
+      
     }
   }
 }
@@ -274,7 +274,7 @@
 
   dt {
     font-weight: 600;
-    color: var(--muted-text-color);
+    
 
     &::after {
       content: "";

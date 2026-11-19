@@ -74,7 +74,7 @@ const taleStore = useTaleDraftStore()
     }
 
     &__description {
-    color: var(--muted-text-color);
+    
   }
 }
 

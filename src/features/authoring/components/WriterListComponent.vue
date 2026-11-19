@@ -212,7 +212,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
   }
 
   &__summary{
-    color: var(--muted-text-color);
+    
     margin-bottom: 0.5rem;
   }
 
@@ -240,7 +240,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
      border:1px solid var(--border-color);
      padding: 0.5rem 0.75rem;
      border-radius: 99999px;
-     color: var(--muted-text-color);
+     
      
 
       &:hover {

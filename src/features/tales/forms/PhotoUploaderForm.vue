@@ -447,7 +447,7 @@ async function handleFormSubmission() {
     align-items: center;
     gap: 0.75rem;
     padding: 2rem;
-    color: var(--muted-text-color);
+    
     text-align: center;
     pointer-events: none; // 🔑 Crucial so drag events register cleanly on the parent div
   }

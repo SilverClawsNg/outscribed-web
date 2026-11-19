@@ -506,7 +506,7 @@ async function handleReturnToWorkspace() {
   }
 
   &__description {
-    color: var(--muted-text-color);
+    
   }
 }
 

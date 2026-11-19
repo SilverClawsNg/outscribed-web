@@ -387,7 +387,7 @@ async function handleCommitAddendum() {
   }
 
   &__description {
-    color: var(--muted-text-color);
+    
   }
 }
 
@@ -460,7 +460,7 @@ async function handleCommitAddendum() {
   }
 
   &__form-label{
-    color: var(--muted-text-color);
+    
   }
   
     &__character-counter {
@@ -468,7 +468,7 @@ async function handleCommitAddendum() {
       text-align: right;
       font-size: 0.85rem;
       font-weight: 500;
-      color: var(--muted-text-color);
+      
       pointer-events: none; // Allows clicks to pass through to the input
       font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
 

@@ -155,7 +155,7 @@ border-bottom: 1px solid var(--thick-border-color);
       justify-content: center;
       gap: 0.35rem;
       font-size: 0.95rem;
-      color: var(--muted-text-color);
+      
 
       .subtext-link {
         color: @link-color;
@@ -273,7 +273,7 @@ border-bottom: 1px solid var(--thick-border-color);
       justify-content: center;
       gap: 0.35rem;
       font-size: 0.95rem;
-      color: var(--muted-text-color);
+      
 
       .subtext-link {
         color: @link-color;

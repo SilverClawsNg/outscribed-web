@@ -176,8 +176,8 @@ function handleJoinClick() {
       <img src="@/assets/images/icon.png" alt="" aria-hidden="true" />
       <span class="hero__rule"></span>
     </div>
- <h2 class="hero__byline">
-        The Facts, The Fiction, <br /> & Everything In-Betwen
+    <h2 class="hero__byline">
+        The Facts, The Fiction, <br /> & Everything In-Between
       </h2>
   </div>
 
@@ -193,7 +193,7 @@ function handleJoinClick() {
   <!-- LEFT: FOCUS TALE -->
   <article class="card card--focus">
     <div class="card__media" v-if="homepageLayout.focus.photo">
-      <RouterLink :to="`/tale/${homepageLayout.focus.slug}`">
+      <RouterLink class="image" :to="`/tale/${homepageLayout.focus.slug}`">
         <img 
           :src="mediaHelper.getUrl(homepageLayout.focus.photo, 'tales', 'full')" 
           :alt="homepageLayout.focus.title" 
@@ -284,9 +284,9 @@ function handleJoinClick() {
       <p class="section-header__lines--item"></p>
       <p class="section-header__lines--item"></p>
     </div>
-              <RouterLink to="/tales"  class="btn btn--primary">
-                Explore Tales
-              </RouterLink>
+    <RouterLink to="/tales"  class="btn btn--primary">
+       Explore Tales
+    </RouterLink>
   </header>
 
   <!-- LEVEL 2: Nones Strip (4 Equal Cards) -->
@@ -297,7 +297,7 @@ function handleJoinClick() {
       class="card card--none"
     >
       <div v-if="tale.photo" class="card__media">
-        <RouterLink :to="`/tale/${tale.slug}`">
+        <RouterLink  class="image" :to="`/tale/${tale.slug}`">
           <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
         </RouterLink>
       </div>
@@ -311,7 +311,7 @@ function handleJoinClick() {
   <section class="home-layout__level home-layout__level--subfocus">
     <article class="card card--subfocus" v-if="homepageLayout.subfocus">
       <div class="card__media" v-if="homepageLayout.subfocus.photo">
-        <RouterLink :to="`/tale/${homepageLayout.subfocus.slug}`">
+        <RouterLink  class="image" :to="`/tale/${homepageLayout.subfocus.slug}`">
           <img :src="mediaHelper.getUrl(homepageLayout.subfocus.photo, 'tales', 'full')" :alt="homepageLayout.subfocus.title" />
         </RouterLink>
       </div>
@@ -327,7 +327,7 @@ function handleJoinClick() {
         class="card card--subside"
       >
         <div v-if="tale.photo" class="card__media">
-          <RouterLink :to="`/tale/${tale.slug}`">
+          <RouterLink  class="image" :to="`/tale/${tale.slug}`">
             <img :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" :alt="tale.title" />
           </RouterLink>
         </div>
@@ -580,7 +580,7 @@ function handleJoinClick() {
   }
 
   &__explainer {
-    color: var(--muted-text-color);
+    
     margin-bottom: 1.5rem;
 
      @media @phone {
@@ -647,7 +647,6 @@ function handleJoinClick() {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: @logo-red;
 
     & svg{
       stroke-width: 1.5;
@@ -682,7 +681,7 @@ function handleJoinClick() {
   column-gap: 0.25rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
-  color: var(--muted-text-color);
+  
   font-size: 0.9rem;
   font-weight: 400;
   border-radius: 6rem;
@@ -690,8 +689,8 @@ function handleJoinClick() {
   text-decoration: none;
 
   &:hover {
-    background-color: var(--light-background-color);
-    color: @link-color;
+    background-color: var(--surface-background-color);
+    border-color: var(--surface-border-color);
   }
 
   &__name {
@@ -760,7 +759,7 @@ function handleJoinClick() {
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--muted-text-color);
+    
   }
 }
 
@@ -943,8 +942,8 @@ function handleJoinClick() {
         pointer-events: auto;
       }
 
-      --text-color: #ffffff;
-      --muted-text-color: #ffffff;
+      --heading-text-color: #ffffff;
+      --body-text-color: #ffffff;
       --background-color: transparent;
 
       &--wrapper{
@@ -1050,7 +1049,6 @@ function handleJoinClick() {
     column-gap: 0.4rem;
 
     svg {
-      stroke: @logo-red;
       stroke-width: 2;
     }
   }
@@ -1059,7 +1057,7 @@ function handleJoinClick() {
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.4;
-    color: var(--muted-text-color);
+    
 
     button {
       border-bottom: 2px dotted var(--border-color);
@@ -1098,7 +1096,7 @@ function handleJoinClick() {
 
       li {
         font-size: 0.875rem;
-        color: var(--muted-text-color);
+        
         line-height: 1.4;
         margin-bottom: 0.2rem;
 

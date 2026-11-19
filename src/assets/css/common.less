@@ -254,8 +254,7 @@ h1.logo {
    
 
     & svg {
-        fill: var(--text-color);
-        //fill: @link-color;
+        fill: var(--heading-text-color);
         width: auto;
 
        @media @phone {
@@ -394,7 +393,7 @@ h1.logo {
   }
 
 
-   .page-divider{
+.page-divider{
     width: @max-width;
     max-width: calc(100% - 20px);
     margin: 1rem auto;
@@ -416,7 +415,7 @@ h1.logo {
         width: 100%;
       }
     }
-   }
+}
 
 .container-wrapper{
     width: 100%;
@@ -506,7 +505,7 @@ h1.logo {
 
     &:before {
         font-weight: inherit;
-        color: var(--text-color);
+        color: var(--muted-text-color);
         content: "\0040";
         vertical-align:top;
     }
@@ -535,7 +534,7 @@ h1.logo {
   &__inner {
     width: @min-width;
     max-width: calc(100% - 20px);
-    background-color: var(--text-color);
+    background-color: var(--heading-text-color);
     border-radius: 99999px;
     backdrop-filter: blur(8px);
     margin: 0 auto;
@@ -560,7 +559,7 @@ h1.logo {
   width: 100%;
   height: 100%;
   justify-content: center;
-  border-right: 2px solid var(--alt-background-hover-color);
+  border-right: 2px solid var(--heading-text-color);
 
   & svg{
     stroke-width: 2;
@@ -577,13 +576,13 @@ h1.logo {
 
   &:hover {
     color: var(--background-color);
-    background-color: var(--alt-background-hover-color);
+    background-color: var(--muted-text-color);
   }
 
   &.active {
     pointer-events: none;
     color: var(--background-color);
-    background-color: var(--alt-background-hover-color);
+    background-color: var(--muted-text-color);
   }
 
   &--more {
@@ -750,7 +749,7 @@ h1.logo {
   &--line {
     width: 1px;
     height: 12px;
-    background-color: var(--muted-text-color);
+    background-color: var(--body-text-color); 
 
     &--white{
         background-color: @white-color;
@@ -762,7 +761,7 @@ h1.logo {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background-color: var(--muted-text-color);
+    background-color: var(--body-text-color);
 
      &--white{
         background-color: @white-color;

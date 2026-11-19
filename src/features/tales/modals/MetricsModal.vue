@@ -168,13 +168,13 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeyDown))
 
   dt {
     font-weight: 500;
-    color: var(--muted-text-color);
+    
     margin: 0;
   }
 
   dd {
     font-weight: 700;
-    color: var(--muted-text-color);
+    
     margin: 0;
   }
 }

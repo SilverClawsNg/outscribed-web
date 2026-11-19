@@ -379,7 +379,7 @@ currentTag.value = tagId
   }
 
   &__description {
-    color: var(--muted-text-color);
+    
   }
 }
 
@@ -447,7 +447,7 @@ padding: 1.75rem 1rem;
 
   &__label {
     font-size: 0.95rem;
-    color: var(--muted-text-color);
+    
     font-weight: 500;
     margin-bottom: 0.5rem;
     display: inline-block;
@@ -507,7 +507,7 @@ padding: 1.75rem 1rem;
       white-space: nowrap;
       font-size: 0.85rem;
       font-weight: 500;
-      color: var(--muted-text-color);
+      
       pointer-events: none; // Allows clicks to pass through to the input
       font-variant-numeric: tabular-nums; // Prevents counter width jitter when numbers change
 

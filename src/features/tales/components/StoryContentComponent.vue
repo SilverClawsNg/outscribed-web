@@ -230,7 +230,7 @@ const modalStore = useModalStore()
       font-size: clamp(0.95rem, 5vw, 1.1rem);
       margin-bottom: 2rem;
       text-align: center;
-      color: var(--muted-text-color);
+      
     }
     
 &__meta {
@@ -289,7 +289,7 @@ const modalStore = useModalStore()
     font-size:0.9rem;
     line-height: 1;
     padding: 0.5rem 0.25rem 0 0.25rem;
-    color: var(--muted-text-color);
+    
     font-style: italic;
     text-align: center;
     word-break: break-word; // Ensures long text wraps cleanly
@@ -374,7 +374,7 @@ const modalStore = useModalStore()
   }
 
   &__summary {
-    color: var(--muted-text-color);
+    
     font-size: 1.1rem;
     line-height: 1.5;
 
@@ -527,7 +527,7 @@ const modalStore = useModalStore()
       }
 
       &--date{
-        color: var(--muted-text-color);
+        
       }
     }
 
@@ -537,7 +537,7 @@ const modalStore = useModalStore()
 
       &--item {
        margin-bottom: 0.5rem;
-        color: var(--muted-text-color);
+        
     font-size: 1.1rem;
     line-height: 1.5;
       }
@@ -565,7 +565,7 @@ const modalStore = useModalStore()
     padding: 0.5rem 0.75rem;
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
-    color: var(--muted-text-color);
+    
     //color:@link-color;
     border-radius: 99999px;
     font-size: 0.9rem;
