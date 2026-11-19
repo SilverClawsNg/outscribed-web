@@ -129,11 +129,21 @@
     margin-top: 1rem;
   }
 
- 
-  &__action-btn {
+  &__action-btn,
+    &__vote-btn {
     display: flex;
     align-items: center;
     gap: 0.3rem;
     font-size: 0.9rem;
+  }
+ 
+  &__action-btn {
+   
+    font-weight: normal;
+    text-decoration: underline;
+
+    &:hover{
+      text-decoration: none;
+    }
   }
 }

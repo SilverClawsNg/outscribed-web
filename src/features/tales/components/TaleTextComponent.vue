@@ -100,15 +100,22 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
 
     }
 
-    
-    
   &__title{
     font-weight:700;
     margin-bottom: 0.5rem;
 
     &--focus{
-    font-size:2rem;
-    line-height: 2.2rem;
+
+      @media @phone{
+         font-size:1.2rem;
+        line-height: 1.4rem;
+      }
+
+       @media @desktop, @laptop, @tablet, @phablet{
+        font-size:2rem;
+        line-height: 2.2rem;
+      }
+   
     }
 
       &--pill{

@@ -342,33 +342,6 @@ function handleJoinClick() {
 
   </template>
 
-  <div class="use-cases">
-
-    <h2 class="use-cases__header">
-      Use Cases For OutScribed
-    </h2>
-
-      <div class="use-cases__contents">
-        <div class="use-cases__contents-avatar">
-          <img src="@/assets/images/avatar.png" />
-        </div>
-         <div class="use-cases__contents-title">
-          Honor a living person like a legend
-        </div>
-      </div>
-       <div class="use-cases__description">
-        <p><strong>The Challenge:</strong> Obituaries are often the most honest, heartfelt tributes written about a person, yet the subject is never around to read or experience them.</p><p><strong>The OutScribed Approach:</strong> A <i>Tributuary</i> (a blend of <i>Tribute</i> and <i>Obituary</i>) allows you to project a fictional time far into the future (e.g., <i>\"It is June 2076, and the world is mourning the passing of...\"</i>) to write a sweeping, lifetime-achievement obituary for a mentor, icon, or loved one today.</p><p><strong>Why it works:</strong> Projecting into the distant future gives you the creative freedom of an obituary to heap accolades, recount legacy-defining moments, and honor someone's impact, giving them their flowers while they are still here to see it.</p>
-      </div>
-
-     <div class="use-cases__footer">
-    
-      <router-link to="/use-cases" class="btn btn--primary">
-            More Use Cases
-          </router-link>
-    </div>
-
-  </div>
-
   <header class="section-header section-header--max">
     <h2 class="section-header__title">
       Top Categories
@@ -1196,66 +1169,6 @@ function handleJoinClick() {
       grid-column: span 1;
       grid-template-columns: 1fr;
     }
-  }
-}
-
-
-
-/* ==========================================================================
-   USE CASES
-   ================================================================---------- */
-
-.use-cases{
-  width: @max-width;
-  max-width: calc(100% - 20px);
-  margin: 2.5rem auto 0 auto;
-  border:1px solid var(--border-color);
-  border-radius: 12px;
-
-  &__header{
-     margin-bottom: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom:1px solid var(--border-color);
-    padding: 0.75rem 0.5rem;
-    font-weight: 600;
-    font-size: 1.2rem;
-  }
-
-  &__contents{
-    display: flex;
-    align-items:center;
-    padding: 0.5rem;
-
-    &-avatar{
-      width: 50px;
-      margin-right: 0.5rem;
-      padding-right: 0.5rem;
-      border-right:1px solid var(--border-color);
-
-      & img{
-        width: 100%;
-        height: auto;
-      }
-    }
-
-    &-title{
-      flex-grow: 1;
-      font-size: 1.2rem;
-    }
-  }
-
-  &__description{
-    padding: 0.5rem;
-  }
-
-   &__footer{
-     margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top:1px solid var(--border-color);
-    background-color: var(--light-background-color);
-    text-align: right;
-    padding: 1rem;
-    border-radius: 0 0 12px 12px;
   }
 }
 

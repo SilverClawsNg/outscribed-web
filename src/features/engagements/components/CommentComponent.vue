@@ -168,83 +168,80 @@ function returnAncestor() {
       </div>
     </section>
 
-    <!-- 3. Navigation / Threading Info -->
-    <section class="comment-inline-card__thread">
-
-      <template  v-if="!isFocus">
-
-        <template v-if="isAncestor">
-          <button 
-            type="button"
-            class="comment-inline-card__thread-link" 
-            @click="returnAncestor"
-          >
-            ← Return to Thread
-          </button>
-        </template>
-
-        <template v-else>
-
-          <div class="comment-inline-card__reply">
-            <button 
-                type="button"
-                @click="replyComment"
-              >
-                Reply
-              </button>
-              <button 
-                type="button"
-                class="comment-inline-card__thread-link"
-                :disabled="uiMeta.isRepliesDisabled" 
-                @click="viewReplies"
-              >
-              — View  {{ formatCounts(comment.engagement?.commentsCount) }} Replies
-            </button>
-
-          </div>
-        
-        </template>
-      </template>
-      
-        <template v-else>
-
-          <div class="comment-inline-card__reply">
-            <button 
-                type="button"
-                @click="replyComment"
-              >
-                Reply
-              </button>
-           
-          </div>
-        
-        </template>
-      
-    </section>
-
     <!-- 4. Engagement Actions (Upvote, Downvote, Reply, Favorite) -->
     <footer class="comment-inline-card__actions">
        <button 
           type="button"
-          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myReaction === 'Upvote' }]" 
+          :class="['comment-inline-card__vote-btn', { 'is-active': comment.engagement?.myReaction === 'Upvote' }]" 
           title="Upvote"
           :disabled="uiMeta.isVoteDisabled"
           @click="engage.react(comment.engagement, 'Upvote')"
         >
-          <SvgIcons name="upvote" />
+          <SvgIcons name="uparrow" />
           <span>{{ formatCounts(comment.engagement?.upvotesCount) }}</span>
         </button>
 
         <button 
           type="button"
-          :class="['comment-inline-card__action-btn', { 'is-active': comment.engagement?.myReaction === 'Downvote' }]" 
+          :class="['comment-inline-card__vote-btn', { 'is-active': comment.engagement?.myReaction === 'Downvote' }]" 
           title="Downvote"
           :disabled="uiMeta.isVoteDisabled"
           @click="engage.react(comment.engagement, 'Downvote')"
         >
-          <SvgIcons name="downvote" />
+          <SvgIcons name="downarrow" />
           <span>{{ formatCounts(comment.engagement?.downvotesCount) }}</span>
         </button>
+
+        <span class="divider divider--line"></span>
+        
+      <template  v-if="!isFocus">
+
+        <template v-if="isAncestor">
+
+          <button 
+            type="button"
+            class="comment-inline-card__action-btn" 
+            @click="returnAncestor"
+          >
+            ← Return to Thread
+          </button>
+
+        </template>
+
+        <template v-else>
+
+            <button 
+                type="button"
+                class="comment-inline-card__action-btn"
+                @click="replyComment"
+              >
+                Reply
+              </button>
+            <button 
+                v-if="!uiMeta.isRepliesDisabled"
+                type="button"
+                class="comment-inline-card__action-btn"
+                @click="viewReplies"
+              >
+              {{ formatCounts(comment.engagement?.commentsCount) }} Replies
+            </button>
+        
+        </template>
+        
+      </template>
+      
+        <template v-else>
+
+            <button 
+                type="button"
+                 class="comment-inline-card__action-btn"
+                @click="replyComment"
+              >
+                Reply
+              </button>
+        
+        </template>
+      
 
        <button 
           type="button"
@@ -253,8 +250,7 @@ function returnAncestor() {
           :disabled="uiMeta.isFavoriteDisabled"
           @click="engage.favorite(comment.engagement)"
         >
-          <SvgIcons name="bookmark" />
-          <span>{{ uiMeta.favoriteLongText }}</span>
+          <span>{{ uiMeta.favoriteText }}</span>
         </button>
     </footer>
 

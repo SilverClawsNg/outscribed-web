@@ -252,7 +252,7 @@ onMounted(async () => {
 
       <PageStatusMessage 
         title="No Comment Found!"
-      message="We counld not retrieve any comment matching your search filters."
+      message="We could not retrieve any comment matching your search filters."
       :is-standalone="true"
       >
         <template #actions>

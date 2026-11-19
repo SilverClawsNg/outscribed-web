@@ -255,10 +255,10 @@ async function setSort(sort: SortType) {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: commentFilterStore.sort === 'LeastRecent' }"
-          @click="setSort('LeastRecent')"
+          :class="{ active: commentFilterStore.sort === 'MostUpvoted' }"
+          @click="setSort('MostUpvoted')"
         >
-          Oldest
+          Most Popular
         </button>
 
         <span class="footer-divider">|</span>

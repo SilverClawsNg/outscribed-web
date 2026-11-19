@@ -282,10 +282,10 @@ onUnmounted(() => {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: taleFilterStore.sort === 'LeastRecent' }"
-          @click="setSort('LeastRecent')"
+          :class="{ active: taleFilterStore.sort === 'MostUpvoted' }"
+          @click="setSort('MostUpvoted')"
         >
-          Oldest
+         Most Popular
         </button>
 
         <!-- More Filters Modal Trigger -->
