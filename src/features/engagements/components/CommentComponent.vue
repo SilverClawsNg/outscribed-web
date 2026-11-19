@@ -6,7 +6,7 @@ import type { CommentListDto } from '../types/EngagementTypes';
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
 import SvgIcons from '@/components/SvgIcons.vue'
 import { useEngagement } from '@/composables/useEngagement';
-import { formatCounts } from '@/utils/stringHelpers'
+import { formatAddendum, formatCounts } from '@/utils/stringHelpers'
 import { toRelativeTime } from '@/utils/dateExtensions'
 import { useContentCommentsStore } from '../stores/ContentCommentsStore';
 import { useAuthenticationStore } from '@/features/authentication/stores/AuthenticationStore'
@@ -122,11 +122,11 @@ function returnAncestor() {
         <button
         v-if="canEdit"
         type="button"
-        class="btn-icon"
+        class="comment-inline-card__edit-btn"
         title="Edit comment"
         @click="emit('edit', comment)"
       >
-        <SvgIcons name="edit" :size="16" />
+        Edit
       </button>
       </div>
 
@@ -145,28 +145,43 @@ function returnAncestor() {
     </header>
 
     <!-- 2. Comment Body Text -->
-    <section class="comment-inline-card__body">
-      <div v-if="isSystemMessage" class="comment-inline-card__text comment-inline-card__text--system">
-        {{ comment.detail }}
-      </div>
+   <section class="comment-inline-card__body">
+  <div v-if="isSystemMessage" class="comment-inline-card__text comment-inline-card__text--system">
+    {{ comment.detail }}
+  </div>
 
-      <div v-else class="comment-inline-card__text">
-        <div 
-          ref="commentElement" 
-          :class="['rich-text', { 'truncated': !isExpanded }]"
-          v-html="props.comment.detail"
-        ></div>
+  <div v-else class="comment-inline-card__text">
+    <!-- SHARED CLAMPED WRAPPER: Measures and truncates both detail + addendum as one unit -->
+    <div
+      ref="commentElement"
+      :class="['comment-inline-card__clamped-content', { 'truncated': !isExpanded }]"
+    >
+      <div class="rich-text" v-html="props.comment.detail"></div>
 
-        <button 
-          v-if="hasOverflow && !isExpanded" 
-          type="button"
-          class="comment-inline-card__expand-btn" 
-          @click="isExpanded = true"
-        >
-          <span class="caret-down"></span>
-        </button>
-      </div>
-    </section>
+      <section v-if="comment.addendum" class="comment-addendum">
+        <p class="comment-addendum__header">Edited</p>
+        <ol class="comment-addendum__list">
+          <li
+            v-for="(entry, index) in formatAddendum(comment.addendum)"
+            :key="index"
+            class="comment-addendum__list--item"
+          >
+            {{ entry }}
+          </li>
+        </ol>
+      </section>
+    </div>
+
+    <button
+      v-if="hasOverflow && !isExpanded"
+      type="button"
+      class="comment-inline-card__expand-btn"
+      @click="isExpanded = true"
+    >
+      <span class="caret-down"></span>
+    </button>
+  </div>
+</section>
 
     <!-- 4. Engagement Actions (Upvote, Downvote, Reply, Favorite) -->
     <footer class="comment-inline-card__actions">

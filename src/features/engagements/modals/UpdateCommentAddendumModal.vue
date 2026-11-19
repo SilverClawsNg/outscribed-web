@@ -12,6 +12,7 @@ import HelpIcon from '@/components/HelpIcon.vue'
 // --- INITIALIZE STORES ---
 const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
+const comment = computed(() => draftStore.activeComment)
 
 // --- DEFINE FORM DATA ---
 const formData = ref<UpdateAddendumRequest>({
@@ -19,29 +20,18 @@ const formData = ref<UpdateAddendumRequest>({
    addendum: '',
    contentid: '',
    contentType: null
-   
 })
 
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
-  if (!draftStore.activeComment) {
-    // 1. Lock down the form immediately to block accidental click updates
-    lockSubmission.value = true
-    
-    // 2. Pass a friendly, descriptive error straight down to your message layout
-    setError({
-      title: "Content Unavailable",
-      detail: "Unable to load current comment details. Refresh page and try again",
-      status: 204 // Standard missing resource code
-    })
-    
-    return // 🛑 Stop initialization; do not attempt to read properties of null
-  }
+    if (!comment.value) return;
 
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.commentId = draftStore.activeComment.commentId
-  formData.value.addendum = draftStore.activeComment.addendum ?? ''
+  formData.value.commentId = comment.value.commentId
+  formData.value.contentid = comment.value.contentId
+  formData.value.contentType = comment.value.contentType
+  formData.value.addendum = comment.value.addendum ?? ''
   resetProgress()
 
 })
@@ -131,6 +121,8 @@ async function handleFormSubmission() {
 
 <template>
 
+  <template v-if="comment">
+
      <div class="form-container">
 
          <div class="form-header">
@@ -175,6 +167,16 @@ async function handleFormSubmission() {
         </div>
     </form>
   </div>
+
+  </template>
+  
+  <template v-else>
+      <PageStatusMessage 
+        title="Content Unavailable" 
+        message="Unable to load current comment details. Refresh page and try again."
+        icon="warning"
+        :is-standalone="true" />
+  </template>
 
 </template>
 

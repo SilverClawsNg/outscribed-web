@@ -3,8 +3,9 @@
 .comment-inline-card {
   width: 100%;
   padding: 1rem 0;
-  border-bottom: 2px dotted var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 
+ 
   &.pinned {
     border-bottom: none;
   }
@@ -23,8 +24,25 @@
     column-gap: 0.25rem 0.5rem;
   }
 
+  &__meta-link{
+    font-size: 0.9rem;
+
+    &:hover{
+      color: @link-color;
+    }
+  }
+
   &__date {
     font-size: 0.9rem;
+  }
+
+  &__edit-btn{
+    font-weight: normal;
+    text-decoration: underline;
+
+    &:hover{
+      text-decoration: none;
+    }
   }
 
   &__menu-btn {
@@ -67,7 +85,12 @@
       color: var(--muted-text-color);
     }
 
-    .rich-text {
+  
+
+  }
+
+  
+  &__clamped-content {
       max-height: 7.8rem;
       overflow: hidden;
       transition: max-height 0.8s ease;
@@ -75,8 +98,32 @@
       &:not(.truncated) {
         max-height: 200rem;
       }
-    }
   }
+
+  
+//ADDENDUM
+.comment-addendum {
+margin-top: 0.5rem;
+  &__header{
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+   
+  &__list {
+     list-style: disc;
+     margin: 0.75rem 0 1rem 1.25rem;
+
+      &--item {
+       margin-bottom: 0.5rem;
+        color: var(--muted-text-color);
+        font-size: 0.95rem;
+        line-height: 1.3;
+      }
+    }
+}
+
+
 
   &__reply{
     display: flex;
@@ -110,6 +157,7 @@
     &:hover .caret-down {
       border-top-color: var(--hover-color);
     }
+
   }
 
   // --- 3. Thread Navigation ---

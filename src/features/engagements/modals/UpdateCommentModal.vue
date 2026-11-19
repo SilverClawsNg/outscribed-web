@@ -10,14 +10,14 @@ import type { UpdateCommentRequest } from '../types/EngagementTypes'
 import { useModalStore } from '@/stores/modalStore'
 import HelpIcon from '@/components/HelpIcon.vue'
 import RichTextEditorComponent from '../components/RichTextEditorComponent.vue'
+import PageStatusMessage from '@/components/PageStatusMessage.vue'
 
 // --- INITIALIZE STORES ---
 const draftStore = useDraftCommentsStore()
 const modalStore = useModalStore()
+const comment = computed(() => draftStore.activeComment)
 
 // --- DEFINE FORM DATA ---
-
-
 const formData = ref({
   detail: ''
 })
@@ -25,24 +25,10 @@ const formData = ref({
 // --- SET GUARD FOR NULL DETAILS/ INITIALIZE FORM DATA ---
 onBeforeMount(() => {
 
-  if (!draftStore.activeComment) {
-    // 1. Lock down the form immediately to block accidental click updates
-    lockSubmission.value = true
-    
-    // 2. Pass a friendly, descriptive error straight down to your message layout
-    setError({
-      title: "Content Unavailable",
-      detail: "Unable to load current tale details. Refresh page and try again",
-      status: 204 // Standard missing resource code
-    })
-    
-    return // 🛑 Stop initialization; do not attempt to read properties of null
-  }
-
-console.log(`comment is ${draftStore.activeComment.detail}`)
+  if (!comment.value) return;
 
  // --- INITIALIZE FORM DATA FROM STORE ---
-  formData.value.detail = draftStore.activeComment.detail ?? ''
+  formData.value.detail = comment.value.detail ?? ''
   resetProgress()
 
 })
@@ -50,7 +36,6 @@ console.log(`comment is ${draftStore.activeComment.detail}`)
 // --- UI TRANSACTION STATES ---
 const lockSubmission = ref(false)
 const { progressState, startLoading, setWarning, setError, resetProgress } = useFormProgress()
-
 
 // 1. Tracks whether the user has at least attempted to submit the form once
 const formSubmitted = ref(false)
@@ -127,10 +112,44 @@ const { success, error } = await draftStore.updateCommentDetails(formData.value.
   }
   
 }
+
 </script>
 
 <template>
-    
+
+  <template v-if="comment">
+
+    <template v-if="comment.status === 'ArchivedByAdmin' || comment.status === 'HiddenByAdmin' || comment.status === 'HiddenByModeration'">
+
+       <PageStatusMessage 
+        title="Update Disabled" 
+        message="Update has been disabled on this comment because it may have been archived or hidden by community moderation."
+        icon="warning"
+        :is-standalone="true" />
+      
+    </template>
+
+    <template v-else-if="comment.hasEngagement">
+         <PageStatusMessage 
+          title="Update Disabled" 
+          message="This comment has been engaged by the community through replies, save, or flag and in order to protect the intergrity of the engagement, update has been disabled."
+          icon="warning"
+          :is-standalone="true">
+           <template #actions>
+          <button class="btn btn--primary"  @click="modalStore.replace('UpdateCommentAddendum', 'Addendum')">
+              Add Addendum
+            </button>
+            <button class="btn btn--secondary"  @click="modalStore.replace('ArchiveComment', 'Archive Comment')">
+              Archive
+            </button>
+      </template>
+          
+            </PageStatusMessage>
+    </template>
+
+    <template v-else>
+
+      
  <div class="comment-modal-shell">
 
     <!-- 2. FORM PROGRESS (Loading Gif / Backend Error Message) -->
@@ -163,7 +182,26 @@ const { success, error } = await draftStore.updateCommentDetails(formData.value.
         </span>
       </div>
     </form>
+
   </div>
+
+  <div class="alternative-link">Or
+     <button @click="modalStore.replace('DeleteComment', 'Delete Comment')">
+        Remove comment completely
+     </button>
+  </div>
+
+    </template>
+  
+  </template>
+
+  <template v-else>
+      <PageStatusMessage 
+        title="Content Unavailable" 
+        message="Unable to load current comment details. Refresh page and try again."
+        icon="warning"
+        :is-standalone="true" />
+  </template>
 
 </template>
 
@@ -218,6 +256,19 @@ const { success, error } = await draftStore.updateCommentDetails(formData.value.
         flex: 1;
       }
 
+    }
+  }
+}
+
+.alternative-link{
+  margin-top: 0.5rem;
+
+  & button{
+    font-weight: normal;
+    text-decoration: underline;
+
+    &:hover{
+      text-decoration: none;
     }
   }
 }

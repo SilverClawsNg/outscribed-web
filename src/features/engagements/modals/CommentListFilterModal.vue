@@ -171,7 +171,6 @@ const typeSelected = computed({
       
       </section>
 
-
       <!-- 5. Form Actions Layout Triggers -->
       <div class="filter-buttons">
         <button type="button" @click="resetFilters" class="btn btn--primary" >Reset</button>

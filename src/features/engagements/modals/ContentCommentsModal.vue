@@ -4,8 +4,8 @@ import { useContentCommentsStore } from '../stores/ContentCommentsStore.ts';
 import { useContentCommentsFilterStore } from '../stores/ContentCommentsFilterStore.ts'; 
 import { APIError } from '@/api/apiTypes.ts'
 import PageStatusMessage from '@/components/PageStatusMessage.vue' // 🎯 Integrated safely
-import { type GeneralSortType } from '@/utils/enumHelper.ts'
-import { GeneralSortTypeDescriptions } from '@/utils/descriptors'
+import { type SortType } from '@/utils/enumHelper.ts'
+import { SortTypeDescriptions } from '@/utils/descriptors'
 import InfiniteScroller from '@/components/InfiniteScroller.vue'
 import Comment from '../components/CommentComponent.vue'
 import { useDraftCommentsStore } from '../stores/DraftCommentsStore'
@@ -33,7 +33,7 @@ const loadingError = ref<APIError | null>(null)
 const loadingMoreError = ref<APIError | null>(null)
 
 const showFilterDropdown = ref(false);
-const currentSort = ref<GeneralSortType>('MostRecent');
+const currentSort = ref<SortType>('MostRecent');
 
 
   // Pagination & Flow Guards
@@ -153,7 +153,7 @@ async function resetFilters() {
   await loadData()
 }
   
-async function applySort(type: GeneralSortType) {
+async function applySort(type: SortType) {
   currentSort.value = type;
   showFilterDropdown.value = false;
   // Trigger your backend sort action reload logic here...
@@ -274,7 +274,7 @@ onMounted(async () => {
 
             <button class="comments-container__show-filter" @click="showFilterDropdown = !showFilterDropdown">
 
-              <span> {{ GeneralSortTypeDescriptions[currentSort] }}</span>
+              <span> {{ SortTypeDescriptions[currentSort] }}</span>
 
               <span :class="['caret', { active: showFilterDropdown }]"></span>
 
@@ -286,23 +286,29 @@ onMounted(async () => {
                 @click="applySort('MostRecent')" 
                 :class="{ active: currentSort === 'MostRecent' }"
               >
-                Most Recent
+                Newest
               </button>
               <button 
                 @click="applySort('LeastRecent')" 
                 :class="{ active: currentSort === 'LeastRecent' }"
               >
-                Least Recent
+                Oldest
+              </button>
+               <button 
+                @click="applySort('MostUpvoted')" 
+                :class="{ active: currentSort === 'MostUpvoted' }"
+              >
+                Popular
               </button>
               <button @click="openAdvancedFilter">
-                Advanced Filter
+                More Filters
               </button>
             </div>
           </div>
         </div>
 
         <div class="comments-container__top-action">
-          <button class="btn btn--primary"  @click="createComment">Write Comment</button>
+          <button @click="createComment">Write Comment</button>
         </div>
       </section>
  

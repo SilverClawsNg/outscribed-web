@@ -519,7 +519,7 @@ async function updateCommentDetails(detail: string): Promise<{ success: boolean;
 
   async function updateCommentAddendum(payload: UpdateAddendumRequest) {
       try {
-        const outcome = await postAsync('/api/comments/addendum', payload, true);
+        const outcome = await postAsync('/api/commenting/addendum', payload, true);
         if (outcome.isFailure) return { success: false, error: outcome.error };
   
         const index = comments.value.findIndex(t => t.commentId === payload.commentId);

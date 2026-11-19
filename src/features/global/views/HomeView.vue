@@ -128,12 +128,12 @@ function handleJoinClick() {
       </p>
       
       <div class="hero__cta-group">
+          <RouterLink class="btn btn--primary" to="/about-us">
+          More About Us
+        </RouterLink>
         <button class="btn btn--secondary btn--outscribe" @click="handleJoinClick">
           Join Us
         </button>
-        <RouterLink class="btn btn--primary" to="/about-us">
-          More About Us
-        </RouterLink>
       </div>
     </div>
 
@@ -541,10 +541,9 @@ function handleJoinClick() {
     }
   }
 
-  &__highlight {
-    color: @link-color;
-    font-weight: 600;
-  }
+ &__highlight {
+  font-weight: 900;
+}
 
   /* =============================================================
    * HERO CONTENTS

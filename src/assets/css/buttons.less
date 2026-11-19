@@ -15,7 +15,6 @@
     position: relative;
     text-transform: capitalize;
     font-size: 0.9rem;
-    border: 1px solid transparent;
    
       
 /* Secondary Button */
@@ -31,30 +30,22 @@
 }
 /* Secondary Button */
 &--primary {
-    color: var(--text-color);
-    background: var(--background-color);
-    border-color: var(--border-color);
-    box-shadow: var(--box-shadow);
-    font-weight: 400;
-    background-color:@white-color;
-    color:@black-color;
-        
+    color: var(--primary-button-text-color);
+    background-color: var(--primary-button-background-color);
+   
     &:hover {
-        background: var(--light-background-color);
+        background: var(--primary-button-hover-color);
     }
 
 }
 
 /* Primary Button */
 &--secondary {
-    color: @white-color;
-    background: linear-gradient(180deg, @link-alt-color 0%, @link-color 100%);
-    //border-color: rgba(255,255,255,0.25);
-    //background: @link-color;
-
- 
+    color: var(--secondary-button-text-color);
+    background-color: var(--secondary-button-background-color);
+   
     &:hover {
-        background: linear-gradient(180deg, @link-color 0%, @link-alt-color 100%);
+        background: var(--secondary-button-hover-color);
     }
 }
 

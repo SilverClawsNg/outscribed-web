@@ -27,24 +27,16 @@
     }
 
      &__focus{
-      height: auto;
-     
-       background-color: @link-color;
-        border-radius: 21px;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--thick-background-color);
+  border: 1px solid var(--border-color);
+   border-radius: 21px;
          display: flex;
         flex-direction: column;
         justify-content: flex-start;
-         background-image: url("@/assets/images/patterns-background.png");
-        background-position-x: right;
-        background-position-y: bottom;
-        background-repeat: no-repeat;
-        background-position: contain;
-        
 
-  @media @phone{
-background-size: 40%;
-  }
-  
+        
     @media @tablet, @phablet, @phone{
   width: 100%;
   }
@@ -52,7 +44,80 @@ background-size: 40%;
   @media @desktop, @laptop{
  width: 35%;
   }
-     }
+
+  // Default halftone color (can be overridden per theme or card modifier)
+  --halftone-color: var(--heading-text-color);
+  --halftone-cell: 18px;
+  --halftone-size: 9px;
+
+  // Bottom halftone ornament zone that adapts smoothly when the card stretches
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0; // Anchored to the bottom edge; full width
+    height: 50%;      // Adjust height to taste
+    pointer-events: none;
+    z-index: 0;
+
+    // Staggered square grid using two offset repeating-conic-gradient cells
+    background-image:
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        var(--halftone-color) 0% 25%,
+        transparent 25% 100%
+      ),
+      repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        var(--halftone-color) 0% 25%,
+        transparent 25% 100%
+      );
+
+    background-size:
+      var(--halftone-cell) var(--halftone-cell),
+      var(--halftone-cell) var(--halftone-cell);
+
+    // Second layer is shifted by half a cell on both X and Y for staggered squares
+    background-position:
+      0 0,
+      calc(var(--halftone-cell) / 2) calc(var(--halftone-cell) / 2);
+
+    // Gradually builds density toward the bottom-right corner and fades out upward/left
+    -webkit-mask-image:
+      radial-gradient(
+        ellipse 85% 95% at 100% 100%,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.35) 55%,
+        rgba(0, 0, 0, 0) 100%
+      ),
+      linear-gradient(
+        to top,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.4) 65%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    mask-image:
+      radial-gradient(
+        ellipse 85% 95% at 100% 100%,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.35) 55%,
+        rgba(0, 0, 0, 0) 100%
+      ),
+      linear-gradient(
+        to top,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.4) 65%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  // Keep card content above the halftone layer
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
 
      &__pills{
       

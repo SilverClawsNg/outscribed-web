@@ -132,18 +132,13 @@ function handleSavedDraftsClick() {
 
 
 footer.site-footer {
-  background-color: @link-color;
+  background-color: var(--background-color);
   border-top: 1px solid var(--border-color);
   padding: 2.5rem 0;
   font-size: 0.9rem;
   position:relative;
-   z-index: 5000;
-  color:@white-color;
-  background-image: url("@/assets/images/patterns-background.png");
-  background-position-x: right;
-  background-position-y: bottom;
-  background-repeat: no-repeat;
-  background-position: contain;
+  z-index: 5000;
+  
 
   &::before {
   content: "";
@@ -155,11 +150,7 @@ footer.site-footer {
   background: var(--background-color);
   pointer-events:none;
 }
-  
-  @media @phone{
-background-size: 40%;
-  }
-
+ 
   .footer-container {
    
   max-width: calc(100% - 20px);
@@ -197,13 +188,13 @@ background-size: 40%;
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid @white-color;
+       border-bottom: 1px solid var(--border-color);
     }
      @media @tablet {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid @white-color;
+       border-bottom: 1px solid var(--border-color);
     }
 
     @media @laptop {
@@ -226,12 +217,12 @@ background-size: 40%;
    
     & h1.logo{
       text-align:center;
-      color:@white-color;
+      //color:@white-color;
 
           & svg{
             width: 100%;
             height: auto;
-            fill: @white-color;
+            //fill: @white-color;
           }
     }
       & .icon{
@@ -308,11 +299,9 @@ background-size: 40%;
       a, button {
         font-weight: 400;
         text-decoration: underline;
-        color:@white-color;
 
         &:hover,
         &:focus {
-          color: @white-color;
            text-decoration: none;
         }
       }
@@ -329,7 +318,7 @@ background-size: 40%;
       margin-top: 2rem;
       padding-top: 1rem;
       margin-top: 1rem;
-      border-top: 1px solid @white-color;
+      border-top: 1px solid var(--border-color);
     }
 }
 
