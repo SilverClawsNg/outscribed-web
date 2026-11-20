@@ -1435,6 +1435,7 @@ function handleJoinClick() {
    
       .use-cases-intro{
         width: @min-width;
+        max-width: calc(100% - 20px);
         margin: 0 auto 2.5rem auto;
         font-style: italic;
       }
