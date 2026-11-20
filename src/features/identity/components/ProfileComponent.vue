@@ -414,7 +414,7 @@ function handleEditContactClick(platform: ContactType) {
 <span class="profile-links__lines"></span>
 
       <RouterLink 
-      :to="`/comments?username=${profile.username}`" title="Comments" 
+      to="/comments/editor" title="Comments" 
       :class="{ 'is-disabled': profile.commentsCount === 0 }"
       class="profile-links__cta">
          View

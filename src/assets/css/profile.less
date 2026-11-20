@@ -1,6 +1,6 @@
 @import "variables.less";
 .profile-details {
-  margin: 2rem auto 0 auto;
+  margin: 2rem auto;
   position: relative;
   width: @min-width;
   max-width: calc(100% - 20px);
@@ -19,7 +19,7 @@
   height: 120px;
   border-radius: 12px 12px 0 0;
    background-color: var(--surface-background-color);
-  border: 1px solid var(--surface-border-color);
+  border-bottom: 1px solid var(--border-color);
  
  }
 
@@ -99,7 +99,7 @@
       justify-content: center;
       position: relative;
       margin-bottom: 0.5em;
-      border: 3px solid var(--surface-border-color);
+      border: 3px solid var(--border-color);
     }
     
   &__avatar-placeholder {
@@ -185,7 +185,7 @@
 
   .double-update{
     border-radius: 9999px;
-    border: 3px solid var(--border-color);
+    border: 1px solid var(--border-color);
     //background-color: var(--surface-background-color);
     padding: 1px;
     width: auto;
@@ -195,7 +195,6 @@
 
     & .change-password{
       padding: 0 0.5rem;
-      color:@white-color;
     }
 
     & .btn.btn--primary{

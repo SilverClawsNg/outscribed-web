@@ -448,7 +448,7 @@ async function updateCommentDetails(detail: string): Promise<{ success: boolean;
 
   async function deleteComment(payload: ConfirmRequest) {
     try {
-      const outcome = await postAsync('/api/comments/delete', payload, true);
+      const outcome = await postAsync('/api/commenting/delete', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
       const index = comments.value.findIndex(t => t.commentId === payload.commentId);
@@ -467,7 +467,7 @@ async function updateCommentDetails(detail: string): Promise<{ success: boolean;
 
   async function archiveComment(payload: ConfirmRequest) {
     try {
-      const outcome = await postAsync('/api/comments/user/archive', payload, true);
+      const outcome = await postAsync('/api/commenting/user/archive', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
       const index = comments.value.findIndex(t => t.commentId === payload.commentId);
@@ -493,7 +493,7 @@ async function updateCommentDetails(detail: string): Promise<{ success: boolean;
 
   async function unArchiveComment(payload: ConfirmRequest) {
     try {
-      const outcome = await postAsync('/api/comments/user/unarchive', payload, true);
+      const outcome = await postAsync('/api/commenting/user/unarchive', payload, true);
       if (outcome.isFailure) return { success: false, error: outcome.error };
     
       const index = comments.value.findIndex(t => t.commentId === payload.commentId);
@@ -568,6 +568,6 @@ async function updateCommentDetails(detail: string): Promise<{ success: boolean;
   return {
     comments, activeComment, isFetchingMore, loadMoreError, hasNext, pointer, baseRoute,
     createComment, replyComment, setActiveComment, loadComments, loadMoreComments, updateCommentDetails, deleteComment, 
-    archiveComment, unArchiveComment, updateCommentAddendum, clearActiveComment, cleanLocalDraft, reset, abort
+    archiveComment, updateCommentAddendum, clearActiveComment, cleanLocalDraft, reset, abort
   };
 });

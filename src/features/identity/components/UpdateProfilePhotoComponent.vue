@@ -189,7 +189,7 @@ async function upload() {
             height: 120px;
             position: relative;
             background-color: var(--surface-background-color);
-            border: 3px solid var(--surface-border-color);
+            border: 1px solid var(--border-color);
             border-radius: 100%;
 
             & img {

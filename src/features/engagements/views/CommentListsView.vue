@@ -205,18 +205,12 @@ async function setSort(sort: SortType) {
 
   <template v-if="commentStore.comments && commentStore.comments.length > 0">
     
- <header class="section-header section-header--mid">
-    <h2 class="section-header__title">
-      Commentaries
-    </h2>
-    <div class="section-header__lines">
-      <p class="section-header__lines--item"></p>
-      <p class="section-header__lines--item"></p>
-    </div>
-              <button type="button" @click="modalStore.push('CommentListFilter', 'Filter Lists')" class="btn btn--primary">
-                Filter
-              </button>
-            </header>
+   <header class="page-header">
+        <h1 class="page-header__title">Commentaries</h1>
+        <p class="page-header__subtitle">
+         Discussions help diagnose issues raised by tales
+        </p>
+      </header>
 
        <InfiniteScroller
         :has-next="commentStore.hasNext"

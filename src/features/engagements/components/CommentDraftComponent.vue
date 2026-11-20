@@ -80,7 +80,7 @@ async function handleModalUpdate(type: string, title: string) {
 
       </div>
 
-           <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
+           <RouterLink class="comment-card__content-type" :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
             {{ ContentTypeDescriptions[comment.contentType] }}
           </RouterLink>
         
@@ -124,7 +124,7 @@ async function handleModalUpdate(type: string, title: string) {
               Addendum
             </button>
               <template v-if="comment.status === 'Active' || comment.status === 'CertifiedByAdmin'">
-          <button class="btn btn--secondary"  @click="handleModalUpdate('ArchiveComment', 'Archive Comment')">
+          <button class="comment-card__action" @click="handleModalUpdate('ArchiveComment', 'Archive Comment')">
               Archive
             </button>
         </template>
@@ -135,7 +135,7 @@ async function handleModalUpdate(type: string, title: string) {
             <button class="btn btn--primary"  @click="handleModalUpdate('UpdateComment', 'Update Comment')">
               Update
             </button>
-          <button class="btn btn--secondary"  @click="handleModalUpdate('DeleteComment', 'Delete Comment')">
+          <button class="comment-card__action"  @click="handleModalUpdate('DeleteComment', 'Delete Comment')">
             Delete
           </button>
           </template>
@@ -144,11 +144,11 @@ async function handleModalUpdate(type: string, title: string) {
 
       </template>
 
-      <button class="btn btn--secondary"  @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
+      <button class="comment-card__action" @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
         Thread
       </button>
 
-        <button class="btn btn--secondary"  @click="modalStore.push('SnapshotListModal', 'Daily Metrics', comment.commentId)">
+        <button class="comment-card__action"  @click="modalStore.push('SnapshotListModal', 'Daily Metrics', comment.commentId)">
             Daily Metrics
           </button>
 

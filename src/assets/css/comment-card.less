@@ -21,6 +21,31 @@
      column-gap: 0.25rem;
   }
 
+  
+   &__content-type {
+         display: inline-block;
+          padding: 1px 2px;
+          border-radius: 4px;
+          border: 1px solid var(--surface-border-color);
+          background-color: var(--surface-background-color);
+          font-size: 0.725rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          transition: opacity 0.2s ease;
+
+          &--focus{
+
+            @media @phablet, @largeDevice{
+              --body-text-color: #52525B;
+            }
+          }
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+      }
+
   &__author-link {
     column-gap: 0.25rem;
   }
@@ -69,11 +94,20 @@
       height: 0;
       border-left: 0.35rem solid transparent;
       border-right: 0.35rem solid transparent;
-      border-top: 0.35rem solid var(--text-color);
+      border-top: 0.35rem solid var(--body-text-color);
     }
 
     &:hover .caret-down {
-      border-top-color: var(--hover-color);
+      border-top-color: var(--hover-background-color);
+    }
+  }
+
+  &__action{
+    font-weight: normal;
+    text-decoration: underline;
+
+    &:hover{
+      text-decoration: none;
     }
   }
 

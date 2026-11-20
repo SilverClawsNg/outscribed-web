@@ -213,7 +213,6 @@ onUnmounted(() => {
         <h1 class="page-header__title">Discover Tales</h1>
         <p class="page-header__subtitle">
           Tales are re-imaginative, interpretative, and predictive stories that aims to break down complex issues through ficticious stories.
-         
         </p>
       </header>
 

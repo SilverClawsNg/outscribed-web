@@ -75,7 +75,7 @@ onMounted(async () => {
 
       </div>
 
-           <RouterLink :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
+           <RouterLink class="comment-card__content-type" :to="`/${comment.contentType.toLowerCase()}/${comment.contentId}`">
             {{ ContentTypeDescriptions[comment.contentType] }}
           </RouterLink>
 
@@ -109,7 +109,7 @@ onMounted(async () => {
     <footer class="comment-card__footer">
         <button 
         type="button"
-         class="btn btn--secondary" 
+         class="btn btn--primary" 
         @click="modalStore.push('CommentThread', 'Thread', comment.commentId)">
         View Thread
       </button>
