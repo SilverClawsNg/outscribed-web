@@ -18,7 +18,7 @@ const engage = useEngagement()
 
 interface Props {
    tale: TaleListDto,
-   type?: 'focus' | 'pill';
+   type?: 'focus' | 'subfocus' | 'pill';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,14 +40,14 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
             </RouterLink>
           </p>
       <h3 class="content__title"
-      :class="[type === 'focus' ? 'content__title--focus' : 'content__title--pill']">
+      :class="[type === 'focus' || type === 'subfocus' ? 'content__title--focus' : 'content__title--pill']">
         <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
       </h3>
       <p class="content__summary">
         {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
       </p>
         <div class="content__meta"
-        :class="[type === 'focus' ? 'content__meta--focus' : 'content__meta--pill']">
+        :class="[type === 'focus' ? 'content__meta--focus' :  type === 'subfocus' ? 'content__meta--subfocus' :'content__meta--pill']">
               <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
               {{ tale.creatorUsername }}
             </button>
@@ -81,7 +81,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
     width: 100%;
 
     &__category{
-      margin-bottom: 0.5rem;  
+      margin-bottom: 0.75rem;  
 
       &-link{
          display: inline-block;
@@ -144,11 +144,16 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
 
     &--focus{
       
-    & .at{
-      &:before{
-        color:@white-color;
+       @media @phablet, @largeDevice{
+
+        & .at{
+          &:before{
+            color:@white-color;
+          }
+        }
+
       }
-    }
+ 
 
     }
 

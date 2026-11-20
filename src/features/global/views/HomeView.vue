@@ -316,7 +316,7 @@ function handleJoinClick() {
         </RouterLink>
       </div>
       <div class="card__content">
-        <TaleTextComponent :tale="homepageLayout.subfocus" type="focus" />
+        <TaleTextComponent :tale="homepageLayout.subfocus" type="subfocus" />
       </div>
     </article>
 
@@ -355,6 +355,10 @@ function handleJoinClick() {
     </RouterLink>
   </header>
 
+  <p class="use-cases-intro">
+    OutScribed focuses on the use of short stories as a means of expression. Here are some practical real-world scenarios where OutScribed stories excel.
+  </p>
+
   <div class="use-cases">
     <div class="use-cases__item">
      <div class="use-cases__avatar">
@@ -362,10 +366,10 @@ function handleJoinClick() {
     </div>
      <div class="use-cases__contents">
        <h2 class="use-cases__title">
-      Channel frustration with media bias
+      Become a voice in any conversation
     </h2>
      <div class="use-cases__text">
-      <p><strong>The Challenge:</strong> You are watching a news panel or political broadcast and feel infuriated that a crucial counter-perspective is completely ignored.</p><p><strong>The OutScribed Approach:</strong> Claire was frustrated by a biased late-night news panel. She created a persona on OutScribed and outscribed each episode, inserting herself as the missing panelist to counter arguments point-by-point.</p><p><strong>Why it works:</strong> Instead of shouting at the TV or venting on social media, you channel frustration into constructive, creative counter-commentary.</p>
+      <h3>The Situation </h3><p> Claire regularly watches a late-night news panel and feels there were important perspectives that never made it into the conversation.  </p><h3>The OutScribed approach </h3><p> She creates a persona on OutScribed and started writing stories that places her on the panel as an additional guest and starts responding to the discussions from a different point of view. </p><h3> Why It works!</h3><p> OutScribed allowed Claire to take an active seat on a table she was not invited to. By outscribing each episode, she can introduce perspectives, questions, and counterarguments that were absent from the original discussion. She also builds an audience of other persons who share her perspectives or are willing to explore alternative opinions. </p>
     </div>
     </div>
    
@@ -376,10 +380,10 @@ function handleJoinClick() {
     </div>
     <div class="use-cases__contents">
          <h2 class="use-cases__title">
-      Highlight long-term consequences of new policies or laws
+      Simplify Complex Solutions
     </h2>
      <div class="use-cases__text">
-      <p><strong>The Challenge:</strong> A proposed law seems harmless today, but you foresee catastrophic future consequences that critics dismiss as paranoid speculation.</p><p><strong>The OutScribed Approach:</strong> Antonio foresaw a proposed bill destroying his hometown years down the line. He outscribed a narrative set in the future, painting a vivid picture of the local impact if that bill passed.</p><p><strong>Why it works:</strong> Fiction gives you the freedom to project trendlines to their logical extreme, evoking the exact emotional urgency needed for people to examine the policy with caution.</p>
+      <h3>The Situation</h3><p>John is an electrical engineering professor with ideas for improving Nigeria's power grid, but many of the people who could benefit from those ideas are unlikely to read a technical proposal.</p><h3>The OutScribed Approach</h3><p>On his OutScribed page, he writes a story in which he becomes Minister of Power. Through the challenges, decisions, setbacks, and successes of the role, he explores how his ideas might work in practice.</p><h3>Why It Works</h3><p>OutScribed allows John to simplify complex solutions without losing their substance. Instead of presenting readers with a technical document, he can present the industry jargons in an engaging manner and show policies, technologies, and decisions affect real people.</p>
     </div>
     </div>
    
@@ -390,10 +394,11 @@ function handleJoinClick() {
     </div>
     <div class="use-cases__contents">
         <h2 class="use-cases__title">
-      Opine on controversial issues without triggering personal attacks
+      Focus on the Message
     </h2>
      <div class="use-cases__text">
-      <p><strong>The Challenge:</strong> You want to critique a public figure's speech or proposal, but posting on social media triggers exhausting flame wars.</p><p><strong>The OutScribed Approach:</strong> Martha was frustrated by a political speech. Rather than venting online, she outscribed it by rewriting the speech through an alternate-reality version of the politician, keeping what worked and inserting the strategic points she wished had been made.</p><p><strong>Why it works:</strong> Martha avoids cyberbullying and personal attacks. Readers engage directly with the alternate narrative rather than attacking the author.</p>
+      <h3>The Situation</h3><p>Martha wanted to write an article responding to a political speech. She had points to challenge, arguments to strengthen, and questions she believed deserved greater attention. However, public commentary often shifts attention from the argument itself to the person making it.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote a story featuring an alternative version of the politician delivering a revised speech. She kept what worked, changed what didn't, and introduced the points she believed were missing.</p><h3>Why It Works</h3><p>OutScribed allows Martha to place her ideas inside the speech rather than attach them directly to herself. Readers can debate the arguments, implications, and consequences of the alternative speech instead of focusing on the storyteller.</p>
+
     </div>
     </div>
   
@@ -998,15 +1003,30 @@ function handleJoinClick() {
         pointer-events: auto;
       }
 
-      --heading-text-color: #ffffff;
-      --body-text-color: #ffffff;
+      @media @phablet, @largeDevice{
+
+      --heading-text-color: @white-color;
+      --body-text-color: @white-color;
       --background-color: transparent;
+
+      }
 
       &--wrapper{
         max-width: @mod-width;
       }
     }
 
+  @media @phone {
+      .card__overlay-content {
+        position: static;
+        padding: 1rem 0 0;
+        background: var(--background-color);
+        color: var(--text-color);
+        --text-color: inherit;
+        --muted-text-color: inherit;
+        --background-color: inherit
+      }
+    }
   }
 }
 
@@ -1325,6 +1345,7 @@ function handleJoinClick() {
         flex-direction:column;
       }
 
+
       &__item{
         width: 100%;
         border: 1px solid var(--border-color);
@@ -1364,7 +1385,7 @@ function handleJoinClick() {
             }
 
         & img{
-          width: auto;
+          width: 150px;
           max-width:100%;
           height:auto;
 
@@ -1387,6 +1408,7 @@ function handleJoinClick() {
         text-align:center;
         text-transform:uppercase;
         font-weight:600;
+        
 
           @media @tablet{
             border-top:none;
@@ -1395,8 +1417,26 @@ function handleJoinClick() {
 
       &__text{
         padding: 1rem 0.75rem;
+
+        & h3{
+          font-weight: 600;
+          margin: 0.5rem 0;
+          text-transform: uppercase;
+          font-size: 0.9rem;
+
+          &:first-child{
+            margin-top: 0;
+          }
+        }
       }
 
    }
+
+   
+      .use-cases-intro{
+        width: @min-width;
+        margin: 0 auto 2.5rem auto;
+        font-style: italic;
+      }
 
 </style>
