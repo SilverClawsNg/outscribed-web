@@ -991,7 +991,7 @@ function handleJoinClick() {
         rgba(15, 23, 42, 0.72) 60%,
         transparent 100%
       );
-      color: #ffffff;
+      //color: #ffffff;
       //pointer-events: none;
 
       a, button {
@@ -1007,17 +1007,6 @@ function handleJoinClick() {
       }
     }
 
-  @media (max-width: 599px) {
-      .card__overlay-content {
-        position: static;
-        padding: 1rem 0 0;
-        background: var(--background-color);
-        color: var(--text-color);
-        --text-color: inherit;
-        --muted-text-color: inherit;
-        --background-color: inherit
-      }
-    }
   }
 }
 
