@@ -46,7 +46,8 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
       <p class="content__summary">
         {{ tale.summary.length > 500 ? tale.summary.substring(0, 500) + '...' : tale.summary }}
       </p>
-        <div class="content__meta">
+        <div class="content__meta"
+        :class="[type === 'focus' ? 'content__meta--focus' : 'content__meta--pill']">
               <button class="at" @click="modalStore.push('Profile', 'Profile', tale.creatorId)">
               {{ tale.creatorUsername }}
             </button>
@@ -141,10 +142,14 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
     font-size:0.9rem;
     line-height: 1.5rem;
 
+    &--focus{
+      
     & .at{
       &:before{
         color:@white-color;
       }
+    }
+
     }
 
     &--spaced{

@@ -110,7 +110,7 @@ function handleJoinClick() {
 
 <template>
 
- <div class="hero">
+<div class="hero">
 
   <header class="hero__header">
     <h1 class="hero__title">
@@ -341,6 +341,64 @@ function handleJoinClick() {
 </div>
 
   </template>
+  
+  <header class="section-header section-header--max">
+    <h2 class="section-header__title">
+      Use Cases
+    </h2>
+    <div class="section-header__lines">
+      <p class="section-header__lines--item"></p>
+      <p class="section-header__lines--item"></p>
+    </div>
+    <RouterLink to="/use-cases"  class="btn btn--primary">
+      See All
+    </RouterLink>
+  </header>
+
+  <div class="use-cases">
+    <div class="use-cases__item">
+     <div class="use-cases__avatar">
+      <img src="@/assets/images/avatar1.png" />
+    </div>
+     <div class="use-cases__contents">
+       <h2 class="use-cases__title">
+      Channel frustration with media bias
+    </h2>
+     <div class="use-cases__text">
+      <p><strong>The Challenge:</strong> You are watching a news panel or political broadcast and feel infuriated that a crucial counter-perspective is completely ignored.</p><p><strong>The OutScribed Approach:</strong> Claire was frustrated by a biased late-night news panel. She created a persona on OutScribed and outscribed each episode, inserting herself as the missing panelist to counter arguments point-by-point.</p><p><strong>Why it works:</strong> Instead of shouting at the TV or venting on social media, you channel frustration into constructive, creative counter-commentary.</p>
+    </div>
+    </div>
+   
+  </div>
+   <div class="use-cases__item">
+     <div class="use-cases__avatar">
+      <img src="@/assets/images/avatar2.png" />
+    </div>
+    <div class="use-cases__contents">
+         <h2 class="use-cases__title">
+      Highlight long-term consequences of new policies or laws
+    </h2>
+     <div class="use-cases__text">
+      <p><strong>The Challenge:</strong> A proposed law seems harmless today, but you foresee catastrophic future consequences that critics dismiss as paranoid speculation.</p><p><strong>The OutScribed Approach:</strong> Antonio foresaw a proposed bill destroying his hometown years down the line. He outscribed a narrative set in the future, painting a vivid picture of the local impact if that bill passed.</p><p><strong>Why it works:</strong> Fiction gives you the freedom to project trendlines to their logical extreme, evoking the exact emotional urgency needed for people to examine the policy with caution.</p>
+    </div>
+    </div>
+   
+  </div>
+   <div class="use-cases__item">
+     <div class="use-cases__avatar">
+      <img src="@/assets/images/avatar3.png" />
+    </div>
+    <div class="use-cases__contents">
+        <h2 class="use-cases__title">
+      Opine on controversial issues without triggering personal attacks
+    </h2>
+     <div class="use-cases__text">
+      <p><strong>The Challenge:</strong> You want to critique a public figure's speech or proposal, but posting on social media triggers exhausting flame wars.</p><p><strong>The OutScribed Approach:</strong> Martha was frustrated by a political speech. Rather than venting online, she outscribed it by rewriting the speech through an alternate-reality version of the politician, keeping what worked and inserting the strategic points she wished had been made.</p><p><strong>Why it works:</strong> Martha avoids cyberbullying and personal attacks. Readers engage directly with the alternate narrative rather than attacking the author.</p>
+    </div>
+    </div>
+  
+  </div>
+  </div>
 
   <header class="section-header section-header--max">
     <h2 class="section-header__title">
@@ -354,11 +412,9 @@ function handleJoinClick() {
       Explore Categories
     </RouterLink>
   </header>
+
   <div class="discovery-top-container" v-if="categorizedTales.focusCategory">
   
-
-  <!-- 1. FOCUS CATEGORY (Most tales - styled prominently) -->
-
   <div class="discovery-top-container__focus">
 
     <CategoryComponent 
@@ -1169,13 +1225,6 @@ function handleJoinClick() {
   }
 }
 
-
-
-
-
-
-
-
 /* ==========================================================================
    DISCOVERIES
    ================================================================---------- */
@@ -1256,8 +1305,109 @@ function handleJoinClick() {
 }
    
 /* ==========================================================================
-   PATHWAY
+   USE CASES
    ================================================================---------- */
 
+   .use-cases{
+      display: flex;
+      margin: 0 auto;
+      gap: @gutter;
+      width: 100%;
+      max-width: calc(100% - 20px);
+      
+      
+      @media @desktop, @laptop{
+        width: @max-width;
+      }
+
+      @media @tablet{
+        width: @mid-width;
+        flex-direction:column;
+        
+      }
+
+      @media @phablet{
+        width: @mod-width;
+        flex-direction:column;
+      }
+
+      @media @phone{
+        width: @min-width;
+        flex-direction:column;
+      }
+
+      &__item{
+        width: 100%;
+        border: 1px solid var(--border-color);
+        border-radius: 21px;
+        height: auto;
+        padding: 0.5rem;
+
+         @media @tablet{
+            display:flex;
+            margin-bottom:0.5rem;
+
+            &:last-child{
+              margin-bottom:none;
+            }
+
+          }
+
+           @media @phablet, @phone{
+            margin-bottom:0.5rem;
+
+            &:last-child{
+              margin-bottom:none;
+            }
+
+          }
+         
+      }
+
+      &__avatar{
+        padding: 0.5rem;
+        text-align:center;
+
+          @media @tablet{
+             width: 150px;
+             display: flex;
+             align-items:center;
+            }
+
+        & img{
+          width: auto;
+          max-width:100%;
+          height:auto;
+
+          
+        }
+      }
+
+      &__contents{
+
+          @media @tablet{
+             width: calc(100% - 150px);
+            }
+      }
+
+      &__title{
+        margin: 0.5rem 0;
+        padding: 1rem 0.75rem;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        text-align:center;
+        text-transform:uppercase;
+        font-weight:600;
+
+          @media @tablet{
+            border-top:none;
+            }
+      }
+
+      &__text{
+        padding: 1rem 0.75rem;
+      }
+
+   }
 
 </style>
