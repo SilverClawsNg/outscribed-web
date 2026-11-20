@@ -102,8 +102,6 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
             }
           }
 
-        
-
     &:hover {
       opacity: 0.85;
     }

@@ -590,6 +590,7 @@ const icons: Record<IconName, IconConfig> = {
     stroke: 'currentColor',
     strokeWidth: 1,
      paths: [
+      { type: 'circle', cx: 12, cy: 12, r: 10 },
       { type: 'line', x1:18, y1:6, x2:6, y2:18 },
      { type: 'line', x1:6, y1:6, x2:18, y2:18 }
     ]

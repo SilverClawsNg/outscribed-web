@@ -171,7 +171,6 @@ async function upload() {
         width: 120px;
         height: 120px;
         border-radius: 8px;
-        background-color: var(--loading-background-color);
         z-index: 10;
         display: flex;
         align-items: center;
@@ -189,12 +188,13 @@ async function upload() {
         width: 120px;
             height: 120px;
             position: relative;
-            background-color: var(--light-background-color);
+            background-color: var(--surface-background-color);
+            border: 3px solid var(--surface-border-color);
             border-radius: 100%;
 
             & img {
                 border-radius: 100%;
-                border: 3px solid var(--background-color);
+                
             }
 
             .edit-badge {
@@ -246,14 +246,14 @@ async function upload() {
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            color:var(--muted-link-color);
+            color:var(--muted-text-color);
 
             &:hover {
 
-              color:@link-color;
+              opacity:0.65;
 
                 & .placeholder-text {
-                       color:@link-color;
+                   opacity:0.65;
                 }
 
             }

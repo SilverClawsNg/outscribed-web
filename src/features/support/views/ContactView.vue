@@ -17,11 +17,11 @@ import SvgIcons from '@/components/SvgIcons.vue'
       </div>
       
       <!-- FAQ Self-Service Banner -->
-      <div class="faq-banner">
-        <div class="faq-banner__icon">
+      <div class="contact-banner">
+        <div class="contact-banner__icon">
           <SvgIcons name="help" :size="30"/>
         </div>
-        <div class="faq-banner__content">
+        <div class="contact-banner__content">
           <h2>Looking for quick answers?</h2>
           <p>
             Before reaching out, check our comprehensive FAQ guide for step-by-step instructions on creating tales, managing your profile, attaching watchlists, and understanding engagement metrics.
@@ -114,19 +114,19 @@ import SvgIcons from '@/components/SvgIcons.vue'
   }
 
   // Self-Service FAQ Box
-  .faq-banner {
+  .contact-banner {
     display: flex;
     align-items: flex-start;
     gap: 1.25rem;
-    background-color: var(--light-background-color);
-    border: 1px solid var(--border-color);
-    border-left: 4px solid @link-color;
+    background-color: var(--surface-background-color);
+    border: 1px solid var(--surface-border-color);
+    border-left-width: 4px;
     padding: 1.5rem;
     border-radius: 8px;
     margin-bottom: 2.5rem;
 
     &__icon {
-      color: @link-color;
+      color: var(--muted-text-color);
       flex-shrink: 0;
       margin-top: 0.2rem;
 

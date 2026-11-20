@@ -52,11 +52,11 @@ onMounted(() => {
         </p>
       </div>
       <!-- FAQ Self-Service Banner -->
-      <div class="faq-banner">
-        <div class="faq-banner__icon">
+      <div class="about-banner">
+        <div class="about-banner__icon">
           <SvgIcons name="help" :size="30"/>
         </div>
-        <div class="faq-banner__content">
+        <div class="about-banner__content">
          
           <p><strong>out·scribe:</strong> <i>verb</i> | /aʊtˈskraɪb/</p>
           <p><strong>Inflections:</strong> outscribe, outscribed, outscribing, outscribes</p>
@@ -135,19 +135,19 @@ onMounted(() => {
 }
 
   // Self-Service FAQ Box
-  .faq-banner {
+  .about-banner {
     display: flex;
     align-items: flex-start;
     gap: 1.25rem;
-    background-color: var(--light-background-color);
-    border: 1px solid var(--border-color);
-    border-left: 4px solid @link-color;
+     background-color: var(--surface-background-color);
+    border: 1px solid var(--surface-border-color);
+    border-left-width: 4px;
     padding: 1.5rem;
     border-radius: 8px;
     margin-bottom: 2.5rem;
 
     &__icon {
-      color: @link-color;
+      color: var(--muted-text-color);
       flex-shrink: 0;
       margin-top: 0.2rem;
 

@@ -367,7 +367,7 @@ nav.nav-header__editorial-links {
       border-left: 5px solid transparent;
 
        &.router-link-exact-active {
-        border-left-color: @link-color;
+        border-left-color: var(--heading-text-color);
         pointer-events: none;
         opacity: 0.6;
       }
@@ -385,15 +385,14 @@ nav.nav-header__editorial-links {
         }
 
         &.router-link-exact-active {
-          border-bottom-color: @link-color;
+          border-bottom-color: var(--heading-text-color);
           pointer-events: none;
           opacity: 0.6;
         }
     }
 
     &:hover{
-      background-color:var(--light-background-color);
-      color:@link-color;
+      opacity: 0.65;
     }
 }
 

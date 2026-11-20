@@ -157,7 +157,6 @@ function handleEditContactClick(platform: ContactType) {
       </p>
 </div>
 
-
   <!-- Follow Statistics Bar -->
   <div class="profile-metadata">
     <RouterLink to="/users/my/follows" class="profile-metadata__item" title="Following">
@@ -202,7 +201,7 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
- <header class="section-header">
+ <header class="profile-section-header">
      <h2>Bio</h2>
     </header>
 
@@ -219,19 +218,19 @@ function handleEditContactClick(platform: ContactType) {
 </div>
 
 
-   <header class="section-header">
+   <header class="profile-section-header">
        <button 
         type="button" 
-        class="section-header__cta"
-        :class="{ 'section-header__cta--active': activeActivityTab === 'tale' }"
+        class="profile-section-header__cta"
+        :class="{ 'profile-section-header__cta--active': activeActivityTab === 'tale' }"
         @click="activeActivityTab = 'tale'"
       >
         Tales
       </button>
       <button 
         type="button" 
-        class="section-header__cta"
-        :class="{ 'section-header__cta--active': activeActivityTab === 'comment' }"
+        class="profile-section-header__cta"
+        :class="{ 'profile-section-header__cta--active': activeActivityTab === 'comment' }"
         @click="activeActivityTab = 'comment'"
       >
         Comments
@@ -239,8 +238,8 @@ function handleEditContactClick(platform: ContactType) {
       
        <button 
         type="button" 
-        class="section-header__cta"
-        :class="{ 'section-header__cta--active': activeActivityTab === 'connect' }"
+        class="profile-section-header__cta"
+        :class="{ 'profile-section-header__cta--active': activeActivityTab === 'connect' }"
         @click="activeActivityTab = 'connect'"
       >
         Connect
@@ -533,7 +532,7 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
- <header class="section-header section-header--no-margin">
+ <header class="profile-section-header profile-section-header--no-margin">
      <h2>Account Status</h2>
     </header>
 
@@ -542,9 +541,10 @@ function handleEditContactClick(platform: ContactType) {
   <div class="profile-footer__details">
    
     <p class="profile-footer__status">
-      <span class="profile-footer__status-label" :class="[`profile-footer__status-label--${AccountStatusClass[profile.status]}`]">
-        {{ AccountStatusDescriptions[profile.status] }}
-      </span>
+
+      <SvgIcons v-if="profile.status === 'Active'" name="check" :size="60" />
+       <SvgIcons v-else name="close" :size="60" />
+
     </p>
 
   <div class="profile-footer__description">
@@ -581,6 +581,7 @@ function handleEditContactClick(platform: ContactType) {
     </template>
 
   </div>
+
   </div>
 
   <div class="profile-footer__actions">
@@ -632,6 +633,8 @@ function handleEditContactClick(platform: ContactType) {
 
   &__details {
     flex: 1;
+    display: flex;
+    column-gap: 0.5rem;
   }
 
   &__title {
@@ -641,8 +644,8 @@ function handleEditContactClick(platform: ContactType) {
   }
 
   &__description {
-    margin: 0;
     line-height: 1.5;
+    flex-grow: 1;
     
   }
 
@@ -650,42 +653,18 @@ function handleEditContactClick(platform: ContactType) {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    flex-wrap: wrap;
-
-    @media @phone, @phablet {
-      width: 100%;
-      justify-content: flex-start;
-    }
+    width: 100%;
+   justify-content: flex-end;
   }
 
   &__status{
-  display: flex;
-   margin-bottom: 0.5rem;
-   
+  
+    display: flex;
+    align-items: center;
 
-   &-label{
- padding: 0.5rem 1.5rem;
- border: 1px solid transparent;
- border-radius: 99999px;
- 
-    &--info{
-      background-color:@success-background-color;
-      color:@success-text-color;
-      border-color: @success-border-color;
+    & svg{
+      stroke-width: 2;
     }
-
-     &--warning{
-      background-color:@warning-background-color;
-      color:@warning-text-color;
-      border-color: @warning-border-color;
-    }
-
-     &--danger{
-      background-color:@danger-background-color;
-      color:@danger-text-color;
-      border-color: @danger-border-color;
-    }
-   }
 
   }
 

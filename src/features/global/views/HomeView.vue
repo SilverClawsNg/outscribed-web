@@ -366,11 +366,10 @@ function handleJoinClick() {
     </div>
      <div class="use-cases__contents">
        <h2 class="use-cases__title">
-      Become a voice in any conversation
+      Take a seat at any table
     </h2>
      <div class="use-cases__text">
-      <h3>The Situation </h3><p> Claire regularly watches a late-night news panel and feels there were important perspectives that never made it into the conversation.  </p><h3>The OutScribed approach </h3><p> She creates a persona on OutScribed and started writing stories that places her on the panel as an additional guest and starts responding to the discussions from a different point of view. </p><h3> Why It works!</h3><p> OutScribed allowed Claire to take an active seat on a table she was not invited to. By outscribing each episode, she can introduce perspectives, questions, and counterarguments that were absent from the original discussion. She also builds an audience of other persons who share her perspectives or are willing to explore alternative opinions. </p>
-    </div>
+      <h3>The Situation</h3><p>Claire regularly watches a late-night news panel and often feels that key viewpoints—the ones ordinary people actually care about—never make it into the discussion.</p><h3>The OutScribed Approach</h3><p>She creates a persona on OutScribed and writes short stories that place her right on the panel as an additional guest.</p><h3>Why It Works</h3><p>OutScribed lets Claire pull up a chair to a table she wasn't invited to. By outscribing each episode, she brings in the missing questions, real-world angles, and counterarguments—and gradually builds an audience of readers who share her view or want to hear the other side.</p>    </div>
     </div>
    
   </div>
@@ -383,8 +382,7 @@ function handleJoinClick() {
       Simplify Complex Solutions
     </h2>
      <div class="use-cases__text">
-      <h3>The Situation</h3><p>John is an electrical engineering professor with ideas for improving Nigeria's power grid, but many of the people who could benefit from those ideas are unlikely to read a technical proposal.</p><h3>The OutScribed Approach</h3><p>On his OutScribed page, he writes a story in which he becomes Minister of Power. Through the challenges, decisions, setbacks, and successes of the role, he explores how his ideas might work in practice.</p><h3>Why It Works</h3><p>OutScribed allows John to simplify complex solutions without losing their substance. Instead of presenting readers with a technical document, he can present the industry jargons in an engaging manner and show policies, technologies, and decisions affect real people.</p>
-    </div>
+    <h3>The Situation</h3><p>John is an electrical engineering professor with practical ideas for fixing Nigeria's power grid, but the everyday citizens who stand to benefit most are unlikely to read a dense technical proposal.</p><h3>The OutScribed Approach</h3><p>On his OutScribed page, he writes a story in which he steps into the shoes of the Minister of Power. Through the daily trade-offs, setbacks, and breakthroughs of the job, he shows how his ideas would play out in the real world.</p><h3>Why It Works</h3><p>OutScribed lets John translate complex engineering into a story anyone can follow without watering down the substance. Instead of handing readers a dry whitepaper, he unpacks technical jargon through human decisions—showing how policies and infrastructure choices actually affect ordinary lives.</p>    </div>
     </div>
    
   </div>
@@ -397,8 +395,7 @@ function handleJoinClick() {
       Focus on the Message
     </h2>
      <div class="use-cases__text">
-      <h3>The Situation</h3><p>Martha wanted to write an article responding to a political speech. She had points to challenge, arguments to strengthen, and questions she believed deserved greater attention. However, public commentary often shifts attention from the argument itself to the person making it.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote a story featuring an alternative version of the politician delivering a revised speech. She kept what worked, changed what didn't, and introduced the points she believed were missing.</p><h3>Why It Works</h3><p>OutScribed allows Martha to place her ideas inside the speech rather than attach them directly to herself. Readers can debate the arguments, implications, and consequences of the alternative speech instead of focusing on the storyteller.</p>
-
+<h3>The Situation</h3><p>Martha wanted to respond to a major political speech—challenging weak points, strengthening others, and raising questions that were left out. Yet in public debates, people often attack the messenger instead of weighing the message.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote a story featuring an alternative version of the politician delivering a revised speech—keeping what worked, fixing what didn't, and weaving in the missing points.</p><h3>Why It Works</h3><p>OutScribed lets Martha place her ideas directly inside the speech rather than attaching them to her own name or background. Readers end up debating the arguments and real-world consequences of the revised speech instead of targeting the writer.</p>
     </div>
     </div>
   

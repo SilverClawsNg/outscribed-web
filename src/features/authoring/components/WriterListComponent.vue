@@ -50,7 +50,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
                     <button 
                         type="button" 
-                        class="btn btn--bordered"
+                        class="btn btn--secondary"
                         :title="writer.creator.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
                         :disabled="uiMeta.isFavoriteDisabled"
                         @click="engage.favorite(writer.creator.engagement)"
@@ -117,17 +117,13 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
  border-radius: 21px;
  display: flex;
  flex-direction: column;
- 
+  border: 1px solid var(--surface-border-color);
+
   .user-card{
-      background-color: @link-color;
+      background-color: var(--surface-background-color);
         border-radius: 21px 21px 0 0;
-        background-image: url("@/assets/images/patterns-background.png");
-        background-position-x: right;
-        background-position-y: bottom;
-        background-repeat: no-repeat;
-        background-position: contain;
-        background-size: 40%;
-         color:@white-color;
+        border-bottom: 1px solid var(--surface-border-color);
+
         width: 100%;
         height: auto;
         padding: 1rem;
@@ -138,24 +134,12 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
     font-weight: 600;
      font-size: 1.5rem;
 
-        & .at:before {
-        color: @white-color;
-    }
-
-  & button{
-    color:@white-color;
-
-    &:hover{
-      opacity: 0.8;
-    }
-
-  }
 
   }
 
   
 &__date{
-  color:@white-color;
+  color:var(--muted-text-color);
   font-size: 0.9rem;
 
   & span{
@@ -174,7 +158,6 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
    display: inline-flex;
     align-items: center;
     column-gap: 0.25rem;
-    color:@white-color;
   }
 
   &__metric-value {
@@ -196,8 +179,6 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
     
 
  .tale-card{
-  border: 1px solid var(--border-color);
-  border-top: none;
   padding: 1rem 0.5rem;
   border-radius: 0 0 21px 21px;
   flex-grow: 1;
@@ -240,12 +221,10 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
      border:1px solid var(--border-color);
      padding: 0.5rem 0.75rem;
      border-radius: 99999px;
-     
-     
-
+   
       &:hover {
-        background-color: var(--light-background-color);
-        color: @link-color;
+        background-color: var(--surface-background-color);
+        border-color: var(--surface-border-color);
       }
     }
   
