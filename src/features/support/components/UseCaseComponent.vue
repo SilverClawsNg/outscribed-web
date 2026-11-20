@@ -65,13 +65,10 @@ const emit = defineEmits<{
     transition: color 0.2s ease;
 
     &:hover {
-      .useCase-card__question {
-        color: @link-color;
-      }
-
+    
       .useCase-card__indicator{
         &::before {
-          color:  @link-color;
+          opacity: 0.65;
         }
       }
     }
@@ -80,11 +77,8 @@ const emit = defineEmits<{
   &__question {
      font-size: 1.1rem;
     line-height: 1.35;
-    font-weight:600;
-    color:var(--text-color);
     margin: 0;
-    transition: color 0.2s ease;
-    text-align:left;
+    color: var(--heading-text-color);
 
   }
 
@@ -96,7 +90,7 @@ const emit = defineEmits<{
 
     &::before {
       content: "+";
-      color:var(--text-color);
+      color:var(--heading-text-color);
     }
 
     .useCase-card__header--active & {

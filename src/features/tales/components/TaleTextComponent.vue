@@ -35,7 +35,8 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
     <div class="content">
        <p class="content__category">
             <RouterLink :to="`/tales?category=${tale.category}`"
-             class="content__category-link">
+             class="content__category-link"
+             :class="[type === 'focus' ? 'content__category-link--focus' :  null]">
               <span>{{ CategoryDescriptions[tale.category] }}</span>
             </RouterLink>
           </p>
@@ -94,7 +95,14 @@ const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
           text-transform: uppercase;
           transition: opacity 0.2s ease;
 
-          --body-text-color: #52525B;
+          &--focus{
+
+            @media @phablet, @largeDevice{
+              --body-text-color: #52525B;
+            }
+          }
+
+        
 
     &:hover {
       opacity: 0.85;

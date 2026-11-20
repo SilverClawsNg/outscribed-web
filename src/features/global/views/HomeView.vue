@@ -1021,9 +1021,8 @@ function handleJoinClick() {
         position: static;
         padding: 1rem 0 0;
         background: var(--background-color);
-        color: var(--text-color);
-        --text-color: inherit;
-        --muted-text-color: inherit;
+        --heading-text-color: inherit;
+        --body-text-color: inherit;
         --background-color: inherit
       }
     }
@@ -1107,7 +1106,6 @@ function handleJoinClick() {
     font-size: 1.25rem;
     font-weight: 900;
     letter-spacing: 0.04em;
-    color: var(--text-color);
     margin: 0 0 0.3rem 0;
     display: flex;
     align-items: center;
@@ -1127,7 +1125,6 @@ function handleJoinClick() {
     button {
       border-bottom: 2px dotted var(--border-color);
       font-style: italic;
-      color: var(--text-color);
 
       &:hover {
         border-bottom-color: transparent;
@@ -1151,7 +1148,6 @@ function handleJoinClick() {
       text-transform: uppercase;
       font-weight: 900;
       margin: 0 0 0.25rem 0;
-      color: var(--text-color);
     }
 
     &__content {

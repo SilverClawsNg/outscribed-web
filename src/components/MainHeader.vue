@@ -269,7 +269,7 @@ function handleSearchClick() {
     text-decoration: none;
 
      & svg {
-        fill: var(--text-color);
+        fill: var(--heading-text-color);
         width: auto;
 
        @media @phone {
