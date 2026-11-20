@@ -288,12 +288,12 @@ currentTag.value = tagId
 
       </form>
 
+         
+        <template v-if="tagList.length > 0">
+
          <div class="divider-multi divider-multi--thick"><span></span></div>
 
         <!-- Validation Error Bubble -->
-
-         
-        <template v-if="tagList.length > 0">
 
          <label class="tags-card__label tags-card__label--double">
             Click box to remove existing tags
@@ -385,8 +385,8 @@ currentTag.value = tagId
 
 /* Studio Confirmation Card */
 .tags-card {
-  background-color: var(--light-background-color);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface-background-color);
+  border: 1px solid var(--surface-border-color);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -407,8 +407,7 @@ padding: 1.75rem 1rem;
   }
 
   &:focus-within {
-    border-color: @link-color;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--box-shadow);
   }
 
   &__row{
@@ -487,7 +486,7 @@ padding: 1.75rem 1rem;
     // Custom numbered prefix badge
     &::before {
       content: counter(tag-counter) ".";
-      color: var(--text-color-muted, #64748b);
+      color: var(--muted-text-color);
       font-weight: 700;
       margin-right: 2px;
     }

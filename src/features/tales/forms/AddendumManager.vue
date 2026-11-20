@@ -392,8 +392,8 @@ async function handleCommitAddendum() {
 }
 
 .addendum-card{
-  background-color: var(--light-background-color);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface-background-color);
+  border: 1px solid var(--surface-border-color);
   border-radius: 12px;
   padding: 1.75rem 2rem;
   display: flex;
@@ -407,8 +407,7 @@ async function handleCommitAddendum() {
   }
 
   &:focus-within {
-    border-color: @link-color;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--box-shadow);
   }
 
   
@@ -416,8 +415,7 @@ async function handleCommitAddendum() {
     display: flex;
     justify-content:space-between;
     column-gap: 0.5rem;
-
-    
+   
 }
 
 &__row{
@@ -445,7 +443,7 @@ async function handleCommitAddendum() {
    &__validation-message {
     font-size: 0.85rem;
     line-height:1.1rem;
-    background-color: var(--text-color);
+    background-color: var(--heading-text-color);
     color: var(--background-color);
     border-radius: 50px;
     padding: 1rem 0.6rem;

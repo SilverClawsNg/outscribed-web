@@ -359,7 +359,6 @@ async function handleFormSubmission() {
             </span>
           </div>
         </div>
-
       </form>
     </div>
   </div>
@@ -370,5 +369,4 @@ async function handleFormSubmission() {
 
 <style scoped>
 @import "@/assets/css/editor-form.less";
-
 </style>

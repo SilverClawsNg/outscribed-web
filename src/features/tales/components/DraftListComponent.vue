@@ -51,5 +51,52 @@ const props = defineProps<Props>()
 </template>
 
 <style lang="less" scoped>
-@import "@/assets/css/draft-list-card.less";
+@import "@/assets/css/variables.less";
+
+.draft-list-card {
+  width: 100%;
+  height: auto;
+  padding: 0.5rem;
+  //box-shadow: var(--box-shadow);
+  border:1px solid var(--border-color);
+  margin-bottom: 0.5rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--background-color);
+  border-radius: 4px;
+
+ 
+ padding: 1rem;
+
+&:hover {
+    background-color: var(--hover-background-color);
+    border-color: var(--surface-border-color);
+  }
+
+  
+  &--active {
+     background-color: var(--hover-background-color);
+  }
+
+  
+  &__meta {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+    z-index: 10;
+ font-size: 0.85rem;
+   
+ }
+
+  &__title {
+    font-size: 1.2rem;
+    line-height:1.6rem;
+    text-transform: capitalize;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+  }
+
+
+}
 </style>

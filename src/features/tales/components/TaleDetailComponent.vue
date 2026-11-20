@@ -559,12 +559,12 @@ const socialLinks = computed<DirectShareLink[]>(() => [
     &--dot {
       width: 4px;
       height: 4px;
-      background-color: var(--text-color);
+      background-color: var(--heading-text-color);
       border-radius: 50%;
     }
 
     &:hover {
-      background-color: var(--light-background-color);
+      background-color: var(--hover-background-color);
     }
   }
     }
@@ -624,10 +624,10 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   transition: all 0.15s ease;
 
   &:hover:not(&--disabled) {
-    background-color:var(--light-background-color);
+    background-color:var(--hover-background-color);
 
     .reaction-column__custom-checkbox {
-      border-color: var(--thick-border-color);
+      border-color: var(--surface-border-color);
     }
   }
 
@@ -667,7 +667,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 
     &.is-checked {
       background-color: var(--background-color);
-      border-color: var(--thick-border-color);
+      border-color: var(--surface-border-color);
       color: var(--text-color);
     }
 
@@ -696,8 +696,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--muted-link-color);
-  font-family: @font-heading; // Trebuchet MS
+  color: var(--muted-text-color);
   font-size: 1.1rem;
   border: none;
   cursor: pointer;
@@ -705,11 +704,11 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   transition: background-color 0.15s ease;
 
   &:hover {
-    background-color: var(--light-background-color);
+    background-color: var(--surface-background-color);
   }
 
   &--active {
-    color: @link-color;
+    color: var(--heading-text-color);
   }
 }
 
@@ -719,7 +718,7 @@ const socialLinks = computed<DirectShareLink[]>(() => [
   border-top: 1px solid var(--border-color);
 
   .help-text {
-    color: var(--muted-text-color)
+    color: var(--body-text-color)
   }
 }
 
@@ -741,9 +740,9 @@ const socialLinks = computed<DirectShareLink[]>(() => [
 }
 
 .story-footer{
-  background-color: var(--light-background-color);
+  background-color: var(--surface-background-color);
   padding: 1.5rem 0.75rem;
-  border-top: 5px solid var(--thick-border-color);
+  border-top: 5px solid var(--surface-border-color);
 }
 
 .story-credits {
@@ -841,7 +840,7 @@ padding-top: 0.5rem;
   font-weight: 600;
   font-size:0.95rem;
   width: 25%;
-  color: var(--muted-link-color);
+  color: var(--muted-text-color);
 
   &:last-child{
     border-right:none;
@@ -850,7 +849,7 @@ padding-top: 0.5rem;
   &--active,
   &:hover:not(:disabled) {
     color: @link-color;
-    background-color: var(--light-background-color);
+    background-color: var(--surface-background-color);
   }
 
   &--flag {
@@ -860,7 +859,6 @@ padding-top: 0.5rem;
 
     &:hover:not(:disabled) {
       color: @logo-red;
-      background-color: rgba(220, 38, 38, 0.08);
       border-color: transparent;
     }
   }
@@ -956,14 +954,11 @@ padding-top: 0.5rem;
     padding: 0.35rem 0.75rem;
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
-    color: var(--muted-link-color);
+    color: var(--muted-text-color);
     border-radius: 99999px;
     font-size: 0.9rem;
     font-weight: 600;
 
-     &:hover {
-          border-color: @link-color;
-        }
       }
 
 

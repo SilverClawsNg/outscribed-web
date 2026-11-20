@@ -262,7 +262,7 @@ const modalStore = useModalStore()
     aspect-ratio: 4 / 3;
     overflow: hidden;
     border-radius: 6px;
-    background-color: var(--light-background-color);
+    background-color: var(--surface-background-color);
 
   }
 
@@ -281,7 +281,7 @@ const modalStore = useModalStore()
       justify-content: center;
           
 
-      color: var(--muted-link-color);
+      color: var(--muted-text-color);
     }
 
 
@@ -349,7 +349,6 @@ const modalStore = useModalStore()
     &__shield-label {
       position: absolute;
       z-index: 6;
-      font-family: @font-mono;
       font-weight: 800;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -417,14 +416,9 @@ const modalStore = useModalStore()
 
   &:hover {
     background-color: lighten(@logo-red, 6%); // Deeper emerald on hover
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
     color:@white-color;
   }
 
-  &:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    
-  }
 }
 
   &--placeholder{
@@ -489,7 +483,7 @@ const modalStore = useModalStore()
         padding: 0.25rem 0.5rem;
 
         &:hover{
-          background-color: var(--light-background-color);
+          background-color: var(--surface-background-color);
           color:@logo-red;
         }
 
@@ -566,13 +560,15 @@ const modalStore = useModalStore()
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
     
+    
     //color:@link-color;
     border-radius: 99999px;
     font-size: 0.9rem;
     font-weight: 600;
 
      &:hover {
-          background-color: var(--light-background-color);
+            background-color: var(--surface-background-color);
+        border-color: var(--surface-border-color);
         }
       }
 

@@ -239,8 +239,8 @@
 }
 
 .help-card {
-  background-color: var(--light-background-color);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface-background-color);
+  border: 1px solid var(--surface-border-color);
   border-radius: 8px;
   padding: 1.25rem;
 

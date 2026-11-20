@@ -61,12 +61,10 @@
   }
 
   a {
-    color: @link-color;
     text-decoration: underline;
     text-underline-offset: 3px;
 
     &:hover {
-      color: var(--link-alt-color);
       text-decoration: none;
     }
   }
@@ -93,11 +91,11 @@
 blockquote {
     margin: 1.5rem 0;
     padding: 1rem 1.25rem 1rem 1.5rem;
-    background-color: var(--light-background-color);
-    border-left: 4px solid @link-color;
+    background-color: var(--surface-background-color);
+    border-left: 4px solid var(--surface-border-color);
     border-radius: 8px;
     font-style: italic;
-    color: var(--text-color);
+    color: var(--muted-text-color);
 
     // Quill wraps blockquote text in <p> tags by default
     p {

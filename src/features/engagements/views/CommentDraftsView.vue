@@ -204,7 +204,7 @@ async function setSort(sort: SortType) {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: commentFilterStore.sort === 'MostRecent' }"
+          :class="{ active: commentFilterStore.sort === '-1' || commentFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
           Newest

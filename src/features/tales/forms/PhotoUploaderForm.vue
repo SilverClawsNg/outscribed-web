@@ -421,13 +421,13 @@ async function handleFormSubmission() {
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      border-color: @link-color;
-      background-color: var(--light-background-color);
+      border-color:var(--surface-order-color);
+      background-color: var(--surface-background-color);
     }
 
     &.is-dragging {
-      border-color: @link-color;
-      background-color: rgba(var(--link-color-rgb, 0, 119, 255), 0.08);
+      border-color:var(--surface-order-color);
+      background-color: var(--box-shadow);
       border-style: solid;
       transform: scale(1.005);
     }

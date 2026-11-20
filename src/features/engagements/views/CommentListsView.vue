@@ -234,7 +234,6 @@ async function setSort(sort: SortType) {
   </div>
 
        </InfiniteScroller>
-
          
        <!-- Fixed Bottom Filter & Sort Footer -->
     <footer class="page-footer-bar">
@@ -243,7 +242,7 @@ async function setSort(sort: SortType) {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: commentFilterStore.sort === 'MostRecent' }"
+          :class="{ active: commentFilterStore.sort === '-1' || commentFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
           Newest

@@ -227,14 +227,8 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
         border-color: var(--surface-border-color);
       }
     }
-  
-  }
-
+   }
  }
-
-
 }
-
-
 
 </style>

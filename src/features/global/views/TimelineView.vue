@@ -156,18 +156,12 @@ async function setSort(sort: SortType) {
 
   <template v-if="timelineStore.timelines && timelineStore.timelines.length > 0">
 
-    <header class="section-header section-header--mid">
-    <h2 class="section-header__title">
-      Timelines
-    </h2>
-    <div class="section-header__lines">
-      <p class="section-header__lines--item"></p>
-      <p class="section-header__lines--item"></p>
-    </div>
-              <button type="button" @click="modalStore.push('TimelineFilter', 'Filter Timelines')" class="btn btn--primary">
-                Filter
-              </button>
-            </header>
+  <header class="page-header">
+        <h1 class="page-header__title">Timelines</h1>
+        <p class="page-header__subtitle">
+          Your recent activities board
+        </p>
+      </header>
 
       <InfiniteScroller
       :has-next="timelineStore.hasNext"
@@ -194,7 +188,7 @@ async function setSort(sort: SortType) {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: timelineFilterStore.sort === 'MostRecent' }"
+          :class="{ active: timelineFilterStore.sort === '-1' || timelineFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
           Newest

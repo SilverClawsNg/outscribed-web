@@ -60,7 +60,7 @@ main {
     height: auto;
 
     &.main-layout {
-        padding-bottom: 4rem;
+        padding-bottom: 2rem;
         min-height:100lvh;
 
         @media @smallDevice {
@@ -503,12 +503,13 @@ main {
     max-width: calc(100% - 20px);
     background-color: var(--heading-text-color);
     border-radius: 99999px;
-    backdrop-filter: blur(8px);
+    //backdrop-filter: blur(8px);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 42px;
+    box-shadow: var(--box-shadow);
   }
 }
 
@@ -526,7 +527,7 @@ main {
   width: 100%;
   height: 100%;
   justify-content: center;
-  border-right: 2px solid var(--heading-text-color);
+  border-right: 2px solid var(--border-color);
 
   & svg{
     stroke-width: 2;
@@ -542,43 +543,22 @@ main {
   }
 
   &:hover {
-    color: var(--background-color);
-    background-color: var(--muted-text-color);
+    color: var(--heading-text-color);
+    background-color: var(--surface-background-color);
   }
 
   &.active {
     pointer-events: none;
-    color: var(--background-color);
-    background-color: var(--muted-text-color);
+    color: var(--heading-text-color);
+    background-color: var(--surface-background-color);
   }
 
   &--more {
     font-weight: 600;
-
   }
 }
 
-.footer-divider {
-  color: var(--text-color);
-  font-weight: 600;
-  user-select: none;
-}
 
-.footer-jump-select {
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-color);
-  background-color: var(--light-background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-
-  &:focus {
-    border-color: @link-color;
-  }
-}
 /* ==========================================================================
    Loading Gif
    ========================================================================== */
@@ -591,14 +571,16 @@ main {
     font-weight: 600;
     font-size: 0.7rem;
     text-transform: uppercase;
-    color: @white-color;
+    border: 1px solid var(--surface-border-color);
 
   // Element: Fixed label on the left
   &__label {
     width: auto;
     padding: 0.5rem;
     border-radius: 4px 0 0 4px;
-    background-color: #5D5D5D;
+    border-right: 1px solid var(--surface-border-color);
+    background-color: var(--surface-background-color);
+    
   }
 
   // Element: Status value on the right
@@ -606,19 +588,6 @@ main {
     width: auto;
     padding: 0.5rem;
     border-radius: 0 4px 4px 0;
-
-    // Modifiers for status states
-    &--warning {
-      background-color: #DB654F;
-    }
-
-    &--info {
-      background-color: #4BC51D;
-    }
-
-    &--danger {
-      background-color: #D90E83;
-    }
   }
 }
 
@@ -765,10 +734,10 @@ main {
       }
 
       &--thick{
-        border-top: 1px solid var(--thick-border-color);
+        border-top: 1px solid var(--surface-border-color);
 
         & span{
-          border: 1px solid var(--thick-border-color);
+          border: 1px solid var(--surface-border-color);
         }
       }
     }

@@ -512,8 +512,8 @@ async function handleReturnToWorkspace() {
 
 /* Studio Confirmation Card */
 .confirmation-card {
-  background-color: var(--light-background-color);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface-background-color);
+  border: 1px solid var(--surface-border-color);
   border-radius: 12px;
   padding: 1.75rem 2rem;
   display: flex;
@@ -522,7 +522,6 @@ async function handleReturnToWorkspace() {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus-within {
-    border-color: @link-color;
     box-shadow: var(--box-shadow);
   }
 

@@ -401,11 +401,11 @@ onBeforeUnmount(() => {
 }
 
 :deep(.ql-snow .ql-fill){
-    fill: var(--muted-link-color);
+    fill: var(--muted-text-color);
 }
 
 :deep(.ql-snow .ql-stroke){
-     stroke: var(--muted-link-color);
+     stroke: var(--muted-text-color);
 }
 
 /* Ensure the editor container acts as the positioning boundary */
@@ -420,7 +420,7 @@ onBeforeUnmount(() => {
   /* Clamp left position so it never drops below 0px (or padding offset) */
   left: max(16px, var(--quill-left, 16px)) !important;
   max-width: calc(100% - 32px) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--box-shadow);
   border-radius: 8px;
   background-color: var(--background-color);
   z-index: 20;
@@ -433,7 +433,7 @@ onBeforeUnmount(() => {
   &.ql-blank::before {
     left: 0;
     right: 0;
-    color: var(--muted-link-color);
+    color: var(--muted-text-color);
     font-weight: normal;
     font-style: italic;
   }

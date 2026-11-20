@@ -47,8 +47,6 @@ function handleSearchClick() {
 
         <div class="top-header__consolidated">
 
-          
-
     <div class="top-header__brand-slot">
 
         <button 
@@ -88,7 +86,7 @@ function handleSearchClick() {
         <div class="top-header__studio-slot">
 
            <button type="button" @click="handleSavedDraftsClick" class="btn btn--primary web-only">
-            Write Studio
+              <SvgIcons name="edit" />  Write Studio
            </button>
 
           <button 

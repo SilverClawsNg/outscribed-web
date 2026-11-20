@@ -48,7 +48,7 @@ const contentTypeClass = computed(() => {
         </RouterLink>
     </section>
 
-    <section class="timeline-card__body">
+    <section class="timeline-card__contents">
       <TimelineActivityDispatcher 
         :timeline="timeline" 
         @open-profile="emitOpenProfile" 
@@ -78,63 +78,33 @@ const contentTypeClass = computed(() => {
   &__date {
     text-transform: capitalize;
     font-size: 0.9rem;
+    color: var(--muted-text-color);
     
   }
-
-  &__type {
-    text-transform: capitalize;
-    font-size: 0.9rem;
-   
+ 
+      &__type{
+         display: inline-block;
+          padding: 1px 2px;
+          border-radius: 4px;
+          border: 1px solid var(--surface-border-color);
+          background-color: var(--surface-background-color);
+          font-size: 0.725rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          transition: opacity 0.2s ease;
     &:hover {
-      text-decoration: underline;
+      opacity: 0.85;
     }
 
-    /* Content-Type BEM Modifiers */
-    &--account {
-    color: #FFB300; /* vivid amber */
-    }
+      }
 
-    &--tale {
-    color: #107C10; /* deep indigo */
-    }
+  &__contents {
 
-    &--comment {
-    color: #E91E63; /* hot pink/magenta */
-    }
-
-    &--insight {
-    color: #4CAF50; /* bright green */
-    }
-
-    &--support {
-    color: #00BCD4; /* cyan */
-    }
-
-    &--writer {
-    color: #9C27B0; /* purple */
-    }
-
-    &--role {
-    color: #AD1457; /* orange-red */
-    }
-
-    &--engagement {
-    color: #32ABA1; /* brown */
-    }
-
-  }
-
-  &__body {
-    font-size: 1.2rem;
-    line-height: 1.6rem;
-
-    button,
-    a {
-      font-weight: 600;
+  & a,  & button {
+      font-weight: 900;
       text-decoration: underline;
 
       &:hover {
-        color: @link-color;
         text-decoration: none;
       }
     }

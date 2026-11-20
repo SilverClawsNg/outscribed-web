@@ -139,8 +139,8 @@ async function initPage() {
 async function setSort(sort: SortType) {
   // 1. Update the store
   taleFilterStore.sort = sort;
-   isLoading.value = true;
-    loadingError.value = null;
+  isLoading.value = true;
+  loadingError.value = null;
 
   // 2. Push/Replace the URL query. 
   // This single call updates the browser URL AND automatically triggers your route watcher 
@@ -208,16 +208,14 @@ onUnmounted(() => {
     </template>
 
   <template v-if="taleStore.tales && taleStore.tales.length > 0">
-
    
      <header class="page-header">
         <h1 class="page-header__title">Discover Tales</h1>
         <p class="page-header__subtitle">
           Tales are re-imaginative, interpretative, and predictive stories that aims to break down complex issues through ficticious stories.
-          <br /> Begin your own OuScribed journey now. <router-link to="/register">Sign Up</router-link>
+         
         </p>
       </header>
-
 
        <InfiniteScroller
         :has-next="taleStore.hasNext"
@@ -248,7 +246,6 @@ onUnmounted(() => {
     </div>
     </template>
   </div>
- 
    
       <div class="tale-card__content">
 
@@ -272,7 +269,7 @@ onUnmounted(() => {
         <button 
           type="button" 
           class="footer-filter-btn" 
-          :class="{ active: taleFilterStore.sort === 'MostRecent' }"
+          :class="{ active: taleFilterStore.sort === '-1' || taleFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
           Newest
@@ -354,7 +351,6 @@ onUnmounted(() => {
   }
 }
 
-
 .tale-strip {
   width: 100%;
   display: flex;
@@ -389,8 +385,6 @@ onUnmounted(() => {
 
 
 }
-
-
 
 .tale-card {
   width: 100%;
