@@ -212,6 +212,7 @@ onUnmounted(() => {
     display: flex;
     flex: 1 1 auto;
     position: relative;
+    width:100%;
     margin-left: 380px; /* Leaves space for Fixed Aside when open */
     //min-height: 100vh;
     //min-height: 100svh;

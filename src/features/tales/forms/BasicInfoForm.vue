@@ -264,7 +264,7 @@ async function handleFormSubmission() {
 
   <div class="editorial-canvas">
 
-        <header class="editorial-canvas__header">
+  <header class="editorial-canvas__header">
   <!-- Left Side: Title & Section Completion Status Indicators -->
   <h1 class="editorial-canvas__badge">Basic Information</h1>
 
@@ -280,135 +280,137 @@ async function handleFormSubmission() {
   </button>
   </div>
  
-        </header>
-<div class="editorial-canvas__body">
-  <!-- Centered Editorial Content Container -->
-  <div class="editorial-form">
-    <div class="editorial-form__contents">
-      <FormProgress :progress="progressState" :is-editor="true" />
+  </header>
 
-      <form id="basic-info-form" @submit.prevent="handleFormSubmission">
+  <div class="editorial-canvas__body">
+    <!-- Centered Editorial Content Container -->
+    <div class="editorial-form">
+      <div class="editorial-form__contents">
+        <FormProgress :progress="progressState" :is-editor="true" />
 
-        <!-- 1. Title Field Group -->
-        <div class="editorial-form__group">
-          <label class="editorial-form__label" for="tale-title">Story Title</label>
-          <div class="editorial-form__row">
-            <textarea
-              id="tale-title"
-              ref="titleRef"
-              v-model="formData.title" 
-              placeholder="Enter a compelling title..."
-              rows="1"
-              class="editorial-form__title"
-              @input="handleInput"
-              :disabled="progressState.type === 'Loading' || lockSubmission"
-              required
-            ></textarea>
-          </div>
-          <div class="editorial-form__field-footer">
-            <span v-if="formSubmitted && validationErrors.title" class="editorial-form__validation-message">
-              {{ validationErrors.title }}
-            </span>
-            <span 
-              class="editorial-form__character-counter" 
-              :class="{ 
-                'is-warning': titleLength > 100 && titleLength <= 128,
-                'is-over-limit': titleLength > 128 
-              }"
-            >
-              {{ titleLength.toLocaleString() }} / 128
-            </span>
-          </div>
-        </div>
+        <form id="basic-info-form" @submit.prevent="handleFormSubmission">
 
-        <!-- 2. Summary Field Group -->
-        <div class="editorial-form__group">
-          <label class="editorial-form__label" for="tale-summary">Story Summary / Deck</label>
-          <div class="editorial-form__row">
-            <textarea
-              id="tale-summary"
-              ref="summaryRef"
-              v-model="formData.summary" 
-              placeholder="Write a short summary or story deck to introduce your piece..."
-              rows="3"
-              class="editorial-form__summary"
-              @input="handleInput"
-              required
-            ></textarea>
-          </div>
-          <div class="editorial-form__field-footer">
-            <span v-if="formSubmitted && validationErrors.summary" class="editorial-form__validation-message">
-              {{ validationErrors.summary }}
-            </span>
-            <span 
-              class="editorial-form__character-counter" 
-              :class="{ 
-                'is-warning': summaryLength > 500 && summaryLength <= 512,
-                'is-over-limit': summaryLength < 8 || summaryLength > 512 
-              }"
-            >
-              {{ summaryLength.toLocaleString() }} / 512
-            </span>
-          </div>
-        </div>
-
-         <div class="divider-multi divider-multi--thick"><span></span></div>
-
-        <!-- 3. Side-by-Side Metadata Row (Category & Country) -->
-        <div class="editorial-form__meta-row">
-          
-          <!-- Category Field -->
-          <div class="editorial-form__group editorial-form__meta-group">
-            <label class="editorial-form__label" for="tale-category">Category</label>
+          <!-- 1. Title Field Group -->
+          <div class="editorial-form__group">
+            <label class="editorial-form__label" for="tale-title">Story Title</label>
             <div class="editorial-form__row">
-              <select 
-                id="tale-category" 
-                v-model="formData.category" 
-                class="form-field"
+              <textarea
+                id="tale-title"
+                ref="titleRef"
+                v-model="formData.title" 
+                placeholder="Enter a compelling title..."
+                rows="1"
+                class="editorial-form__title"
+                @input="handleInput"
                 :disabled="progressState.type === 'Loading' || lockSubmission"
-              >
-                <option value="-1">-- select category --</option>
-                <option v-for="item in CategorySelectItems" :key="item.value" :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
+                required
+              ></textarea>
             </div>
             <div class="editorial-form__field-footer">
-              <span v-if="formSubmitted && validationErrors.category" class="editorial-form__validation-message">
-                {{ validationErrors.category }}
+              <span v-if="formSubmitted && validationErrors.title" class="editorial-form__validation-message">
+                {{ validationErrors.title }}
+              </span>
+              <span 
+                class="editorial-form__character-counter" 
+                :class="{ 
+                  'is-warning': titleLength > 100 && titleLength <= 128,
+                  'is-over-limit': titleLength > 128 
+                }"
+              >
+                {{ titleLength.toLocaleString() }} / 128
               </span>
             </div>
           </div>
 
-          <!-- Country Field -->
-          <div class="editorial-form__group editorial-form__meta-group">
-            <label class="editorial-form__label" for="tale-country">Country Context</label>
+          <!-- 2. Summary Field Group -->
+          <div class="editorial-form__group">
+            <label class="editorial-form__label" for="tale-summary">Story Summary / Deck</label>
             <div class="editorial-form__row">
-              <select 
-                id="tale-country" 
-                v-model="formData.country" 
-                class="form-field"
-                :disabled="progressState.type === 'Loading' || lockSubmission"
-              >
-                <option value="-1">-- select country --</option>
-                <option v-for="item in CountrySelectItems" :key="item.value" :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
+              <textarea
+                id="tale-summary"
+                ref="summaryRef"
+                v-model="formData.summary" 
+                placeholder="Write a short summary or story deck to introduce your piece..."
+                rows="3"
+                class="editorial-form__summary"
+                @input="handleInput"
+                required
+              ></textarea>
             </div>
             <div class="editorial-form__field-footer">
-              <span v-if="formSubmitted && validationErrors.country" class="editorial-form__validation-message">
-                {{ validationErrors.country }}
+              <span v-if="formSubmitted && validationErrors.summary" class="editorial-form__validation-message">
+                {{ validationErrors.summary }}
+              </span>
+              <span 
+                class="editorial-form__character-counter" 
+                :class="{ 
+                  'is-warning': summaryLength > 500 && summaryLength <= 512,
+                  'is-over-limit': summaryLength < 8 || summaryLength > 512 
+                }"
+              >
+                {{ summaryLength.toLocaleString() }} / 512
               </span>
             </div>
           </div>
 
-        </div>
+          <div class="divider-multi divider-multi--thick"><span></span></div>
 
-      </form>
+          <!-- 3. Side-by-Side Metadata Row (Category & Country) -->
+          <div class="editorial-form__meta-row">
+            
+            <!-- Category Field -->
+            <div class="editorial-form__group editorial-form__meta-group">
+              <label class="editorial-form__label" for="tale-category">Category</label>
+              <div class="editorial-form__row">
+                <select 
+                  id="tale-category" 
+                  v-model="formData.category" 
+                  class="form-field"
+                  :disabled="progressState.type === 'Loading' || lockSubmission"
+                >
+                  <option value="-1">-- select category --</option>
+                  <option v-for="item in CategorySelectItems" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="editorial-form__field-footer">
+                <span v-if="formSubmitted && validationErrors.category" class="editorial-form__validation-message">
+                  {{ validationErrors.category }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Country Field -->
+            <div class="editorial-form__group editorial-form__meta-group">
+              <label class="editorial-form__label" for="tale-country">Country Context</label>
+              <div class="editorial-form__row">
+                <select 
+                  id="tale-country" 
+                  v-model="formData.country" 
+                  class="form-field"
+                  :disabled="progressState.type === 'Loading' || lockSubmission"
+                >
+                  <option value="-1">-- select country --</option>
+                  <option v-for="item in CountrySelectItems" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="editorial-form__field-footer">
+                <span v-if="formSubmitted && validationErrors.country" class="editorial-form__validation-message">
+                  {{ validationErrors.country }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
     </div>
   </div>
-</div>
+
     </div>
 
   </template>
