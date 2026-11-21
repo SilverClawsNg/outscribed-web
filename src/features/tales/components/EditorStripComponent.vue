@@ -342,11 +342,11 @@ function navigateHome() {
     &:hover,
     &--active {
       background-color: var(--light-background-color);
-      color: @link-color;
+      color: var(--muted-text-color);
     }
 
       &--active {
-      color: var(--text-color);
+      color: var(--muted-text-color);
       pointer-events:none;
     }
 
