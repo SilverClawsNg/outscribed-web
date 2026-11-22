@@ -137,12 +137,14 @@ function handleSavedDraftsClick() {
 
 
 .site-footer {
-  background-color: var(--background-color);
+  
+  
  
   padding-top: 58px;
   font-size: 0.9rem;
   position:relative;
   z-index: 5000;
+  color:@white-color;
   
 
   &::before {
@@ -161,7 +163,8 @@ function handleSavedDraftsClick() {
   width: 100%;
   height: auto;
   padding: 58px 0 2.5rem 0;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid #051125;
+  background-color: #10203a;
    position: relative;
 }
  
@@ -202,13 +205,13 @@ function handleSavedDraftsClick() {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid var(--border-color);
+       border-bottom: 1px solid #051125;
     }
      @media @tablet {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid var(--border-color);
+       border-bottom: 1px solid #051125;
     }
 
     @media @laptop {
@@ -228,6 +231,7 @@ function handleSavedDraftsClick() {
     margin-bottom: 0.75rem;
     row-gap: 1rem;
     text-align:center;
+    
    
     & h1.logo{
       text-align:center;
@@ -236,7 +240,7 @@ function handleSavedDraftsClick() {
           & svg{
             //width: 100%;
             height: auto;
-            //fill: @white-color;
+            fill: @white-color;
           }
     }
       & .icon{
@@ -255,19 +259,7 @@ function handleSavedDraftsClick() {
     &__tagline {
       font-size: 1.15rem;
        text-align:center;
-    }
-  }
-
-  .disclaimer-block {
-    margin-bottom: 1.5rem;
-    p {
-      margin: 0;
-      line-height: 1.5;
-      font-size: 0.9rem;
-    }
-
-    strong {
-      font-weight: 600;
+       color:@white-color;
     }
   }
 
@@ -299,6 +291,7 @@ function handleSavedDraftsClick() {
       margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      color:@white-color;
     }
 
     &__list {
@@ -313,6 +306,7 @@ function handleSavedDraftsClick() {
       a, button {
         font-weight: 400;
         text-decoration: underline;
+        color:@white-color;
 
         &:hover,
         &:focus {
@@ -333,7 +327,8 @@ function handleSavedDraftsClick() {
       margin-top: 2rem;
       padding-top: 1rem;
       margin-top: 1rem;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid #1f3250;
+      color:@white-color;
     }
 }
 

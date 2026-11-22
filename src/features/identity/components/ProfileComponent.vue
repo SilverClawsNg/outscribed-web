@@ -176,6 +176,20 @@ function handleEditContactClick(platform: ContactType) {
    
   </div>
 
+<div class="profile-details__bio-card-container">
+  <div class="profile-details__bio-card">
+    <template v-if="profile.bio">
+      <div  class="profile-details__bio-card--text">{{ profile.bio }}</div>
+    </template>
+    <template v-else>
+      <p class="profile-details__bio-card--empty">It appears you have not added a bio yet. 
+        Your writers' bio will appear on stories you publish and should contain a concise introduction
+        of your craft
+      </p>
+    </template>
+</div>
+</div>
+
   
 <div class="action-wrapper">
 
@@ -199,22 +213,6 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
-</div>
-
- <header class="profile-section-header">
-     <h2>Bio</h2>
-    </header>
-
-<div class="profile-details__bio-card">
-    <template v-if="profile.bio">
-      <div  class="profile-details__bio-card--text">{{ profile.bio }}</div>
-    </template>
-    <template v-else>
-      <p class="profile-details__bio-card--empty">It appears you have not added a bio yet. 
-        Your writers' bio will appear on stories you publish and should contain a concise introduction
-        of your craft
-      </p>
-    </template>
 </div>
 
 

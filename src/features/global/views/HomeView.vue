@@ -668,6 +668,9 @@ function handleJoinClick() {
  &__highlight {
   font-weight: 900;
   color: #bc0f82;
+  color: #013248;
+  color: #1f3250;
+ //color: #051125;
 }
 
   /* =============================================================

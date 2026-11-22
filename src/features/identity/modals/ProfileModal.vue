@@ -160,6 +160,13 @@ onUnmounted(() => {
    
   </div>
 
+  <template v-if="profileStore.profile.bio">
+    
+    
+    <div class="profile-details__bio-card">
+   <div  class="profile-details__bio-card--text">{{ profileStore.profile.bio }}</div>
+</div>
+    </template>
  <div class="action-wrapper">
     <button 
       type="button" 
@@ -173,43 +180,35 @@ onUnmounted(() => {
 
   </div>
 
-  <template v-if="profileStore.profile.bio">
-      <header class="section-header">
-     <h2>Bio</h2>
-    </header>
-    
-    <div class="profile-details__bio-card">
-   <div  class="profile-details__bio-card--text">{{ profileStore.profile.bio }}</div>
-</div>
-    </template>
+ 
 
-   <header class="section-header">
-        <button 
+   <header class="profile-section-header">
+       <button 
         type="button" 
-        class="section-header__cta"
-        :class="{ 'section-header__cta--active': activeActivityTab === 'tale' }"
+        class="profile-section-header__cta"
+        :class="{ 'profile-section-header__cta--active': activeActivityTab === 'tale' }"
         @click="activeActivityTab = 'tale'"
       >
         Tales
       </button>
       <button 
         type="button" 
-        class="section-header__cta"
-        :class="{ 'section-header__cta--active': activeActivityTab === 'comment' }"
+        class="profile-section-header__cta"
+        :class="{ 'profile-section-header__cta--active': activeActivityTab === 'comment' }"
         @click="activeActivityTab = 'comment'"
       >
         Comments
       </button>
-      <button 
+      
+       <button 
         type="button" 
-        class="section-header__cta"
-        :class="{ 'section-header__cta--active': activeActivityTab === 'connect' }"
+        class="profile-section-header__cta"
+        :class="{ 'profile-section-header__cta--active': activeActivityTab === 'connect' }"
         @click="activeActivityTab = 'connect'"
       >
         Connect
       </button>
     </header>
-
     
 <div class="profile-links" :class="{ 'profile-links--active': activeActivityTab === 'tale' }">
 

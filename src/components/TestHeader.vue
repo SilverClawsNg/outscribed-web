@@ -41,153 +41,151 @@ function handleSearchClick() {
 
 <header class="main-header">
 
-    <div class="top-header-wrapper">
+  <div class="sub-nav-wrapper web-only">
 
-     <div class="top-header">
+    <nav class="sub-nav">
 
-        <div class="top-header__consolidated">
+        <router-link to="/about-us" class="sub-nav__link" @click="isMenuOpen = false">
+         <SvgIcons name="about" :size="18" />  About Us
+        </router-link>
+        
+        <button type="button" class="sub-nav__link"  @click="handleSearchClick">
+         <SvgIcons name="search" :size="18" />  Search
+        </button>
+        <span class="divider divider--line"></span>
+        <template v-if="isLoggedIn">
+          <router-link to="/profile"  class="sub-nav__link">
+            <SvgIcons name="user" :size="18" /> Profile
+          </router-link>
+         
+          <router-link to="/timelines"  class="sub-nav__link">
+            <SvgIcons name="timeline" :size="18" /> Timeline
+          </router-link>
+          <router-link to="/logout"  class="sub-nav__link">
+            <SvgIcons name="logout" :size="18" /> Logout
+          </router-link>
+        </template>
+        <template v-else>
+          <p class="sub-nav__auth-prompt">
+          <router-link to="/login" class="sub-nav__link" @click="isMenuOpen = false">
+            <SvgIcons name="login" :size="18" />  Log In 
+          </router-link>
+          <router-link to="/register" class="sub-nav__link" @click="isMenuOpen = false">
+            <SvgIcons name="register" :size="18" />  Sign Up
+          </router-link>
+          </p>
+        </template>
 
-    <div class="top-header__brand-slot">
 
+    </nav>
+
+  </div>
+
+  <div class="main-nav-wrapper">
+
+    <div class="main-nav">
+
+      <div class="main-nav__consolidated">
+
+     <div class="main-nav__brand-slot">
         <button 
-              class="top-header__menu-toggle mobile-only" 
-              :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
+              class="main-nav__menu-toggle mobile-only" 
+              :class="{ 'main-nav__menu-toggle--active': isMenuOpen }"
               aria-label="Toggle Navigation Menu"
               @click="isMenuOpen = !isMenuOpen"
             >
-              <SvgIcons name="menu" :size="25" />
-            </button>
-        <router-link to="/" class="top-header__brand-link" title="OutScribed Home">
+              <SvgIcons name="menu" :size="22" />
+        </button>
+        <router-link to="/" class="main-nav__brand-link" title="OutScribed Home">
             <SvgIcons name="logo"  />
-          </router-link>
+        </router-link>
     </div>
 
-      <div class="top-header__account-slot web-only">
-          <template v-if="isLoggedIn">
-            <router-link to="/profile" class="top-header__account-link">Profile</router-link>
-            <span class="top-header__utility-divider">/</span>
-            <router-link to="/timelines" class="top-header__account-link">Timeline</router-link>
-            <span class="top-header__utility-divider">/</span>
-            <router-link to="/logout" class="top-header__account-link">Logout</router-link>
-          </template>
-          <template v-else>
-            <p class="top-header__auth-prompt">
-              <span>Get Started. </span>
-              <router-link to="/login" class="top-header__editorial-link" @click="isMenuOpen = false">Log In </router-link>
-              <span>or </span>
-              <router-link to="/register" class="top-header__auth-btn top-header__auth-btn--highlight" @click="isMenuOpen = false">Sign Up</router-link>
-            </p>
-          </template>
-        </div>
+      <button type="button" class="outscribe-link mobile-only" @click="handleCreateDraftClick"
+        title="OutScribe a new tale">
+        OutScribe
+      </button>
+      </div>
+
+       <div class="main-nav__links-wrapper" :class="{ 'main-nav__links-wrapper--expanded': isMenuOpen }">
         
-        </div>
+    <nav class="main-nav__links">
+      <router-link  class="main-nav__link" to="/tales" @click="isMenuOpen = false">
+        <SvgIcons name="tale" :size="22" />  Tales
+      </router-link>
+      <router-link  class="main-nav__link" to="/writers" @click="isMenuOpen = false">
+       <SvgIcons name="writers" :size="22" />  Writers
+      </router-link>
+      <button  class="main-nav__link" type="button" @click="handleSavedDraftsClick">
+        <SvgIcons name="edit" :size="22" />  Write Studio
+      </button>
 
-        <!-- Slot E: Studio Actions & Draft CTA (Desktop Right) -->
-        <div class="top-header__studio-slot">
+        <button type="button" class="outscribe-link web-only" @click="handleCreateDraftClick"
+        title="OutScribe a new tale">
+        OutScribe
+      </button>
 
-           <button type="button" @click="handleSavedDraftsClick" class="btn btn--primary web-only">
-              <SvgIcons name="edit" />  Write Studio
-           </button>
+      <div class="divider-multi mobile-only"><span></span></div>
 
-          <button 
-              type="button" 
-              class="btn btn--secondary btn--outscribe"
-              @click="handleCreateDraftClick"
-              title="OutScribe a new tale"
-            >
-            OutScribe
-            </button>
-
-          
-
-        </div>
-
-    </div>
-
-    </div>
-
-    <div class="nav-wrapper" :class="{ 'nav-wrapper--expanded': isMenuOpen }">
-
-     <nav class="nav-header__editorial-links">
-          <router-link to="/tales" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            <span class="web-only">Tales</span>
-            <span class="mobile-only">Discover Tales</span>
-          </router-link>
-          <router-link to="/writers" class="nav-header__editorial-link" @click="isMenuOpen = false">
-             <span class="web-only">Writers</span>
-            <span class="mobile-only">Meet The Writers</span>
-          </router-link>
-          <router-link to="/about-us" class="nav-header__editorial-link" @click="isMenuOpen = false">
-             <span class="web-only">About Us</span>
-            <span class="mobile-only">Learn More About OutScribed</span>
-          </router-link>
-            <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
-             <span class="web-only">Search</span>
-            <span class="mobile-only">Search OutScribed</span>
-          </button>
-
-          <div class="mobile-only mobile-only--stretch">
-
-          <div class="divider-multi"><span></span></div>
-
-              <button type="button" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="handleCreateDraftClick">
-              <SvgIcons name="edit" :size="22" /> Create A New Tale Draft
-            </button>
-          <button type="button" @click="handleSavedDraftsClick" class="nav-header__editorial-link nav-header__editorial-link--icon">
-            <SvgIcons name="archive" :size="22" /> Manage Your Tales
-          </button>
-
-            <div class="divider-multi"><span></span></div>
-            
-              <template v-if="isLoggedIn">
-            <router-link to="/profile" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-              <SvgIcons name="user" :size="22" /> Profile
+         <template v-if="isLoggedIn">
+          <router-link to="/profile"  class="main-nav__link mobile-only">
+             <SvgIcons name="user" :size="22" /> Profile
             </router-link>
-            <router-link to="/timelines" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-              <SvgIcons name="clock" :size="22" /> Timeline
+          <router-link to="/timelines"  class="main-nav__link mobile-only">
+             <SvgIcons name="timeline" :size="22" /> Timeline
             </router-link>
-              <router-link to="/logout" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-           <SvgIcons name="padlock" :size="25" /> Logout
-          </router-link>
-          </template>
-          <template v-else>
-            <router-link to="/login"  class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-              <SvgIcons name="user" :size="22" /> Log In
+          <router-link to="/logout"  class="main-nav__link mobile-only">
+             <SvgIcons name="logout" :size="22" /> Logout
             </router-link>
-            <router-link to="/register"  class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-             <SvgIcons name="archive" :size="22" />  Sign Up For Free
+        </template>
+        <template v-else>
+          <p class="sub-nav__auth-prompt">
+          <router-link to="/login" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+             <SvgIcons name="login" :size="22" /> Log In 
             </router-link>
+          <span class="divider divider--circle"></span>
+          <router-link to="/register" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+             <SvgIcons name="register" :size="22" /> Sign Up
+            </router-link>
+          </p>
+        </template>
 
-          </template>
-
-            <div class="mobile-only">
-              
-          <div class="divider-multi"><span></span></div>
-
-          <router-link to="/faqs" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            View Frequently Asked Questions
+         <div class="divider-multi mobile-only"><span></span></div>
+        
+        <router-link to="/about-us" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+        <SvgIcons name="help" :size="22" /> About Us
+        </router-link>
+        
+          <router-link to="/faqs" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+           <SvgIcons name="help" :size="22" /> Frequently Asked Questions
           </router-link>
-          <router-link to="/use-cases" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            View Use Cases For OutScribed
+          <router-link to="/use-cases" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+            <SvgIcons name="usecase" :size="22" /> Use Cases
           </router-link>
+      
 
-             <router-link to="/categories" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            Browse Categories
+         <div class="divider-multi mobile-only"><span></span></div>
+         
+  <button type="button" class="main-nav__link mobile-only"  @click="handleSearchClick">
+         <SvgIcons name="search" :size="22" /> Search
+        </button>
+          <router-link to="/categories" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+          <SvgIcons name="category" :size="22" />  Categories
           </router-link>
-           <router-link to="/countries" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            Browse Countries
+           <router-link to="/countries" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+            <SvgIcons name="globe" :size="22" /> Countries
           </router-link>
-           <router-link to="/tags" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            Browse Trending Tags
+           <router-link to="/tags" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+            <SvgIcons name="tag" :size="22" /> Trending Tags
           </router-link>
-          
-            </div>
-            
-          </div>
+     
+    </nav>
 
-        </nav>
+      </div>
 
-    </div>
+  </div>
+
+  </div>
 
 </header>
 
@@ -215,17 +213,261 @@ function handleSearchClick() {
 .main-header{
   position: fixed;
   z-index: 5001;
-  background-color: #013248;
+  background-color: #10203a;
+   background-color: #10203a;
   width: 100%;
   height: auto;
   color:@white-color;
+  
 }
 
-.top-header-wrapper{
-  height: 60px;
+.sub-nav-wrapper{
+  background-color: var(--background-color);
   width: 100%;
-  border-bottom: 1px solid @white-color;
+  height: 40px;
 }
+
+.sub-nav{
+  height: 100%;
+  width: @max-width;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  column-gap: 1rem;
+
+  &__link{
+    color: var(--heading-text-color); 
+    display: flex;
+    align-items:center;
+    column-gap: 0.25rem;
+
+    & svg{
+      stroke-width: 1.5;
+    }
+  }
+
+}
+
+.main-nav-wrapper{
+  width: 100%;
+}
+
+.main-nav{
+  width: @max-width;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  display: flex;
+
+  
+  &__consolidated{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+     justify-content: space-between;
+  }
+
+ 
+  padding: 0.5rem 0;
+
+   @media @smallDevice {
+    height: auto;
+    flex-direction: column;
+  }
+
+    @media @largeDevice{
+     height: 60px;
+      justify-content: space-between;
+    }
+   
+  &__brand-slot{
+    display: flex;
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+   
+  &__brand-link {
+    display: flex;
+    text-decoration: none;
+
+     & svg {
+        fill: @white-color;
+        width: auto;
+
+       @media @phone {
+           height: 26px;
+        }
+
+         @media @phablet {
+            height: 27px;
+        }
+
+        @media @largeDevice {
+            height: 30px;
+        }
+    }
+  }
+ 
+  
+  &__menu-toggle{
+    height: 2.5rem;
+    display: flex;
+    align-items:center;
+    padding: 0 0.5rem;
+    color: @white-color;
+    background-color:transparent;
+
+    &:hover{
+      opacity: 0.65;
+    }
+        
+  }
+ 
+  
+&__links-wrapper{
+
+ 
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media @smallDevice {
+      height: 0; // Collapsed on mobile
+      overflow: hidden;
+        width: 100%;
+      
+      &--expanded {
+        height: calc(100lvh - 60px);
+        overflow-y: auto;
+      }
+    }
+
+    @media @largeDevice{
+       height: 100%;
+         width: auto;
+    }
+
+}
+
+&__links{
+  width: auto;
+  display: flex;
+
+  @media @smallDevice {
+      flex-direction: column;
+      row-gap: 0.25rem;
+       padding: 0.75rem 0 5rem 0;
+    
+    }
+
+    @media @largeDevice{
+      height: 100%;
+      column-gap: 0.25rem;
+    }
+}
+
+  &__link{
+    border-radius: 8px;
+    background-color: #1f3250;
+    border: 2px solid #051125;
+    display: flex;
+    align-items:center;
+    
+    padding: 0 0.75rem;
+    color: @white-color;
+    column-gap: 0.5rem;
+    
+
+     @media @smallDevice {
+    height: 60px;
+     width: 100%;
+     row-gap: 0.5rem;
+
+    }
+
+    @media @largeDevice{
+     height: 100%;
+      width: 160px;
+      column-gap: 0.5rem;
+      justify-content: center;
+    }
+
+    &:hover {
+      background-color: #273e63;
+      color: #ffffff;
+    }
+
+    & span{
+      color: @white-color;
+    }
+
+    & svg{
+      stroke-width: 2;
+    }
+
+  }
+}
+
+.outscribe-link {
+      background-color: #D99B00; // Swap to #2e4a75 or #f26522 if preferred
+      border: 2px solid #051125;
+      color: #051125;
+      font-weight: 700;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    padding: 0 0.75rem;
+    color: @white-color;
+    column-gap: 0.5rem;
+     border-radius: 8px;
+
+         @media @smallDevice {
+    height: 60px;
+     width: auto;
+    }
+
+    @media @largeDevice{
+     height: 100%;
+      width: 160px;
+     
+    }
+
+      &:hover {
+        background-color: #E6A800;
+        color: #051125;
+      }
+
+      &::before {
+        content: "+";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 20px;
+        height: 100%;
+        font-size: 1.6rem;
+        font-weight: inherit;
+        line-height: 1;
+        //margin-top: -0.25rem;
+        color:inherit;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .top-header{
   display: flex;
@@ -240,49 +482,6 @@ function handleSearchClick() {
     display: flex;
     column-gap: 0.5rem;
     align-items: center;
-  }
-
-  &__consolidated{
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  &__menu-toggle{
-    height: 2.5rem;
-    display: flex;
-    align-items:center;
-    padding: 0 0.5rem;
-    color: var(--text-color);
-    background-color:var(--background-color);
-
-    &:hover{
-      color:@link-color;
-      background-color: var(--light-background-color);
-    }
-        
-  }
-  
-  &__brand-link {
-    display: flex;
-    text-decoration: none;
-
-     & svg {
-        fill: @white-color;
-        width: auto;
-
-       @media @phone {
-           height: 26px;
-        }
-
-         @media @phablet {
-            height: 26px;
-        }
-
-        @media @largeDevice {
-            height: 28px; /* Your desired height */
-        }
-    }
   }
 
     &__account-slot {
