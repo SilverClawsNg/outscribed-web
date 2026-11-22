@@ -25,7 +25,7 @@ function handleSavedDraftsClick() {
     modalStore.push('CreateTale', 'Create Tale')
   }
   else{
-    router.push('/editor')
+    router.push('/studio')
   }
       isMenuOpen.value = false;
 }
@@ -48,6 +48,15 @@ function handleSearchClick() {
         <div class="top-header__consolidated">
 
     <div class="top-header__brand-slot">
+
+        <button 
+              class="top-header__menu-toggle mobile-only" 
+              :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
+              aria-label="Toggle Navigation Menu"
+              @click="isMenuOpen = !isMenuOpen"
+            >
+              <SvgIcons name="menu" :size="25" />
+            </button>
         <router-link to="/" class="top-header__brand-link" title="OutScribed Home">
             <SvgIcons name="logo"  />
           </router-link>
@@ -77,7 +86,7 @@ function handleSearchClick() {
         <div class="top-header__studio-slot">
 
            <button type="button" @click="handleSavedDraftsClick" class="btn btn--primary web-only">
-            Saved Drafts
+              <SvgIcons name="edit" />  Write Studio
            </button>
 
           <button 
@@ -89,14 +98,7 @@ function handleSearchClick() {
             OutScribe
             </button>
 
-            <button 
-              class="top-header__menu-toggle mobile-only" 
-              :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
-              aria-label="Toggle Navigation Menu"
-              @click="isMenuOpen = !isMenuOpen"
-            >
-              <SvgIcons name="menu" :size="25" />
-            </button>
+          
 
         </div>
 
@@ -115,24 +117,24 @@ function handleSearchClick() {
              <span class="web-only">Writers</span>
             <span class="mobile-only">Meet The Writers</span>
           </router-link>
-          <router-link to="/faqs" class="nav-header__editorial-link" @click="isMenuOpen = false">
+          <router-link to="/about-us" class="nav-header__editorial-link" @click="isMenuOpen = false">
              <span class="web-only">About Us</span>
             <span class="mobile-only">Learn More About OutScribed</span>
           </router-link>
-          <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
+            <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
              <span class="web-only">Search</span>
             <span class="mobile-only">Search OutScribed</span>
           </button>
 
           <div class="mobile-only mobile-only--stretch">
 
-            <div class="divider-multi"><span></span></div>
+          <div class="divider-multi"><span></span></div>
 
               <button type="button" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="handleCreateDraftClick">
-              <SvgIcons name="edit" :size="22" /> Create Draft
+              <SvgIcons name="edit" :size="22" /> Create A New Tale Draft
             </button>
           <button type="button" @click="handleSavedDraftsClick" class="nav-header__editorial-link nav-header__editorial-link--icon">
-            <SvgIcons name="archive" :size="22" /> Saved Drafts
+            <SvgIcons name="archive" :size="22" /> Manage Your Tales
           </button>
 
             <div class="divider-multi"><span></span></div>
@@ -155,8 +157,32 @@ function handleSearchClick() {
             <router-link to="/register"  class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
              <SvgIcons name="archive" :size="22" />  Sign Up For Free
             </router-link>
+
           </template>
 
+            <div class="mobile-only">
+              
+          <div class="divider-multi"><span></span></div>
+
+          <router-link to="/faqs" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            View Frequently Asked Questions
+          </router-link>
+          <router-link to="/use-cases" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
+            View Use Cases For OutScribed
+          </router-link>
+
+             <router-link to="/categories" class="nav-header__editorial-link" @click="isMenuOpen = false">
+            Browse Categories
+          </router-link>
+           <router-link to="/countries" class="nav-header__editorial-link" @click="isMenuOpen = false">
+            Browse Countries
+          </router-link>
+           <router-link to="/tags" class="nav-header__editorial-link" @click="isMenuOpen = false">
+            Browse Trending Tags
+          </router-link>
+          
+            </div>
+            
           </div>
 
         </nav>
@@ -188,16 +214,17 @@ function handleSearchClick() {
 
 .main-header{
   position: fixed;
-  z-index: 5000;
-  background-color: var(--background-color);
+  z-index: 5001;
+  background-color: #013248;
   width: 100%;
   height: auto;
+  color:@white-color;
 }
 
 .top-header-wrapper{
   height: 60px;
   width: 100%;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid @white-color;
 }
 
 .top-header{
@@ -209,6 +236,12 @@ function handleSearchClick() {
   max-width: calc(100% - 20px);
   margin: 0 auto;
 
+  &__brand-slot{
+    display: flex;
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+
   &__consolidated{
     display: flex;
     align-items: center;
@@ -216,23 +249,18 @@ function handleSearchClick() {
   }
 
   &__menu-toggle{
-    border-radius: 4px;
     height: 2.5rem;
     display: flex;
     align-items:center;
     padding: 0 0.5rem;
     color: var(--text-color);
-    background: var(--background-color);
-    border: 2px solid var(--border-color);
-    box-shadow: var(--box-shadow);
-    background-color:@white-color;
-    color:@black-color;
+    background-color:var(--background-color);
 
-&:hover{
-  color:@link-color;
-  background-color: var(--light-background-color);
-}
-    
+    &:hover{
+      color:@link-color;
+      background-color: var(--light-background-color);
+    }
+        
   }
   
   &__brand-link {
@@ -240,7 +268,7 @@ function handleSearchClick() {
     text-decoration: none;
 
      & svg {
-        fill: var(--text-color);
+        fill: @white-color;
         width: auto;
 
        @media @phone {
@@ -263,6 +291,10 @@ function handleSearchClick() {
     align-items: center;
     gap: 0.5rem;
 
+    & a{
+       color:@white-color;
+    }
+
   }
 
   &__studio-slot {
@@ -278,7 +310,7 @@ function handleSearchClick() {
 
 .nav-wrapper{
   width: 100%;
-  border-bottom: 1px solid var(--border-color);
+ 
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media @smallDevice {
@@ -293,6 +325,7 @@ function handleSearchClick() {
 
     @media @largeDevice{
        height: 40px;
+        border-bottom: 1px solid @white-color;
     }
 
 }
@@ -302,10 +335,13 @@ nav.nav-header__editorial-links {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+ 
+  
 
   @media @smallDevice{
        flex-direction: column;
        width: 100%;
+       padding-bottom: 5rem;
     }
 
    @media @largeDevice{
@@ -323,6 +359,7 @@ nav.nav-header__editorial-links {
   font-weight: normal;
   line-height: 150%;
   text-transform: capitalize;
+   color:@white-color;
  
   &--icon{
     column-gap: 0.5rem;
@@ -335,7 +372,7 @@ nav.nav-header__editorial-links {
       border-left: 5px solid transparent;
 
        &.router-link-exact-active {
-        border-left-color: @link-color;
+        border-left-color: var(--heading-text-color);
         pointer-events: none;
         opacity: 0.6;
       }
@@ -346,22 +383,21 @@ nav.nav-header__editorial-links {
     height: 40px;
     justify-content: center;
     border-bottom: 3px solid transparent;
-    border-right: 1px solid var(--border-color);
+    border-right: 1px solid @white-color;
 
         &:first-child {
-          border-left: 1px solid var(--border-color);
+          border-left: 1px solid @white-color;
         }
 
         &.router-link-exact-active {
-          border-bottom-color: @link-color;
+          border-bottom-color: var(--heading-text-color);
           pointer-events: none;
           opacity: 0.6;
         }
     }
 
     &:hover{
-      background-color:var(--light-background-color);
-      color:@link-color;
+      opacity: 0.65;
     }
 }
 

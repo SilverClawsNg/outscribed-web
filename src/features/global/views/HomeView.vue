@@ -538,8 +538,73 @@ function handleJoinClick() {
   max-width: calc(100% - 20px);
   margin: 0 auto;
   padding: 3.5rem 0;
-  background-color: var(--background-color);
+  position: relative;
+  overflow: hidden;
 
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    // 5 intersecting circles fading cleanly into --bg-page
+    background-image:
+      // 1. Emerald Green (Top-Left)
+      radial-gradient(
+        circle 280px at 28% 35%,
+        rgba(5, 166, 96, var(--spectrum-alpha)) 0%,
+        transparent 50%
+      ),
+      // 2. Rich Purple (Mid-Left overlap)
+      radial-gradient(
+        circle 260px at 38% 58%,
+        rgba(139, 30, 139, var(--spectrum-alpha)) 0%,
+        transparent 50%
+      ),
+      // 3. Vivid Crimson (Top-Center / Right)
+      radial-gradient(
+        circle 290px at 54% 32%,
+        rgba(230, 29, 56, var(--spectrum-alpha)) 0%,
+        transparent 50%
+      ),
+      // 4. Sunset Orange (Center-Right overlap)
+      radial-gradient(
+        circle 270px at 66% 52%,
+        rgba(242, 101, 34, var(--spectrum-alpha)) 0%,
+        transparent 50%
+      ),
+      // 5. Warm Yellow (Lower-Center bridge)
+      radial-gradient(
+        circle 250px at 50% 68%,
+        rgba(255, 204, 0, calc(var(--spectrum-alpha) * 1.15)) 0%,
+        transparent 50%
+      );
+
+    // Soft vertical vignette mask so top and bottom edges dissolve completely into the page
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 20%,
+      black 80%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 20%,
+      black 80%,
+      transparent 100%
+    );
+  }
+
+  // Keep all hero text, titles, and rules crisp above the wash
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  
    @media @desktop, @laptop{
     width: @max-width;
   }
@@ -562,6 +627,7 @@ function handleJoinClick() {
     
   &__header{
     width: 100%;
+    
   
     @media @phone, @phablet, @tablet{
       margin-bottom: 2.5rem;
@@ -601,6 +667,7 @@ function handleJoinClick() {
 
  &__highlight {
   font-weight: 900;
+  color: #bc0f82;
 }
 
   /* =============================================================
@@ -739,6 +806,7 @@ function handleJoinClick() {
   column-gap: 0.25rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--border-color);
+  background-color: var(--background-color);
   
   font-size: 0.9rem;
   font-weight: 400;
