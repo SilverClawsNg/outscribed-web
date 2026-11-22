@@ -241,7 +241,7 @@ function navigateHome() {
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid @link-border-color;
 
     @media @phone{
       flex: 0 0 40px;
@@ -252,8 +252,8 @@ function navigateHome() {
   
   /* 3. BOTTOM HOME LOGO BLOCK (Fixed 50px) */
   .editor-studio__strip-home {
-    flex: 0 0 60px;
-    height: 60px;
+    flex: 0 0 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -276,7 +276,7 @@ function navigateHome() {
     display: flex;
     flex-direction: column;
     justify-content:center;
-    padding: 1.5rem 0;
+    padding: 1rem 0;
 
      @media @phone{
        max-height: calc(100vh - 80px);
@@ -316,8 +316,8 @@ function navigateHome() {
   /* Section Divider Line inside Middle Block */
   .editor-studio__strip-divider {
     width: 24px;
-    height: 1px;
-    background-color: var(--border-color);
+    height: 2px;
+    background-color: @link-border-color;
     margin: 0.25rem 0;
     flex: 0 0 auto;
   }
@@ -337,11 +337,11 @@ function navigateHome() {
     //color: #94A3B8;
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
-   //color:var(--editor-link-color);
+   color:@white-color;
 
     &:hover,
     &--active {
-      background-color: var(--light-background-color);
+      background-color: var(--background-color);
       color: var(--muted-text-color);
     }
 

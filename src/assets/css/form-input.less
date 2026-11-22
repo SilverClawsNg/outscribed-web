@@ -11,12 +11,6 @@
       margin-bottom:1rem;
     }
 
-    &.boxed{
-      padding: 2rem 1rem;
-      background-color: var(--native-background-color);
-      border-radius: 12px;
-    }
-
   .form-header{
     margin-bottom: 2rem;
     text-align:center;
@@ -157,6 +151,7 @@
       }
     }
 
+
  // --- Form Controls (Input, Textarea, Select) ---
   .form-field {
     width: 100%;
@@ -164,8 +159,8 @@
     font-family: inherit;
     font-size: 1rem;
     line-height: 1.5; // Raised from 1 to give descenders (p, g, y) vertical headroom
-    color: var(--text-color);
-    background-color: transparent !important;
+   
+   
     border: none;
     outline: none;
     opacity: 1;
@@ -174,6 +169,30 @@
     appearance: none !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
+
+    &:not(.link-background){
+      background-color: transparent !important;
+       color: var(--body-text-color);
+  
+      &:focus,
+      &:active {
+        
+        background-color: transparent !important;
+        outline: none !important;
+      }
+    }
+
+    &.link-background{
+      background-color: @white-color !important;
+       color: @link-border-color;
+      
+      &:focus,
+      &:active {
+        
+        background-color:  @white-color !important;
+        outline: none !important;
+      }
+    }
    
       &:not(.has-username){
       border: 1px solid var(--border-color);
@@ -192,12 +211,6 @@
       cursor: not-allowed;
     }
 
-    &:focus,
-    &:active {
-      
-      background-color: transparent !important;
-      outline: none !important;
-    }
 
     // Autofill override to prevent background flashing
     &:-webkit-autofill,
@@ -232,9 +245,6 @@
       color: var(--text-color);
       background-color: var(--background-color, #ffffff); // Explicit background so native dropdown list inherits styling correctly
 
-      &:first-child {
-        
-      }
     }
   }
   

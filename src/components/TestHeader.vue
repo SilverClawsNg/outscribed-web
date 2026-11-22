@@ -125,7 +125,7 @@ function handleSearchClick() {
         OutScribe
       </button>
 
-      <div class="divider-multi mobile-only"><span></span></div>
+      <div class="divider-multi divider-multi--link mobile-only"><span></span></div>
 
          <template v-if="isLoggedIn">
           <router-link to="/profile"  class="main-nav__link mobile-only">
@@ -139,21 +139,18 @@ function handleSearchClick() {
             </router-link>
         </template>
         <template v-else>
-          <p class="sub-nav__auth-prompt">
-          <router-link to="/login" class="main-nav__link mobile-only" @click="isMenuOpen = false">
+           <router-link to="/login" class="main-nav__link mobile-only" @click="isMenuOpen = false">
              <SvgIcons name="login" :size="22" /> Log In 
             </router-link>
-          <span class="divider divider--circle"></span>
           <router-link to="/register" class="main-nav__link mobile-only" @click="isMenuOpen = false">
              <SvgIcons name="register" :size="22" /> Sign Up
             </router-link>
-          </p>
         </template>
 
-         <div class="divider-multi mobile-only"><span></span></div>
+         <div class="divider-multi divider-multi--link mobile-only"><span></span></div>
         
         <router-link to="/about-us" class="main-nav__link mobile-only" @click="isMenuOpen = false">
-        <SvgIcons name="help" :size="22" /> About Us
+        <SvgIcons name="about" :size="22" /> About Us
         </router-link>
         
           <router-link to="/faqs" class="main-nav__link mobile-only" @click="isMenuOpen = false">
@@ -164,7 +161,7 @@ function handleSearchClick() {
           </router-link>
       
 
-         <div class="divider-multi mobile-only"><span></span></div>
+         <div class="divider-multi divider-multi--link mobile-only"><span></span></div>
          
   <button type="button" class="main-nav__link mobile-only"  @click="handleSearchClick">
          <SvgIcons name="search" :size="22" /> Search
@@ -213,8 +210,7 @@ function handleSearchClick() {
 .main-header{
   position: fixed;
   z-index: 5001;
-  background-color: #10203a;
-   background-color: #10203a;
+   background-color: @link-background-color;
   width: 100%;
   height: auto;
   color:@white-color;
@@ -247,7 +243,6 @@ function handleSearchClick() {
       stroke-width: 1.5;
     }
   }
-
 }
 
 .main-nav-wrapper{
@@ -259,16 +254,6 @@ function handleSearchClick() {
   max-width: calc(100% - 20px);
   margin: 0 auto;
   display: flex;
-
-  
-  &__consolidated{
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-     justify-content: space-between;
-  }
-
- 
   padding: 0.5rem 0;
 
    @media @smallDevice {
@@ -280,7 +265,14 @@ function handleSearchClick() {
      height: 60px;
       justify-content: space-between;
     }
-   
+  
+  &__consolidated{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+     justify-content: space-between;
+  }
+
   &__brand-slot{
     display: flex;
     column-gap: 0.5rem;
@@ -308,8 +300,7 @@ function handleSearchClick() {
         }
     }
   }
- 
-  
+   
   &__menu-toggle{
     height: 2.5rem;
     display: flex;
@@ -327,7 +318,6 @@ function handleSearchClick() {
   
 &__links-wrapper{
 
- 
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media @smallDevice {
@@ -367,14 +357,13 @@ function handleSearchClick() {
 
   &__link{
     border-radius: 8px;
-    background-color: #1f3250;
-    border: 2px solid #051125;
+    background-color: @link-color;
+    border: 2px solid @link-border-color;
     display: flex;
     align-items:center;
     
     padding: 0 0.75rem;
     color: @white-color;
-    column-gap: 0.5rem;
     
 
      @media @smallDevice {
@@ -393,10 +382,6 @@ function handleSearchClick() {
 
     &:hover {
       background-color: #273e63;
-      color: #ffffff;
-    }
-
-    & span{
       color: @white-color;
     }
 
@@ -409,14 +394,15 @@ function handleSearchClick() {
 
 .outscribe-link {
       background-color: #D99B00; // Swap to #2e4a75 or #f26522 if preferred
-      border: 2px solid #051125;
-      color: #051125;
+      border: 2px solid @link-border-color;
+      
       font-weight: 700;
     display: flex;
     align-items:center;
     justify-content: center;
     padding: 0 0.75rem;
     color: @white-color;
+    color: @link-border-color;
     column-gap: 0.5rem;
      border-radius: 8px;
 
@@ -433,7 +419,7 @@ function handleSearchClick() {
 
       &:hover {
         background-color: #E6A800;
-        color: #051125;
+        color: @link-border-color;
       }
 
       &::before {
@@ -453,151 +439,5 @@ function handleSearchClick() {
         transition: transform 0.2s ease;
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.top-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
-  width: @max-width;
-  max-width: calc(100% - 20px);
-  margin: 0 auto;
-
-  &__brand-slot{
-    display: flex;
-    column-gap: 0.5rem;
-    align-items: center;
-  }
-
-    &__account-slot {
-    grid-area: account;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    & a{
-       color:@white-color;
-    }
-
-  }
-
-  &__studio-slot {
-    grid-area: studio;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-   
-  }
-
-}
-
-.nav-wrapper{
-  width: 100%;
- 
-  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  @media @smallDevice {
-      height: 0; // Collapsed on mobile
-      overflow: hidden;
-      
-      &--expanded {
-        height: calc(100lvh - 60px);
-        overflow-y: auto;
-      }
-    }
-
-    @media @largeDevice{
-       height: 40px;
-        border-bottom: 1px solid @white-color;
-    }
-
-}
-
-nav.nav-header__editorial-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
- 
-  
-
-  @media @smallDevice{
-       flex-direction: column;
-       width: 100%;
-       padding-bottom: 5rem;
-    }
-
-   @media @largeDevice{
-       height: 40px;
-       width: @max-width;
-       max-width: calc(100% - 20px);
-    }
-}
-
-.nav-header__editorial-link {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  font-size: 1.1rem;
-  font-weight: normal;
-  line-height: 150%;
-  text-transform: capitalize;
-   color:@white-color;
- 
-  &--icon{
-    column-gap: 0.5rem;
-  }
- 
-    @media @smallDevice{
-      height: 3rem;
-      padding: 0 0.5rem;
-      font-size: 1.2rem;
-      border-left: 5px solid transparent;
-
-       &.router-link-exact-active {
-        border-left-color: var(--heading-text-color);
-        pointer-events: none;
-        opacity: 0.6;
-      }
-       
-    }
-
-   @media @largeDevice{
-    height: 40px;
-    justify-content: center;
-    border-bottom: 3px solid transparent;
-    border-right: 1px solid @white-color;
-
-        &:first-child {
-          border-left: 1px solid @white-color;
-        }
-
-        &.router-link-exact-active {
-          border-bottom-color: var(--heading-text-color);
-          pointer-events: none;
-          opacity: 0.6;
-        }
-    }
-
-    &:hover{
-      opacity: 0.65;
-    }
-}
 
 </style>

@@ -12,6 +12,7 @@ import DraftFilterComponent from '@/features/tales/components/DraftFilterCompone
 import DraftDetailComponent from '@/features/tales/components/DraftDetailComponent.vue'
 import DraftListComponent from '@/features/tales/components/DraftListComponent.vue'
 import CreateDraftComponent from './CreateDraftComponent.vue';
+import SvgIcons from '@/components/SvgIcons.vue';
 
 // --- INITIALIZE STORES ---
 const taleStore = useTaleDraftStore();
@@ -116,45 +117,33 @@ function navigateToAside(section: AsideView) {
 
   <div class="editor-aside-header__actions">
 
-    <div class="editor-aside-header__actions-item">
-
-    <button 
+      <button 
       type="button" 
-      class="btn btn--primary"
+      class="editor-aside-header__btn-primary"
       :class="{ 'active': taleStore.currentAsideView === 'list' }"
       @click="navigateToAside('list')"
       title="Back to Drafts"
     >
-      Tales
+      <SvgIcons name="tale" :size="22" /> Tales
     </button>
 
-    </div>
-
-    <div class="editor-aside-header__actions-item">
-      
-    <button 
+      <button 
       type="button" 
-      class="btn btn--primary"
+       class="editor-aside-header__btn-primary"
       :class="{ 'active': taleStore.currentAsideView === 'filter' }"
       @click="navigateToAside('filter')"
     >
-      Filter
+     <SvgIcons name="filter" :size="22" /> Filter
     </button>
 
-    </div>
-
-     <div class="editor-aside-header__actions-item">
-      
-    <button 
+      <button 
       type="button" 
-      class="btn btn--secondary btn--outscribe"
+       class="editor-aside-header__btn-outscribe"
       :class="{ 'active': taleStore.currentAsideView === 'create' }"
       @click="navigateToAside('create')"
     >
       OutScribe
     </button>
-    
-    </div>
 
   </div>
 
@@ -216,6 +205,7 @@ function navigateToAside(section: AsideView) {
                 @load-more="taleStore.loadMoreTales"
                 @retry="taleStore.loadMoreTales">
 
+
               <DraftListComponent 
                 v-for="tale in taleStore.tales" 
                 :key="tale.taleId" 
@@ -274,16 +264,16 @@ function navigateToAside(section: AsideView) {
 
 .editor-aside-header {
   flex: 0 0 auto;
-  height: 56px;
-  padding: 0; /* Remove horizontal padding so items span full width */
+  height: 60px;
+  padding: 0.5rem 0;
   margin-bottom: 1.25rem;
  
   position: sticky;
   top: 0;
   //border-bottom: 1px solid @link-color;
    //box-shadow: var(--box-shadow);
-   border-bottom: 1px solid var(--border-color);
-  background-color: var(--background-color);
+      background-color: @link-background-color;
+
   z-index: 5;
 
   &__actions {
@@ -294,23 +284,74 @@ function navigateToAside(section: AsideView) {
     padding: 0 0.25rem;
       max-width:@min-width;
     margin:0 auto;
+    column-gap: 0.25rem;
    
   }
    column-gap: 0; /* Remove gap so buttons can form a cohesive segment control if desired */
 
-&__actions-item{
+  &__btn-primary{
+    border-radius: 8px;
+    background-color: @link-color;
+    border: 2px solid @link-border-color;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    padding: 0 0.75rem;
+    color: @white-color;
+    column-gap: 0.5rem;
+      width: 33.33%;
+     height: 100%;
 
-      flex: 1 1 0;
-      width: 100%;
-      height: 100%;
-      padding: 0.25rem;
-display: flex;
-align-items: center;
-      & .btn{
-        width: 100%;
+    &:hover {
+      background-color: #273e63;
+      color: @white-color;
+    }
+
+    & svg{
+      stroke-width: 2;
+    }
+
+  }
+
+  
+&__btn-outscribe{
+      background-color: #D99B00; // Swap to #2e4a75 or #f26522 if preferred
+      border: 2px solid @link-border-color;
+      
+      font-weight: 700;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    padding: 0 0.75rem;
+    color: @white-color;
+    color: @link-border-color;
+    column-gap: 0.5rem;
+     border-radius: 8px;
+     width: 33.33%;
+     height: 100%;
+
+      &:hover {
+        background-color: #E6A800;
+        color: @link-border-color;
       }
-   
-}
+
+      &::before {
+        content: "+";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 20px;
+        height: 100%;
+        font-size: 1.6rem;
+        font-weight: inherit;
+        line-height: 1;
+        //margin-top: -0.25rem;
+        color:inherit;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+      }
+    }
 
    
 }

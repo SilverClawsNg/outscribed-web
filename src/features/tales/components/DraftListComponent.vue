@@ -39,11 +39,11 @@ const props = defineProps<Props>()
 
      <div class="draft-list-card__meta">
        
-            <span>
+            <span class="draft-list-card__meta-status">
             {{ TaleStatusDescriptions[tale.status] }}
             </span>
             <span class="divider divider--line"></span>
-        <time class="draft-list-card__date">{{ toRelativeTime(tale.createdAt) }}</time>
+        <time class="draft-list-card__meta-date">{{ toRelativeTime(tale.createdAt) }}</time>
       </div>
 
   </article>
@@ -53,33 +53,41 @@ const props = defineProps<Props>()
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 
-.draft-list-card {
-  width: 100%;
-  height: auto;
-  padding: 0.5rem;
-  //box-shadow: var(--box-shadow);
-  border:1px solid var(--border-color);
-  margin-bottom: 0.5rem;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-  cursor: pointer;
+  .draft-list-card{
+    border-radius: 8px;
+    background-color: @link-color;
+    border: 2px solid @link-border-color;
+    padding: 0.5rem;
+    width: 100%;
+    color: @white-color;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
   user-select: none;
-  background-color: var(--background-color);
-  border-radius: 4px;
+   transition: background-color 0.15s ease, border-color 0.15s ease;
 
- 
- padding: 1rem;
+    &:last-child{
+      margin-bottom: 0;
+    }
+    
+    &:hover {
+      opacity: 0.65;
+      color: @white-color;
+    }
 
-&:hover {
-    background-color: var(--hover-background-color);
-    border-color: var(--surface-border-color);
-  }
+      &--active {
+     background-color: @white-color;
+     color: @link-color;
+      box-shadow: var(--box-shadow);
 
-  
-  &--active {
-     background-color: var(--hover-background-color);
-  }
+      .draft-list-card__title, 
+      .draft-list-card__meta-date, 
+      .draft-list-card__meta-status{
+         color: @link-color;
+      }
 
-  
+    
+      }
+      
   &__meta {
     display: flex;
     align-items: center;
@@ -89,14 +97,21 @@ const props = defineProps<Props>()
    
  }
 
+ &__meta-date,
+ &__meta-status{
+   color: @white-color;
+ }
+
   &__title {
     font-size: 1.2rem;
     line-height:1.6rem;
     text-transform: capitalize;
     font-weight: normal;
     margin-bottom: 0.5rem;
+    color: @white-color;
+  }
+
   }
 
 
-}
 </style>

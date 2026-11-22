@@ -571,6 +571,7 @@ main {
     font-size: 0.7rem;
     text-transform: uppercase;
     border: 1px solid var(--border-color);
+    border: 4px;
 
   // Element: Fixed label on the left
   &__label {
@@ -587,7 +588,8 @@ main {
     width: auto;
     padding: 0.5rem;
     border-radius: 0 4px 4px 0;
-   
+   background-color: var(--heading-text-color);
+   color: var(--background-color);
   }
 }
 
@@ -731,6 +733,15 @@ main {
         border-radius: 50%;
         background: var(--background-color);
         border: 1px solid var(--border-color);
+      }
+
+       &--link{
+        border-top: 2px solid @link-border-color;
+
+        & span{
+          border: 2px solid @link-border-color;
+          background: @link-color;
+        }
       }
 
       &--thick{

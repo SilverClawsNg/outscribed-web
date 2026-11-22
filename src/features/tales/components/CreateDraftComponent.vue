@@ -102,7 +102,7 @@ async function handleFormSubmission() {
             v-model="formData.title" 
             type="text" 
             id="Title" 
-            class="form-field" 
+            class="form-field link-background"  
             placeholder="Title" 
           />
           <span 
@@ -120,7 +120,7 @@ async function handleFormSubmission() {
         </span>
 
         <fieldset :disabled="progressState.type === 'Loading'">
-          <select v-model="formData.category" class="form-field">
+          <select v-model="formData.category" class="form-field link-background" >
             <option value="-1">-- select category --</option>
             <option v-for="item in CategorySelectItems" :key="item.value" :value="item.value">
               {{ item.label }}

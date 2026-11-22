@@ -46,7 +46,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
 
     </div>
 
-    <div class="divider-multi"><span></span></div>
+    <div class="divider-multi divider-multi--link"><span></span></div>
 
     <!-- 3 Core Section Buttons -->
     <div class="draft-detail__menu">
@@ -111,7 +111,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
         </div>
       </button>
 
-       <div class="divider-multi"><span></span></div>
+       <div class="divider-multi divider-multi--link"><span></span></div>
 
          <button 
         type="button" 
@@ -165,7 +165,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
     </template>
 
 
-       <div class="divider-multi"><span></span></div>
+       <div class="divider-multi divider-multi--link"><span></span></div>
 
         <button 
         type="button" 
@@ -212,7 +212,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
         </div>
       </button>
 
-       <div class="divider-multi"><span></span></div>
+       <div class="divider-multi divider-multi--link"><span></span></div>
 
          <button 
         type="button" 
@@ -297,7 +297,8 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
   width: 100%;
   height: auto;
   transition: background-color 0.15s ease, border-color 0.15s ease;
-  background-color:var(--background-color);
+  background-color: @link-background-color;
+  color: @white-color;
 
  &__header-meta {
     display: flex;
@@ -313,6 +314,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
 
     & time{
         font-size: 0.85rem;
+        color: @white-color;
     }
 }
 
@@ -327,40 +329,50 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
     text-transform: capitalize;
     padding: 0.5rem 0;
     font-weight: normal;
-  }
-  
-  &__menu {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    color: @white-color;
   }
 
-  &__item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 2rem;
-    width: 100%;
-    padding: 0.75rem 0.5rem;
-    //border: 1px solid var(--border-color);
-    margin-bottom: 0.25rem;
-    cursor: pointer;
-    text-align:left;
-    transition: all 0.15s ease;
-    font-weight:normal;
-    //color:var(--editor-link-color);
-     border-radius: 4px;
   
-    &:hover,
-    &--active {
-      background-color: var(--light-background-color);
+&__menu{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+}
+
+  &__item{
+    border-radius: 8px;
+    background-color: @link-color;
+    border: 2px solid @link-border-color;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+     column-gap: 0.5rem;
+    
+    padding: 0 0.75rem;
+    color: @white-color;
+    
+    &:hover {
+      background-color: #273e63;
+      color: @white-color;
     }
 
-     &--active {
-      color: var(--text-color);
+      &--active {
+     background-color: @white-color;
+     color: @link-color;
       pointer-events:none;
+
+      .draft-detail__item-title{
+         color: @link-color;
       }
-    
+      }
+
+    & svg{
+      stroke-width: 2;
+    }
+
   }
 
    &__item-meta{
@@ -371,8 +383,14 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
   }
 
    &__item-title{
-   font-size:1rem;
+    color: @white-color;
   }
+
+  .form-message-icon{
+     color: @white-color;
+  }
+
+
 
 
 }

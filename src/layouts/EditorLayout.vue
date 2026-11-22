@@ -114,7 +114,7 @@ onUnmounted(() => {
   min-height: 100vh;
   margin: 0 auto;
   position: relative;
-  background-color: var(--background-color);
+  background-color: @link-background-color;
 
   /* 1. Prevent horizontal content overflow from being panned */
   //overflow-x: hidden; 
@@ -156,13 +156,13 @@ onUnmounted(() => {
   }
 
   @media @laptop, @desktop {
-    border-left: 1px solid var(--border-color);
+    //border-left: 1px solid @link-border-color;
    height: 100vh;// Pushes standard document flow down cleanly
   }
    
     z-index: 1;
-    //border-right: 1px solid var(--border-color);
-    background-color: var(--background-color);
+    //border-right: 1px solid @link-border-color;
+    background-color: @link-background-color;
     overflow-y: auto;
 
     @media @phone, @phablet, @tablet{
@@ -183,7 +183,7 @@ onUnmounted(() => {
   
   /* Firefox */
   scrollbar-width: thin;
-  scrollbar-color: var(--border-color, #cbd5e1) transparent;
+  scrollbar-color: var(--border-color) transparent;
 
   /* WebKit (Chrome, Safari, Edge) */
   &::-webkit-scrollbar {
@@ -195,11 +195,11 @@ onUnmounted(() => {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: var(--border-color, #cbd5e1);
+    background-color: var(--border-color);
     border-radius: 3px;
 
     &:hover {
-      background-color: var(--text-muted, #94a3b8);
+      background-color: var(--muted-text-color);
     }
   }
     
@@ -239,9 +239,9 @@ onUnmounted(() => {
     //flex: 0 0 50px;
     width: 50px;
     position: fixed;
-      border-left: 1px solid var(--border-color);
+      border-left: 2px solid @link-border-color;
     //top: @body-top-offset;
-     border-right: 1px solid var(--border-color);
+     //border-right: 1px solid @link-border-color;
 
       @media @phone{
       //flex: 0 0 40px;
@@ -264,7 +264,7 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--background-color);
+    background-color: @link-background-color;
     
 
   }

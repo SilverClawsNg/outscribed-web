@@ -46,7 +46,7 @@ async function applyFilter() {
             v-model="filterStore.keyword" 
             type="text" 
             id="Keyword" 
-            class="form-field" 
+            class="form-field link-background"  
             placeholder="Keyword"  
           />
         </fieldset>
@@ -57,7 +57,7 @@ async function applyFilter() {
          
         <h3>Filter</h3>
         <fieldset>
-                <select v-model="filterStore.status" class="form-field">
+                <select v-model="filterStore.status" class="form-field link-background" >
                     <option value="-1">-- by status --</option>
                     <option v-for="item in TaleStatusSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
@@ -65,7 +65,7 @@ async function applyFilter() {
                 </select>
             </fieldset>
              <fieldset>
-                <select v-model="filterStore.category" class="form-field">
+                <select v-model="filterStore.category" class="form-field link-background" >
                     <option value="-1">-- by category --</option>
                     <option v-for="item in CategorySelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
@@ -73,7 +73,7 @@ async function applyFilter() {
                 </select>
             </fieldset>
              <fieldset>
-                <select v-model="filterStore.country" class="form-field">
+                <select v-model="filterStore.country" class="form-field link-background" >
                     <option value="-1">-- by country --</option>
                     <option v-for="item in CountrySelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
@@ -87,7 +87,7 @@ async function applyFilter() {
          
         <h3>Order</h3>
         <fieldset>
-                <select v-model="filterStore.sort"  class="form-field">
+                <select v-model="filterStore.sort"  class="form-field link-background" >
                     <option value="-1">-- sort by --</option>
                     <option v-for="item in SortTypeSelectItems" :key="item.value" :value="item.value">
                     {{ item.label }}
@@ -106,6 +106,24 @@ async function applyFilter() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
+@import "@/assets/css/variables.less";
 @import "@/assets/css/form-input.less";
+
+ .form-field {
+  background-color: @white-color;
+  color: @white-color;
+  border:none;
+
+ }
+
+ label{
+  color: @white-color;
+ }
+
+ .form-container .form-filter-section h3 {
+  color: @white-color;
+  }
+
+
 </style>
