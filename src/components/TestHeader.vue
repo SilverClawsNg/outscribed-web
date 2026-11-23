@@ -253,7 +253,6 @@ function handleSearchClick() {
   margin: 0 auto;
   display: flex;
   padding: 0.5rem 0;
- height:60px;
 
    @media @smallDevice {
     height: auto;
@@ -361,7 +360,7 @@ function handleSearchClick() {
     border: 2px solid @link-border-color;
     display: flex;
     align-items:center;
-    
+    column-gap: 0.5rem;
     padding: 0 0.75rem;
     color: @white-color;
     
@@ -369,20 +368,18 @@ function handleSearchClick() {
      @media @smallDevice {
     height: 60px;
      width: 100%;
-     row-gap: 0.5rem;
 
     }
 
     @media @largeDevice{
      height: 100%;
       width: 160px;
-      column-gap: 0.5rem;
+      
       justify-content: center;
     }
 
     &:hover {
-      background-color: #273e63;
-      color: @white-color;
+     opacity:0.65;
     }
 
     & svg{
@@ -406,7 +403,7 @@ function handleSearchClick() {
      border-radius: 8px;
 
          @media @smallDevice {
-    height: 40px;
+    height: 50px;
      width: auto;
     }
 
