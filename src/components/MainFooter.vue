@@ -138,8 +138,6 @@ function handleSavedDraftsClick() {
 
 .site-footer {
   
-  
- 
   padding-top: 58px;
   font-size: 0.9rem;
   position:relative;
@@ -163,8 +161,8 @@ function handleSavedDraftsClick() {
   width: 100%;
   height: auto;
   padding: 58px 0 2.5rem 0;
-  border-top: 1px solid #051125;
-  background-color: #10203a;
+  border-top: 1px solid @link-border-color;
+  background-color: @link-color;
    position: relative;
 }
  
@@ -205,13 +203,13 @@ function handleSavedDraftsClick() {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid #051125;
+       border-bottom: 1px solid @link-border-color;
     }
      @media @tablet {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid #051125;
+       border-bottom: 1px solid @link-border-color;
     }
 
     @media @laptop {

@@ -393,7 +393,7 @@ function handleSearchClick() {
 .outscribe-link {
       background-color: #D99B00; // Swap to #2e4a75 or #f26522 if preferred
       border: 2px solid @link-border-color;
-      
+
       font-weight: 700;
     display: flex;
     align-items:center;

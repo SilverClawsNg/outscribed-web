@@ -226,7 +226,7 @@ onUnmounted(() => {
   }
 
    @media @laptop, @desktop {
-    border-right: 1px solid var(--border-color);
+    border-right: 1px solid var(--surface-border-color);
     min-height: 100vh;
   }
     

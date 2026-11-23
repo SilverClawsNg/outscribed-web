@@ -355,8 +355,7 @@ const activeTale = computed(() => taleStore.activeTale as TaleDraftListDto)
     color: @white-color;
     
     &:hover {
-      background-color: #273e63;
-      color: @white-color;
+     opacity: 0.65;
     }
 
       &--active {
