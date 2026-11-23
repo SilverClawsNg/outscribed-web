@@ -113,7 +113,7 @@ const uiMeta = computed(() => getEngagementMetadata(props.writer.creator.engagem
 
 .writer-card {
   width: 100%;
-  height: auto;
+height: auto;
  border-radius: 21px;
  display: flex;
  flex-direction: column;

@@ -2,55 +2,181 @@
   <div class="legal-document">
     <h1 class="page-title">Editorial, Satire &amp; Liability Disclaimer</h1>
     <p class="last-updated">Last Updated: October 2026</p>
+<h2>1. General Nature of Content</h2>
 
-    <h2 class="modal-page-heading">1. General Nature of Content</h2>
-    <p>
-      OutScribed Tales are informed speculative narratives, allegories, alternate-reality explorations, and creative dramatizations designed to illuminate real-world facts, laws, social policies, and current events. They are works of narrative commentary and artistic fiction, and must be read as such. For verified news articles, factual data, and primary sources that inspired a specific Tale, please refer to the Watchlist attached to the piece.
-    </p>
+<p>
+OutScribed is a platform for exploring ideas through imagined realities.
+</p>
 
-    <h2 class="modal-page-heading">2. Not Professional Advice</h2>
-    <p>
-      The content published on OutScribed—including all Tales, Insights, Comments, and associated source links—is provided strictly for educational, informational, and conversational purposes. Nothing on this platform constitutes, or should be construed as:
-    </p>
-    <ul>
-      <li>
-        <strong>Legal Advice:</strong> Reading a Tale or Insight does not establish an attorney-client relationship. Consult a licensed legal professional in your jurisdiction for actual legal matters.
-      </li>
-      <li>
-        <strong>Medical Advice:</strong> No narrative should replace professional medical diagnosis, treatment, or advice.
-      </li>
-      <li>
-        <strong>Engineering, Financial, or Technical Advice:</strong> Speculative solutions to infrastructure, financial systems, or technical challenges are illustrative narratives and must not be used as actionable engineering, financial, or technical guidance.
-      </li>
-    </ul>
+<p>
+The content published on OutScribed, including <strong>tales</strong>, <strong>reality checks</strong>, comments, and discussions, may take the form of speculative narratives, alternate histories, future projections, allegories, satire, fictionalized reconstructions, thought experiments, and other creative works designed to examine real-world issues, experiences, events, systems, and possibilities.
+</p>
 
-    <h2 class="modal-page-heading">3. Character Attribution &amp; Depictions</h2>
-    <p>
-      While Tales may reference public policies, institutional bodies, or historical events, characters portrayed within speculative narratives are fictionalized representations created to voice specific perspectives or explore alternate outcomes. Unless explicitly stated in an accompanying factual Insight or Watchlist link:
-    </p>
-    <ul>
-      <li>
-        Any dialogue, inner thoughts, or specific actions attributed to individuals—living, dead, or fictional—within a Tale are artistic constructs used solely for narrative commentary.
-      </li>
-      <li>
-        Statements made by characters in a Tale do not represent the actual statements, beliefs, or personal positions of real-world figures, OutScribed, or the author.
-      </li>
-    </ul>
+<p>
+Stories on OutScribed should be read as works of narrative exploration rather than statements of objective fact.
+</p>
 
-    <h2 class="modal-page-heading">4. No Intent to Harm or Defame</h2>
-    <p>
-      OutScribed strictly enforces structural guidelines requiring stories to focus on issues, policies, proposals, and systemic actions—never on personal attacks against individuals. Content on this platform is not published with the intent to defame, harass, intimidate, or cause harm (financial, psychological, reputational, or physical) to any person, living or dead, or any protected group.
-    </p>
+<p>
+OutScribed recognizes that some ideas, perspectives, experiences, and questions are easier to examine through story than through direct commentary. Fiction is therefore used as a medium of exploration, reflection, and discussion.
+</p>
 
-    <h2 class="modal-page-heading">5. Limitation of Liability</h2>
-    <p>
-      Under no circumstances shall OutScribed, its operators, developers, affiliates, or individual content creators be held liable for any direct, indirect, incidental, special, or consequential damages, losses, or misunderstandings resulting from the use, interpretation, or reliance upon any narrative, opinion, or link published on this platform.
-    </p>
+<p>
+Where available, readers are encouraged to consult the accompanying <strong>reality check</strong> for the real-world information, sources, events, or questions that inspired a particular Tale.
+</p>
 
-    <h2 class="modal-page-heading">6. Non-Endorsement &amp; Reader Responsibility</h2>
-    <p>
-      OutScribed does not endorse every viewpoint expressed in user-generated Tales or Insights. Readers are encouraged to think critically, consult primary sources via the attached Watchlist, and form their own independent conclusions.
-    </p>
+<hr>
+
+<h2>2. Not Professional Advice</h2>
+
+<p>
+The content published on OutScribed is provided strictly for educational, informational, conversational, and creative purposes.
+</p>
+
+<p>
+Nothing on this platform constitutes, or should be construed as:
+</p>
+
+<h3>Legal Advice</h3>
+
+<p>
+Reading a Tale, Insight, Reality Check, comment, or discussion does not establish an attorney-client relationship. Consult a qualified legal professional for legal advice specific to your circumstances.
+</p>
+
+<h3>Medical or Mental Health Advice</h3>
+
+<p>
+No narrative, comment, Insight, or discussion should be used as a substitute for professional medical, psychological, psychiatric, therapeutic, or mental-health care. Stories may explore personal experiences and human emotions, but they are not treatment, diagnosis, or professional guidance.
+</p>
+
+<h3>Financial, Engineering, Technical, or Professional Advice</h3>
+
+<p>
+Proposals, theories, policy models, technical solutions, infrastructure concepts, or financial scenarios presented through stories are illustrative explorations only and should not be relied upon as professional advice or implementation guidance.
+</p>
+
+<hr>
+
+<h2>3. Character Attribution, Perspectives & Fictionalization</h2>
+
+<p>
+OutScribed allows writers to explore ideas through characters, alternate realities, and fictional perspectives.
+</p>
+
+<p>
+As a result:
+</p>
+
+<ul>
+    <li>Characters may express viewpoints that differ from those of the author.</li>
+    <li>A single Tale may contain multiple conflicting viewpoints, ideologies, or interpretations.</li>
+    <li>The inclusion of a viewpoint within a Tale does not imply endorsement by the author, OutScribed, or its operators.</li>
+</ul>
+
+<p>
+Unless explicitly stated otherwise:
+</p>
+
+<ul>
+    <li>Dialogue, inner thoughts, personal reflections, actions, and motivations attributed to any character are narrative constructs created for storytelling and exploration.</li>
+    <li>Statements made by fictionalized versions of real people do not represent the actual statements, beliefs, intentions, or positions of those individuals.</li>
+    <li>Characters should not be assumed to represent the author's personal beliefs, experiences, identity, or life history.</li>
+</ul>
+
+<p>
+Readers are encouraged to evaluate the ideas presented in a Tale on their own merits rather than treating any individual character as a direct proxy for the author.
+</p>
+
+<hr>
+
+<h2>4. Discussion of Ideas, Systems & Experiences</h2>
+
+<p>
+OutScribed exists to encourage thoughtful exploration of ideas.
+</p>
+
+<p>
+Tales may address:
+</p>
+
+<ul>
+    <li>Public policy</li>
+    <li>Law and legal reasoning</li>
+    <li>Historical events</li>
+    <li>Scientific theories</li>
+    <li>Social systems</li>
+    <li>Personal experiences</li>
+    <li>Future possibilities</li>
+    <li>Cultural questions</li>
+</ul>
+
+<p>
+Content should focus on ideas, consequences, systems, choices, experiences, and perspectives rather than personal attacks against individuals or groups.
+</p>
+
+<p>
+Writers are encouraged to explore, question, critique, reimagine, and speculate. Readers are encouraged to engage with those ideas in good faith.
+</p>
+
+<hr>
+
+<h2>5. No Intent to Harm or Defame</h2>
+
+<p>
+OutScribed prohibits content whose primary purpose is to harass, threaten, target, defame, intimidate, or maliciously injure individuals or groups.
+</p>
+
+<p>
+While Tales may critique decisions, policies, actions, proposals, institutions, historical events, or public conduct, such critiques are intended as commentary, exploration, or discussion rather than factual accusations.
+</p>
+
+<p>
+The publication of a Tale should not be interpreted as a factual assertion regarding the conduct, beliefs, character, motives, or intentions of any real person unless independently supported by verifiable sources.
+</p>
+
+<hr>
+
+<h2>6. Limitation of Liability</h2>
+
+<p>
+To the fullest extent permitted by applicable law, OutScribed, its operators, developers, administrators, moderators, affiliates, and contributors shall not be liable for any direct, indirect, incidental, consequential, special, or punitive loss, damage, injury, misunderstanding, or reliance arising from:
+</p>
+
+<ul>
+    <li>Reading or interpreting content published on the platform;</li>
+    <li>Participating in discussions;</li>
+    <li>Acting upon ideas presented within a Tale, Insight, Reality Check, or comment;</li>
+    <li>Reliance upon fictional, speculative, satirical, or hypothetical scenarios.</li>
+</ul>
+
+<p>
+All content is consumed at the reader's own discretion and risk.
+</p>
+
+<hr>
+
+<h2>7. Non-Endorsement & Reader Responsibility</h2>
+
+<p>
+OutScribed does not endorse every opinion, interpretation, theory, perspective, or conclusion expressed by its users.
+</p>
+
+<p>
+Readers are responsible for evaluating information critically, consulting primary sources where appropriate, and drawing their own conclusions.
+</p>
+
+<p>
+The presence of an idea on OutScribed does not constitute validation, endorsement, certification, or proof of its accuracy.
+</p>
+
+<p>
+Tales are invitations to think, question, imagine, and discuss.
+</p>
+
+<p>
+They are not declarations of absolute truth.
+</p>
+
+
   </div>
 </template>
 
