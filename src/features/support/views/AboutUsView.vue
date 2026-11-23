@@ -68,20 +68,104 @@ onMounted(() => {
       </div>
       
 <div class="rich-text">
-  <h1>What is OutScribed?</h1>
-   <p>OutScribed is a story-driven publishing platform where real-world situations are explored through imaginative fiction. By stepping into hypothetical scenarios and third-person perspectives, writers can unpack complex truths, ask bold 'what-if?' questions, and explore human experiences without the constraints of personal inhibitions & traits.</p>
-   <h2>The Anatomy of a Tale</h2>      
-   <p>Stories on OutScribed, known as <strong>tales</strong>, operates at the intersection of imagination and logic:</p>
-          <ul><li><strong>The Narrative (The Fiction):</strong> Immersive stories, dramatic scenarios, and character-driven plots inspired by real-world trends, historical pivots, or current events.</li>
-            <li><strong>The Reality Check (The Anchor):</strong> Real-world sources or background facts that reveal the exact truth or event that sparked the story.</li></ul>
-           <h2>The OutScribed Code: Creative Freedom with Integrity</h2>   
-          <p>OutScribed uses narrative storytelling to illuminate reality from new angles. Quality and trust are maintained through three guiding principles:</p>
-          <ul><li><strong>Anchored in Reality:</strong> Stories are grounded in plausible logic, real human dynamics, and verifiable events—never aimless sensationalism.</li>
-            <li><strong>Exploration Over Agendas:</strong> Focus are placed on systems, societal shifts, and human choices rather than launching personal attacks or targeted harassment.</li>
-            <li><strong>Freedom Through Perspective:</strong> Storytelling allows creators to address sensitive, complex, or taboo topics safely and constructively by focusing on the narrative rather than personal identity.</li>
-          </ul>
  
-          
+<h2>What is OutScribed?</h2>
+
+<p>
+OutScribed is a platform for exploring ideas through imagined realities.
+</p>
+
+<p>
+Whether you are questioning a policy, reimagining a system, simplifying a complex solution, offering a dissenting judgment, exploring a historical mystery, or expressing thoughts that are difficult to share directly, OutScribed allows you to examine those ideas through short stories.
+</p>
+
+
+<blockquote>
+    The story is the vehicle. The idea is the destination.
+</blockquote>
+
+
+<p>
+By stepping into alternate realities, future timelines, historical reconstructions, and fictional perspectives, writers can explore possibilities, challenge assumptions, and present new ways of thinking without being limited by conventional formats.
+</p>
+
+<h2>The Anatomy of a Tale</h2>
+
+<p>
+Stories on OutScribed, known as <strong>Tales</strong>, operate at the intersection of imagination and reasoning.
+</p>
+
+<h3>The Narrative (The Exploration)</h3>
+
+<p>
+A short story that places an idea inside a lived reality.
+</p>
+
+<p>
+The narrative may explore:
+</p>
+
+<ul>
+    <li>Alternative perspectives</li>
+    <li>Future consequences</li>
+    <li>Historical mysteries</li>
+    <li>Speculative theories</li>
+    <li>Redesigned systems</li>
+    <li>Personal experiences</li>
+    <li>Dissenting viewpoints</li>
+</ul>
+
+<p>
+Rather than simply describing an idea, the narrative allows readers to experience its implications.
+</p>
+
+<h3>The Reality Check (The Anchor)</h3>
+
+<p>
+A supporting section that connects the narrative to the real world.
+</p>
+
+<p>
+Reality Checks may contain:
+</p>
+
+<ul>
+    <li>Facts</li>
+    <li>Research</li>
+    <li>Historical records</li>
+    <li>News events</li>
+    <li>Legal precedents</li>
+    <li>Technical references</li>
+    <li>Personal context</li>
+</ul>
+
+<p>
+The purpose is not to prove the story is true, but to reveal the real-world idea that inspired it.
+</p>
+
+<h2>The OutScribed Philosophy</h2>
+
+<p>
+OutScribed was built on a simple belief:
+</p>
+
+<blockquote>
+    Some ideas are easier to understand, discuss, and refine when they are experienced through related stories.
+</blockquote>
+
+<p>
+Stories allow us to test possibilities before embracing them, examine consequences before creating them, and understand perspectives before accepting or rejecting them.
+</p>
+
+<h2>The OutScribed Code</h2>
+
+<ul>
+  <li><strong>Anchored in Reality</strong>: Even the most imaginative tales should remain grounded in recognizable human behavior, plausible reasoning, or real-world inspiration.</li>
+<li><strong>Exploration Over Certainty</strong>: OutScribed is a place to explore ideas, not declare final answers. Tales are invitations to think, question, and discuss.</li>
+<li><strong>Eyes On The Goal</strong>: Critique systems, decisions, assumptions, and outcomes. Keep the emphasis on ideas rather than personal attacks.</li>
+<li><strong>Freedom Through Narrative</strong>: Stories provide a safe distance between the writer and the subject. They allow creators to explore sensitive, unconventional, or deeply personal topics while retaining control over how those experiences are expressed.</li>
+</ul>
+
 </div>
 
    <!-- Editorial Jump Trigger -->

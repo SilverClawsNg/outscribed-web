@@ -194,8 +194,6 @@ async function setSort(sort: SortType) {
           Newest
         </button>
 
-        <span class="footer-divider">|</span>
-
         <!-- Quick Sort: Oldest -->
         <button 
           type="button" 
@@ -205,8 +203,6 @@ async function setSort(sort: SortType) {
         >
           Oldest
         </button>
-
-        <span class="footer-divider">|</span>
 
         <!-- More Filters Modal Trigger -->
         <button 

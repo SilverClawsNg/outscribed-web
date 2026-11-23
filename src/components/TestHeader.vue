@@ -236,6 +236,7 @@ function handleSearchClick() {
     display: flex;
     align-items:center;
     column-gap: 0.25rem;
+    text-transform: capitalize;
 
     & svg{
       stroke-width: 1.5;

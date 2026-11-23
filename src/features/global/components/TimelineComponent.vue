@@ -48,12 +48,11 @@ const contentTypeClass = computed(() => {
         </RouterLink>
     </section>
 
-    <section class="timeline-card__contents">
-      <TimelineActivityDispatcher 
+     <TimelineActivityDispatcher 
         :timeline="timeline" 
         @open-profile="emitOpenProfile" 
       />
-    </section>
+  
   </article>
 </template>
 
@@ -74,6 +73,7 @@ const contentTypeClass = computed(() => {
     justify-content: space-between;
 
   }
+
 
   &__date {
     text-transform: capitalize;
@@ -98,16 +98,7 @@ const contentTypeClass = computed(() => {
 
       }
 
-  &__contents {
+   
 
-  & a,  & button {
-      font-weight: 900;
-      text-decoration: underline;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
 }
 </style>
