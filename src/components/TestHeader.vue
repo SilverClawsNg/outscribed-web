@@ -66,14 +66,12 @@ function handleSearchClick() {
           </router-link>
         </template>
         <template v-else>
-          <p class="sub-nav__auth-prompt">
           <router-link to="/login" class="sub-nav__link" @click="isMenuOpen = false">
             <SvgIcons name="login" :size="18" />  Log In 
           </router-link>
           <router-link to="/register" class="sub-nav__link" @click="isMenuOpen = false">
             <SvgIcons name="register" :size="18" />  Sign Up
           </router-link>
-          </p>
         </template>
 
 
@@ -255,6 +253,7 @@ function handleSearchClick() {
   margin: 0 auto;
   display: flex;
   padding: 0.5rem 0;
+ height:60px;
 
    @media @smallDevice {
     height: auto;
@@ -271,6 +270,7 @@ function handleSearchClick() {
     align-items: center;
     gap: 2rem;
      justify-content: space-between;
+    
   }
 
   &__brand-slot{
@@ -402,12 +402,11 @@ function handleSearchClick() {
     justify-content: center;
     padding: 0 0.75rem;
     color: @white-color;
-    color: @link-border-color;
     column-gap: 0.5rem;
      border-radius: 8px;
 
          @media @smallDevice {
-    height: 60px;
+    height: 40px;
      width: auto;
     }
 
@@ -418,8 +417,9 @@ function handleSearchClick() {
     }
 
       &:hover {
-        background-color: #E6A800;
-        color: @link-border-color;
+        //background-color: #E6A800;
+        //color: @link-border-color;
+        opacity:0.65;
       }
 
       &::before {

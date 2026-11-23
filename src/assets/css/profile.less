@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   row-gap: 0.5rem;
- box-shadow: var(--button-shadow);
  border-radius: 12px;
  border: 1px solid var(--border-color);
 
@@ -52,6 +51,16 @@
     font-size: 1.3rem;
     font-weight: 600;
     line-height: 1.2;
+    
+      &:before {
+        color: var(--heading-text-color);
+    }
+
+    &:hover {
+        &:before {
+            color: var(--hover-color);
+        }
+    }
   }
 
    &__date {
@@ -177,7 +186,7 @@
   .double-update{
     border-radius: 9999px;
     border: 1px solid var(--border-color);
-    //background-color: var(--surface-background-color);
+    background-color: @link-background-color;
     padding: 1px;
     width: auto;
     display: flex;
@@ -186,6 +195,7 @@
 
     & .change-password{
       padding: 0 0.5rem;
+      color: @white-color;
     }
 
     & .btn.btn--primary{

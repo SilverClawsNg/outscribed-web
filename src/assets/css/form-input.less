@@ -28,57 +28,20 @@
 
 
   fieldset {
-  
     position: relative;
     width: 100%;
     margin-bottom: 0.5rem;
     background-color: inherit;
-    
     border-radius:4px;
-
    
     &.with-ticks {
       flex-direction: column;
       align-items: flex-start;
       row-gap: 0.5rem;
-      
-    }
-
-    &.has-username{
-        display: flex;
-        column-gap: 0.1rem
-
     }
 
     &.no-borders{
       padding: 1rem 0;
-    }
-
- 
- 
-
-    &.password-box {
-      position: relative;
-
-      input.form-field {
-        padding-right: 30px;
-      }
-
-      .show-password {
-        position: absolute;
-        top: 0;
-        right: 5px;
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        margin-left: 5px;
-        cursor: pointer;
-
-        &:hover::before {
-          color: var(--hover-color);
-        }
-      }
     }
 
  &.social {
@@ -151,6 +114,49 @@
       }
     }
 
+    
+  
+  .input-wrapper{
+      position:relative;
+
+      & .form-field.input-password{
+        padding-right: 3.2rem;
+      }
+
+       & .form-field.input-username{
+        padding-left: 2.1rem;
+      }
+    }
+
+    
+  .show-password {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0.5rem;
+        z-index: 100;
+      
+        height: auto;
+        cursor: pointer;
+
+        &:hover::before {
+          color: var(--hover-color);
+        }
+      }
+
+  .at.username {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 1rem;
+        z-index: 100;
+        
+        &.at:before {
+        color: inherit;
+        }
+      
+      }
+
 
  // --- Form Controls (Input, Textarea, Select) ---
   .form-field {
@@ -159,8 +165,6 @@
     font-family: inherit;
     font-size: 1rem;
     line-height: 1.5; // Raised from 1 to give descenders (p, g, y) vertical headroom
-   
-   
     border: none;
     outline: none;
     opacity: 1;
@@ -248,15 +252,6 @@
     }
   }
   
-  .input-wrapper{
-      position: relative;
-      border: 1px solid var(--border-color);
-      box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 2px 0px inset;
-      padding: 0 0.6rem;
-      display: flex;
-      border-radius: 6px;
-      column-gap: 0.1rem;
-  }
 
   // --- Placeholders & Labels ---
   ::placeholder {

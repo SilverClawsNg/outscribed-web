@@ -197,7 +197,7 @@ async function setSort(sort: SortType) {
         <!-- Quick Sort: Newest -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: commentFilterStore.sort === '-1' || commentFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
@@ -209,7 +209,7 @@ async function setSort(sort: SortType) {
         <!-- Quick Sort: Oldest -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: commentFilterStore.sort === 'LeastRecent' }"
           @click="setSort('LeastRecent')"
         >

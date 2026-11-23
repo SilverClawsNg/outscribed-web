@@ -155,7 +155,9 @@
     align-items:center;
     justify-content:center;
     margin-top: 0.75rem;
-    &:hover { background-color: @link-alt-color; color: @white-color; }
+    &:hover { 
+      opacity:0.65; 
+      color: @white-color; }
     &:disabled { opacity: 0.6; cursor: not-allowed; }
   }
 
@@ -173,7 +175,7 @@
       color: @link-color;
 
       &:hover {
-        color:@link-alt-color;
+         opacity:0.65;
       }
     }
   }
@@ -195,7 +197,6 @@
   }
 
   }
-
   
 &__providers {
   display: flex;
@@ -213,7 +214,7 @@
     font-size: 0.95rem;
     cursor: pointer;
     font-weight: normal;
-    &:hover { background-color: var(--light-background-color); color: @link-color; }
+    &:hover {  opacity:0.65; }
     img { width: 20px; height: 20px; }
   }
 }

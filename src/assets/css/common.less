@@ -501,7 +501,7 @@ main {
   &__inner {
     width: @min-width;
     max-width: calc(100% - 20px);
-    background-color: var(--heading-text-color);
+    background-color: @link-background-color;
     border-radius: 99999px;
     //backdrop-filter: blur(8px);
     margin: 0 auto;
@@ -519,7 +519,7 @@ main {
   border: none;
   font-size: 0.8375rem;
   font-weight: 500;
-  color: var(--background-color);
+  color: @white-color;
   padding: 0.25rem 0.75rem;
   display: inline-flex;
   align-items: center;
@@ -527,8 +527,9 @@ main {
   width: 100%;
   height: 100%;
   justify-content: center;
-  border-right: 2px solid var(--border-color);
-
+  border-right: 2px solid @link-border-color;
+  font-weight: 600;
+  
   & svg{
     stroke-width: 2;
   }
@@ -543,14 +544,13 @@ main {
   }
 
   &:hover {
-    color: var(--heading-text-color);
-    background-color: var(--surface-background-color);
+    opacity: 0.65;
   }
 
   &.active {
     pointer-events: none;
-    color: var(--heading-text-color);
-    background-color: var(--surface-background-color);
+    background-color: @link-color;
+    color: @white-color;
   }
 
   &--more {
@@ -579,8 +579,8 @@ main {
     padding: 0.5rem;
     border-radius: 4px 0 0 4px;
     border-right: 1px solid var(--border-color);
-    background-color: var(--surface-background-color);
-    
+    background-color: @link-light-color;
+    color: @black-color;
   }
 
   // Element: Status value on the right
@@ -588,8 +588,19 @@ main {
     width: auto;
     padding: 0.5rem;
     border-radius: 0 4px 4px 0;
-   background-color: var(--heading-text-color);
-   color: var(--background-color);
+   color: @black-color;
+
+   &--info{
+      background-color: @success-background-color;
+   }
+
+   &--warning{
+      background-color: @warning-background-color;
+   }
+
+   &--danger{
+      background-color: @danger-background-color;
+   }
   }
 }
 

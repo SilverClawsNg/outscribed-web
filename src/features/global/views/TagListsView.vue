@@ -202,7 +202,7 @@ onUnmounted(() => {
         <!-- Quick Sort: Newest -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: tagFilterStore.sort === 'MostPopular' }"
           @click="setSort('MostPopular')"
         >
@@ -214,7 +214,7 @@ onUnmounted(() => {
         <!-- Quick Sort: Oldest -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: tagFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >

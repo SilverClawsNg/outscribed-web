@@ -200,7 +200,7 @@ const countryTales = computed(() => {
         <!-- 1. A-Z Sort -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: currentSort === 'alphabetical-asc' }"
           @click="setSort('alphabetical-asc')"
           title="Alphabetical A-Z"
@@ -211,7 +211,7 @@ const countryTales = computed(() => {
         <!-- 2. Z-A Sort -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: currentSort === 'alphabetical-desc' }"
           @click="setSort('alphabetical-desc')"
           title="Alphabetical Z-A"
@@ -222,7 +222,7 @@ const countryTales = computed(() => {
         <!-- 3. Most Popular (Up Arrow / Highest Tales) -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: currentSort === 'popularity-desc' }"
           @click="setSort('popularity-desc')"
           title="Most Popular"
@@ -234,7 +234,7 @@ const countryTales = computed(() => {
         <!-- 4. Least Popular (Down Arrow / Lowest Tales) -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: currentSort === 'popularity-asc' }"
           @click="setSort('popularity-asc')"
           title="Least Popular"

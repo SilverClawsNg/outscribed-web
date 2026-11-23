@@ -530,10 +530,6 @@ function handleEditContactClick(platform: ContactType) {
 
 </div>
 
- <header class="profile-section-header profile-section-header--no-margin">
-     <h2>Account Status</h2>
-    </header>
-
 <footer :class="['profile-footer', `profile-footer--${AccountStatusClass[profile.status]}`]">
  
   <div class="profile-footer__details">
@@ -616,12 +612,13 @@ function handleEditContactClick(platform: ContactType) {
   align-items: flex-start;
   gap: 1.25rem;
   padding: 1.5rem;
-  background-color: var(--light-background-color);
   border-radius: 0 0 12px 12px;
   font-size: 0.95rem;
   flex-direction: column;
   gap: 1rem;
-  margin-top: -0.5rem;
+  margin-top: 0.75rem;
+  padding: top 0.5rem;
+  border-top: 1px solid var(--border-color);
 
   &__icon-wrapper {
     display: flex;

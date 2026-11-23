@@ -323,16 +323,16 @@ function navigateToAside(section: AsideView) {
     align-items:center;
     justify-content: center;
     padding: 0 0.75rem;
-    color: @white-color;
+    
     color: @link-border-color;
+    color: @white-color;
     column-gap: 0.5rem;
      border-radius: 8px;
      width: 33.33%;
      height: 100%;
 
       &:hover {
-        background-color: #E6A800;
-        color: @link-border-color;
+       opacity:0.65;
       }
 
       &::before {

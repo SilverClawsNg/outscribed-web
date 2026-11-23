@@ -55,15 +55,18 @@ function applyFilter() {
             placeholder="Keyword"  
           />
         </fieldset>
-          <fieldset class="has-username">
-             <span class="at-symbol" aria-hidden="true">@</span>
+          <fieldset>
+          <div class="input-wrapper">
+          <span class="username at" aria-hidden="true"></span>
           <input 
             v-model="filterStore.username" 
             type="text" 
             id="Username" 
-            class="form-field" 
+            class="form-field input-username" 
             placeholder="Username"  
           />
+          </div>
+        
         </fieldset>
       </section>
 

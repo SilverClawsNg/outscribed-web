@@ -267,7 +267,7 @@ onUnmounted(() => {
         <!-- Quick Sort: Newest -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: taleFilterStore.sort === '-1' || taleFilterStore.sort === 'MostRecent' }"
           @click="setSort('MostRecent')"
         >
@@ -277,7 +277,7 @@ onUnmounted(() => {
         <!-- Quick Sort: Oldest -->
         <button 
           type="button" 
-          class="footer-filter-btn" 
+          class="footer-filter-btn link-background" 
           :class="{ active: taleFilterStore.sort === 'MostUpvoted' }"
           @click="setSort('MostUpvoted')"
         >
