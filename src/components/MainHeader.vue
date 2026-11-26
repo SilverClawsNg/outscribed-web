@@ -379,16 +379,18 @@ function handleSearchClick() {
     }
 
     // Vertical hairline dividers on desktop (> 992px)
-    @media @laptop, @desktop {
+    @media @desktop {
       + .main-header__section {
         padding-left: 1rem;
-        border-left: 1.6px solid var(--border-color);
-
-        @media @laptop {
-          padding-left: 0.65rem;
-        }
       }
     }
+
+        @media @laptop {
+          + .main-header__section {
+            padding-left: 0.65rem;
+             border-left: 1.6px solid var(--border-color);
+          }
+        }
 
     // Vertical stacking with horizontal dividers inside mobile drawer
     @media @phone, @phablet, @tablet {
