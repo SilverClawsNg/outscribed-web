@@ -9,7 +9,7 @@ interface CuratedHomepageLayout {
 }
 
 export function curateHomepageTales(tales: TaleListDto[]): CuratedHomepageLayout {
-  // Pool of top 12 candidates to fill 10 total homepage slots (1 + 4 + 1 + 4)
+  // Pool of top 12 candidates to fill 10 total homepage slots (1 + 6 + 1 + 2)
   let pool = [...tales.slice(0, 12)];
 
   const takeWithPhotoPreference = (count: number, sourcePool: TaleListDto[]): TaleListDto[] => {
@@ -39,7 +39,7 @@ export function curateHomepageTales(tales: TaleListDto[]): CuratedHomepageLayout
   }
 
   // 2. NONES (Level 2 - 4 items with All-or-Nothing image symmetry)
-  let nones = takeWithPhotoPreference(4, pool);
+  let nones = takeWithPhotoPreference(6, pool);
   const allNonesHaveImages = nones.length > 0 && nones.every(t => !!t.photo);
 
   if (!allNonesHaveImages && nones.length > 0) {
@@ -57,7 +57,7 @@ export function curateHomepageTales(tales: TaleListDto[]): CuratedHomepageLayout
   }
 
   // 4. SUBSIDE (Level 3 Right - 4 cards arranged in a 2x2 two-level grid)
-  const subside = takeWithPhotoPreference(4, pool);
+  const subside = takeWithPhotoPreference(2, pool);
 
   return {
     focus,

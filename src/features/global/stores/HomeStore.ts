@@ -16,7 +16,8 @@ import {initializeAccountEngagement } from '@/features/identity/types/IdentityTy
 export const useHomeStore = defineStore('homeStore', () => {
 
     // State
-      const tales = ref<TaleListDto[]>([]); 
+      const recentTales = ref<TaleListDto[]>([]); 
+      const hotTales = ref<TaleListDto[]>([]); 
       const tags = ref<TagListDto[]>([]); 
       const categories = ref<CategoryMetricsDto[]>([]); 
       const countries = ref<CountryMetricsDto[]>([]); 
@@ -49,7 +50,8 @@ export const useHomeStore = defineStore('homeStore', () => {
 
         if (outcome.value) {
         // Ensure data mappings are assigned cleanly to reactive state trackers
-        tales.value = outcome.value.tales || [];
+        recentTales.value = outcome.value.recentTales || [];
+        hotTales.value = outcome.value.hotTales || [];
         tags.value = outcome.value.tags || [];
         categories.value = outcome.value.categories || [];
         countries.value = outcome.value.countries || [];
@@ -57,8 +59,9 @@ export const useHomeStore = defineStore('homeStore', () => {
         newWriters.value = outcome.value.newWriters || [];
 
         // Map Tales 
-        tales.value = (outcome.value.tales || []).map((item: any) => initializeTaleListEngagement(item));
-        
+        recentTales.value = (outcome.value.recentTales || []).map((item: any) => initializeTaleListEngagement(item));
+        hotTales.value = (outcome.value.hotTales || []).map((item: any) => initializeTaleListEngagement(item));
+
         // Map Prolific Writers (Preserve WriterStatsDto wrapper & initialize nested creator)
           prolificWriters.value = (outcome.value.prolificWriters || []).map((writerStats: WriterStatsDto) => ({
             ...writerStats,
@@ -95,7 +98,7 @@ export const useHomeStore = defineStore('homeStore', () => {
     // 🛡️ Fix 1: Access the value inside the storage boundary cleanly without wrapper pollution
 
     // 🛡️ Fix 2: Check active store lengths directly rather than transient parameters
-    if (!isLoggedIn.value || (tales.value.length === 0 
+    if (!isLoggedIn.value || (recentTales.value.length === 0 && hotTales.value.length === 0 
       && prolificWriters.value.length === 0  && newWriters.value.length === 0)) {
       activateEngagementButtons();
       console.log('[HydratePersonals]: Anonymous user session or empty state feed. Bypassing personalization.');
@@ -105,7 +108,8 @@ export const useHomeStore = defineStore('homeStore', () => {
     const maxRetries = 2; // Loops: 0, 1, 2 (Total 3 attempts)
    // Map IDs safely straight out of our active tracked collection variables
     const allIds = [
-      ...tales.value.map(t => t.taleId),
+      ...recentTales.value.map(t => t.taleId),
+      ...hotTales.value.map(t => t.taleId),
       ...prolificWriters.value.map(i => i.creator.accountId),
       ...newWriters.value.map(i => i.creator.accountId)
     ];
@@ -127,7 +131,11 @@ export const useHomeStore = defineStore('homeStore', () => {
             const favSet = new Set<string>(outcome.value.favoriteIds);
 
             // 🎯 Direct Target: Mutate the tracking targets that the Vue Template is actively listening to
-            tales.value.forEach((tale) => {
+            recentTales.value.forEach((tale) => {
+              tale.engagement.isFavorite = favSet.has(tale.taleId);
+            });
+
+              hotTales.value.forEach((tale) => {
               tale.engagement.isFavorite = favSet.has(tale.taleId);
             });
 
@@ -180,7 +188,11 @@ export const useHomeStore = defineStore('homeStore', () => {
    */
   function activateEngagementButtons() {
     console.log('[HydratePersonals]: Unlocking engagement controls across store models.');
-    tales.value.forEach((tale) => {
+    recentTales.value.forEach((tale) => {
+      tale.engagement.isEngagementLoaded = true;
+    });
+
+     hotTales.value.forEach((tale) => {
       tale.engagement.isEngagementLoaded = true;
     });
   
@@ -249,7 +261,7 @@ export const useHomeStore = defineStore('homeStore', () => {
     }
   }
 
-      return {tales, tags, categories, countries, prolificWriters, newWriters,
+      return {recentTales, hotTales, tags, categories, countries, prolificWriters, newWriters,
         loadhomecontents, hydratePersonals, abort, loadTag
   };
 

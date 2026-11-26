@@ -161,8 +161,8 @@ function handleSavedDraftsClick() {
   width: 100%;
   height: auto;
   padding: 58px 0 2.5rem 0;
-  border-top: 1px solid @link-border-color;
-  background-color: @link-color;
+  border-top: 1px solid @white-color;
+   background-color: @site-background-color;
    position: relative;
 }
  
@@ -203,13 +203,13 @@ function handleSavedDraftsClick() {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid @link-border-color;
+       border-bottom: 1px solid @white-color;
     }
      @media @tablet {
        justify-content:center;
        padding-bottom: 1rem;
        margin-bottom: 1rem;
-       border-bottom: 1px solid @link-border-color;
+       border-bottom: 1px solid @white-color;
     }
 
     @media @laptop {
@@ -257,7 +257,6 @@ function handleSavedDraftsClick() {
     &__tagline {
       font-size: 1.15rem;
        text-align:center;
-       color:@white-color;
     }
   }
 
@@ -325,8 +324,7 @@ function handleSavedDraftsClick() {
       margin-top: 2rem;
       padding-top: 1rem;
       margin-top: 1rem;
-      border-top: 1px solid #1f3250;
-      color:@white-color;
+      border-top: 1px solid @white-color;
     }
 }
 

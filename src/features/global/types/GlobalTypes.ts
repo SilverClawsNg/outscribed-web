@@ -28,7 +28,8 @@ export interface GetTimelineResponse {
 
 // Helper type for response
 export interface GetHomeContentsResponse {
-  tales: TaleListDto[];
+  recentTales: TaleListDto[];
+  hotTales: TaleListDto[];
   tags: TagListDto[];
   categories: CategoryMetricsDto[];
   countries: CountryMetricsDto[];

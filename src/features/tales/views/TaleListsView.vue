@@ -318,7 +318,6 @@ onUnmounted(() => {
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
-@import "@/assets/css/discovery-container.less";
 
 
 /* Secondary Grid: 4 Equal Columns (1fr 1fr 1fr 1fr) */
@@ -330,7 +329,7 @@ onUnmounted(() => {
   position: relative;
 
   @media @desktop, @laptop{
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     width: @max-width;
   }
 

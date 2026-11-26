@@ -38,360 +38,510 @@ function handleSearchClick() {
 </script>
 
 <template>
+<header class="main-header-wrapper">
+  <div class="main-header">
 
-<header class="main-header">
+    <!-- 1. Isolated Brand Section (Left Anchor) -->
+    <section class="main-header__brand-section">
+      <button
+        type="button"
+        class="main-header__menu-toggle mobile-only"
+        :class="{ 'main-header__menu-toggle--active': isMenuOpen }"
+        aria-label="Toggle Navigation Menu"
+        :aria-expanded="isMenuOpen"
+        @click="isMenuOpen = !isMenuOpen"
+      >
+        <SvgIcons name="menu" :size="20" />
+      </button>
 
-    <div class="top-header-wrapper">
+      <router-link to="/" class="main-header__brand-link" title="OutScribed Home" @click="isMenuOpen = false">
+        <img src="@/assets/images/icon.png" alt="OutScribed Icon" /> <SvgIcons name="logo" />
+      </router-link>
+    </section>
 
-     <div class="top-header">
+    <!-- 2. Navigation Cluster (Desktop Inline Bar / Mobile Collapsible Drawer) -->
+    <nav
+      class="main-header__nav"
+      :class="{ 'main-header__nav--open': isMenuOpen }"
+      aria-label="Primary Navigation"
+    >
+      <section class="main-header__section main-header__features-section">
+        <router-link to="/tales" class="main-header__link" @click="isMenuOpen = false">
+          <span class="web-only">Tales</span>
+          <span class="mobile-only main-header__mobile-label">
+            <SvgIcons name="tale" :size="20" />
+            <span>Discover Tales</span>
+          </span>
+        </router-link>
 
-        <div class="top-header__consolidated">
+        <router-link to="/writers" class="main-header__link" @click="isMenuOpen = false">
+          <span class="web-only">Writers</span>
+          <span class="mobile-only main-header__mobile-label">
+            <SvgIcons name="writers" :size="20" />
+            <span>Meet The Writers</span>
+          </span>
+        </router-link>
 
-    <div class="top-header__brand-slot">
+        <router-link to="/about-us" class="main-header__link" @click="isMenuOpen = false">
+          <span class="web-only">About Us</span>
+          <span class="mobile-only main-header__mobile-label">
+            <SvgIcons name="about" :size="20" />
+            <span>About OutScribed</span>
+          </span>
+        </router-link>
 
-        <button 
-              class="top-header__menu-toggle mobile-only" 
-              :class="{ 'top-header__menu-toggle--active': isMenuOpen }"
-              aria-label="Toggle Navigation Menu"
-              @click="isMenuOpen = !isMenuOpen"
-            >
-              <SvgIcons name="menu" :size="25" />
-            </button>
-        <router-link to="/" class="top-header__brand-link" title="OutScribed Home">
-            <SvgIcons name="logo"  />
+        <button type="button" class="main-header__link web-only" @click="handleSearchClick">
+          Search
+        </button>
+      </section>
+
+      <section class="main-header__section main-header__account-section">
+        <template v-if="isLoggedIn">
+          <router-link to="/profile" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Profile</span>
+            <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="user" :size="20" />
+              <span>Your Profile</span>
+            </span>
           </router-link>
-    </div>
 
-      <div class="top-header__account-slot web-only">
-          <template v-if="isLoggedIn">
-            <router-link to="/profile" class="top-header__account-link">Profile</router-link>
-            <span class="top-header__utility-divider">/</span>
-            <router-link to="/timelines" class="top-header__account-link">Timeline</router-link>
-            <span class="top-header__utility-divider">/</span>
-            <router-link to="/logout" class="top-header__account-link">Logout</router-link>
-          </template>
-          <template v-else>
-            <p class="top-header__auth-prompt">
-              <span>Get Started. </span>
-              <router-link to="/login" class="top-header__editorial-link" @click="isMenuOpen = false">Log In </router-link>
-              <span>or </span>
-              <router-link to="/register" class="top-header__auth-btn top-header__auth-btn--highlight" @click="isMenuOpen = false">Sign Up</router-link>
-            </p>
-          </template>
-        </div>
+          <router-link to="/timelines" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Timeline</span>
+            <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="timeline" :size="20" />
+              <span>Activity Timeline</span>
+            </span>
+          </router-link>
+
+          <router-link to="/logout" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Logout</span>
+            <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="logout" :size="20" />
+              <span>Log Out</span>
+            </span>
+          </router-link>
+        </template>
+
+        <template v-else>
+          <router-link to="/login" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Log In</span>
+            <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="login" :size="20" />
+              <span>Log In</span>
+            </span>
+          </router-link>
+
+          <router-link to="/register" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Sign Up</span>
+            <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="register" :size="20" />
+              <span>Create Account</span>
+            </span>
+          </router-link>
+        </template>
+      </section>
+
+      <!-- Mobile-only discovery & search group inside expandable drawer -->
+      <section class="main-header__section main-header__directory-section mobile-only">
+        <button
+          type="button"
+          class="main-header__link"
+          @click="handleSearchClick(); isMenuOpen = false"
+        >
+          <span class="main-header__mobile-label">
+            <SvgIcons name="search" :size="20" />
+            <span>Search</span>
+          </span>
+        </button>
+
+        <router-link to="/categories" class="main-header__link" @click="isMenuOpen = false">
+          <span class="main-header__mobile-label">
+            <SvgIcons name="category" :size="20" />
+            <span>Categories</span>
+          </span>
+        </router-link>
+
+        <router-link to="/countries" class="main-header__link" @click="isMenuOpen = false">
+          <span class="main-header__mobile-label">
+            <SvgIcons name="globe" :size="20" />
+            <span>Countries</span>
+          </span>
+        </router-link>
+
+        <router-link to="/tags" class="main-header__link" @click="isMenuOpen = false">
+          <span class="main-header__mobile-label">
+            <SvgIcons name="tag" :size="20" />
+            <span>Trending Tags</span>
+          </span>
+        </router-link>
+      </section>
+
+      <!-- Desktop write action pills -->
+      <section class="main-header__section main-header__write-section web-only">
+        <button
+          type="button"
+          @click="handleSavedDraftsClick"
+          class="main-header__studio-link"
+          title="Open Write Studio & saved drafts"
+        >
+          <SvgIcons name="edit" :size="15" />
+          <span>Studio</span>
+        </button>
+
+        <button
+          type="button"
+          class="main-header__write-link"
+          @click="handleCreateDraftClick"
+          title="OutScribe a new tale"
+        >
+          OutScribe
+        </button>
+      </section>
+    </nav>
+
+    <!-- 3. Mobile Top-Bar Write Actions (Always Visible in Fixed Bar) -->
+    <section class="main-header__section main-header__write-section mobile-only">
+      <button
+        type="button"
+        @click="handleSavedDraftsClick"
+        class="main-header__studio-link"
+        aria-label="Open Write Studio"
+        title="Open Write Studio & saved drafts"
+      >
+        <SvgIcons name="edit" :size="15" />
         
-        </div>
+      </button>
 
-        <!-- Slot E: Studio Actions & Draft CTA (Desktop Right) -->
-        <div class="top-header__studio-slot">
+      <button
+        type="button"
+        class="main-header__write-link"
+        @click="handleCreateDraftClick"
+        title="OutScribe a new tale"
+      >
+        OutScribe
+      </button>
+    </section>
 
-           <button type="button" @click="handleSavedDraftsClick" class="btn btn--primary web-only">
-              <SvgIcons name="edit" />  Write Studio
-           </button>
-
-          <button 
-              type="button" 
-              class="btn btn--secondary btn--outscribe"
-              @click="handleCreateDraftClick"
-              title="OutScribe a new tale"
-            >
-            OutScribe
-            </button>
-
-          
-
-        </div>
-
-    </div>
-
-    </div>
-
-    <div class="nav-wrapper" :class="{ 'nav-wrapper--expanded': isMenuOpen }">
-
-     <nav class="nav-header__editorial-links">
-          <router-link to="/tales" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            <span class="web-only">Tales</span>
-            <span class="mobile-only">Discover Tales</span>
-          </router-link>
-          <router-link to="/writers" class="nav-header__editorial-link" @click="isMenuOpen = false">
-             <span class="web-only">Writers</span>
-            <span class="mobile-only">Meet The Writers</span>
-          </router-link>
-          <router-link to="/about-us" class="nav-header__editorial-link" @click="isMenuOpen = false">
-             <span class="web-only">About Us</span>
-            <span class="mobile-only">Learn More About OutScribed</span>
-          </router-link>
-            <button type="button" class="nav-header__editorial-link" @click="handleSearchClick">
-             <span class="web-only">Search</span>
-            <span class="mobile-only">Search OutScribed</span>
-          </button>
-
-          <div class="mobile-only mobile-only--stretch">
-
-          <div class="divider-multi"><span></span></div>
-
-              <button type="button" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="handleCreateDraftClick">
-              <SvgIcons name="edit" :size="22" /> Create A New Tale Draft
-            </button>
-          <button type="button" @click="handleSavedDraftsClick" class="nav-header__editorial-link nav-header__editorial-link--icon">
-            <SvgIcons name="archive" :size="22" /> Manage Your Tales
-          </button>
-
-            <div class="divider-multi"><span></span></div>
-            
-              <template v-if="isLoggedIn">
-            <router-link to="/profile" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-              <SvgIcons name="user" :size="22" /> Profile
-            </router-link>
-            <router-link to="/timelines" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-              <SvgIcons name="clock" :size="22" /> Timeline
-            </router-link>
-              <router-link to="/logout" class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-           <SvgIcons name="padlock" :size="25" /> Logout
-          </router-link>
-          </template>
-          <template v-else>
-            <router-link to="/login"  class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-              <SvgIcons name="user" :size="22" /> Log In
-            </router-link>
-            <router-link to="/register"  class="nav-header__editorial-link nav-header__editorial-link--icon" @click="isMenuOpen = false">
-             <SvgIcons name="archive" :size="22" />  Sign Up For Free
-            </router-link>
-
-          </template>
-
-            <div class="mobile-only">
-              
-          <div class="divider-multi"><span></span></div>
-
-          <router-link to="/faqs" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            View Frequently Asked Questions
-          </router-link>
-          <router-link to="/use-cases" class="nav-header__editorial-link mobile-only" @click="isMenuOpen = false">
-            View Use Cases For OutScribed
-          </router-link>
-
-             <router-link to="/categories" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            Browse Categories
-          </router-link>
-           <router-link to="/countries" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            Browse Countries
-          </router-link>
-           <router-link to="/tags" class="nav-header__editorial-link" @click="isMenuOpen = false">
-            Browse Trending Tags
-          </router-link>
-          
-            </div>
-            
-          </div>
-
-        </nav>
-
-    </div>
-
+  </div>
 </header>
-
 </template>
 
 <style scoped lang="less">
 @import "@/assets/css/variables.less";
-
-.web-only{
-  @media @smallDevice {
+// Visibility helpers scoped to the 992px breakpoint
+.web-only {
+  @media @phone, @phablet, @tablet {
     display: none !important;
   }
 }
 
-.mobile-only{
-  @media @largeDevice {
+.mobile-only {
+  @media (min-width: 992px) {
     display: none !important;
-  }
-
-  &--stretch{
-    width: 100%;
   }
 }
 
-.main-header{
+.main-header-wrapper {
+  width: 100%;
+  height: 50px;
+  //border-bottom: 1px solid var(--border-color);
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 5001;
   background-color: var(--background-color);
-  width: 100%;
-  height: auto;
+  background-color: #0d2d4d;
+  background-color: @site-background-color;
 }
 
-.top-header-wrapper{
-  height: 60px;
-  width: 100%;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.top-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
+.main-header {
   width: @max-width;
-  max-width: calc(100% - 20px);
+  max-width: calc(100% - 20px); // 1300px
   margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
 
-  &__brand-slot{
-    display: flex;
-    column-gap: 0.5rem;
-    align-items: center;
+  @media @phone, @phablet, @tablet {
+    column-gap: 0.4rem;
   }
 
-  &__consolidated{
+  // 1. Left Anchor: Toggle + Logo
+  &__brand-section {
     display: flex;
     align-items: center;
-    gap: 2rem;
-  }
+    column-gap: 0.65rem;
+    flex-shrink: 0;
+    min-width: 0;
 
-  &__menu-toggle{
-    height: 2.5rem;
-    display: flex;
-    align-items:center;
-    padding: 0 0.5rem;
-    color: var(--text-color);
-    background-color:var(--background-color);
-
-    &:hover{
-      color:@link-color;
-      background-color: var(--light-background-color);
+    @media @phone, @phablet, @tablet {
+      column-gap: 0.45rem;
     }
-        
   }
-  
-  &__brand-link {
-    display: flex;
-    text-decoration: none;
 
+  // 2. Desktop Inline Nav / Mobile Collapsible Drawer
+  &__nav {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    flex-shrink: 0;
+
+    @media @laptop {
+      column-gap: 0.65rem;
+    }
+
+    @media @phone, @phablet, @tablet {
+      position: fixed;
+      top: 50px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      background-color: @site-background-color;
+      color:@white-color;
+      border-bottom: 1.6px solid @white-color;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: max-height 0.25s ease, opacity 0.2s ease;
+
+      &--open {
+        max-height: calc(100vh - 50px);
+        overflow-y: auto;
+        opacity: 1;
+        pointer-events: auto;
+        padding: 0.5rem 12px 1.25rem;
+      }
+
+      & svg{
+        fill: @white-color;
+      }
+    }
+  }
+
+  // Sub-groups inside __nav (and mobile top-bar write section)
+  &__section {
+    display: flex;
+    align-items: center;
+    column-gap: 0.85rem;
+    flex-shrink: 0;
+
+    @media @laptop {
+      column-gap: 0.6rem;
+    }
+
+    // Vertical hairline dividers on desktop (> 992px)
+    @media @laptop, @desktop {
+      + .main-header__section {
+        padding-left: 1rem;
+        border-left: 1.6px solid var(--border-color);
+
+        @media @laptop {
+          padding-left: 0.65rem;
+        }
+      }
+    }
+
+    // Vertical stacking with horizontal dividers inside mobile drawer
+    @media @phone, @phablet, @tablet {
+      .main-header__nav & {
+        flex-direction: column;
+        align-items: stretch;
+        row-gap: 0.15rem;
+
+        + .main-header__section {
+          margin-top: 0.5rem;
+          padding-top: 0.5rem;
+          border-top: 1.6px solid var(--border-color);
+        }
+      }
+    }
+  }
+
+  // Mobile top-bar write actions (Studio icon + OutScribe pill)
+  &__write-section.mobile-only {
+    column-gap: 0.4rem;
+  }
+
+  // Standard navigation links & buttons
+  &__link {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    color: var(--heading-text-color);
+    color:@white-color;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &.router-link-active {
+      text-decoration: underline;
+      text-underline-offset: 6px;
+      text-decoration-thickness: 1px;
+    }
+
+    @media @phone, @phablet, @tablet {
+      width: 100%;
+      text-align: left;
+      padding: 0.65rem 0.25rem;
+      line-height: 1.25;
+
+      &.router-link-active {
+        text-decoration: none;
+        font-weight: 700;
+      }
+    }
+  }
+
+  // Mobile icon + text alignment wrapper
+  &__mobile-label {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.7rem;
+
+    svg {
+      flex-shrink: 0;
+      color: var(--heading-text-color);
+    }
+  }
+
+  // Studio pill (Full on desktop, compact icon-only square/circle on mobile)
+  &__studio-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-radius: 999999px;
+    border: 1px solid var(--border-color);
+    border: 1.6px solid @white-color;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.4rem;
+    padding: 0 0.9rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--heading-text-color);
+    color:@white-color;
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    svg {
+      flex-shrink: 0;
+      stroke-width:1.6;
+    }
+
+    @media @phone, @phablet, @tablet {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+    }
+  }
+
+  // OutScribe gold CTA pill
+  &__write-link {
+    white-space: nowrap;
+    flex-shrink: 0;
+    background-color: #D99B00;
+    background-color: #9dd2ff;
+    background-color: #ffaa00;
+    background-color: @link-color;
+    //background-color: #9ecee5;
+
+    height: 34px;
+    padding: 0 1rem;
+    border-radius: 999999px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: @black-color;
+    color:@white-color;
+    column-gap: 0.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &::before {
+      content: "+";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+      transform: translateY(-1px);
+      color: inherit;
+    }
+
+    @media @phone, @phablet, @tablet {
+      height: 32px;
+      padding: 0 0.7rem;
+      font-size: 0.82rem;
+      column-gap: 0.2rem;
+
+      &::before {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+.main-header {
+  &__menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--heading-text-color);
+    color:@white-color;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &__brand-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--heading-text-color);
+    color:@white-color;
+    text-decoration: none;
+    flex-shrink: 0;
+
+    & img{
+      width: 24px;
+      height: auto;
+      margin-right: 0.25rem;
+    }
+    
      & svg {
-        fill: var(--heading-text-color);
         width: auto;
 
        @media @phone {
-           height: 26px;
+           height: 22px;
         }
 
          @media @phablet {
-            height: 26px;
+            height: 24px;
         }
 
         @media @largeDevice {
-            height: 28px; /* Your desired height */
+            height: 26px;
         }
     }
   }
-
-    &__account-slot {
-    grid-area: account;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-  }
-
-  &__studio-slot {
-    grid-area: studio;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-   
-  }
-
 }
 
-.nav-wrapper{
-  width: 100%;
- 
-  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  @media @smallDevice {
-      height: 0; // Collapsed on mobile
-      overflow: hidden;
-      
-      &--expanded {
-        height: calc(100lvh - 60px);
-        overflow-y: auto;
-      }
-    }
-
-    @media @largeDevice{
-       height: 40px;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-}
-
-nav.nav-header__editorial-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  
-
-  @media @smallDevice{
-       flex-direction: column;
-       width: 100%;
-       padding-bottom: 5rem;
-    }
-
-   @media @largeDevice{
-       height: 40px;
-       width: @max-width;
-       max-width: calc(100% - 20px);
-    }
-}
-
-.nav-header__editorial-link {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  font-size: 1.1rem;
-  font-weight: normal;
-  line-height: 150%;
-  text-transform: capitalize;
- 
-  &--icon{
-    column-gap: 0.5rem;
-  }
- 
-    @media @smallDevice{
-      height: 3rem;
-      padding: 0 0.5rem;
-      font-size: 1.2rem;
-      border-left: 5px solid transparent;
-
-       &.router-link-exact-active {
-        border-left-color: var(--heading-text-color);
-        pointer-events: none;
-        opacity: 0.6;
-      }
-       
-    }
-
-   @media @largeDevice{
-    height: 40px;
-    justify-content: center;
-    border-bottom: 3px solid transparent;
-    border-right: 1px solid var(--border-color);
-
-        &:first-child {
-          border-left: 1px solid var(--border-color);
-        }
-
-        &.router-link-exact-active {
-          border-bottom-color: var(--heading-text-color);
-          pointer-events: none;
-          opacity: 0.6;
-        }
-    }
-
-    &:hover{
-      opacity: 0.65;
-    }
-}
 
 </style>
