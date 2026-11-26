@@ -59,157 +59,185 @@ function handleSearchClick() {
       </router-link>
     </section>
 
-    <!-- 2. Navigation Cluster (Desktop Inline Bar / Mobile Collapsible Drawer) -->
+<!-- 2. Navigation Cluster (Desktop Inline Bar / Mobile Collapsible Drawer) -->
     <nav
       class="main-header__nav"
       :class="{ 'main-header__nav--open': isMenuOpen }"
       aria-label="Primary Navigation"
     >
-      <section class="main-header__section main-header__features-section">
-        <router-link to="/tales" class="main-header__link" @click="isMenuOpen = false">
-          <span class="web-only">Tales</span>
-          <span class="mobile-only main-header__mobile-label">
-            <SvgIcons name="tale" :size="20" />
-            <span>Discover Tales</span>
-          </span>
-        </router-link>
-
-        <router-link to="/writers" class="main-header__link" @click="isMenuOpen = false">
-          <span class="web-only">Writers</span>
-          <span class="mobile-only main-header__mobile-label">
-            <SvgIcons name="writers" :size="20" />
-            <span>Meet The Writers</span>
-          </span>
-        </router-link>
-
-        <router-link to="/about-us" class="main-header__link" @click="isMenuOpen = false">
-          <span class="web-only">About Us</span>
-          <span class="mobile-only main-header__mobile-label">
-            <SvgIcons name="about" :size="20" />
-            <span>About OutScribed</span>
-          </span>
-        </router-link>
-
-        <button type="button" class="main-header__link web-only" @click="handleSearchClick">
-          Search
-        </button>
-      </section>
-
-      <section class="main-header__section main-header__account-section">
-        <template v-if="isLoggedIn">
-          <router-link to="/profile" class="main-header__link" @click="isMenuOpen = false">
-            <span class="web-only">Profile</span>
+      <div class="main-header__inner-nav">
+        <section class="main-header__section main-header__features-section">
+          <router-link to="/tales" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Tales</span>
             <span class="mobile-only main-header__mobile-label">
-              <SvgIcons name="user" :size="20" />
-              <span>Your Profile</span>
+              <SvgIcons name="tale" :size="20" />
+              <span>Discover Tales</span>
             </span>
           </router-link>
 
-          <router-link to="/timelines" class="main-header__link" @click="isMenuOpen = false">
-            <span class="web-only">Timeline</span>
+          <router-link to="/writers" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">Writers</span>
             <span class="mobile-only main-header__mobile-label">
-              <SvgIcons name="timeline" :size="20" />
-              <span>Activity Timeline</span>
+              <SvgIcons name="writers" :size="20" />
+              <span>Meet The Writers</span>
             </span>
           </router-link>
 
-          <router-link to="/logout" class="main-header__link" @click="isMenuOpen = false">
-            <span class="web-only">Logout</span>
+              <button
+            type="button"
+            @click="handleSavedDraftsClick(); isMenuOpen = false"
+            class="main-header__link mobile-only"
+            title="Open Write Studio & saved drafts"
+          >
             <span class="mobile-only main-header__mobile-label">
-              <SvgIcons name="logout" :size="20" />
-              <span>Log Out</span>
+              <SvgIcons name="edit" :size="20" />
+              <span>Your Write Studio</span>
+            </span>
+          
+          </button>
+
+          <button
+            type="button"
+            class="main-header__link mobile-only"
+            @click="handleCreateDraftClick(); isMenuOpen = false"
+            title="OutScribe a new tale"
+          >
+             <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="openbox" :size="20" />
+              <span>Create A New Tale</span>
+            </span>
+          
+          </button>
+        
+          <router-link to="/about-us" class="main-header__link" @click="isMenuOpen = false">
+            <span class="web-only">About Us</span>
+            <span class="mobile-only main-header__mobile-label">
+              <SvgIcons name="about" :size="20" />
+              <span>About OutScribed</span>
             </span>
           </router-link>
-        </template>
 
-        <template v-else>
-          <router-link to="/login" class="main-header__link" @click="isMenuOpen = false">
-            <span class="web-only">Log In</span>
-            <span class="mobile-only main-header__mobile-label">
-              <SvgIcons name="login" :size="20" />
-              <span>Log In</span>
+          <button type="button" class="main-header__link web-only" @click="handleSearchClick">
+            Search
+          </button>
+        </section>
+
+        <section class="main-header__section main-header__account-section">
+          <template v-if="isLoggedIn">
+            <router-link to="/profile" class="main-header__link" @click="isMenuOpen = false">
+              <span class="web-only">Profile</span>
+              <span class="mobile-only main-header__mobile-label">
+                <SvgIcons name="user" :size="20" />
+                <span>Your Profile</span>
+              </span>
+            </router-link>
+
+            <router-link to="/timelines" class="main-header__link" @click="isMenuOpen = false">
+              <span class="web-only">Timeline</span>
+              <span class="mobile-only main-header__mobile-label">
+                <SvgIcons name="timeline" :size="20" />
+                <span>Activity Timeline</span>
+              </span>
+            </router-link>
+
+            <router-link to="/logout" class="main-header__link" @click="isMenuOpen = false">
+              <span class="web-only">Logout</span>
+              <span class="mobile-only main-header__mobile-label">
+                <SvgIcons name="logout" :size="20" />
+                <span>Log Out</span>
+              </span>
+            </router-link>
+          </template>
+
+          <template v-else>
+            <router-link to="/login" class="main-header__link" @click="isMenuOpen = false">
+              <span class="web-only">Log In</span>
+              <span class="mobile-only main-header__mobile-label">
+                <SvgIcons name="login" :size="20" />
+                <span>Log In</span>
+              </span>
+            </router-link>
+
+            <router-link to="/register" class="main-header__link" @click="isMenuOpen = false">
+              <span class="web-only">Sign Up</span>
+              <span class="mobile-only main-header__mobile-label">
+                <SvgIcons name="register" :size="20" />
+                <span>Create Account</span>
+              </span>
+            </router-link>
+          </template>
+        </section>
+
+        <!-- Mobile-only discovery & search group inside expandable drawer -->
+        <section class="main-header__section main-header__directory-section mobile-only">
+          <button
+            type="button"
+            class="main-header__link"
+            @click="handleSearchClick(); isMenuOpen = false"
+          >
+            <span class="main-header__mobile-label">
+              <SvgIcons name="search" :size="20" />
+              <span>Search</span>
+            </span>
+          </button>
+
+          <router-link to="/categories" class="main-header__link" @click="isMenuOpen = false">
+            <span class="main-header__mobile-label">
+              <SvgIcons name="category" :size="20" />
+              <span>Categories</span>
             </span>
           </router-link>
 
-          <router-link to="/register" class="main-header__link" @click="isMenuOpen = false">
-            <span class="web-only">Sign Up</span>
-            <span class="mobile-only main-header__mobile-label">
-              <SvgIcons name="register" :size="20" />
-              <span>Create Account</span>
+          <router-link to="/countries" class="main-header__link" @click="isMenuOpen = false">
+            <span class="main-header__mobile-label">
+              <SvgIcons name="globe" :size="20" />
+              <span>Countries</span>
             </span>
           </router-link>
-        </template>
-      </section>
 
-      <!-- Mobile-only discovery & search group inside expandable drawer -->
-      <section class="main-header__section main-header__directory-section mobile-only">
-        <button
-          type="button"
-          class="main-header__link"
-          @click="handleSearchClick(); isMenuOpen = false"
-        >
-          <span class="main-header__mobile-label">
-            <SvgIcons name="search" :size="20" />
-            <span>Search</span>
-          </span>
-        </button>
+          <router-link to="/tags" class="main-header__link" @click="isMenuOpen = false">
+            <span class="main-header__mobile-label">
+              <SvgIcons name="tag" :size="20" />
+              <span>Trending Tags</span>
+            </span>
+          </router-link>
+        </section>
 
-        <router-link to="/categories" class="main-header__link" @click="isMenuOpen = false">
-          <span class="main-header__mobile-label">
-            <SvgIcons name="category" :size="20" />
-            <span>Categories</span>
-          </span>
-        </router-link>
 
-        <router-link to="/countries" class="main-header__link" @click="isMenuOpen = false">
-          <span class="main-header__mobile-label">
-            <SvgIcons name="globe" :size="20" />
-            <span>Countries</span>
-          </span>
-        </router-link>
+        <!-- Desktop write action pills -->
+        <section class="main-header__section main-header__write-section web-only">
+          <button
+            type="button"
+            @click="handleSavedDraftsClick"
+            class="main-header__studio-link"
+            title="Open Write Studio & saved drafts"
+          >
+            <SvgIcons name="edit" :size="15" />
+            <span>Studio</span>
+          </button>
 
-        <router-link to="/tags" class="main-header__link" @click="isMenuOpen = false">
-          <span class="main-header__mobile-label">
-            <SvgIcons name="tag" :size="20" />
-            <span>Trending Tags</span>
-          </span>
-        </router-link>
-      </section>
-
-      <!-- Desktop write action pills -->
-      <section class="main-header__section main-header__write-section web-only">
-        <button
-          type="button"
-          @click="handleSavedDraftsClick"
-          class="main-header__studio-link"
-          title="Open Write Studio & saved drafts"
-        >
-          <SvgIcons name="edit" :size="15" />
-          <span>Studio</span>
-        </button>
-
-        <button
-          type="button"
-          class="main-header__write-link"
-          @click="handleCreateDraftClick"
-          title="OutScribe a new tale"
-        >
-          OutScribe
-        </button>
-      </section>
+          <button
+            type="button"
+            class="main-header__write-link"
+            @click="handleCreateDraftClick"
+            title="OutScribe a new tale"
+          >
+            OutScribe
+          </button>
+        </section>
+      </div>
     </nav>
 
-    <!-- 3. Mobile Top-Bar Write Actions (Always Visible in Fixed Bar) -->
+    <!-- 3. Tablet/Phablet Top-Bar Write Actions (Hidden on small phones via .no-show-phone) -->
     <section class="main-header__section main-header__write-section mobile-only">
       <button
         type="button"
         @click="handleSavedDraftsClick"
-        class="main-header__studio-link"
-        aria-label="Open Write Studio"
+        class="main-header__studio-link no-show-phone"
         title="Open Write Studio & saved drafts"
       >
         <SvgIcons name="edit" :size="15" />
-        
+        <span>Studio</span>
       </button>
 
       <button
@@ -228,6 +256,7 @@ function handleSearchClick() {
 
 <style scoped lang="less">
 @import "@/assets/css/variables.less";
+
 // Visibility helpers scoped to the 992px breakpoint
 .web-only {
   @media @phone, @phablet, @tablet {
@@ -236,7 +265,13 @@ function handleSearchClick() {
 }
 
 .mobile-only {
-  @media (min-width: 992px) {
+  @media @laptop, @desktop {
+    display: none !important;
+  }
+}
+
+.no-show-phone {
+  @media @phone {
     display: none !important;
   }
 }
@@ -281,44 +316,54 @@ function handleSearchClick() {
     }
   }
 
-  // 2. Desktop Inline Nav / Mobile Collapsible Drawer
   &__nav {
     display: flex;
     align-items: center;
     column-gap: 1rem;
     flex-shrink: 0;
 
-    @media @laptop {
+    @media (max-width: 1120px) and (min-width: 993px) {
       column-gap: 0.65rem;
     }
 
-    @media @phone, @phablet, @tablet {
+    @media (max-width: 992px) {
       position: fixed;
       top: 50px;
       left: 0;
       right: 0;
-      flex-direction: column;
-      align-items: stretch;
+      height: calc(100vh - 50px);
       background-color: @site-background-color;
-      color:@white-color;
-      border-bottom: 1.6px solid @white-color;
-      max-height: 0;
       overflow: hidden;
       opacity: 0;
       pointer-events: none;
-      transition: max-height 0.25s ease, opacity 0.2s ease;
+      transition: opacity 0.2s ease;
 
       &--open {
-        max-height: calc(100vh - 50px);
-        overflow-y: auto;
         opacity: 1;
         pointer-events: auto;
-        padding: 0.5rem 12px 1.25rem;
       }
 
-      & svg{
+       & svg{
         fill: @white-color;
       }
+
+    }
+  }
+
+  &__inner-nav {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    width: 100%;
+
+    @media (max-width: 992px) {
+      flex-direction: column;
+      align-items: stretch;
+      height: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 12px 1.5rem;
+      border-bottom: 1.6px solid @white-color;
     }
   }
 
@@ -415,6 +460,22 @@ function handleSearchClick() {
     }
   }
 
+  &__drawer-write-section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    margin-top: 0.65rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+
+    .main-header__studio-link--drawer,
+    .main-header__write-link--drawer {
+      width: 100%;
+      height: 38px;
+      justify-content: center;
+    }
+  }
+
   // Studio pill (Full on desktop, compact icon-only square/circle on mobile)
   &__studio-link {
     white-space: nowrap;
@@ -441,11 +502,6 @@ function handleSearchClick() {
       stroke-width:1.6;
     }
 
-    @media @phone, @phablet, @tablet {
-      width: 32px;
-      height: 32px;
-      padding: 0;
-    }
   }
 
   // OutScribe gold CTA pill

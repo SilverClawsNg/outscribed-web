@@ -8,7 +8,7 @@ export type IconName =
   | 'whatsapp' | 'telephone' | 'website' | 'filter' | 'google' | 'microsoft' | 'apple' | 'menu'
   | 'delete' | 'publish' | 'help' | 'metadata' | 'details' | 'lock' | 'trash' | 'addendum' | 'close'
   | 'checkbox' | 'chain' | 'live' |'preview' | 'trending' | 'nophoto' | 'tale' | 'writers' | 'login'
-| 'logout' | 'register' | 'timeline' | 'about' | 'tag' | 'usecase'
+| 'logout' | 'register' | 'timeline' | 'about' | 'tag' | 'usecase' | 'openbox'
 
 const props = defineProps<{
   name: IconName
@@ -117,6 +117,22 @@ writers: {
     paths: [
       { d: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2' },
       { type: 'circle', cx: 12, cy: 7, r: 4 }
+    ]
+  },
+    openbox: {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1,
+    paths: [
+      // Right-hand doorway frame
+      { type: 'path', d: 'M4 10.5V18L12 22L20 18V10.5' },
+      // Arrow pointing into doorway
+      { type: 'path', d: 'M12 14.5V22' },
+      { type: 'path', d: 'M12 14.5L4 10.5L2 13L9.5 16.75L12 14.5Z' },
+        { type: 'path', d: 'M12 14.5L20 10.5L22 13L14.5 16.75L12 14.5Z' },
+        { type: 'path', d: 'M4 10.5L7.5 7.5L12 9.75L16.5 7.5L20 10.5' },
+        { type: 'path', d: 'M12 2.5V6.5M10 4.5H14' }
     ]
   },
   login: {
