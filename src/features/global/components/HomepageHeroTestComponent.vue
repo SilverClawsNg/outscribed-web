@@ -167,7 +167,7 @@ function handleJoinClick() {
   &__explainer {
     margin: 0 0 1.75rem;
     font-size: 1.15rem;
-    line-height: 1.5;
+    line-height: 1.4;
     max-width: 54ch;
     
 
@@ -207,8 +207,8 @@ function handleJoinClick() {
 
         @media @smallDevice{
             width: 100%;
-            margin-top: 1.5rem;
             justify-content:center;
+            padding: 1.5rem 0;
 
         }
   
