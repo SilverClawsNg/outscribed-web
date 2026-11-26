@@ -379,16 +379,22 @@ function handleSearchClick() {
     }
 
     // Vertical hairline dividers on desktop (> 992px)
-    @media @desktop {
+    @media @laptop, @desktop {
       + .main-header__section {
-        padding-left: 1rem;
+        border-left: 1.6px solid var(--border-color);
       }
     }
 
         @media @laptop {
           + .main-header__section {
             padding-left: 0.65rem;
-             border-left: 1.6px solid var(--border-color);
+             
+          }
+        }
+
+           @media @desktop {
+          + .main-header__section {
+            padding-left: 1rem;
           }
         }
 
@@ -580,14 +586,14 @@ function handleSearchClick() {
     & img{
       width: 24px;
       height: auto;
-      margin-right: 0.25rem;
+      margin-right: 0.5rem;
     }
     
      & svg {
         width: auto;
 
        @media @phone {
-           height: 22px;
+           height: 24px;
         }
 
          @media @phablet {

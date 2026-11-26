@@ -25,7 +25,7 @@ function handleJoinClick() {
     <!-- Left Column: Editorial Copy & CTAs -->
     <div class="hero__content">
 
-        <p class="hero__byline">The Facts, The Fiction, & Everything In-Between</p>
+        <p class="hero__byline">The Facts, The Fiction, <span>& Everything In-Between</span></p>
       <h1 class="hero__title">
         The reality you know is <span>just one version.</span>
       </h1>
@@ -39,9 +39,10 @@ function handleJoinClick() {
           <router-link to="/about-us" class="btn hero__actions--primary">
           How it works!
         </router-link>
-        <button type="button" class="btn hero__actions--secondary" @click="handleJoinClick">
-          Write a story
-        </button>
+          <router-link to="/tales" class="btn hero__actions--secondary">
+          Read Stories
+        </router-link>
+       
       </div>
     </div>
 
@@ -70,7 +71,20 @@ function handleJoinClick() {
   border-bottom: 1px solid var(--border-color);
   background-color: @site-background-color;
   color:@white-color;
-  padding: 1rem 0;
+  
+  margin-top:-1px;
+
+  @media @phone, @phablet{
+           padding: 1.5rem 0;
+        }
+
+         @media @tablet{
+           padding: 2.5rem 0;
+        }
+
+        @media @laptop, @desktop{
+          padding: 1rem 0;
+        }
 
   &__inner {
     max-width: calc(100% - 20px); // 1300px
@@ -123,17 +137,29 @@ function handleJoinClick() {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color:@white-color;
-    //color: var(--muted-text-color);
+
+     @media @phone, @phablet{
+        & span{
+            display: block;
+        }
+    }
+
+    
+   
   }
 
   &__title {
     margin: 0 0 1.1rem;
-    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-size: clamp(2.2rem, 4vw, 4.5rem);
     line-height: 1.12;
     font-weight: 700;
     letter-spacing: -0.02em;
     color:@white-color;
     //color: var(--heading-text-color);
+
+      @media @phone, @phablet{
+           max-width: 20ch;
+        }
 
   
   }
