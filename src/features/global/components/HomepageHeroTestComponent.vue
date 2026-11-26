@@ -160,7 +160,6 @@ function handleJoinClick() {
       @media @phone, @phablet{
            max-width: 20ch;
         }
-
   
   }
 
@@ -169,8 +168,6 @@ function handleJoinClick() {
     font-size: 1.15rem;
     line-height: 1.4;
     max-width: 54ch;
-    
-
   }
 
   &__actions {

@@ -17,6 +17,9 @@ import WriterComponent from '../components/WriterComponent.vue';
 import TaleTextComponent from '@/features/tales/components/TaleTextComponent.vue';
 import HomepageHeroComponent from '../components/HomepageHeroComponent.vue';
 import HomepageHeroTestComponent from '../components/HomepageHeroTestComponent.vue';
+import HomepageRoadMapComponent from '../components/HomepageRoadMapComponent.vue';
+import HomepageTrendingTagsComponent from '../components/HomepageTrendingTagsComponent.vue';
+import HomepageHotTalesComponent from '../components/HomepageHotTalesComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -105,6 +108,12 @@ const countriesTales = computed(() => {
 <template>
 
   <HomepageHeroTestComponent/>
+
+  <HomepageRoadMapComponent />
+
+  <HomepageTrendingTagsComponent />
+
+  <HomepageHotTalesComponent />
 
 </template>
 
