@@ -112,9 +112,9 @@ const countriesTales = computed(() => {
 
   <HomepageRoadMapComponent />
 
-  <HomepageTrendingTagsComponent />
-
   <HomepageHotTalesComponent />
+
+  <HomepageTrendingTagsComponent />
 
   <HomepageRecentTalesComponent />
 

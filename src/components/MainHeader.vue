@@ -43,16 +43,7 @@ function handleSearchClick() {
 
     <!-- 1. Isolated Brand Section (Left Anchor) -->
     <section class="main-header__brand-section">
-      <button
-        type="button"
-        class="main-header__menu-toggle mobile-only"
-        :class="{ 'main-header__menu-toggle--active': isMenuOpen }"
-        aria-label="Toggle Navigation Menu"
-        :aria-expanded="isMenuOpen"
-        @click="isMenuOpen = !isMenuOpen"
-      >
-        <SvgIcons name="menu" :size="20" />
-      </button>
+    
 
       <router-link to="/" class="main-header__brand-link" title="OutScribed Home" @click="isMenuOpen = false">
         <img src="@/assets/images/icon.png" alt="OutScribed Icon" /> <SvgIcons name="logo" />
@@ -248,6 +239,16 @@ function handleSearchClick() {
       >
         OutScribe
       </button>
+        <button
+        type="button"
+        class="main-header__menu-toggle mobile-only"
+        :class="{ 'main-header__menu-toggle--active': isMenuOpen }"
+        aria-label="Toggle Navigation Menu"
+        :aria-expanded="isMenuOpen"
+        @click="isMenuOpen = !isMenuOpen"
+      >
+        <SvgIcons name="menu" :size="20" />
+      </button>
     </section>
 
   </div>
@@ -278,7 +279,7 @@ function handleSearchClick() {
 
 .main-header-wrapper {
   width: 100%;
-  height: 50px;
+  height: 60px;
   //border-bottom: 1px solid var(--border-color);
   position: fixed;
   top: 0;
@@ -447,7 +448,14 @@ function handleSearchClick() {
       width: 100%;
       text-align: left;
       padding: 0.65rem 0.25rem;
-      line-height: 1.25;
+      line-height: 1.3;
+      font-size: 1.15rem;
+
+      svg {
+      width: 24px !important;
+      height: 24px !important;
+      flex-shrink: 0;
+    }
 
       &.router-link-active {
         text-decoration: none;
@@ -465,22 +473,6 @@ function handleSearchClick() {
     svg {
       flex-shrink: 0;
       color: var(--heading-text-color);
-    }
-  }
-
-  &__drawer-write-section {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
-    margin-top: 0.65rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border-color);
-
-    .main-header__studio-link--drawer,
-    .main-header__write-link--drawer {
-      width: 100%;
-      height: 38px;
-      justify-content: center;
     }
   }
 
@@ -559,10 +551,8 @@ function handleSearchClick() {
       }
     }
   }
-}
 
-.main-header {
-  &__menu-toggle {
+    &__menu-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
