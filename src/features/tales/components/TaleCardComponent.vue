@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CategoryDescriptions } from '@/utils/descriptors.ts'
 import { mediaHelper } from '@/utils/mediaHelper'
-import TaleContent from './TaleContent.vue'
 import { type TaleListDto } from '../types/TalesTypes';
 import TaleTextComponent from './TaleTextComponent.vue';
 
