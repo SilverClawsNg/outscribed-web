@@ -9,86 +9,122 @@ import TaleCardComponent from '@/features/tales/components/TaleCardComponent.vue
 const homepageStore = useHomeStore();
 
 
-// Hot Tales (4 items total)
-const focusHotTale = computed(() => homepageStore.hotTales[0] ?? null)        // (1) Top of hot tales
-const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       // (2) Remaining 3 hot tales
+const goldTale = computed(() => homepageStore.hotTales[0] ?? null)
+const silverTale = computed(() => homepageStore.recentTales[1] ?? null)
+const bronzeTale = computed(() => homepageStore.recentTales[2] ?? null)
 
 </script>
 
+
 <template>
+  <section
+    v-if="goldTale"
+    class="hot-tales"
+    aria-labelledby="hot-tales-heading"
+  >
+    <header class="hot-tales__header">
+      <h2 id="hot-tales-heading" class="hot-tales__title">
+        Hot this week
+      </h2>
+      <RouterLink to="/tales?sort=hot" class="hot-tales__more">
+        View all hot tales &rarr;
+      </RouterLink>
+    </header>
 
-<div class="hot-tales-wrapper">
+    <div class="hot-podium">
+      <!-- #1 GOLD: Left Lead Column -->
+      <article class="hot-podium__gold">
+        <RouterLink
+          :to="`/tale/${goldTale.slug}`"
+          class="hot-podium__media hot-podium__media--gold"
+          :aria-label="`Read ${goldTale.title}`"
+        >
+          <img
+            v-if="goldTale.photo"
+           :src="mediaHelper.getUrl(goldTale.photo, 'tales', 'full')" 
+            :alt="goldTale.title"
+            width="750"
+            height="562"
+            loading="lazy"
+          />
+          <div v-else class="hot-podium__fallback" aria-hidden="true">
+            <span>{{ CategoryDescriptions[goldTale.category] }}</span>
+          </div>
+        </RouterLink>
 
+        <div class="hot-podium__body hot-podium__body--gold">
+          <TaleTextComponent :tale="goldTale" type="gold" />
+        </div>
+      </article>
 
-<section
-  v-if="focusHotTale"
-  class="hot-tales"
-  aria-labelledby="hot-tales-heading"
->
-  <header class="hot-tales__header">
-    <h2 id="hot-tales-heading" class="hot-tales__title">
-      Hot this week
-    </h2>
-    <RouterLink to="/tales?sort=hot" class="hot-tales__more">
-      View all hot tales &rarr;
-    </RouterLink>
-  </header>
+      <!-- RIGHT COLUMN: #2 SILVER + #3 BRONZE -->
+      <div v-if="silverTale || bronzeTale" class="hot-podium__side">
+        <!-- #2 SILVER: Top Right -->
+        <article v-if="silverTale" class="hot-podium__silver">
+          <RouterLink
+            :to="`/tale/${silverTale.slug}`"
+            class="hot-podium__media hot-podium__media--silver"
+            :aria-label="`Read ${silverTale.title}`"
+          >
+            <img
+              v-if="silverTale.photo"
+              :src="mediaHelper.getUrl(silverTale.photo, 'tales', 'full')" 
+              :alt="silverTale.title"
+              width="750"
+              height="562"
+              loading="lazy"
+            />
+            <div v-else class="hot-podium__fallback" aria-hidden="true">
+              <span>{{ CategoryDescriptions[silverTale.category] }}</span>
+            </div>
+          </RouterLink>
 
-  <!-- 1. FOCUS HOT TALE (Split Dark Panel + Cover Media) -->
-  <article class="hot-focus">
-    <div class="hot-focus__body">
-      <TaleTextComponent :tale="focusHotTale" type="focus" />
-    </div>
+          <div class="hot-podium__body hot-podium__body--silver">
+            <TaleTextComponent :tale="silverTale" type="silver" />
+          </div>
+        </article>
 
-    <RouterLink
-      :to="`/tale/${focusHotTale.slug}`"
-      class="hot-focus__media"
-      :aria-label="`Read ${focusHotTale.title}`"
-    >
-     <img 
-          v-if="focusHotTale.photo"
-          :src="mediaHelper.getUrl(focusHotTale.photo, 'tales', 'full')" 
-          :alt="focusHotTale.title"
-          loading="lazy"
-        />
+        <!-- #3 BRONZE: Bottom Right (Horizontal Thumbnail + Text) -->
+        <article v-if="bronzeTale" class="hot-podium__bronze">
+          <RouterLink
+            :to="`/tale/${bronzeTale.slug}`"
+            class="hot-podium__media hot-podium__media--bronze"
+            :aria-label="`Read ${bronzeTale.title}`"
+          >
+            <img
+              v-if="bronzeTale.photo"
+             :src="mediaHelper.getUrl(bronzeTale.photo, 'tales', 'full')" 
+              :alt="bronzeTale.title"
+              width="750"
+              height="562"
+              loading="lazy"
+            />
+            <div v-else class="hot-podium__fallback" aria-hidden="true">
+              <span>{{ CategoryDescriptions[bronzeTale.category] }}</span>
+            </div>
+          </RouterLink>
 
-   
-      <div v-else class="hot-focus__fallback" aria-hidden="true">
-        <span>{{ CategoryDescriptions[focusHotTale.category] }}</span>
+          <div class="hot-podium__body hot-podium__body--bronze">
+            <TaleTextComponent :tale="bronzeTale" type="bronze" />
+          </div>
+        </article>
       </div>
-    </RouterLink>
-  </article>
-
-  <!-- 2. PILL HOT TALES (3-Column Grid) -->
-<div v-if="pillHotTales.length" class="tale-grid">
-  <TaleCardComponent v-for="tale in pillHotTales" :key="tale.taleId" :tale="tale" />
-</div>
-</section>
-
-</div>
-
+    </div>
+  </section>
 </template>
+
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
 @import "@/assets/css/tale-card.less";
-
 /* =============================================================
-- HOT TALES SECTION (1 Focus Split Banner + 3 Pill Cards)
+- HOT TALES PODIUM (1st Gold, 2nd Silver, 3rd Bronze)
 - ============================================================= */
 
-.hot-tales-wrapper{
-    //background-color: var(--surface-background-color);
-    width: 100%;
-    height: auto;
-    padding: 2.5rem 0;
-
-}
-
 .hot-tales {
-  width:  @max-width;
-  max-width: calc(100% - 20px); // 1300px
-  margin: 0 auto;
+  width: 100%;
+  max-width: @max-width; // 1300px
+  margin: 2.5rem auto 0;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -127,34 +163,41 @@ const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       //
 }
 
 // -------------------------------------------------------------
-// 1. Focus Hot Tale (Dark Split Feature Card)
+// Podium Composition (Stacked < 992px, Asymmetric Split >= 992px)
 // -------------------------------------------------------------
-.hot-focus {
+.hot-podium {
   display: grid;
   grid-template-columns: 1fr;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  overflow: hidden;
-  background-color: #111111; // Crisp broadsheet dark panel on both light & dark themes
-background-color: var(--surface-background-color);
-background-color: var(--background-color);
-  &__body {
-    order: 2; // Image on top, text below on mobile
-    padding: 1.5rem 1.25rem;
+  gap: 1.5rem;
+  align-items: stretch;
+
+  &__gold,
+  &__silver {
     display: flex;
-    align-items: center;
-    
+    flex-direction: column;
   }
 
+  &__side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  &__bronze {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  // Shared Media Frame (4:3 native ratio matching 750x562)
   &__media {
-    order: 1;
     display: block;
-    position: relative;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
-    background-color: #1a1a1a;
-    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--surface-background-color, #f4f4f5);
     text-decoration: none;
 
     img {
@@ -166,70 +209,7 @@ background-color: var(--background-color);
     }
 
     &:hover img {
-      transform: scale(1.02);
-    }
-  }
-
-  &__fallback {
-    width: 100%;
-    height: 100%;
-    min-height: 240px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    background: radial-gradient(circle at 30% 30%, #1f3250 0%, #0b1320 100%);
-    color: #9dd2ff;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-align: center;
-  }
-}
-
-// -------------------------------------------------------------
-// 2. Pill Hot Tales (3-Column Grid)
-// -------------------------------------------------------------
-.hot-pills {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-  align-items: stretch;
-}
-
-.hot-pill-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  overflow: hidden;
-  background-color: var(--background-color);
-  transition: border-color 0.2s ease;
-
-  &:hover {
-    border-color: var(--heading-text-color);
-  }
-
-  &__media {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--surface-background-color, #f4f4f5);
-    text-decoration: none;
-
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    &:hover img {
-      transform: scale(1.03);
+      transform: scale(1.025);
     }
   }
 
@@ -242,7 +222,7 @@ background-color: var(--background-color);
     padding: 1rem;
     background: linear-gradient(135deg, #10203a 0%, #1f3250 100%);
     color: #f5f5f5;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -251,13 +231,12 @@ background-color: var(--background-color);
 
   &__body {
     flex: 1 1 auto;
-    padding: 1.15rem 1.2rem 1.25rem;
     display: flex;
     flex-direction: column;
+    padding-top: 1rem;
   }
 }
 
-// Container margin below 1320px
 @media (max-width: 1320px) {
   .hot-tales {
     width: calc(100% - 20px);
@@ -265,30 +244,59 @@ background-color: var(--background-color);
   }
 }
 
-// Tablet & up (>= 680px): 3 pill cards sit side-by-side
-@media (min-width: 680px) {
-  .hot-pills {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+// Tablet (600px - 991px): Keep Gold full-width on top, Silver & Bronze side-by-side below
+@media @tablet {
+  .hot-podium__side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
   }
 }
 
-// Desktop (>= 900px): Focus card splits 50/50 horizontally (Text left, Media right)
-@media (min-width: 900px) {
-  .hot-focus {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    min-height: 390px;
+// Desktop (>= 992px): Broadsheet Gold (Left) + Silver & Bronze (Right) with Hairline Dividers
+@media (min-width: 992px) {
+  .hot-podium {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 2rem;
 
-    &__body {
-      order: 1;
-      padding: 2.5rem 2.75rem;
+    &__gold {
+      padding-right: 2rem;
+      border-right: 1px solid var(--border-color);
     }
 
-    &__media {
-      order: 2;
-      aspect-ratio: auto;
-      height: 100%;
+    &__body--gold {
+      padding-top: 1.25rem;
     }
+
+    &__side {
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    // Silver gets a slightly wider 16:9 crop so the right column balances vertically
+    &__media--silver {
+      aspect-ratio: 16 / 9;
+    }
+
+    &__body--silver {
+      padding-top: 0.9rem;
+    }
+
+     &__bronze {
+    flex-direction: column;
+    gap: 0;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+   &__media--bronze {
+    display: none;
+  }
+
+   &__body--bronze {
+    padding-top: 0;
+  }
+
   }
 }
 </style>

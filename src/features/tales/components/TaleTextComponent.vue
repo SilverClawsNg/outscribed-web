@@ -3,36 +3,41 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useModalStore } from '@/stores/modalStore'
 import SvgIcons from '@/components/SvgIcons.vue'
-import { useEngagement } from '@/composables/useEngagement';
+import { useEngagement } from '@/composables/useEngagement'
 
-import { formatCounts } from '@/utils/stringHelpers'
 import { toRelativeTime } from '@/utils/dateExtensions'
 import { getEngagementMetadata } from '@/features/engagements/types/EngagementTypes'
-import { type TaleListDto } from '../types/TalesTypes';
-import { CategoryClasses, CategoryDescriptions, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
-import { mediaHelper } from '@/utils/mediaHelper'
+import { type TaleListDto } from '../types/TalesTypes'
+import { CategoryDescriptions, CountryDescriptions, CountryFlags } from '@/utils/descriptors'
 
-// 2. Setup Shared Store Hooks
 const modalStore = useModalStore()
 const engage = useEngagement()
 
+export type TaleContentType = 'gold' | 'silver' | 'bronze' | 'pill'
+
 interface Props {
-   tale: TaleListDto,
-   type?: 'focus' | 'subfocus' | 'pill';
+  tale: TaleListDto
+  type?: TaleContentType
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'pill'
-});
+  type: 'pill',
+})
 
-// Transform state properties reactively on demand
-const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement));
+const uiMeta = computed(() => getEngagementMetadata(props.tale.engagement))
+
+const SUMMARY_LIMITS: Record<TaleContentType, number> = {
+  gold: 250,
+  silver: 175,
+  bronze: 145,
+  pill: 165,
+}
 
 const formattedSummary = computed(() => {
   const raw = (props.tale.summary ?? '').trim().replace(/\s+/g, ' ')
   if (!raw) return ''
 
-  const maxLength = props.type === 'focus' || props.type === 'subfocus' ? 240 : 165
+  const maxLength = SUMMARY_LIMITS[props.type]
   if (raw.length <= maxLength) return raw
 
   const slice = raw.slice(0, maxLength)
@@ -41,69 +46,68 @@ const formattedSummary = computed(() => {
 
   return `${cleanCut.replace(/[.,;:\s]+$/, '')}...`
 })
-
 </script>
 
 <template>
-   
-   <div class="content" :class="`content--${type || 'pill'}`">
-  <p class="content__category">
-    <RouterLink
-      :to="`/tales?category=${tale.category}`"
-      class="content__category-link"
-    >
-      <span>{{ CategoryDescriptions[tale.category] }}</span>
-    </RouterLink>
-  </p>
+  <div class="content" :class="`content--${type}`">
+    <p class="content__category">
+      <RouterLink
+        :to="`/tales?category=${tale.category}`"
+        class="content__category-link"
+      >
+        <span>{{ CategoryDescriptions[tale.category] }}</span>
+      </RouterLink>
+    </p>
 
-  <h3 class="content__title">
-    <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
-  </h3>
+    <h3 class="content__title">
+      <RouterLink :to="`/tale/${tale.slug}`">{{ tale.title }}</RouterLink>
+    </h3>
 
-  <p class="content__summary">
-    {{ formattedSummary }}
-  </p>
+    <p v-if="formattedSummary" class="content__summary">
+      {{ formattedSummary }}
+    </p>
 
-  <div class="content__meta">
-    <button
-      type="button"
-      class="at content__author"
-      @click="modalStore.push('Profile', 'Profile', tale.creatorId)"
-    >
-      {{ tale.creatorUsername }}
-    </button>
-    <span class="divider divider--circle" aria-hidden="true"></span>
-    <time>{{ toRelativeTime(tale.createdAt) }}</time>
-    <span class="divider divider--circle" aria-hidden="true"></span>
-    <span>{{ tale.readingTime }} Min Read</span>
-    <span class="divider divider--circle" aria-hidden="true"></span>
-    <RouterLink :to="`/tales?country=${tale.country}`" class="content__country">
-      <span class="content__meta--spaced">{{ CountryFlags(tale.country) }}</span>
-      <span>{{ CountryDescriptions[tale.country] }}</span>
-    </RouterLink>
+    <div class="content__meta">
+      <button
+        type="button"
+        class="at content__author"
+        @click="modalStore.push('Profile', 'Profile', tale.creatorId)"
+      >
+        {{ tale.creatorUsername }}
+      </button>
+      <span class="divider divider--circle" aria-hidden="true"></span>
+      <time>{{ toRelativeTime(tale.createdAt) }}</time>
+      <span class="divider divider--circle" aria-hidden="true"></span>
+      <span>{{ tale.readingTime }} Min Read</span>
+      <span class="divider divider--circle" aria-hidden="true"></span>
+      <RouterLink :to="`/tales?country=${tale.country}`" class="content__country">
+        <span class="content__meta--spaced">{{ CountryFlags(tale.country) }}</span>
+        <span>{{ CountryDescriptions[tale.country] }}</span>
+      </RouterLink>
+    </div>
+
+    <footer class="content__footer">
+      <RouterLink class="content__footer--read" :to="`/tale/${tale.slug}`">
+        Read &rarr;
+      </RouterLink>
+
+      <button
+        type="button"
+        class="content__footer--save"
+        :title="tale.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
+        :disabled="uiMeta.isFavoriteDisabled"
+        @click="engage.favorite(tale.engagement)"
+      >
+        <SvgIcons name="bookmark" :size="15" />
+        <span>{{ uiMeta.favoriteLongText }}</span>
+      </button>
+    </footer>
   </div>
-
-  <footer class="content__footer">
-    <RouterLink class="content__footer--read" :to="`/tale/${tale.slug}`">
-      Read &rarr;
-    </RouterLink>
-
-    <button
-      type="button"
-      class="content__footer--save"
-      :title="tale.engagement.isFavorite ? 'Remove From Favorites' : 'Add To Favorites'"
-      :disabled="uiMeta.isFavoriteDisabled"
-      @click="engage.favorite(tale.engagement)"
-    >
-      <SvgIcons name="bookmark" :size="15" />
-      <span>{{ uiMeta.favoriteLongText }}</span>
-    </button>
-  </footer>
-</div>
 </template>
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
+
 .content {
   width: 100%;
   display: flex;
@@ -152,7 +156,7 @@ const formattedSummary = computed(() => {
 
   &__summary {
     margin: 0 0 0.85rem;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.55;
     color: var(--body-text-color);
   }
@@ -236,49 +240,66 @@ const formattedSummary = computed(() => {
   }
 }
 
-// Focus / Subfocus title & dark-panel contrast tuning
-.content--focus .content__title,
-.content--subfocus .content__title {
-  font-size: 1.25rem;
-  line-height: 1.35;
+// -------------------------------------------------------------
+// Mobile-First Tier Typography (< 992px)
+// -------------------------------------------------------------
+.content--gold .content__title {
+  font-size: 1.35rem;
+  line-height: 1.28;
 }
 
+.content--silver .content__title {
+  font-size: 1.2rem;
+  line-height: 1.32;
+}
+
+.content--bronze .content__title,
 .content--pill .content__title {
   font-size: 1.1rem;
   line-height: 1.35;
 }
 
+.content--bronze .content__summary,
 .content--pill .content__summary {
   font-size: 0.86rem;
   line-height: 1.5;
 }
 
-// When Focus sits over a dark editorial surface
-.content--focus .content__title,
-.content--focus .content__summary,
-.content--focus .content__meta {
-  //color: #F5F5F5;
-}
-
-.content--focus .content__summary {
- // color: #D4D4D4;
-}
-
-.content--focus .content__meta {
- // color: #B4B4BC;
-}
-
-@media (min-width: 768px) {
-  .content--focus .content__title,
-  .content--subfocus .content__title {
+// -------------------------------------------------------------
+// Desktop Tier Progression (>= 992px: Gold > Silver > Bronze > Pill)
+// -------------------------------------------------------------
+@media (min-width: 992px) {
+  .content--gold .content__title {
     font-size: 1.85rem;
     line-height: 1.18;
     letter-spacing: -0.02em;
   }
 
-  .content--focus .content__summary {
+  .content--gold .content__summary {
     font-size: 1rem;
     line-height: 1.6;
+  }
+
+  .content--silver .content__title {
+    font-size: 1.42rem;
+    line-height: 1.24;
+    letter-spacing: -0.015em;
+  }
+
+  .content--silver .content__summary {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .content--bronze .content__title {
+    font-size: 1.18rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .content--bronze .content__summary {
+    font-size: 0.88rem;
+    line-height: 1.52;
   }
 }
 </style>
