@@ -66,9 +66,9 @@ const homepageStore = useHomeStore();
 - ============================================================= */
 
 .trending-feature {
-  max-width: cacl(100% - 20px);
+  max-width: calc(100% - 20px);
   
-  margin: 3.25rem auto 0;
+  margin: 2.5rem auto;
   border-radius: 6px;
   border: 1px solid #051125;
   overflow: hidden;
