@@ -66,7 +66,7 @@ const homepageStore = useHomeStore();
 - ============================================================= */
 
 .trending-feature {
-  width: 100%;
+  max-width: cacl(100% - 20px);
   
   margin: 3.25rem auto 0;
   border-radius: 6px;
@@ -82,11 +82,11 @@ const homepageStore = useHomeStore();
   
     @media @smallDevice{
 flex-direction: column;
-max-width: @min-width; // 1300px
+width: @min-width; // 1300px
     }
 
       @media @largeDevice{
-max-width: @mid-width; // 1300px
+width: @mid-width; // 1300px
     }
 
   // -----------------------------------------------------------

@@ -11,7 +11,7 @@ const homepageStore = useHomeStore();
 
 // Hot Tales (4 items total)
 const focusHotTale = computed(() => homepageStore.hotTales[0] ?? null)        // (1) Top of hot tales
-const pillHotTales = computed(() => homepageStore.recentTales.slice(1, 4))       // (2) Remaining 3 hot tales
+const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       // (2) Remaining 3 hot tales
 
 </script>
 
