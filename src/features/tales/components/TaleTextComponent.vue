@@ -257,15 +257,15 @@ const formattedSummary = computed(() => {
 .content--focus .content__title,
 .content--focus .content__summary,
 .content--focus .content__meta {
-  color: #F5F5F5;
+  //color: #F5F5F5;
 }
 
 .content--focus .content__summary {
-  color: #D4D4D4;
+ // color: #D4D4D4;
 }
 
 .content--focus .content__meta {
-  color: #B4B4BC;
+ // color: #B4B4BC;
 }
 
 @media (min-width: 768px) {

@@ -4,6 +4,7 @@ import { useHomeStore } from '../stores/HomeStore';
 import { CategoryDescriptions } from '@/utils/descriptors';
 import { mediaHelper } from '@/utils/mediaHelper'
 import TaleTextComponent from '@/features/tales/components/TaleTextComponent.vue';
+import TaleCardComponent from '@/features/tales/components/TaleCardComponent.vue';
 
 const homepageStore = useHomeStore();
 
@@ -59,34 +60,9 @@ const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       //
   </article>
 
   <!-- 2. PILL HOT TALES (3-Column Grid) -->
-  <div v-if="pillHotTales.length" class="hot-pills">
-    <article
-      v-for="tale in pillHotTales"
-      :key="tale.taleId"
-      class="hot-pill-card"
-    >
-      <RouterLink
-        :to="`/tale/${tale.slug}`"
-        class="hot-pill-card__media"
-        :aria-label="`Read ${tale.title}`"
-      >
-        <img 
-          v-if="tale.photo"
-          :src="mediaHelper.getUrl(tale.photo, 'tales', 'thumb')" 
-          :alt="tale.title"
-          loading="lazy"
-        />
-       
-        <div v-else class="hot-pill-card__fallback" aria-hidden="true">
-          <span>{{ CategoryDescriptions[tale.category] }}</span>
-        </div>
-      </RouterLink>
-
-      <div class="hot-pill-card__body">
-        <TaleTextComponent :tale="tale" type="pill" />
-      </div>
-    </article>
-  </div>
+<div v-if="pillHotTales.length" class="tale-grid">
+  <TaleCardComponent v-for="tale in pillHotTales" :key="tale.taleId" :tale="tale" />
+</div>
 </section>
 
 </div>
@@ -95,17 +71,18 @@ const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       //
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
+@import "@/assets/css/tale-card.less";
+
 /* =============================================================
 - HOT TALES SECTION (1 Focus Split Banner + 3 Pill Cards)
 - ============================================================= */
 
 .hot-tales-wrapper{
-    background-color: var(--surface-background-color);
+    //background-color: var(--surface-background-color);
     width: 100%;
     height: auto;
     padding: 2.5rem 0;
-    margin: 1.5rem;
-    
+
 }
 
 .hot-tales {
@@ -159,7 +136,8 @@ const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       //
   border-radius: 6px;
   overflow: hidden;
   background-color: #111111; // Crisp broadsheet dark panel on both light & dark themes
-
+background-color: var(--surface-background-color);
+background-color: var(--background-color);
   &__body {
     order: 2; // Image on top, text below on mobile
     padding: 1.5rem 1.25rem;
@@ -175,6 +153,7 @@ const pillHotTales = computed(() => homepageStore.hotTales.slice(1, 4))       //
     aspect-ratio: 16 / 10;
     overflow: hidden;
     background-color: #1a1a1a;
+    background-color: var(--background-color);
     text-decoration: none;
 
     img {
