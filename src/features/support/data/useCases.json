@@ -1,51 +1,92 @@
 [
   {
-  "id": 1,
-  "title": "Simplify complex solutions",
-  "description": "<h3>The Situation</h3><p>John is an electrical engineering professor with practical ideas for fixing Nigeria's power grid, but the everyday citizens who stand to benefit most are unlikely to read a dense technical proposal.</p><h3>The OutScribed Approach</h3><p>On his OutScribed page, he writes a story in which he steps into the shoes of the Minister of Power. Through the daily trade-offs, setbacks, and breakthroughs of the job, he shows how his ideas would play out in the real world.</p><h3>Why It Works</h3><p>OutScribed lets John translate complex engineering into a story anyone can follow without watering down the substance. Instead of handing readers a dry whitepaper, he unpacks technical jargon through human decisions—showing how policies and infrastructure choices actually affect ordinary lives.</p>"
-},
+    "id": 1,
+    "slug": "simplify-complex-solutions",
+    "title": "Simplify complex solutions",
+    "avatar": "avatar1.png",
+    "situation": "John is an electrical engineering professor with practical ideas for fixing Nigeria's power grid, but the everyday citizens who stand to benefit most are unlikely to read a dense technical proposal.",
+    "approach": "On his OutScribed page, he writes a story in which he steps into the shoes of the Minister of Power. Through the daily trade-offs, setbacks, and breakthroughs of the job, he shows how his ideas would play out in the real world.",
+    "whyItWorks": "OutScribed lets John translate complex engineering into a story anyone can follow without watering down the substance. Instead of handing readers a dry whitepaper, he unpacks technical jargon through human decisions—showing how policies and infrastructure choices actually affect ordinary lives."
+  },
   {
-  "id": 2,
-  "title": "Focus on the message",
-  "description": "<h3>The Situation</h3><p>Martha wanted to respond to a major political speech—challenging weak points, strengthening others, and raising questions that were left out. Yet in public debates, people often attack the messenger instead of weighing the message.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote a story featuring an alternative version of the politician delivering a revised speech—keeping what worked, fixing what didn't, and weaving in the missing points.</p><h3>Why It Works</h3><p>OutScribed lets Martha place her ideas directly inside the speech rather than attaching them to her own name or background. Readers end up debating the arguments and real-world consequences of the revised speech instead of targeting the writer.</p>"
-},
+    "id": 2,
+    "slug": "focus-on-the-message",
+    "title": "Focus on the message",
+    "avatar": "avatar2.png",
+    "situation": "Martha wanted to respond to a major political speech—challenging weak points, strengthening others, and raising questions that were left out. Yet in public debates, people often attack the messenger instead of weighing the message.",
+    "approach": "Using her OutScribed page, she wrote a story featuring an alternative version of the politician delivering a revised speech—keeping what worked, fixing what didn't, and weaving in the missing points.",
+    "whyItWorks": "OutScribed lets Martha place her ideas directly inside the speech rather than attaching them to her own name or background. Readers end up debating the arguments and real-world consequences of the revised speech instead of targeting the writer."
+  },
   {
     "id": 3,
+    "slug": "explore-future-consequences",
     "title": "Explore future consequences",
-    "description": "<h3>The Situation</h3><p>Antonio was following a proposed bill and believed its long-term effects were being overlooked. While the immediate benefits were widely discussed, he was more interested in what the policy might mean for his community years into the future.</p><h3>The OutScribed Approach</h3><p>Using his OutScribed page, he wrote a story set several years ahead. Through the experiences of local residents, business owners, and public officials, he explored how life in his hometown might change if the bill became law.</p><h3>Why It Works</h3><p>OutScribed allows Antonio to move the discussion beyond immediate outcomes and examine where current decisions may lead. Readers can consider the practical consequences of the policy in a realistic setting rather than as an abstract prediction. At the same time, he creates a place where others who share his concerns, or are curious about alternative perspectives, can see those views represented.</p>"
+    "avatar": "avatar3.png",
+    "situation": "Antonio was following a proposed bill and believed its long-term effects were being overlooked. While the immediate benefits were widely discussed, he was more interested in what the policy might mean for his community years into the future.",
+    "approach": "Using his OutScribed page, he wrote a story set several years ahead. Through the experiences of local residents, business owners, and public officials, he explored how life in his hometown might change if the bill became law.",
+    "whyItWorks": "OutScribed allows Antonio to move the discussion beyond immediate outcomes and examine where current decisions may lead. Readers can consider the practical consequences of the policy in a realistic setting rather than as an abstract prediction. At the same time, he creates a place where others who share his concerns, or are curious about alternative perspectives, can see those views represented."
   },
   {
     "id": 4,
+    "slug": "explore-new-possibilities",
     "title": "Explore new possibilities",
-    "description": "<h3>The Situation</h3><p>Xianyu had an unconventional theory about the structure of the universe. While the idea was difficult to explore through traditional academic channels, it raised questions he believed were worth examining.</p><h3>The OutScribed Approach</h3><p>Using his OutScribed page, he wrote a story built around his theory. By placing readers inside a world where his ideas were assumed to be true, he could explore their implications, limitations, and consequences in a relatable way.</p><h3>Why It Works</h3><p>OutScribed allows Xianyu to investigate possibilities that are difficult to test or discuss through conventional formats. Readers can engage with the theory by examining its assumptions, debating its consequences, and comparing it against existing knowledge. At the same time, he creates a place where others who share his curiosity, or are interested in alternative explanations, can see those ideas explored and discussed.</p>"
+    "avatar": "avatar4.png",
+    "situation": "Xianyu had an unconventional theory about the structure of the universe. While the idea was difficult to explore through traditional academic channels, it raised questions he believed were worth examining.",
+    "approach": "Using his OutScribed page, he wrote a story built around his theory. By placing readers inside a world where his ideas were assumed to be true, he could explore their implications, limitations, and consequences in a relatable way.",
+    "whyItWorks": "OutScribed allows Xianyu to investigate possibilities that are difficult to test or discuss through conventional formats. Readers can engage with the theory by examining its assumptions, debating its consequences, and comparing it against existing knowledge. At the same time, he creates a place where others who share his curiosity, or are interested in alternative explanations, can see those ideas explored and discussed."
   },
   {
     "id": 5,
+    "slug": "take-a-seat-at-any-table",
     "title": "Take a seat at any table",
-"description": "<h3>The Situation</h3><p>Claire regularly watches a late-night news panel and often feels that key viewpoints—the ones ordinary people actually care about—never make it into the discussion.</p><h3>The OutScribed Approach</h3><p>She creates a persona on OutScribed and writes short stories that place her right on the panel as an additional guest.</p><h3>Why It Works</h3><p>OutScribed lets Claire pull up a chair to a table she wasn't invited to. By outscribing each episode, she brings in the missing questions, real-world angles, and counterarguments—and gradually builds an audience of readers who share her view or want to hear the other side.</p>"  },
+    "avatar": "avatar5.png",
+    "situation": "Claire regularly watches a late-night news panel and often feels that key viewpoints—the ones ordinary people actually care about—never make it into the discussion.",
+    "approach": "She creates a persona on OutScribed and writes short stories that place her right on the panel as an additional guest.",
+    "whyItWorks": "OutScribed lets Claire pull up a chair to a table she wasn't invited to. By outscribing each episode, she brings in the missing questions, real-world angles, and counterarguments—and gradually builds an audience of readers who share her view or want to hear the other side."
+  },
   {
     "id": 6,
+    "slug": "celebrate-a-living-legacy",
     "title": "Celebrate a living legacy",
-    "description": "<h3>The Situation</h3><p>Olivia wanted to celebrate the remarkable impact a longtime mentor had made on her life and the lives of others. Yet many of the most heartfelt tributes are only written after a person is gone.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote a Tributuary set decades in the future. Looking back across an imagined lifetime, she reflected on the mentor's achievements, influence, and the countless lives touched along the way.</p><h3>Why It Works</h3><p>OutScribed allows Olivia to express the depth of a person's legacy without waiting for a memorial. By projecting into the future, she can celebrate accomplishments, highlight impact, and imagine how that person's contributions may be remembered for generations. At the same time, she creates a place where others who have been influenced by that person can see those contributions recognized and appreciated.</p>"
+    "avatar": "avatar6.png",
+    "situation": "Olivia wanted to celebrate the remarkable impact a longtime mentor had made on her life and the lives of others. Yet many of the most heartfelt tributes are only written after a person is gone.",
+    "approach": "Using her OutScribed page, she wrote a Tributuary set decades in the future. Looking back across an imagined lifetime, she reflected on the mentor's achievements, influence, and the countless lives touched along the way.",
+    "whyItWorks": "OutScribed allows Olivia to express the depth of a person's legacy without waiting for a memorial. By projecting into the future, she can celebrate accomplishments, highlight impact, and imagine how that person's contributions may be remembered for generations. At the same time, she creates a place where others who have been influenced by that person can see those contributions recognized and appreciated."
   },
   {
     "id": 7,
+    "slug": "reimagine-existing-systems",
     "title": "Reimagine existing systems",
-    "description": "<h3>The Situation</h3><p>Michelle believed that many children were being underserved by a one-size-fits-all education system. She had ideas for a more flexible approach that would help students develop their individual strengths, but discussions about educational reform often become trapped in policy debates and implementation details.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote a story set in a society that had adopted her learning model nationwide. By following students, teachers, and families through everyday experiences, she explored how individualized learning pathways might change lives and communities.</p><h3>Why It Works</h3><p>OutScribed allows Michelle to present a complete vision rather than a list of recommendations. Readers can experience how an alternative system would function in practice and consider its benefits, trade-offs, and broader impact. At the same time, she creates a place where others who share her vision, or are interested in new approaches, can see those ideas represented and discussed.</p>"
+    "avatar": "avatar7.png",
+    "situation": "Michelle believed that many children were being underserved by a one-size-fits-all education system. She had ideas for a more flexible approach that would help students develop their individual strengths, but discussions about educational reform often become trapped in policy debates and implementation details.",
+    "approach": "Using her OutScribed page, she wrote a story set in a society that had adopted her learning model nationwide. By following students, teachers, and families through everyday experiences, she explored how individualized learning pathways might change lives and communities.",
+    "whyItWorks": "OutScribed allows Michelle to present a complete vision rather than a list of recommendations. Readers can experience how an alternative system would function in practice and consider its benefits, trade-offs, and broader impact. At the same time, she creates a place where others who share her vision, or are interested in new approaches, can see those ideas represented and discussed."
   },
   {
     "id": 8,
+    "slug": "remove-personal-filters",
     "title": "Remove personal filters",
-    "description": "<h3>The Situation</h3><p>Patricia carried thoughts, experiences, and opinions that rarely made it into everyday conversation. Some felt too personal, some too uncomfortable, and others simply did not fit the role people expected her to play.</p><h3>The OutScribed Approach</h3><p>Using her OutScribed page, she wrote stories inspired by those hidden parts of herself. Through fictional characters and alternate realities, she expressed memories, viewpoints, and emotions she would have struggled to share directly.</p><h3>Why It Works</h3><p>OutScribed allows Patricia to remove personal filters without having to abandon personal boundaries. By expressing herself through story, she can explore difficult experiences, vulnerable thoughts, and unconventional perspectives with greater freedom and confidence. At the same time, she creates a place where others who have felt similarly constrained can see those experiences represented.</p>"
+    "avatar": "avatar8.png",
+    "situation": "Patricia carried thoughts, experiences, and opinions that rarely made it into everyday conversation. Some felt too personal, some too uncomfortable, and others simply did not fit the role people expected her to play.",
+    "approach": "Using her OutScribed page, she wrote stories inspired by those hidden parts of herself. Through fictional characters and alternate realities, she expressed memories, viewpoints, and emotions she would have struggled to share directly.",
+    "whyItWorks": "OutScribed allows Patricia to remove personal filters without having to abandon personal boundaries. By expressing herself through story, she can explore difficult experiences, vulnerable thoughts, and unconventional perspectives with greater freedom and confidence. At the same time, she creates a place where others who have felt similarly constrained can see those experiences represented."
   },
-   {
+  {
     "id": 9,
+    "slug": "connect-the-dots",
     "title": "Connect the dots",
-    "description": "<h3>The Situation</h3><p>Jack has always been fascinated by historical mysteries and unanswered questions. Whether it is the purpose of an ancient monument, the disappearance of a notable figure, or the origin of an unexplained event, he often finds himself wondering what might have happened.</p><h3>The OutScribed Approach</h3><p>Using his OutScribed page, he writes stories that weave together known facts, logical assumptions, and imaginative possibilities. By placing readers inside his reconstruction of events, he explores explanations that history never recorded.</p><h3>Why It Works</h3><p>OutScribed allows Jack to connect the dots between what is known and what remains uncertain. Instead of presenting a theory as a dry argument, he can illustrate how events might have unfolded and invite others to examine the strengths and weaknesses of his reasoning. At the same time, he creates a place where others who share his curiosity can see alternative explanations explored and discussed.</p>"
+    "avatar": "avatar9.png",
+    "situation": "Jack has always been fascinated by historical mysteries and unanswered questions. Whether it is the purpose of an ancient monument, the disappearance of a notable figure, or the origin of an unexplained event, he often finds himself wondering what might have happened.",
+    "approach": "Using his OutScribed page, he writes stories that weave together known facts, logical assumptions, and imaginative possibilities. By placing readers inside his reconstruction of events, he explores explanations that history never recorded.",
+    "whyItWorks": "OutScribed allows Jack to connect the dots between what is known and what remains uncertain. Instead of presenting a theory as a dry argument, he can illustrate how events might have unfolded and invite others to examine the strengths and weaknesses of his reasoning. At the same time, he creates a place where others who share his curiosity can see alternative explanations explored and discussed."
   },
   {
     "id": 10,
+    "slug": "write-the-dissent",
     "title": "Write the dissent",
-    "description": "<h3>The Situation</h3><p>Victor believed a court had reached the wrong conclusion. While the facts were largely uncontested, he felt important legal principles, precedents, and interpretations had been overlooked in the court's reasoning.</p><h3>The OutScribed Approach</h3><p>Using his OutScribed page, he wrote a story in which he delivered a dissenting judgement in the case. Applying the same facts to a different chain of legal reasoning, he explored how the court might have arrived at a different conclusion.</p><h3>Why It Works</h3><p>OutScribed allows Victor to examine decisions without simply criticizing them. Rather than arguing that a ruling is wrong, he can demonstrate how alternative reasoning could have produced a different outcome. At the same time, he creates a place where legal professionals, students, and curious readers can evaluate competing interpretations and discuss their implications.</p>"
+    "avatar": "avatar10.png",
+    "situation": "Victor believed a court had reached the wrong conclusion. While the facts were largely uncontested, he felt important legal principles, precedents, and interpretations had been overlooked in the court's reasoning.",
+    "approach": "Using his OutScribed page, he wrote a story in which he delivered a dissenting judgement in the case. Applying the same facts to a different chain of legal reasoning, he explored how the court might have arrived at a different conclusion.",
+    "whyItWorks": "OutScribed allows Victor to examine decisions without simply criticizing them. Rather than arguing that a ruling is wrong, he can demonstrate how alternative reasoning could have produced a different outcome. At the same time, he creates a place where legal professionals, students, and curious readers can evaluate competing interpretations and discuss their implications."
   }
 ]

@@ -21,6 +21,7 @@ import HomepageRoadMapComponent from '../components/HomepageRoadMapComponent.vue
 import HomepageTrendingTagsComponent from '../components/HomepageTrendingTagsComponent.vue';
 import HomepageHotTalesComponent from '../components/HomepageHotTalesComponent.vue';
 import HomepageRecentTalesComponent from '../components/HomepageRecentTalesComponent.vue';
+import HomepageUseCasesComponent from '../components/HomepageUseCasesComponent.vue';
 
 // 1. Setup Services & State
 const homepageStore = useHomeStore();
@@ -117,6 +118,8 @@ const countriesTales = computed(() => {
   <HomepageTrendingTagsComponent />
 
   <HomepageRecentTalesComponent />
+
+  <HomepageUseCasesComponent />
 
 </template>
 
